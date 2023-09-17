@@ -93,6 +93,7 @@ dependencies:
   syncfusion_flutter_charts: ^22.2.11
   fl_chart: ^0.63.0
   switcher: ^1.0.0
+  flutter_otp_text_field: ^1.1.1
 
 dev_dependencies:
   flutter_test:

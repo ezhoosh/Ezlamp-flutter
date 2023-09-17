@@ -11,8 +11,10 @@
     "rol5":" است",
     "enterYourPassword":"رمز عبور را وارد کنید",
     "password":"رمز عبور",
-
     "loginWithOtpCode":"ورود با رمز یکبار مصرف",
-    "forgetPassword":"فراموشی رمز عبور"
+    "forgetPassword":"فراموشی رمز عبور",
+    "otpCode":"کد تایید ",
+    "sendOtpToNumber":"کد تایید برای شماره *number* پیامک شد",
+    "timerAgo":"مانده تا دریافت مجدد کد"
 
 }

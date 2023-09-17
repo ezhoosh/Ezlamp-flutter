@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
+import 'package:easy_lamp/presenter/pages/auth_feature/otp_page.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/auth_page.dart';
+import 'package:easy_lamp/presenter/pages/auth_feature/password_page.dart';
 import 'dart:async';
 
 class SplashPage extends StatefulWidget {

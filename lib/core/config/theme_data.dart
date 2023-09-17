@@ -32,6 +32,9 @@ class ThemeConfig {
       canvasColor: background,
       cardColor: background,
       dividerColor: divider,
+      textSelectionTheme: TextSelectionThemeData(
+        cursorColor: MyColors.primary,
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: MyColors.primary,
@@ -56,6 +59,7 @@ class ThemeConfig {
           borderRadius: BorderRadius.circular(2),
         ),
       ),
+
       backgroundColor: background,
       primaryColor: accentColor,
       // accentColor: accentColor,

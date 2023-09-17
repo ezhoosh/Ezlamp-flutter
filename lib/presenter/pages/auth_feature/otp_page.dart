@@ -5,17 +5,20 @@ import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:easy_lamp/presenter/pages/auth_feature/password_page.dart';
 import 'package:easy_lamp/core/widgets/rules_text_view.dart';
-import 'package:easy_lamp/presenter/pages/auth_feature/otp_page.dart';
+import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 
-class PasswordPage extends StatefulWidget {
-  const PasswordPage({Key? key}) : super(key: key);
+class OtpPage extends StatefulWidget {
+  String phoneNumber;
+
+  OtpPage(this.phoneNumber, {Key? key}) : super(key: key);
 
   @override
-  State<PasswordPage> createState() => _PasswordPageState();
+  State<OtpPage> createState() => _OtpPageState();
 }
 
-class _PasswordPageState extends State<PasswordPage> {
+class _OtpPageState extends State<OtpPage> {
   late AppLocalizations al;
 
   @override
@@ -39,42 +42,44 @@ class _PasswordPageState extends State<PasswordPage> {
           alignment: Alignment.center,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(
-              al.enterYourPassword,
+              al.otpCode,
               style: SectionStyle.s1.copyWith(color: MyColors.primary),
             ),
-            SizedBox(height: MySpaces.s40),
-            BorderTextField(hintText: al.password),
-            SizedBox(height: MySpaces.s12),
-            Row(
-              children: [
-                Text(
-                  al.loginWithOtpCode,
-                  style: Light400Style.sm.copyWith(color: MyColors.primary),
-                ),
-                SizedBox(
-                  width: MySpaces.s2,
-                ),
-                Icon(
-                  Icons.keyboard_arrow_left_rounded,
-                  color: MyColors.primary,
-                )
-              ],
+            SizedBox(height: MySpaces.s6),
+            Text(
+              al.sendOtpToNumber.replaceAll("*number*", widget.phoneNumber),
+              style:
+                  Light400Style.sm.copyWith(color: MyColors.secondary.shade200),
+              textAlign: TextAlign.center,
             ),
-            SizedBox(height: MySpaces.s12),
-            Row(
-              children: [
-                Text(
-                  al.forgetPassword,
-                  style: Light400Style.sm.copyWith(color: MyColors.primary),
+            SizedBox(height: MySpaces.s40),
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: OtpTextField(
+                fieldWidth: 40,
+                numberOfFields: 4,
+                textStyle: DemiBoldStyle.normal.copyWith(
+                  color: MyColors.white,
                 ),
-                SizedBox(
-                  width: MySpaces.s2,
-                ),
-                Icon(
-                  Icons.keyboard_arrow_left_rounded,
-                  color: MyColors.primary,
-                )
-              ],
+                borderWidth: 1,
+                borderColor: MyColors.primary,
+                enabledBorderColor: MyColors.white,
+                disabledBorderColor: MyColors.white,
+                focusedBorderColor: MyColors.primary,
+                showFieldAsBox: true,
+                borderRadius: MyRadius.sm,
+                onCodeChanged: (String code) {},
+                onSubmit: (String verificationCode) {
+                  // showDialog(
+                  //     context: context,
+                  //     builder: (context) {
+                  //       return AlertDialog(
+                  //         title: Text("Verification Code"),
+                  //         content: Text('Code entered is $verificationCode'),
+                  //       );
+                  //     });
+                }, // end onSubmit
+              ),
             ),
             SizedBox(height: MySpaces.s24),
             SizedBox(
@@ -82,7 +87,7 @@ class _PasswordPageState extends State<PasswordPage> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => OtpPage("091222")),
+                    MaterialPageRoute(builder: (context) => PasswordPage()),
                   );
                 },
                 child: Text(
