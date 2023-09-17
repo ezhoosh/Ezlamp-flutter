@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class MySpaces {
   static const double s2 = 2;
   static const double s4 = 4;
@@ -12,9 +14,9 @@ class MySpaces {
 }
 
 class MyRadius {
-  static const double r6 = 6;
-  static const double r10 = 10;
-  static const double r16 = 16;
-  static const double r24 = 24;
-  static const double r32 = 32;
+  static  BorderRadius xs = BorderRadius.circular(6);
+  static  BorderRadius sm = BorderRadius.circular(10);
+  static  BorderRadius base = BorderRadius.circular(16);
+  static  BorderRadius lg = BorderRadius.circular(24);
+  static  BorderRadius xl = BorderRadius.circular(32);
 }

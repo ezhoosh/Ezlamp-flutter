@@ -1,6 +1,7 @@
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_lamp/core/resource/my_spaces.dart';
 
 class ThemeConfig {
   static ThemeData createTheme({
@@ -31,6 +32,14 @@ class ThemeConfig {
       canvasColor: background,
       cardColor: background,
       dividerColor: divider,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: MyColors.primary,
+          shape: RoundedRectangleBorder(
+            borderRadius: MyRadius.sm,
+          ),
+        ),
+      ),
       dividerTheme: DividerThemeData(
         color: divider,
         space: 1,
@@ -163,19 +172,19 @@ class ThemeConfig {
 
   static ThemeData get lightTheme => createTheme(
       brightness: Brightness.light,
-      background: MyColors.white,
-      cardBackground: MyColors.grey.shade400,
+      background: MyColors.black.shade700,
+      cardBackground: MyColors.black.shade400,
       primaryText: MyColors.primary,
       secondaryText: MyColors.secondary,
       accentColor: MyColors.primary,
-      divider: MyColors.grey.shade400,
+      divider: MyColors.black.shade400,
       buttonBackground: MyColors.primary,
       buttonText: MyColors.white,
-      disabled: MyColors.grey,
+      disabled: MyColors.black,
       error: MyColors.error,
       textButtonColor: MyColors.white,
-      hintColor: MyColors.grey.shade400,
-      textFieldColor: MyColors.grey,
+      hintColor: MyColors.black.shade400,
+      textFieldColor: MyColors.black,
       checkBoxColor: MyColors.primary,
-      iconColor: MyColors.grey);
+      iconColor: MyColors.black);
 }
