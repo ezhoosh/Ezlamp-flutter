@@ -1,5 +1,6 @@
 import 'package:easy_lamp/presenter/pages/splash_feature/splash_page.dart';
 import 'package:flutter/material.dart';
+import 'package:easy_lamp/core/config/theme_data.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,11 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: ThemeConfig.lightTheme,
       home: const SplashPage(),
     );
   }
