@@ -5,17 +5,16 @@ import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:easy_lamp/presenter/pages/auth_feature/password_page.dart';
 import 'package:easy_lamp/core/widgets/rules_text_view.dart';
 
-class AuthPage extends StatefulWidget {
-  const AuthPage({Key? key}) : super(key: key);
+class PasswordPage extends StatefulWidget {
+  const PasswordPage({Key? key}) : super(key: key);
 
   @override
-  State<AuthPage> createState() => _AuthPageState();
+  State<PasswordPage> createState() => _PasswordPageState();
 }
 
-class _AuthPageState extends State<AuthPage> {
+class _PasswordPageState extends State<PasswordPage> {
   late AppLocalizations al;
 
   @override
@@ -39,27 +38,48 @@ class _AuthPageState extends State<AuthPage> {
           alignment: Alignment.center,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(
-              al.registerOrLogin,
+              al.enterYourPassword,
               style: SectionStyle.s1.copyWith(color: MyColors.primary),
             ),
-            SizedBox(height: MySpaces.s6),
-            Text(
-              al.descRegisterOrLogin,
-              style:
-                  Light400Style.sm.copyWith(color: MyColors.secondary.shade200),
-              textAlign: TextAlign.center,
-            ),
             SizedBox(height: MySpaces.s40),
-            BorderTextField(hintText: al.phone),
+            BorderTextField(hintText: al.password),
+            SizedBox(height: MySpaces.s12),
+            Row(
+              children: [
+                Text(
+                  al.loginWithOtpCode,
+                  style: Light400Style.sm.copyWith(color: MyColors.primary),
+                ),
+                SizedBox(
+                  width: MySpaces.s2,
+                ),
+                Icon(
+                  Icons.keyboard_arrow_left_rounded,
+                  color: MyColors.primary,
+                )
+              ],
+            ),
+            SizedBox(height: MySpaces.s12),
+            Row(
+              children: [
+                Text(
+                  al.forgetPassword,
+                  style: Light400Style.sm.copyWith(color: MyColors.primary),
+                ),
+                SizedBox(
+                  width: MySpaces.s2,
+                ),
+                Icon(
+                  Icons.keyboard_arrow_left_rounded,
+                  color: MyColors.primary,
+                )
+              ],
+            ),
             SizedBox(height: MySpaces.s24),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => PasswordPage()),
-                  );
-                },
+                onPressed: () {},
                 child: Text(
                   al.login,
                   style: DemiBoldStyle.normal.copyWith(color: MyColors.white),

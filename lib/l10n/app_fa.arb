@@ -1,3 +1,18 @@
 {
-    "helloWorld": "سلام دنیا!"
+    "helloWorld": "سلام دنیا!",
+    "registerOrLogin":"ورود / ثبت‌نام",
+    "descRegisterOrLogin":"سلام!\nلطفا شماره موبایل یا ایمیل خود را وارد کنید",
+    "phone":"شماره تماس",
+    "login":"ورود",
+    "rol1":"ورود شما به معنای",
+    "rol2":" پذیرش شرایط",
+    "rol3":" قوانین",
+    "rol4":" حریم‌خصوصی",
+    "rol5":" است",
+    "enterYourPassword":"رمز عبور را وارد کنید",
+    "password":"رمز عبور",
+
+    "loginWithOtpCode":"ورود با رمز یکبار مصرف",
+    "forgetPassword":"فراموشی رمز عبور"
+
 }

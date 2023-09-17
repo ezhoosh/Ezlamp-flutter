@@ -25,6 +25,7 @@ class MyApp extends StatelessWidget {
         Locale('en', ''),
         Locale('fa', ''),
       ],
+      locale: Locale('fa', ''),
       home: const SplashPage(),
     );
   }
