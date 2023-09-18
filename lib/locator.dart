@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:easy_lamp/core/params/write_local_storage_params.dart';
 import 'package:easy_lamp/core/utils/local_data_provider.dart';
 import 'package:easy_lamp/data/repositories/auth_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/local_storage_repositoryimpl.dart';
