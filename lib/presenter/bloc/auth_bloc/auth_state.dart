@@ -1,6 +1,27 @@
 part of 'auth_bloc.dart';
 
-@immutable
-abstract class AuthState {}
+class AuthState {
+  BaseStatus sendPhoneStatus;
+  BaseStatus loginStatus;
+  BaseStatus registerStatus;
+  BaseStatus resetPasswordStatus;
+  AuthState({
+    required this.loginStatus,
+    required this.registerStatus,
+    required this.resetPasswordStatus,
+    required this.sendPhoneStatus,
+  });
 
-class AuthInitial extends AuthState {}
+  AuthState copyWith({
+    BaseStatus? newSendPhoneStatus,
+    BaseStatus? newLoginStatus,
+    BaseStatus? newRegisterStatus,
+    BaseStatus? newResetPasswordStatus,
+  }) {
+    return AuthState(
+        loginStatus: newLoginStatus ?? loginStatus,
+        registerStatus: newRegisterStatus ?? registerStatus,
+        sendPhoneStatus: newSendPhoneStatus ?? sendPhoneStatus,
+        resetPasswordStatus: newResetPasswordStatus ?? registerStatus);
+  }
+}

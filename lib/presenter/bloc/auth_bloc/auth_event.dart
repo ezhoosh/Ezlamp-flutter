@@ -4,7 +4,31 @@ part of 'auth_bloc.dart';
 abstract class AuthEvent {}
 
 class SendPhoneNumberEvent extends AuthEvent {
-  SendPhoneNumberParams params;
+  String number;
 
-  SendPhoneNumberEvent(this.params);
+  SendPhoneNumberEvent(this.number);
+}
+
+class LoginEvent extends AuthEvent {
+  String number;
+  String otp;
+  String password;
+
+  LoginEvent(this.number, this.otp, this.password);
+}
+
+class RegisterEvent extends AuthEvent {
+  String number;
+  String otp;
+  String password;
+
+  RegisterEvent(this.number, this.otp, this.password);
+}
+
+class ResetPasswordEvent extends AuthEvent {
+  String number;
+  String otp;
+  String password;
+
+  ResetPasswordEvent(this.number, this.otp, this.password);
 }
