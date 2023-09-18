@@ -6,14 +6,17 @@ import 'package:easy_lamp/core/resource/my_text_styles.dart';
 class BorderTextField extends StatelessWidget {
   String? hintText;
   ValueChanged<String>? onChange;
+  TextEditingController? controller;
 
-  BorderTextField({Key? key, this.hintText, this.onChange}) : super(key: key);
+
+  BorderTextField({Key? key, this.hintText, this.onChange,this.controller}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: TextField(
+        controller: controller,
         onChanged: onChange,
         style: Light400Style.normal.copyWith(color: MyColors.white),
         decoration: InputDecoration(

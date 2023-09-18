@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <application
+     <uses-permission android:name="android.permission.INTERNET"/> <!-- Add this -->
+     
+      <application
         android:label="easy_lamp"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
