@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
@@ -27,31 +26,31 @@ class _AuthPageState extends State<AuthPage> {
     return Material(
       child: Container(
         color: MyColors.black.shade700,
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage("assets/images/bg_lamp.png"),
               alignment: Alignment.bottomLeft,
             ),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           alignment: Alignment.center,
           child: Column(mainAxisSize: MainAxisSize.min, children: [
             Text(
               al.registerOrLogin,
               style: SectionStyle.s1.copyWith(color: MyColors.primary),
             ),
-            SizedBox(height: MySpaces.s6),
+            const SizedBox(height: MySpaces.s6),
             Text(
               al.descRegisterOrLogin,
               style:
                   Light400Style.sm.copyWith(color: MyColors.secondary.shade200),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: MySpaces.s40),
+            const SizedBox(height: MySpaces.s40),
             BorderTextField(hintText: al.phone),
-            SizedBox(height: MySpaces.s24),
+            const SizedBox(height: MySpaces.s24),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -66,8 +65,8 @@ class _AuthPageState extends State<AuthPage> {
                 ),
               ),
             ),
-            SizedBox(height: MySpaces.s24),
-            RulesTextView(),
+            const SizedBox(height: MySpaces.s24),
+            const RulesTextView(),
           ]),
         ),
       ),
