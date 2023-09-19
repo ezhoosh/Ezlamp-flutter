@@ -1,6 +1,14 @@
 part of 'splash_bloc.dart';
 
-@immutable
-abstract class SplashState {}
-
-class SplashInitial extends SplashState {}
+class SplashState {
+  BaseStatus checkLoginStatus, refreshTokenStatus;
+  SplashState(
+      {required this.checkLoginStatus, required this.refreshTokenStatus});
+  SplashState copyWith(
+      {BaseStatus? newCheckLoginStatus, newRefreshTokenStatus}) {
+    return SplashState(
+      checkLoginStatus: newCheckLoginStatus ?? checkLoginStatus,
+      refreshTokenStatus: newRefreshTokenStatus ?? refreshTokenStatus,
+    );
+  }
+}

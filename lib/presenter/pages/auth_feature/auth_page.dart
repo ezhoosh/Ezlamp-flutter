@@ -1,4 +1,5 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
+import 'package:easy_lamp/data/model/auth_status.dart';
 import 'package:easy_lamp/data/model/send_number_model.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/otp_page.dart';
@@ -57,12 +58,14 @@ class _AuthPageState extends State<AuthPage> {
               if (model.exist) {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                      builder: (context) => PasswordPage(model.phoneNumber)),
+                      builder: (context) =>
+                          PasswordPage(model.phoneNumber, AuthStatus.LOGIN)),
                 );
               } else {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                      builder: (context) => OtpPage(model.phoneNumber)),
+                      builder: (context) =>
+                          OtpPage(model.phoneNumber, AuthStatus.REGISTER)),
                 );
               }
             } else if (state.sendPhoneStatus is BaseError) {

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_lamp/core/params/login_params.dart';
+import 'package:easy_lamp/core/params/register_verify_params.dart';
 import 'package:easy_lamp/core/params/write_local_storage_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/constants.dart';
@@ -8,6 +9,7 @@ import 'package:easy_lamp/data/model/login_model.dart';
 import 'package:easy_lamp/domain/usecases/login_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_usecase.dart';
+import 'package:easy_lamp/domain/usecases/register_verify_usecase.dart';
 import 'package:easy_lamp/domain/usecases/reset_password_usecase.dart';
 import 'package:easy_lamp/domain/usecases/send_phone_number_usecase.dart';
 import 'package:easy_lamp/domain/usecases/write_localstorage_usecase.dart';
@@ -25,19 +27,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   SendPhoneNumberUseCase sendPhoneNumberUseCase;
   WriteLocalStorageUseCase writeLocalStorageUseCase;
   ReadLocalStorageUseCase readLocalStorageUseCase;
+  RegisterVerifyUseCase registerVerifyUseCase;
 
   AuthBloc(
-    this.loginUseCase,
-    this.registerUseCase,
-    this.resetPasswordUseCase,
-    this.sendPhoneNumberUseCase,
-    this.writeLocalStorageUseCase,
-    this.readLocalStorageUseCase,
-  ) : super(AuthState(
-            loginStatus: BaseNoAction(),
-            registerStatus: BaseNoAction(),
-            resetPasswordStatus: BaseNoAction(),
-            sendPhoneStatus: BaseNoAction())) {
+      this.loginUseCase,
+      this.registerUseCase,
+      this.resetPasswordUseCase,
+      this.sendPhoneNumberUseCase,
+      this.writeLocalStorageUseCase,
+      this.readLocalStorageUseCase,
+      this.registerVerifyUseCase)
+      : super(AuthState(
+          loginStatus: BaseNoAction(),
+          registerStatus: BaseNoAction(),
+          resetPasswordStatus: BaseNoAction(),
+          sendPhoneStatus: BaseNoAction(),
+          registerVerifyStatus: BaseNoAction(),
+        )) {
     on<SendPhoneNumberEvent>((event, emit) async {
       emit(state.copyWith(newSendPhoneStatus: BaseLoading()));
       try {
@@ -59,10 +65,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         DataState dataState = await loginUseCase(
             LoginParams(event.number, event.password, event.otp));
         if (dataState is DataSuccess) {
-          LoginModel model=dataState.data;
-          await writeLocalStorageUseCase(WriteLocalStorageParam(Constants.accessKey, model.access));
-          await writeLocalStorageUseCase(WriteLocalStorageParam(Constants.refreshKey, model.refresh));
-          await writeLocalStorageUseCase(WriteLocalStorageParam(Constants.phoneKey, model.phoneNumber));
+          LoginModel model = dataState.data;
+          await writeLocalStorageUseCase(
+              WriteLocalStorageParam(Constants.accessKey, model.access));
+          await writeLocalStorageUseCase(
+              WriteLocalStorageParam(Constants.refreshKey, model.refresh));
+          await writeLocalStorageUseCase(
+              WriteLocalStorageParam(Constants.phoneKey, model.phoneNumber));
 
           emit(state.copyWith(newLoginStatus: BaseSuccess(dataState.data)));
         } else {
@@ -104,6 +113,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(newResetPasswordStatus: BaseError(e.toString())));
       }
       emit(state.copyWith(newSendPhoneStatus: BaseNoAction()));
+    });
+    on<RegisterVerifyEvent>((event, emit) async {
+      emit(state.copyWith(newRegisterVerifyStatus: BaseLoading()));
+      try {
+        DataState dataState = await registerVerifyUseCase(
+            RegisterVerifyParams(event.number, event.otp));
+        if (dataState is DataSuccess) {
+          emit(state.copyWith(
+              newRegisterVerifyStatus: BaseSuccess(dataState.data)));
+        } else {
+          emit(state.copyWith(
+              newRegisterVerifyStatus: BaseError(dataState.error)));
+        }
+      } catch (e) {
+        emit(state.copyWith(newRegisterVerifyStatus: BaseError(e.toString())));
+      }
+      emit(state.copyWith(newRegisterVerifyStatus: BaseNoAction()));
     });
   }
 }

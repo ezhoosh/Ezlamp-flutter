@@ -24,6 +24,12 @@ class RegisterEvent extends AuthEvent {
 
   RegisterEvent(this.number, this.otp, this.password);
 }
+class RegisterVerifyEvent extends AuthEvent {
+  String number;
+  String otp;
+
+  RegisterVerifyEvent(this.number, this.otp);
+}
 
 class ResetPasswordEvent extends AuthEvent {
   String number;
