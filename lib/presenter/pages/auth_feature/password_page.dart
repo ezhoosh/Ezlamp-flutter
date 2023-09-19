@@ -1,6 +1,7 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/data/model/auth_status.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
+import 'package:easy_lamp/presenter/pages/auth_feature/otp_page.dart';
 import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,11 +47,22 @@ class _PasswordPageState extends State<PasswordPage> {
             EasyLoading.show();
           } else if (state.loginStatus is BaseSuccess ||
               state.registerStatus is BaseSuccess) {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => const HomePage()));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const HomePage()));
             EasyLoading.showSuccess("success");
           } else if (state.loginStatus is BaseError ||
               state.registerStatus is BaseError) {
+            EasyLoading.showError("error");
+          }
+
+          if (state.sendLoginOtpStatus is BaseLoading) {
+            EasyLoading.show();
+          } else if (state.sendLoginOtpStatus is BaseSuccess) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    OtpPage(widget.phoneNumber, widget.status)));
+            EasyLoading.showSuccess("success");
+          } else if (state.sendLoginOtpStatus is BaseError) {
             EasyLoading.showError("error");
           }
         },
@@ -77,23 +89,35 @@ class _PasswordPageState extends State<PasswordPage> {
                 controller: _controller,
               ),
               const SizedBox(height: MySpaces.s12),
-              InkWell(
-                onTap: () {
-                  if (widget.status == AuthStatus.LOGIN) {
+              if (widget.status == AuthStatus.LOGIN)
+                InkWell(
+                  onTap: () {
                     BlocProvider.of<AuthBloc>(context)
-                        .add(LoginEvent(widget.phoneNumber, '', ''));
-                  } else {
-                    BlocProvider.of<AuthBloc>(context).add(RegisterEvent(
-                      widget.phoneNumber,
-                      widget.otp,
-                      _controller.text,
-                    ));
-                  }
-                },
-                child: Row(
+                        .add(SendLoginOtpEvent(widget.phoneNumber));
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        al.loginWithOtpCode,
+                        style:
+                            Light400Style.sm.copyWith(color: MyColors.primary),
+                      ),
+                      const SizedBox(
+                        width: MySpaces.s2,
+                      ),
+                      const Icon(
+                        Icons.keyboard_arrow_left_rounded,
+                        color: MyColors.primary,
+                      )
+                    ],
+                  ),
+                ),
+              const SizedBox(height: MySpaces.s12),
+              if (widget.status == AuthStatus.LOGIN)
+                Row(
                   children: [
                     Text(
-                      al.loginWithOtpCode,
+                      al.forgetPassword,
                       style: Light400Style.sm.copyWith(color: MyColors.primary),
                     ),
                     const SizedBox(
@@ -105,23 +129,6 @@ class _PasswordPageState extends State<PasswordPage> {
                     )
                   ],
                 ),
-              ),
-              const SizedBox(height: MySpaces.s12),
-              Row(
-                children: [
-                  Text(
-                    al.forgetPassword,
-                    style: Light400Style.sm.copyWith(color: MyColors.primary),
-                  ),
-                  const SizedBox(
-                    width: MySpaces.s2,
-                  ),
-                  const Icon(
-                    Icons.keyboard_arrow_left_rounded,
-                    color: MyColors.primary,
-                  )
-                ],
-              ),
               const SizedBox(height: MySpaces.s24),
               SizedBox(
                 width: double.infinity,

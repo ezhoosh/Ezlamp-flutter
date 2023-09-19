@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:easy_lamp/core/params/login_params.dart';
 import 'package:easy_lamp/core/params/register_verify_params.dart';
 import 'package:easy_lamp/core/params/send_phone_number_params.dart';
@@ -7,6 +6,7 @@ import 'package:easy_lamp/core/utils/api_access.dart';
 import 'package:easy_lamp/data/model/login_model.dart';
 import 'package:easy_lamp/data/model/register_verify_model.dart';
 import 'package:easy_lamp/data/model/reset_password_model.dart';
+import 'package:easy_lamp/data/model/send_login_otp.dart';
 import 'package:easy_lamp/data/model/send_number_model.dart';
 import 'package:easy_lamp/domain/repositories/auth_repository.dart';
 
@@ -84,6 +84,21 @@ class AuthRepositoryImpl extends AuthRepository {
     if (response.statusCode == 200) {
       return DataSuccess<RegisterVerifyModel>(
           RegisterVerifyModel.fromJson(response.data));
+    } else {
+      return DataFailed(response.statusMessage.toString());
+    }
+  }
+
+  @override
+  Future<DataState<SendLoginOtpModel>> sendLoginOtp(
+      String params) async {
+    var response =
+        await ApiAccess.makeHttpRequest("auth/send-login-otp/", data: {
+      "phone_number": params,
+    });
+    if (response.statusCode == 200) {
+      return DataSuccess<SendLoginOtpModel>(
+          SendLoginOtpModel.fromJson(response.data));
     } else {
       return DataFailed(response.statusMessage.toString());
     }

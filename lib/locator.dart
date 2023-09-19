@@ -12,6 +12,7 @@ import 'package:easy_lamp/domain/usecases/refresh_token_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_verify_usecase.dart';
 import 'package:easy_lamp/domain/usecases/reset_password_usecase.dart';
+import 'package:easy_lamp/domain/usecases/send_login_otp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/send_phone_number_usecase.dart';
 import 'package:easy_lamp/domain/usecases/write_localstorage_usecase.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
@@ -59,9 +60,12 @@ setupAuth() async {
       .registerSingleton<ResetPasswordUseCase>(ResetPasswordUseCase(locator()));
   locator.registerSingleton<RegisterVerifyUseCase>(
       RegisterVerifyUseCase(locator()));
+  locator
+      .registerSingleton<SendLoginOtpUseCase>(SendLoginOtpUseCase(locator()));
 
   //bloc
   locator.registerSingleton<AuthBloc>(AuthBloc(
+    locator(),
     locator(),
     locator(),
     locator(),

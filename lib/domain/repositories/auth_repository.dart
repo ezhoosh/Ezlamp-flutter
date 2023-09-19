@@ -5,6 +5,7 @@ import 'package:easy_lamp/core/params/login_params.dart';
 import 'package:easy_lamp/data/model/login_model.dart';
 import 'package:easy_lamp/data/model/register_verify_model.dart';
 import 'package:easy_lamp/data/model/reset_password_model.dart';
+import 'package:easy_lamp/data/model/send_login_otp.dart';
 import 'package:easy_lamp/data/model/send_number_model.dart';
 
 abstract class AuthRepository {
@@ -18,4 +19,5 @@ abstract class AuthRepository {
   Future<DataState<ResetPasswordModel>> resetPassword(LoginParams params);
   Future<DataState<RegisterVerifyModel>> registerVerify(
       RegisterVerifyParams params);
+  Future<DataState<SendLoginOtpModel>> sendLoginOtp(String params);
 }

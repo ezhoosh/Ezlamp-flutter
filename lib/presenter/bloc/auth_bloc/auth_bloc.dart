@@ -11,6 +11,7 @@ import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_verify_usecase.dart';
 import 'package:easy_lamp/domain/usecases/reset_password_usecase.dart';
+import 'package:easy_lamp/domain/usecases/send_login_otp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/send_phone_number_usecase.dart';
 import 'package:easy_lamp/domain/usecases/write_localstorage_usecase.dart';
 import 'package:meta/meta.dart';
@@ -28,21 +29,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   WriteLocalStorageUseCase writeLocalStorageUseCase;
   ReadLocalStorageUseCase readLocalStorageUseCase;
   RegisterVerifyUseCase registerVerifyUseCase;
+  SendLoginOtpUseCase sendLoginOtpUseCase;
 
   AuthBloc(
-      this.loginUseCase,
-      this.registerUseCase,
-      this.resetPasswordUseCase,
-      this.sendPhoneNumberUseCase,
-      this.writeLocalStorageUseCase,
-      this.readLocalStorageUseCase,
-      this.registerVerifyUseCase)
-      : super(AuthState(
+    this.loginUseCase,
+    this.registerUseCase,
+    this.resetPasswordUseCase,
+    this.sendPhoneNumberUseCase,
+    this.writeLocalStorageUseCase,
+    this.readLocalStorageUseCase,
+    this.registerVerifyUseCase,
+    this.sendLoginOtpUseCase,
+  ) : super(AuthState(
           loginStatus: BaseNoAction(),
           registerStatus: BaseNoAction(),
           resetPasswordStatus: BaseNoAction(),
           sendPhoneStatus: BaseNoAction(),
           registerVerifyStatus: BaseNoAction(),
+          sendLoginOtpStatus: BaseNoAction(),
         )) {
     on<SendPhoneNumberEvent>((event, emit) async {
       emit(state.copyWith(newSendPhoneStatus: BaseLoading()));
@@ -130,6 +134,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(newRegisterVerifyStatus: BaseError(e.toString())));
       }
       emit(state.copyWith(newRegisterVerifyStatus: BaseNoAction()));
+    });
+
+    on<SendLoginOtpEvent>((event, emit) async {
+      emit(state.copyWith(newSendLoginOtpStatus: BaseLoading()));
+      try {
+        DataState dataState = await sendLoginOtpUseCase(event.number);
+        if (dataState is DataSuccess) {
+          emit(state.copyWith(
+              newSendLoginOtpStatus: BaseSuccess(dataState.data)));
+        } else {
+          emit(state.copyWith(
+              newSendLoginOtpStatus: BaseError(dataState.error)));
+        }
+      } catch (e) {
+        emit(state.copyWith(newSendLoginOtpStatus: BaseError(e.toString())));
+      }
+      emit(state.copyWith(newSendLoginOtpStatus: BaseNoAction()));
     });
   }
 }

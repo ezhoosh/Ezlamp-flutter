@@ -34,7 +34,7 @@ class BorderTextField extends StatelessWidget {
               borderSide: const BorderSide(width: 0.0),
               borderRadius: MyRadius.sm),
           errorBorder: OutlineInputBorder(
-            borderSide: BorderSide(
+            borderSide: const BorderSide(
               width: 1,
             ),
             borderRadius: MyRadius.sm,
