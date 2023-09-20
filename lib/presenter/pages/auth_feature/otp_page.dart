@@ -94,7 +94,7 @@ class _OtpPageState extends State<OtpPage> {
                   focusedBorderColor: MyColors.primary,
                   showFieldAsBox: true,
                   borderRadius: MyRadius.sm,
-                  onCodeChanged: (String code) => this.code = code,
+                  onCodeChanged: (String code) => this.code += code,
                   onSubmit: (String code) {
                     // showDialog(
                     //     context: context,

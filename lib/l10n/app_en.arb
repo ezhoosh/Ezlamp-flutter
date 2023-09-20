@@ -15,6 +15,7 @@
     "forgetPassword":"فراموشی رمز عبور",
     "otpCode":"کد تایید ",
     "sendOtpToNumber":"کد تایید برای شماره *number* پیامک شد",
-    "timerAgo":"مانده تا دریافت مجدد کد"
+    "timerAgo":"مانده تا دریافت مجدد کد",
+    "groupsList":"لیست گروه‌ها"
 
 }
