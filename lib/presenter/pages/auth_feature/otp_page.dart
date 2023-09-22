@@ -3,6 +3,7 @@ import 'package:easy_lamp/data/model/auth_status.dart';
 import 'package:easy_lamp/data/model/register_verify_model.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/password_page.dart';
+import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
@@ -51,6 +52,18 @@ class _OtpPageState extends State<OtpPage> {
             }
             EasyLoading.showSuccess("success");
           } else if (state.registerVerifyStatus is BaseError) {
+            EasyLoading.showError("error");
+          }
+          if (state.loginStatus is BaseLoading ||
+              state.registerStatus is BaseLoading) {
+            EasyLoading.show();
+          } else if (state.loginStatus is BaseSuccess ||
+              state.registerStatus is BaseSuccess) {
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const HomePage()));
+            EasyLoading.showSuccess("success");
+          } else if (state.loginStatus is BaseError ||
+              state.registerStatus is BaseError) {
             EasyLoading.showError("error");
           }
         },
@@ -131,7 +144,12 @@ class _OtpPageState extends State<OtpPage> {
   }
 
   submitRegister(String code) {
-    BlocProvider.of<AuthBloc>(context)
-        .add(RegisterVerifyEvent(widget.phoneNumber, code));
+    if (widget.status == AuthStatus.LOGIN) {
+      BlocProvider.of<AuthBloc>(context)
+          .add(LoginEvent(widget.phoneNumber, code, ''));
+    } else {
+      BlocProvider.of<AuthBloc>(context)
+          .add(RegisterVerifyEvent(widget.phoneNumber, code));
+    }
   }
 }
