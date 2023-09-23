@@ -1,5 +1,6 @@
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/presenter/pages/group_feature/edit_group_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
@@ -61,7 +62,19 @@ class _GroupPageState extends State<GroupPage> {
                       children: [
                         Row(
                           children: [
-                            SvgPicture.asset("assets/icons/edit.svg",width: 20,height: 20,),
+                            IconButton(
+                                onPressed: () {
+                                  showBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return  EditGroupBottomSheet();
+                                      });
+                                },
+                                icon: SvgPicture.asset(
+                                  "assets/icons/edit.svg",
+                                  width: 20,
+                                  height: 20,
+                                )),
                             const SizedBox(
                               width: MySpaces.s6,
                             ),

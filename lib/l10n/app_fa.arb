@@ -16,6 +16,12 @@
     "otpCode":"کد تایید ",
     "sendOtpToNumber":"کد تایید برای شماره *number* پیامک شد",
     "timerAgo":"مانده تا دریافت مجدد کد",
-    "groupsList":"لیست گروه‌ها"
-
+    "groupsList":"لیست گروه‌ها",
+    "settings":"تنظیمات",
+    "contrast":"کنتراست",
+    "coloring":"رنگبندی",
+    "yellowAndWhite":"زرد و سفید",
+    "lampList":"لیست لامپ",
+    "informationData":"اطلاعات آماری",
+    "addMember":"افزودن اعضا"
 }
