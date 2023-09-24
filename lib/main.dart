@@ -11,6 +11,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
+import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
               Locale('fa', ''),
             ],
             locale: const Locale('fa', ''),
-            home: const GroupPage(),
+            home: const HomePage(),
           );
         },
         maximumSize: const Size(450.0, 812),

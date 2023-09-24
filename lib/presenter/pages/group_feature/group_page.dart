@@ -1,5 +1,6 @@
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/presenter/pages/group_feature/add_group_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class GroupPage extends StatefulWidget {
 
 class _GroupPageState extends State<GroupPage> {
   late AppLocalizations al;
+
   @override
   Widget build(BuildContext context) {
     // double w = MediaQuery.of(context).size.width;
@@ -41,7 +43,21 @@ class _GroupPageState extends State<GroupPage> {
                       ),
                     ),
                   ),
-                  SvgPicture.asset("assets/icons/add_circle.svg"),
+                  InkWell(
+                      borderRadius: MyRadius.sm,
+                      onTap: () {
+                        showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(24),
+                              topRight: Radius.circular(24),
+                            )),
+                            context: context,
+                            builder: (context) {
+                              return AddGroupBottomSheet();
+                            });
+                      },
+                      child: SvgPicture.asset("assets/icons/add_circle.svg")),
                 ],
               ),
             ),
@@ -64,11 +80,19 @@ class _GroupPageState extends State<GroupPage> {
                           children: [
                             IconButton(
                                 onPressed: () {
-                                  showBottomSheet(
-                                      context: context,
-                                      builder: (context) {
-                                        return  EditGroupBottomSheet();
-                                      });
+                                  showModalBottomSheet(
+                                    isScrollControlled: true,
+                                    context: context,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(24),
+                                        topRight: Radius.circular(24),
+                                      ),
+                                    ),
+                                    builder: (context) {
+                                      return EditGroupBottomSheet();
+                                    },
+                                  );
                                 },
                                 icon: SvgPicture.asset(
                                   "assets/icons/edit.svg",

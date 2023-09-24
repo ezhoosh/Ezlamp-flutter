@@ -23,5 +23,9 @@
     "yellowAndWhite":"زرد و سفید",
     "lampList":"لیست لامپ",
     "informationData":"اطلاعات آماری",
-    "addMember":"افزودن اعضا"
+    "addMember":"افزودن اعضا",
+    "editGroupName":"ویرایش نام گروه",
+    "title":"عنوان",
+    "save":"ذخیره"
+
 }
