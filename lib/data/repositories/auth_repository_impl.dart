@@ -77,7 +77,7 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<DataState<RegisterVerifyModel>> registerVerify(
       RegisterVerifyParams params) async {
     var response =
-        await ApiAccess.makeHttpRequest("auth/reset-password/", data: {
+        await ApiAccess.makeHttpRequest("auth/verify-register-otp/", data: {
       "phone_number": params.phone,
       "token": params.otp,
     });

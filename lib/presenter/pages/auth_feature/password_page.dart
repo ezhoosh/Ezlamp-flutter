@@ -27,6 +27,7 @@ class PasswordPage extends StatefulWidget {
 class _PasswordPageState extends State<PasswordPage> {
   late AppLocalizations al;
   late TextEditingController _controller;
+  bool v1 = false, v2 = false, v3 = false, v4 = false;
   @override
   void initState() {
     super.initState();
@@ -47,8 +48,9 @@ class _PasswordPageState extends State<PasswordPage> {
             EasyLoading.show();
           } else if (state.loginStatus is BaseSuccess ||
               state.registerStatus is BaseSuccess) {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const HomePage()));
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const HomePage()),
+                ModalRoute.withName("/"));
             EasyLoading.showSuccess("success");
           } else if (state.loginStatus is BaseError ||
               state.registerStatus is BaseError) {
@@ -63,6 +65,16 @@ class _PasswordPageState extends State<PasswordPage> {
                     OtpPage(widget.phoneNumber, widget.status)));
             EasyLoading.showSuccess("success");
           } else if (state.sendLoginOtpStatus is BaseError) {
+            EasyLoading.showError("error");
+          }
+          if (state.sendResetOtpStatus is BaseLoading) {
+            EasyLoading.show();
+          } else if (state.sendResetOtpStatus is BaseSuccess) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    OtpPage(widget.phoneNumber, AuthStatus.RESET)));
+            EasyLoading.showSuccess("success");
+          } else if (state.sendResetOtpStatus is BaseError) {
             EasyLoading.showError("error");
           }
         },
@@ -85,10 +97,19 @@ class _PasswordPageState extends State<PasswordPage> {
               ),
               const SizedBox(height: MySpaces.s40),
               BorderTextField(
+                onChange: (t) {
+                  v1 = RegExp(r'\b\w{8,}\b').hasMatch(t);
+                  v2 = RegExp(r'[A-Z]+').hasMatch(t);
+                  v3 = RegExp(r'[a-z]+').hasMatch(t);
+                  v4 = RegExp(r'[0-9]+').hasMatch(t);
+                  setState(() {});
+                },
                 hintText: al.password,
                 controller: _controller,
               ),
-              const SizedBox(height: MySpaces.s12),
+              const SizedBox(
+                height: MySpaces.s16,
+              ),
               if (widget.status == AuthStatus.LOGIN)
                 InkWell(
                   onTap: () {
@@ -114,32 +135,60 @@ class _PasswordPageState extends State<PasswordPage> {
                 ),
               const SizedBox(height: MySpaces.s12),
               if (widget.status == AuthStatus.LOGIN)
-                Row(
+                InkWell(
+                  onTap: () {
+                    BlocProvider.of<AuthBloc>(context)
+                        .add(SendResetOtpEvent(widget.phoneNumber));
+                  },
+                  child: Row(
+                    children: [
+                      Text(
+                        al.forgetPassword,
+                        style:
+                            Light400Style.sm.copyWith(color: MyColors.primary),
+                      ),
+                      const SizedBox(
+                        width: MySpaces.s2,
+                      ),
+                      const Icon(
+                        Icons.keyboard_arrow_left_rounded,
+                        color: MyColors.primary,
+                      )
+                    ],
+                  ),
+                ),
+              if (widget.status == AuthStatus.REGISTER)
+                Column(
                   children: [
-                    Text(
-                      al.forgetPassword,
-                      style: Light400Style.sm.copyWith(color: MyColors.primary),
-                    ),
-                    const SizedBox(
-                      width: MySpaces.s2,
-                    ),
-                    const Icon(
-                      Icons.keyboard_arrow_left_rounded,
-                      color: MyColors.primary,
-                    )
+                    getValidate("حداقل ۸ حرف", v1),
+                    getValidate("حداقل ۱ حرف بزرگ (A-Z)", v2),
+                    getValidate("حداقل ۱ حرف کوچک (a-z)", v3),
+                    getValidate("حداقل ۱ عدد (۰-۹)", v4),
                   ],
                 ),
               const SizedBox(height: MySpaces.s24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    BlocProvider.of<AuthBloc>(context).add(
-                        LoginEvent(widget.phoneNumber, '', _controller.text));
-                  },
-                  child: Text(
-                    al.login,
-                    style: DemiBoldStyle.normal.copyWith(color: MyColors.white),
+              Opacity(
+                opacity: widget.status == AuthStatus.REGISTER &&
+                        (!v1 || !v2 || !v3 || !v4)
+                    ? 0.3
+                    : 1,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (widget.status == AuthStatus.LOGIN) {
+                        BlocProvider.of<AuthBloc>(context).add(LoginEvent(
+                            widget.phoneNumber, '', _controller.text));
+                      } else {
+                        BlocProvider.of<AuthBloc>(context).add(RegisterEvent(
+                            widget.phoneNumber, widget.otp, _controller.text));
+                      }
+                    },
+                    child: Text(
+                      al.login,
+                      style:
+                          DemiBoldStyle.normal.copyWith(color: MyColors.white),
+                    ),
                   ),
                 ),
               ),
@@ -148,6 +197,26 @@ class _PasswordPageState extends State<PasswordPage> {
             ]),
           ),
         ),
+      ),
+    );
+  }
+
+  getValidate(String s, bool b) {
+    return Container(
+      margin: const EdgeInsets.only(top: MySpaces.s4),
+      child: Row(
+        children: [
+          Icon(
+            b ? Icons.check : Icons.close,
+            color: b ? MyColors.success : MyColors.error,
+          ),
+          Text(
+            s,
+            style: Light300Style.xs.copyWith(
+              color: MyColors.secondary.shade200,
+            ),
+          ),
+        ],
       ),
     );
   }

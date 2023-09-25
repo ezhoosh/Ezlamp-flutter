@@ -39,9 +39,12 @@ class CustomBottomSheet extends StatelessWidget {
                 children: [
                   Align(
                     alignment: Alignment.topLeft,
-                    child: Icon(
-                      Icons.close,
-                      color: MyColors.secondary.shade800,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.close,
+                        color: MyColors.secondary.shade800,
+                      ),
+                      onPressed: () => Navigator.pop(context),
                     ),
                   ),
                   Center(
@@ -57,7 +60,6 @@ class CustomBottomSheet extends StatelessWidget {
                 height: MySpaces.s40,
               ),
               if (child != null) child!
-
             ]),
           ],
         ),

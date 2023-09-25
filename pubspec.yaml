@@ -94,6 +94,7 @@ dependencies:
   fl_chart: ^0.63.0
   switcher: ^1.0.0
   flutter_otp_text_field: ^1.1.1
+  simple_barcode_scanner: ^0.0.8
 
 dev_dependencies:
   flutter_test:

@@ -1,1 +1,1 @@
-enum AuthStatus { REGISTER, LOGIN, VERIFY }
+enum AuthStatus { REGISTER, LOGIN, VERIFY,RESET }

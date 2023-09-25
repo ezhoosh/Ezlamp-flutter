@@ -51,7 +51,7 @@ class MyColors {
     700: Color(0xff1573FF),
     800: Color(0xff045CDF),
   });
-  static const MaterialColor success = MaterialColor(0xffED763A, {
+  static const MaterialColor success = MaterialColor(0xff309E5E, {
     100: Color(0xffF0FAF4),
     200: Color(0xffE1F6EA),
     300: Color(0xffBDEBD0),

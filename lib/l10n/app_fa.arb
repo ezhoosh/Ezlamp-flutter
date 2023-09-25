@@ -26,6 +26,12 @@
     "addMember":"افزودن اعضا",
     "editGroupName":"ویرایش نام گروه",
     "title":"عنوان",
-            "save":"ذخیره"
+            "save":"ذخیره",
+    "addLamps":"افزودن لامپ",
+    "scan":"اسکن",
+    "cancel":"انصراف",
+    "beDelete":"حذف کردن",
+    "renameGroup":"ویرایش نام گروه"
+
 
 }

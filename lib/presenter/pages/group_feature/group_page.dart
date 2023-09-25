@@ -2,6 +2,8 @@ import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/add_group_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/group_feature/more_group_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
@@ -47,7 +49,7 @@ class _GroupPageState extends State<GroupPage> {
                       borderRadius: MyRadius.sm,
                       onTap: () {
                         showModalBottomSheet(
-                            shape: RoundedRectangleBorder(
+                            shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(24),
                               topRight: Radius.circular(24),
@@ -65,86 +67,111 @@ class _GroupPageState extends State<GroupPage> {
               child: ListView.builder(
                 padding: const EdgeInsets.only(top: MySpaces.s32),
                 itemBuilder: (context, index) {
-                  return Container(
-                    margin: const EdgeInsets.only(
+                  return Padding(
+                    padding: const EdgeInsets.only(
                         left: MySpaces.s24,
                         right: MySpaces.s24,
                         bottom: MySpaces.s12),
-                    decoration: BoxDecoration(
-                        borderRadius: MyRadius.base,
-                        color: MyColors.black.shade600),
-                    padding: const EdgeInsets.all(15),
-                    child: Column(
-                      children: [
-                        Row(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const LampPage()));
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: MyRadius.base,
+                            color: MyColors.black.shade600),
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
                           children: [
-                            IconButton(
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    context: context,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(24),
-                                        topRight: Radius.circular(24),
-                                      ),
-                                    ),
-                                    builder: (context) {
-                                      return EditGroupBottomSheet();
+                            Row(
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                        isScrollControlled: true,
+                                        context: context,
+                                        shape: const RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(24),
+                                            topRight: Radius.circular(24),
+                                          ),
+                                        ),
+                                        builder: (context) {
+                                          return MoreGroupBottomSheet();
+                                        },
+                                      );
                                     },
-                                  );
-                                },
-                                icon: SvgPicture.asset(
-                                  "assets/icons/edit.svg",
-                                  width: 20,
-                                  height: 20,
-                                )),
-                            const SizedBox(
-                              width: MySpaces.s6,
+                                    icon: SvgPicture.asset(
+                                      "assets/icons/edit.svg",
+                                      width: 20,
+                                      height: 20,
+                                    )),
+                                const SizedBox(
+                                  width: MySpaces.s6,
+                                ),
+                                Text(
+                                  "lamp A",
+                                  style: DemiBoldStyle.lg
+                                      .copyWith(color: MyColors.white),
+                                ),
+                                const Spacer(),
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.settings,
+                                    color: MyColors.secondary.shade200,
+                                    size: 30,
+                                  ),
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(24),
+                                          topRight: Radius.circular(24),
+                                        )),
+                                        context: context,
+                                        builder: (context) {
+                                          return EditGroupBottomSheet();
+                                        });
+                                  },
+                                )
+                              ],
                             ),
-                            Text(
-                              "lamp A",
-                              style: DemiBoldStyle.lg
-                                  .copyWith(color: MyColors.white),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 26),
+                                child: Text(
+                                  "۴ لامپ",
+                                  style: DemiBoldStyle.sm
+                                      .copyWith(color: MyColors.black.shade100),
+                                ),
+                              ),
                             ),
-                            const Spacer(),
-                            Icon(Icons.settings,
-                                color: MyColors.secondary.shade200)
+                            const Divider(
+                              height: MySpaces.s24,
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    "روشن",
+                                    style: DemiBoldStyle.sm.copyWith(
+                                        color: MyColors.black.shade100),
+                                  ),
+                                  CupertinoSwitch(
+                                    onChanged: (bool value) {},
+                                    value: true,
+                                    activeColor: MyColors.primary,
+                                  ),
+                                ],
+                              ),
+                            )
                           ],
                         ),
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 26),
-                            child: Text(
-                              "۴ لامپ",
-                              style: DemiBoldStyle.sm
-                                  .copyWith(color: MyColors.black.shade100),
-                            ),
-                          ),
-                        ),
-                        const Divider(
-                          height: MySpaces.s24,
-                        ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                "روشن",
-                                style: DemiBoldStyle.sm
-                                    .copyWith(color: MyColors.black.shade100),
-                              ),
-                              CupertinoSwitch(
-                                onChanged: (bool value) {},
-                                value: true,
-                                activeColor: MyColors.primary,
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
+                      ),
                     ),
                   );
                 },

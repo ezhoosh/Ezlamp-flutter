@@ -6,7 +6,8 @@ class AuthState {
       registerStatus,
       resetPasswordStatus,
       registerVerifyStatus,
-      sendLoginOtpStatus;
+      sendLoginOtpStatus,
+      sendResetOtpStatus;
   AuthState({
     required this.loginStatus,
     required this.registerStatus,
@@ -14,6 +15,7 @@ class AuthState {
     required this.sendPhoneStatus,
     required this.registerVerifyStatus,
     required this.sendLoginOtpStatus,
+    required this.sendResetOtpStatus,
   });
 
   AuthState copyWith({
@@ -23,14 +25,16 @@ class AuthState {
     newResetPasswordStatus,
     newRegisterVerifyStatus,
     newSendLoginOtpStatus,
+    newSendResetOtpStatus,
   }) {
     return AuthState(
       loginStatus: newLoginStatus ?? loginStatus,
       registerStatus: newRegisterStatus ?? registerStatus,
       sendPhoneStatus: newSendPhoneStatus ?? sendPhoneStatus,
       resetPasswordStatus: newResetPasswordStatus ?? registerStatus,
-      registerVerifyStatus: newRegisterStatus ?? registerStatus,
+      registerVerifyStatus: newRegisterVerifyStatus ?? registerStatus,
       sendLoginOtpStatus: newSendLoginOtpStatus ?? sendLoginOtpStatus,
+      sendResetOtpStatus: newSendResetOtpStatus ?? sendResetOtpStatus,
     );
   }
 }

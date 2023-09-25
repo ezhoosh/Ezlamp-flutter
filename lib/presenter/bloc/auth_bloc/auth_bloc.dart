@@ -47,6 +47,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           sendPhoneStatus: BaseNoAction(),
           registerVerifyStatus: BaseNoAction(),
           sendLoginOtpStatus: BaseNoAction(),
+          sendResetOtpStatus: BaseNoAction(),
         )) {
     on<SendPhoneNumberEvent>((event, emit) async {
       emit(state.copyWith(newSendPhoneStatus: BaseLoading()));
@@ -92,6 +93,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         DataState dataState = await registerUseCase(
             LoginParams(event.number, event.password, event.otp));
         if (dataState is DataSuccess) {
+          LoginModel model = dataState.data;
+          await writeLocalStorageUseCase(
+              WriteLocalStorageParam(Constants.accessKey, model.access));
+          await writeLocalStorageUseCase(
+              WriteLocalStorageParam(Constants.refreshKey, model.refresh));
+          await writeLocalStorageUseCase(
+              WriteLocalStorageParam(Constants.phoneKey, model.phoneNumber));
           emit(state.copyWith(newRegisterStatus: BaseSuccess(dataState.data)));
         } else {
           emit(state.copyWith(newRegisterStatus: BaseError(dataState.error)));
@@ -151,6 +159,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(newSendLoginOtpStatus: BaseError(e.toString())));
       }
       emit(state.copyWith(newSendLoginOtpStatus: BaseNoAction()));
+    });
+
+    on<SendResetOtpEvent>((event, emit) async {
+      emit(state.copyWith(newSendResetOtpStatus: BaseLoading()));
+      try {
+        DataState dataState = await sendLoginOtpUseCase(event.number);
+        if (dataState is DataSuccess) {
+          emit(state.copyWith(
+              newSendResetOtpStatus: BaseSuccess(dataState.data)));
+        } else {
+          emit(state.copyWith(
+              newSendResetOtpStatus: BaseError(dataState.error)));
+        }
+      } catch (e) {
+        emit(state.copyWith(newSendResetOtpStatus: BaseError(e.toString())));
+      }
+      emit(state.copyWith(newSendResetOtpStatus: BaseNoAction()));
     });
   }
 }

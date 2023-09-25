@@ -1,7 +1,8 @@
 import 'package:easy_lamp/locator.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
-import 'package:easy_lamp/presenter/pages/group_feature/group_page.dart';
+import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_page.dart';
+import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:easy_lamp/presenter/pages/splash_feature/splash_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
-import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
               Locale('fa', ''),
             ],
             locale: const Locale('fa', ''),
-            home: const HomePage(),
+            home: const SplashPage(),
           );
         },
         maximumSize: const Size(450.0, 812),

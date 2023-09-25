@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
         controller: controller,
         children: [
           Container(),
-          GroupPage(),
+          const GroupPage(),
           Container(),
           Container(),
         ],
@@ -36,14 +36,14 @@ class _HomePageState extends State<HomePage> {
         currentIndex: currentPage,
         backgroundColor: MyColors.black,
         marginR: EdgeInsets.zero,
-        itemPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        itemPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         onTap: (i) {
           setState(() {
             currentPage = i;
           });
           controller.animateToPage(
             i,
-            duration: Duration(microseconds: 500),
+            duration: const Duration(microseconds: 500),
             curve: Curves.easeIn,
           );
         },
@@ -62,6 +62,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   getItemBottomNavigation(String aa) {
-    return DotNavigationBarItem(path: "assets/icons/${aa}");
+    return DotNavigationBarItem(path: "assets/icons/$aa");
   }
 }

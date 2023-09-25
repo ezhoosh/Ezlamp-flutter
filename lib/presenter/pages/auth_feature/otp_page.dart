@@ -46,7 +46,7 @@ class _OtpPageState extends State<OtpPage> {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => PasswordPage(
                         widget.phoneNumber,
-                        widget.status,
+                        AuthStatus.REGISTER,
                         otp: model.token.toString(),
                       )));
             }
@@ -59,8 +59,9 @@ class _OtpPageState extends State<OtpPage> {
             EasyLoading.show();
           } else if (state.loginStatus is BaseSuccess ||
               state.registerStatus is BaseSuccess) {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const HomePage()));
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const HomePage()),
+                ModalRoute.withName("/"));
             EasyLoading.showSuccess("success");
           } else if (state.loginStatus is BaseError ||
               state.registerStatus is BaseError) {
@@ -147,6 +148,9 @@ class _OtpPageState extends State<OtpPage> {
     if (widget.status == AuthStatus.LOGIN) {
       BlocProvider.of<AuthBloc>(context)
           .add(LoginEvent(widget.phoneNumber, code, ''));
+    } else if (widget.status == AuthStatus.RESET) {
+      // BlocProvider.of<AuthBloc>(context)
+      //     .add(ResetPasswordEvent(widget.phoneNumber, code));
     } else {
       BlocProvider.of<AuthBloc>(context)
           .add(RegisterVerifyEvent(widget.phoneNumber, code));

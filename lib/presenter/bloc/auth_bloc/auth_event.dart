@@ -45,3 +45,9 @@ class SendLoginOtpEvent extends AuthEvent {
 
   SendLoginOtpEvent(this.number);
 }
+
+class SendResetOtpEvent extends AuthEvent {
+  String number;
+
+  SendResetOtpEvent(this.number);
+}
