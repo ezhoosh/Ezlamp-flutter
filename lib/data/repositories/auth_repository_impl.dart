@@ -11,8 +11,6 @@ import 'package:easy_lamp/data/model/send_number_model.dart';
 import 'package:easy_lamp/domain/repositories/auth_repository.dart';
 
 class AuthRepositoryImpl extends AuthRepository {
-  AuthRepositoryImpl();
-
   @override
   Future<DataState<SendNumberModel>> sendPhoneNumber(
       SendPhoneNumberParams params) async {
@@ -90,8 +88,7 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
-  Future<DataState<SendLoginOtpModel>> sendLoginOtp(
-      String params) async {
+  Future<DataState<SendLoginOtpModel>> sendLoginOtp(String params) async {
     var response =
         await ApiAccess.makeHttpRequest("auth/send-login-otp/", data: {
       "phone_number": params,

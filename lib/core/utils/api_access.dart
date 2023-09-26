@@ -4,7 +4,7 @@ import 'package:easy_lamp/locator.dart';
 
 class ApiAccess {
   static Future<Response> makeHttpRequest(String url,
-      {Map<String, String>? data, String method='POST',}) async {
+      {Map<String, dynamic>? data, String method='POST',}) async {
     Dio dio = locator();
     return await dio.request("${Constants.baseUrl}$url",
         data: data,

@@ -8,8 +8,8 @@ class BorderTextField extends StatelessWidget {
   ValueChanged<String>? onChange;
   TextEditingController? controller;
 
-
-  BorderTextField({Key? key, this.hintText, this.onChange,this.controller}) : super(key: key);
+  BorderTextField({Key? key, this.hintText, this.onChange, this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +20,9 @@ class BorderTextField extends StatelessWidget {
         onChanged: onChange,
         style: Light400Style.normal.copyWith(color: MyColors.white),
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(horizontal: 10),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 10),
           hintStyle: Light400Style.normal.copyWith(color: MyColors.white),
-          hintText: this.hintText,
+          hintText: hintText,
           fillColor: MyColors.black.shade500,
           disabledBorder: OutlineInputBorder(
               borderSide: const BorderSide(width: 0.0),
