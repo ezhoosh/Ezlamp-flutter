@@ -1,6 +1,9 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_lamp/core/params/create_group_params.dart';
+import 'package:easy_lamp/core/params/edit_group_name_params.dart';
 import 'package:easy_lamp/core/params/update_group_owner_params.dart';
 import 'package:easy_lamp/core/params/update_group_params.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
@@ -12,94 +15,137 @@ class GroupRepositoryImpl extends GroupRepository {
   @override
   Future<DataState<GroupLampModel>> createGroup(
       CreateGroupParams params) async {
-    var response = await ApiAccess.makeHttpRequest(
-      "group-lamp/",
-      data: {
-        "name": params.name,
-        "description": params.description,
-      },
-    );
-    if (response.statusCode == 201) {
-      return DataSuccess<GroupLampModel>(
-          GroupLampModel.fromJson(response.data));
-    } else {
-      return DataFailed(response.statusMessage.toString());
+    try {
+      var response = await ApiAccess.makeHttpRequest(
+        "group-lamp/",
+        data: {
+          "name": params.name,
+          "description": params.description,
+        },
+      );
+      if (response.statusCode == 201) {
+        return DataSuccess<GroupLampModel>(
+            GroupLampModel.fromJson(response.data));
+      } else {
+        return DataFailed(response.statusMessage.toString());
+      }
+    } on DioError catch (e) {
+      return DataFailed(e.message.toString());
     }
   }
 
   @override
   Future<DataState<String>> deleteGroup(int params) async {
-    var response = await ApiAccess.makeHttpRequest(
-      "group-lamp/{${params.toString()}}",
-      method: "DELETE",
-    );
-    if (response.statusCode == 204) {
-      return DataSuccess<String>(response.data.toString());
-    } else {
-      return DataFailed(response.statusMessage.toString());
+    try {
+      var response = await ApiAccess.makeHttpRequest(
+        "group-lamp/{${params.toString()}}",
+        method: "DELETE",
+      );
+      if (response.statusCode == 204) {
+        return DataSuccess<String>(response.data.toString());
+      } else {
+        return DataFailed(response.statusMessage.toString());
+      }
+    } on DioError catch (e) {
+      return DataFailed(e.message.toString());
     }
   }
 
   @override
   Future<DataState<GroupLampModel>> getGroupById(int id) async {
-    var response = await ApiAccess.makeHttpRequest(
-        "group-lamp/{${id.toString()}}",
-        method: 'GET');
-    if (response.statusCode == 200) {
-      return DataSuccess<GroupLampModel>(
-          GroupLampModel.fromJson(response.data));
-    } else {
-      return DataFailed(response.statusMessage.toString());
+    try {
+      var response = await ApiAccess.makeHttpRequest(
+          "group-lamp/{${id.toString()}}",
+          method: 'GET');
+      if (response.statusCode == 200) {
+        return DataSuccess<GroupLampModel>(
+            GroupLampModel.fromJson(response.data));
+      } else {
+        return DataFailed(response.statusMessage.toString());
+      }
+    } on DioError catch (e) {
+      return DataFailed(e.message.toString());
     }
   }
 
   @override
   Future<DataState<List<GroupLampModel>>> getGroupList() async {
-    var response =
-        await ApiAccess.makeHttpRequest("group-lamp/", method: 'GET');
-    if (response.statusCode == 200) {
-      return DataSuccess<List<GroupLampModel>>(json
-          .decode(response.data)
-          .map((data) => GroupLampModel.fromJson(data))
-          .toList());
-    } else {
-      return DataFailed(response.statusMessage.toString());
+    try {
+      var response =
+          await ApiAccess.makeHttpRequest("group-lamp/", method: 'GET');
+      if (response.statusCode == 200) {
+        return DataSuccess(List<GroupLampModel>.from(
+            response.data.map((model) => GroupLampModel.fromJson(model))));
+      } else {
+        return DataFailed(response.statusMessage.toString());
+      }
+    } on DioError catch (e) {
+      return DataFailed(e.message.toString());
     }
   }
 
   @override
   Future<DataState<GroupLampModel>> updateGroup(
       UpdateGroupParams params) async {
-    var response =
-        await ApiAccess.makeHttpRequest("group-lamp/${params.id.toString()}",
-            data: {
-              "name": params.name,
-              "description": params.description,
-            },
-            method: 'PUT');
-    if (response.statusCode == 200) {
-      return DataSuccess<GroupLampModel>(
-          GroupLampModel.fromJson(response.data));
-    } else {
-      return DataFailed(response.statusMessage.toString());
+    try {
+      var response =
+          await ApiAccess.makeHttpRequest("group-lamp/${params.id.toString()}",
+              data: {
+                "name": params.name,
+                "description": params.description,
+              },
+              method: 'PUT');
+      if (response.statusCode == 200) {
+        return DataSuccess<GroupLampModel>(
+            GroupLampModel.fromJson(response.data));
+      } else {
+        return DataFailed(response.statusMessage.toString());
+      }
+    } on DioError catch (e) {
+      return DataFailed(e.message.toString());
     }
   }
 
   @override
   Future<DataState<GroupLampModel>> updateGroupOwner(
       UpdateGroupOwnerParams params) async {
-    var response = await ApiAccess.makeHttpRequest(
-        "group-lamp/update-group-owner/${params.uuid.toString()}",
-        data: {
-          "name": params.name,
-          "description": params.description,
-        },
-        method: 'PUT');
-    if (response.statusCode == 200) {
-      return DataSuccess<GroupLampModel>(
-          GroupLampModel.fromJson(response.data));
-    } else {
-      return DataFailed(response.statusMessage.toString());
+    try {
+      var response = await ApiAccess.makeHttpRequest(
+          "group-lamp/update-group-owner/${params.uuid.toString()}",
+          data: {
+            "name": params.name,
+            "description": params.description,
+          },
+          method: 'PUT');
+      if (response.statusCode == 200) {
+        return DataSuccess<GroupLampModel>(
+            GroupLampModel.fromJson(response.data));
+      } else {
+        return DataFailed(response.statusMessage.toString());
+      }
+    } on DioError catch (e) {
+      return DataFailed(e.message.toString());
+    }
+  }
+
+  @override
+  Future<DataState<GroupLampModel>> editGroupName(
+      EditGroupNameParams params) async {
+    try {
+      var response =
+          await ApiAccess.makeHttpRequest("group-lamp/${params.id.toString()}/",
+              data: {
+                "name": params.name,
+              },
+              method: 'PATCH');
+      if (response.statusCode == 200) {
+        return DataSuccess<GroupLampModel>(
+            GroupLampModel.fromJson(response.data));
+      } else {
+        return DataFailed(response.statusMessage.toString());
+      }
+    } on DioError catch (e) {
+      return DataFailed(e.message.toString());
     }
   }
 }

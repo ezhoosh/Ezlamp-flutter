@@ -1,4 +1,4 @@
-class UpdateLampsParams {
+class UpdateLampListParams {
   int lampId;
   int groupLamp;
   bool isActive;
@@ -9,7 +9,7 @@ class UpdateLampsParams {
   String address;
   String mainPower;
   Map<String,String> lastCommand;
-  UpdateLampsParams(
+  UpdateLampListParams(
     this.lampId,
     this.groupLamp,
     this.isActive,

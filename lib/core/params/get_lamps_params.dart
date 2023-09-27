@@ -1,6 +1,7 @@
-class GetLampsParams {
-  int groupId;
-  bool isActive;
-  String name;
-  GetLampsParams(this.groupId, this.isActive, this.name);
+class GetLampListParams {
+  int? groupId;
+  bool? isActive;
+  String? name;
+
+  GetLampListParams(this.groupId, this.isActive, this.name);
 }

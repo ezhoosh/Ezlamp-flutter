@@ -6,24 +6,26 @@ class GroupState {
       updateGroupOwnerStatus,
       updateGroupStatus,
       deleteGroupStatus,
-      createGroupStatus;
+      updateGroupNameStatus;
+
   GroupState(
       {required this.getGroupByIdStatus,
-      required this.createGroupStatus,
+      required this.updateGroupNameStatus,
       required this.deleteGroupStatus,
       required this.getGroupListStatus,
       required this.updateGroupOwnerStatus,
       required this.updateGroupStatus});
 
   GroupState copyWith(
-      BaseStatus? newGetGroupListStatus,
+      {BaseStatus? newGetGroupListStatus,
       newGetGroupByIdStatus,
       newUpdateGroupOwnerStatus,
       newUpdateGroupStatus,
       newDeleteGroupStatus,
-      newCreateGroupStatus) {
+      newUpdateGroupNameStatus}) {
     return GroupState(
-        createGroupStatus: newCreateGroupStatus ?? createGroupStatus,
+        updateGroupNameStatus:
+            newUpdateGroupNameStatus ?? updateGroupNameStatus,
         deleteGroupStatus: newDeleteGroupStatus ?? deleteGroupStatus,
         updateGroupStatus: newUpdateGroupStatus ?? updateGroupStatus,
         getGroupByIdStatus: newGetGroupByIdStatus ?? getGroupByIdStatus,

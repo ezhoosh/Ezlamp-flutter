@@ -1,6 +1,6 @@
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
-import 'package:easy_lamp/presenter/pages/group_feature/add_group_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/group_feature/edit_group_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

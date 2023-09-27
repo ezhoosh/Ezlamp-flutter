@@ -1,5 +1,7 @@
 import 'package:easy_lamp/locator.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/pages/splash_feature/splash_page.dart';
 import 'package:flutter/foundation.dart';
@@ -16,6 +18,8 @@ void main() async {
   await setupMain();
   await setupSplash();
   await setupAuth();
+  await setupGroup();
+  await setupLamp();
   runApp(const MyApp());
 }
 
@@ -28,6 +32,8 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => locator<SplashBloc>()),
         BlocProvider(create: (_) => locator<AuthBloc>()),
+        BlocProvider(create: (_) => locator<GroupBloc>()),
+        BlocProvider(create: (_) => locator<LampBloc>()),
       ],
       child: FlutterWebFrame(
         builder: (BuildContext context) {

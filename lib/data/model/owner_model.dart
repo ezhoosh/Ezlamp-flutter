@@ -1,18 +1,18 @@
 
-class Owner {
+class OwnerModel {
     String phoneNumber;
     String firstName;
     String lastName;
     String email;
 
-    Owner({
+    OwnerModel({
         required this.phoneNumber,
         required this.firstName,
         required this.lastName,
         required this.email,
     });
 
-    factory Owner.fromJson(Map<String, dynamic> json) => Owner(
+    factory OwnerModel.fromJson(Map<String, dynamic> json) => OwnerModel(
         phoneNumber: json["phone_number"],
         firstName: json["first_name"],
         lastName: json["last_name"],

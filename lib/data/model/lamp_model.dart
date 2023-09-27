@@ -16,12 +16,12 @@ class LampModel {
   String description;
   int owner;
   bool isActive;
-  String latitude;
-  String longitude;
-  String address;
+  String? latitude;
+  String? longitude;
+  String? address;
   int groupLamp;
-  String mainPower;
-  LastCommand lastCommand;
+  String? mainPower;
+  String? lastCommand;
   String uuid;
 
   LampModel({
@@ -50,7 +50,7 @@ class LampModel {
         address: json["address"],
         groupLamp: json["group_lamp"],
         mainPower: json["main_power"],
-        lastCommand: LastCommand.fromJson(json["last_command"]),
+        lastCommand: json["last_command"],
         uuid: json["uuid"],
       );
 
@@ -65,31 +65,7 @@ class LampModel {
         "address": address,
         "group_lamp": groupLamp,
         "main_power": mainPower,
-        "last_command": lastCommand.toJson(),
+        "last_command": lastCommand,
         "uuid": uuid,
-      };
-}
-
-class LastCommand {
-  String additionalProp1;
-  String additionalProp2;
-  String additionalProp3;
-
-  LastCommand({
-    required this.additionalProp1,
-    required this.additionalProp2,
-    required this.additionalProp3,
-  });
-
-  factory LastCommand.fromJson(Map<String, dynamic> json) => LastCommand(
-        additionalProp1: json["additionalProp1"],
-        additionalProp2: json["additionalProp2"],
-        additionalProp3: json["additionalProp3"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "additionalProp1": additionalProp1,
-        "additionalProp2": additionalProp2,
-        "additionalProp3": additionalProp3,
       };
 }

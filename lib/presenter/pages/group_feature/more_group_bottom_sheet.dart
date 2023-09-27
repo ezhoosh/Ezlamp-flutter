@@ -3,7 +3,7 @@ import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
-import 'package:easy_lamp/presenter/pages/group_feature/add_group_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/group_feature/edit_group_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,9 +11,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 
 class MoreGroupBottomSheet extends StatelessWidget {
-  MoreGroupBottomSheet({super.key});
+  int groupId;
+
+  MoreGroupBottomSheet(this.groupId, {super.key});
 
   late AppLocalizations al;
+
   @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
@@ -34,17 +37,16 @@ class MoreGroupBottomSheet extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      
-                        showModalBottomSheet(
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(24),
-                              topRight: Radius.circular(24),
-                            )),
-                            context: context,
-                            builder: (context) {
-                              return AddGroupBottomSheet();
-                            });
+                      showModalBottomSheet(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(24),
+                            topRight: Radius.circular(24),
+                          )),
+                          context: context,
+                          builder: (context) {
+                            return EditGroupNameBottomSheet(groupId);
+                          });
                     },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,

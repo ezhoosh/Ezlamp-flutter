@@ -14,7 +14,7 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<DataState<SendNumberModel>> sendPhoneNumber(
       SendPhoneNumberParams params) async {
-    var response = await ApiAccess.makeHttpRequest(
+    var response = await ApiAccess.makeHttpRequestWithoutAuth(
       "auth/is-user-exists/",
       data: {"phone_number": params.number},
     );
@@ -28,7 +28,8 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<DataState<LoginModel>> login(LoginParams params) async {
-    var response = await ApiAccess.makeHttpRequest("auth/login/", data: {
+    var response =
+        await ApiAccess.makeHttpRequestWithoutAuth("auth/login/", data: {
       "phone_number": params.number,
       "password": params.password,
       "sms_token": params.smsToken,
@@ -42,7 +43,8 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<DataState<LoginModel>> register(LoginParams params) async {
-    var response = await ApiAccess.makeHttpRequest("auth/register/", data: {
+    var response =
+        await ApiAccess.makeHttpRequestWithoutAuth("auth/register/", data: {
       "phone_number": params.number,
       "password": params.password,
       "sms_token": params.smsToken,
@@ -57,12 +59,13 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<DataState<ResetPasswordModel>> resetPassword(
       LoginParams params) async {
-    var response =
-        await ApiAccess.makeHttpRequest("auth/reset-password/", data: {
-      "phone_number": params.number,
-      "password": params.password,
-      "sms_token": params.smsToken,
-    });
+    var response = await ApiAccess.makeHttpRequestWithoutAuth(
+        "auth/reset-password/",
+        data: {
+          "phone_number": params.number,
+          "password": params.password,
+          "sms_token": params.smsToken,
+        });
     if (response.statusCode == 200) {
       return DataSuccess<ResetPasswordModel>(
           ResetPasswordModel.fromJson(response.data));
@@ -74,11 +77,12 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<DataState<RegisterVerifyModel>> registerVerify(
       RegisterVerifyParams params) async {
-    var response =
-        await ApiAccess.makeHttpRequest("auth/verify-register-otp/", data: {
-      "phone_number": params.phone,
-      "token": params.otp,
-    });
+    var response = await ApiAccess.makeHttpRequestWithoutAuth(
+        "auth/verify-register-otp/",
+        data: {
+          "phone_number": params.phone,
+          "token": params.otp,
+        });
     if (response.statusCode == 200) {
       return DataSuccess<RegisterVerifyModel>(
           RegisterVerifyModel.fromJson(response.data));
@@ -89,10 +93,11 @@ class AuthRepositoryImpl extends AuthRepository {
 
   @override
   Future<DataState<SendLoginOtpModel>> sendLoginOtp(String params) async {
-    var response =
-        await ApiAccess.makeHttpRequest("auth/send-login-otp/", data: {
-      "phone_number": params,
-    });
+    var response = await ApiAccess.makeHttpRequestWithoutAuth(
+        "auth/send-login-otp/",
+        data: {
+          "phone_number": params,
+        });
     if (response.statusCode == 200) {
       return DataSuccess<SendLoginOtpModel>(
           SendLoginOtpModel.fromJson(response.data));

@@ -5,12 +5,32 @@ abstract class GroupEvent {}
 
 class GetGroupListEvent extends GroupEvent {}
 
-class GetGroupByIdEvent extends GroupEvent {}
+class GetGroupByIdEvent extends GroupEvent {
+  int id;
 
-class UpdateGroupOwnerEvent extends GroupEvent {}
+  GetGroupByIdEvent(this.id);
+}
 
-class UpdateGroupEvent extends GroupEvent {}
+class UpdateGroupOwnerEvent extends GroupEvent {
+  UpdateGroupOwnerParams params;
 
-class DeleteGroupEvent extends GroupEvent {}
+  UpdateGroupOwnerEvent(this.params);
+}
 
-class CreateGroupEvent extends GroupEvent {}
+class UpdateGroupEvent extends GroupEvent {
+  UpdateGroupParams params;
+
+  UpdateGroupEvent(this.params);
+}
+
+class DeleteGroupEvent extends GroupEvent {
+  int id;
+
+  DeleteGroupEvent(this.id);
+}
+
+class UpdateGroupNameEvent extends GroupEvent {
+  EditGroupNameParams params;
+
+  UpdateGroupNameEvent(this.params);
+}
