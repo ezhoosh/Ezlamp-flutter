@@ -1,4 +1,5 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
+import 'package:easy_lamp/core/widgets/border_text_field_password.dart';
 import 'package:easy_lamp/data/model/auth_status.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/otp_page.dart';
@@ -17,6 +18,7 @@ class PasswordPage extends StatefulWidget {
   String phoneNumber;
   String otp;
   AuthStatus status;
+
   PasswordPage(this.phoneNumber, this.status, {Key? key, this.otp = ''})
       : super(key: key);
 
@@ -28,6 +30,7 @@ class _PasswordPageState extends State<PasswordPage> {
   late AppLocalizations al;
   late TextEditingController _controller;
   bool v1 = false, v2 = false, v3 = false, v4 = false;
+
   @override
   void initState() {
     super.initState();
@@ -96,7 +99,7 @@ class _PasswordPageState extends State<PasswordPage> {
                 style: SectionStyle.s1.copyWith(color: MyColors.primary),
               ),
               const SizedBox(height: MySpaces.s40),
-              BorderTextField(
+              BorderTextFieldPassword(
                 onChange: (t) {
                   v1 = RegExp(r'\b\w{8,}\b').hasMatch(t);
                   v2 = RegExp(r'[A-Z]+').hasMatch(t);

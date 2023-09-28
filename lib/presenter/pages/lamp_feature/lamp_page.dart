@@ -64,7 +64,9 @@ class _LampPageState extends State<LampPage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (context) => const AddLampPage()),
+                              builder: (context) => AddLampPage(
+                                    groupId: widget.groupId,
+                                  )),
                         );
                       },
                       child: SvgPicture.asset("assets/icons/add_circle.svg")),

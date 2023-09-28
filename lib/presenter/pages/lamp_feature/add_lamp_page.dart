@@ -1,16 +1,20 @@
+import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_group_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
 
 class AddLampPage extends StatefulWidget {
-  const AddLampPage({Key? key}) : super(key: key);
+  int? groupId;
+
+  AddLampPage({Key? key, this.groupId}) : super(key: key);
 
   @override
   State<AddLampPage> createState() => _AddLampPageState();
@@ -104,12 +108,16 @@ class _AddLampPageState extends State<AddLampPage> {
                         ),
                       ),
                       onPressed: () async {
-                        var res = await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  const SimpleBarcodeScannerPage(),
-                            ));
+                        var options = const ScanOptions();
+                        var result =
+                            await BarcodeScanner.scan(options: options);
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AddLampGroupBottomSheet(
+                                result.rawContent.toString(),
+                              );
+                            });
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,

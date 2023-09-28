@@ -83,10 +83,10 @@ dependencies:
   rxdart: ^0.27.7
   intl: ^0.18.0
   flutter_web_frame: ^1.0.0
-    #  firebase_core: ^2.15.0
+  #  firebase_core: ^2.15.0
   #  firebase_messaging: ^14.6.5
   #  firebase_analytics: ^10.4.4
-#  webviewx: ^0.2.2
+  #  webviewx: ^0.2.2
   adtrace_sdk_flutter: ^1.3.2
   flutter_localization: ^0.1.13
   circular_chart_flutter: ^0.0.2
@@ -94,7 +94,8 @@ dependencies:
   fl_chart: ^0.63.0
   switcher: ^1.0.0
   flutter_otp_text_field: ^1.1.1
-  simple_barcode_scanner: ^0.0.8
+  #  simple_barcode_scanner: ^0.0.8
+  barcode_scan2: ^4.2.4
 
 dev_dependencies:
   flutter_test:

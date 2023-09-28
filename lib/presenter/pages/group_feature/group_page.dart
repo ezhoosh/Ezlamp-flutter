@@ -7,6 +7,7 @@ import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/more_group_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_page.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,16 +60,10 @@ class _GroupPageState extends State<GroupPage> {
                   InkWell(
                       borderRadius: MyRadius.sm,
                       onTap: () {
-                        showModalBottomSheet(
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(24),
-                              topRight: Radius.circular(24),
-                            )),
-                            context: context,
-                            builder: (context) {
-                              return EditGroupBottomSheet();
-                            });
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (context) => AddLampPage()),
+                        );
                       },
                       child: SvgPicture.asset("assets/icons/add_circle.svg")),
                 ],

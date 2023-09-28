@@ -40,13 +40,7 @@ class LampRepositoryImpl extends LampRepository {
         data: {
           "name": params.name,
           "description": params.description,
-          "is_active": params.isActive.toString(),
-          "latitude": params.latitude,
-          "longitude": params.longitude,
-          "address": params.address,
           "group_lamp": params.groupLamp.toString(),
-          "main_power": params.mainPower,
-          "last_command": params.lastCommand,
         },
         method: 'PUT');
     if (response.statusCode == 200) {

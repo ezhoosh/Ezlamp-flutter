@@ -7,8 +7,14 @@ class BorderTextField extends StatelessWidget {
   String? hintText;
   ValueChanged<String>? onChange;
   TextEditingController? controller;
+  int maxLines;
 
-  BorderTextField({Key? key, this.hintText, this.onChange, this.controller})
+  BorderTextField(
+      {Key? key,
+      this.hintText,
+      this.onChange,
+      this.controller,
+      this.maxLines = 1})
       : super(key: key);
 
   @override
@@ -19,6 +25,7 @@ class BorderTextField extends StatelessWidget {
         controller: controller,
         onChanged: onChange,
         style: Light400Style.normal.copyWith(color: MyColors.white),
+        maxLines: maxLines,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(horizontal: 10),
           hintStyle: Light400Style.normal.copyWith(color: MyColors.white),
