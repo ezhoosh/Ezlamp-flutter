@@ -71,4 +71,5 @@ class MyColors {
     700: Color(0xffEF5350),
     800: Color(0xffD82E2B),
   });
+  static const Color noColor = Color(0x00ffffff);
 }

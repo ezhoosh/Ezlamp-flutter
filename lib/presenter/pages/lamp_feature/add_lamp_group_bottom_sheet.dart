@@ -16,95 +16,124 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
 
-class AddLampGroupBottomSheet extends StatelessWidget {
-  late AppLocalizations al;
-  late TextEditingController _controllerName;
-  late TextEditingController _controllerDesc;
+class AddLampGroupBottomSheet extends StatefulWidget {
   String uuid;
-  int? lampId;
+  int? groupId;
 
-  AddLampGroupBottomSheet(this.uuid, {super.key, this.lampId});
+  AddLampGroupBottomSheet(this.uuid, {super.key, this.groupId}) {}
+
+  @override
+  State<AddLampGroupBottomSheet> createState() =>
+      _AddLampGroupBottomSheetState();
+}
+
+class _AddLampGroupBottomSheetState extends State<AddLampGroupBottomSheet> {
+  late AppLocalizations al;
+  final TextEditingController _controllerName = TextEditingController();
+  final TextEditingController _controllerDesc = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
-    _controllerName = TextEditingController();
-    _controllerDesc = TextEditingController();
-    return BlocListener<GroupBloc, GroupState>(
+    return BlocListener<LampBloc, LampState>(
       listenWhen: (prev, curr) {
-        if (prev.updateGroupNameStatus is BaseSuccess &&
-            curr.updateGroupNameStatus is BaseNoAction) {
+        if (prev.updateLampOwnerStatus is BaseSuccess &&
+            curr.updateLampOwnerStatus is BaseNoAction) {
           return false;
         }
         return true;
       },
       listener: (context, state) {
-        if (state.updateGroupNameStatus is BaseSuccess) {
+        if (state.updateLampOwnerStatus is BaseSuccess) {
+          Navigator.pop(context);
           EasyLoading.showSuccess("SUCCESS");
-        } else if (state.updateGroupNameStatus is BaseLoading) {
+        } else if (state.updateLampOwnerStatus is BaseLoading) {
           EasyLoading.show();
-        } else if (state.updateGroupNameStatus is BaseError) {
+        } else if (state.updateLampOwnerStatus is BaseError) {
           EasyLoading.showError("ERROR");
         }
       },
-      child: CustomBottomSheet(
-        title: AppLocalizations.of(context)!.editGroupName,
-        child: Column(
-          children: [
-            BorderTextField(
-              hintText: al.title,
-              controller: _controllerName,
-            ),
-            const SizedBox(
-              height: MySpaces.s12,
-            ),
-            BorderTextField(
-              hintText: al.desc,
-              controller: _controllerName,
-              maxLines: 7,
-            ),
-            const SizedBox(
-              height: MySpaces.s12,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  if (uuid.startsWith('GROUP')) {
-                    uuid = uuid.replaceAll("GROUP", '');
-                    BlocProvider.of<LampBloc>(context).add(
-                      UpdateLampOwnerEvent(
-                        UpdateLampOwnerParams(
-                          lampId!,
-                          _controllerName.text,
-                          _controllerDesc.text,
-                          uuid,
+      child: BlocListener<GroupBloc, GroupState>(
+        listenWhen: (prev, curr) {
+          if (prev.updateGroupOwnerStatus is BaseSuccess &&
+              curr.updateGroupOwnerStatus is BaseNoAction) {
+            return false;
+          }
+          return true;
+        },
+        listener: (context, state) {
+          if (state.updateGroupOwnerStatus is BaseSuccess) {
+            Navigator.pop(context);
+            EasyLoading.showSuccess("SUCCESS");
+          } else if (state.updateGroupOwnerStatus is BaseLoading) {
+            EasyLoading.show();
+          } else if (state.updateGroupOwnerStatus is BaseError) {
+            EasyLoading.showError("ERROR");
+          }
+        },
+        child: CustomBottomSheet(
+          title: AppLocalizations.of(context)!.editGroupName,
+          child: Column(
+            children: [
+              BorderTextField(
+                hintText: al.title,
+                controller: _controllerName,
+              ),
+              const SizedBox(
+                height: MySpaces.s12,
+              ),
+              BorderTextField(
+                hintText: al.desc,
+                controller: _controllerDesc,
+                maxLines: 7,
+              ),
+              const SizedBox(
+                height: MySpaces.s12,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (widget.uuid
+                        .startsWith('group-lamp/update-group-owner/')) {
+                      BlocProvider.of<GroupBloc>(context).add(
+                        UpdateGroupOwnerEvent(
+                          UpdateGroupOwnerParams(
+                            widget.uuid,
+                            _controllerName.text,
+                            _controllerDesc.text,
+                          ),
                         ),
-                      ),
-                    );
-                  } else {
-                    uuid = uuid.replaceAll("LAMP", '');
-                    BlocProvider.of<GroupBloc>(context).add(
-                      UpdateGroupOwnerEvent(
-                        UpdateGroupOwnerParams(
-                          uuid,
-                          _controllerName.text,
-                          _controllerDesc.text,
+                      );
+                    } else {
+                      BlocProvider.of<LampBloc>(context).add(
+                        UpdateLampOwnerEvent(
+                          UpdateLampOwnerParams(
+                            widget.groupId!,
+                            _controllerName.text,
+                            _controllerDesc.text,
+                            widget.uuid,
+                          ),
                         ),
-                      ),
-                    );
-                  }
-                },
-                child: Text(
-                  al.save,
-                  style: DemiBoldStyle.normal.copyWith(color: MyColors.white),
+                      );
+                    }
+                  },
+                  child: Text(
+                    al.save,
+                    style: DemiBoldStyle.normal.copyWith(color: MyColors.white),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: MySpaces.s24,
-            ),
-          ],
+              const SizedBox(
+                height: MySpaces.s24,
+              ),
+            ],
+          ),
         ),
       ),
     );

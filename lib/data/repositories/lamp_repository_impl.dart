@@ -35,8 +35,7 @@ class LampRepositoryImpl extends LampRepository {
   @override
   Future<DataState<LampModel>> updateLampOwner(
       UpdateLampOwnerParams params) async {
-    var response = await ApiAccess.makeHttpRequest(
-        "lamps/update-lamp-owner/${params.uuid.toString()}",
+    var response = await ApiAccess.makeHttpRequest("${params.uuid.toString()}/",
         data: {
           "name": params.name,
           "description": params.description,

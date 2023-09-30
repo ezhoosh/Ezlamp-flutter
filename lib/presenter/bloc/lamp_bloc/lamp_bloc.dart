@@ -73,6 +73,7 @@ class LampBloc extends Bloc<LampEvent, LampState> {
       if (dataState is DataSuccess) {
         emit(state.copyWith(
             newUpdateLampOwnerStatus: BaseSuccess(dataState.data)));
+        add(GetLampListEvent(GetLampListParams()));
       } else {
         emit(state.copyWith(
             newUpdateLampOwnerStatus: BaseError(dataState.error)));

@@ -29,7 +29,7 @@ class _LampPageState extends State<LampPage> {
   void initState() {
     super.initState();
     BlocProvider.of<LampBloc>(context)
-        .add(GetLampListEvent(GetLampListParams(widget.groupId, null, null)));
+        .add(GetLampListEvent(GetLampListParams(groupId: widget.groupId)));
   }
 
   late AppLocalizations al;

@@ -87,6 +87,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
       if (dataState is DataSuccess) {
         emit(state.copyWith(
             newUpdateGroupOwnerStatus: BaseSuccess(dataState.data)));
+        add(GetGroupListEvent());
       } else {
         emit(state.copyWith(
             newUpdateGroupOwnerStatus: BaseError(dataState.error)));

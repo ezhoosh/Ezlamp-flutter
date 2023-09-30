@@ -111,13 +111,17 @@ class _AddLampPageState extends State<AddLampPage> {
                         var options = const ScanOptions();
                         var result =
                             await BarcodeScanner.scan(options: options);
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AddLampGroupBottomSheet(
-                                result.rawContent.toString(),
-                              );
-                            });
+                        if (result.type == ResultType.Barcode) {
+                          showModalBottomSheet(
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AddLampGroupBottomSheet(
+                                  result.rawContent.toString(),
+                                  groupId: widget.groupId,
+                                );
+                              });
+                        }
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,

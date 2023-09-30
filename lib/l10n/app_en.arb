@@ -44,5 +44,18 @@
       }
     }
   },
-  "desc": "توضیحات"
+  "desc": "توضیحات",
+  "planning": "برنامه ریزی",
+  "select": "انتخاب کنید {value} ",
+  "@select": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "selectDate": "انتخاب تاریخ",
+  "startDate": "ساعت شروع",
+  "finishDate": "ساعت پایان",
+  "again": "تکرار"
 }

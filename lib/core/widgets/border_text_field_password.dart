@@ -9,13 +9,13 @@ class BorderTextFieldPassword extends StatefulWidget {
   TextEditingController? controller;
   int maxLines;
 
-  BorderTextFieldPassword(
-      {Key? key,
-      this.hintText,
-      this.onChange,
-      this.controller,
-      this.maxLines = 1})
-      : super(key: key);
+  BorderTextFieldPassword({
+    Key? key,
+    this.hintText,
+    this.onChange,
+    this.controller,
+    this.maxLines = 1,
+  }) : super(key: key);
 
   @override
   State<BorderTextFieldPassword> createState() =>

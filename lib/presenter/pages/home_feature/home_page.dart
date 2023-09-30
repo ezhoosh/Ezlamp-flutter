@@ -1,3 +1,4 @@
+import 'package:easy_lamp/presenter/pages/schedule_feature/schedule_page.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/group_page.dart';
@@ -26,7 +27,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           Container(),
           const GroupPage(),
-          Container(),
+          const SchedulePage(),
           Container(),
         ],
       ),

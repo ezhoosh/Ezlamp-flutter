@@ -110,13 +110,14 @@ class GroupRepositoryImpl extends GroupRepository {
   Future<DataState<GroupLampModel>> updateGroupOwner(
       UpdateGroupOwnerParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-          "group-lamp/update-group-owner/${params.uuid.toString()}",
-          data: {
-            "name": params.name,
-            "description": params.description,
-          },
-          method: 'PUT');
+      // "group-lamp/update-group-owner/${params.uuid.toString()}",
+      var response =
+          await ApiAccess.makeHttpRequest("${params.uuid.toString()}/",
+              data: {
+                "name": params.name,
+                "description": params.description,
+              },
+              method: 'PUT');
       if (response.statusCode == 200) {
         return DataSuccess<GroupLampModel>(
             GroupLampModel.fromJson(response.data));

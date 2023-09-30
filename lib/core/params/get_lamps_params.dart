@@ -3,5 +3,5 @@ class GetLampListParams {
   bool? isActive;
   String? name;
 
-  GetLampListParams(this.groupId, this.isActive, this.name);
+  GetLampListParams({this.groupId, this.isActive, this.name});
 }
