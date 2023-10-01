@@ -1,3 +1,4 @@
+import 'package:easy_lamp/presenter/pages/profile_feature/profile_page.dart';
 import 'package:easy_lamp/presenter/pages/schedule_feature/schedule_page.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
@@ -25,7 +26,7 @@ class _HomePageState extends State<HomePage> {
       body: PageView(
         controller: controller,
         children: [
-          Container(),
+          const ProfilePage(),
           const GroupPage(),
           const SchedulePage(),
           Container(),

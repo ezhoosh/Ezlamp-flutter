@@ -58,5 +58,20 @@
   "startDate": "ساعت شروع",
   "finishDate": "ساعت پایان",
   "again": "تکرار",
-  "selectDate": "ساعت را انتخاب کنید"
+  "selectHour": "ساعت را انتخاب کنید",
+  "member": "اعضا",
+  "changePassword": "تغییر رمز عبور",
+  "changeLanguage": "تغییر زبان",
+  "logout": "خروج از حساب کاربری",
+  "profile": "پروفایل",
+  "selectYourLanguage": "انتخاب زبان مورد نظر",
+  "english": "English",
+  "persian": "فارسی",
+  "currentPassword": "رمز عبور فعلی",
+  "newPassword": "رمز عبور جدید",
+  "myMember": "اعضای من",
+  "requestList": "لیست درخواست\u200Cها",
+  "acceptRequest": "قبول درخواست",
+  "delete": "حذف",
+  "request": "درخواست"
 }
