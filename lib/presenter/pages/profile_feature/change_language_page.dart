@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
@@ -72,67 +74,82 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
               Container(
                 decoration: BoxDecoration(
                     color: MyColors.black.shade600, borderRadius: MyRadius.sm),
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    ClickableContainer(
+                      onTap: () {},
+                      borderRadius: MyRadius.sm,
+                      child: ClickableContainer(
+                        child: Row(
                           children: [
-                            Text(
-                              al.english,
-                              style: DemiBoldStyle.lg
-                                  .copyWith(color: MyColors.secondary.shade300),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  al.english,
+                                  style: DemiBoldStyle.lg.copyWith(
+                                      color: MyColors.secondary.shade300),
+                                ),
+                                const SizedBox(
+                                  height: MySpaces.s8,
+                                ),
+                                Text(
+                                  al.english,
+                                  style: DemiBoldStyle.sm.copyWith(
+                                      color: MyColors.secondary.shade300),
+                                ),
+                              ],
                             ),
-                            const SizedBox(
-                              height: MySpaces.s8,
-                            ),
-                            Text(
-                              al.english,
-                              style: DemiBoldStyle.sm
-                                  .copyWith(color: MyColors.secondary.shade300),
-                            ),
+                            const Spacer(),
+                            if (Localizations.localeOf(context).toString() ==
+                                'en')
+                              const Icon(
+                                Iconsax.tick_circle,
+                                color: MyColors.info,
+                                size: 30,
+                              )
                           ],
                         ),
-                        const Spacer(),
-                        const Icon(
-                          Iconsax.tick_circle,
-                          color: MyColors.info,
-                          size: 30,
-                        )
-                      ],
+                      ),
                     ),
                     const Divider(
                       height: MySpaces.s40,
                     ),
-                    Row(
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Persian",
-                              style: DemiBoldStyle.lg
-                                  .copyWith(color: MyColors.secondary.shade300),
-                            ),
-                            const SizedBox(
-                              height: MySpaces.s8,
-                            ),
-                            Text(
-                              al.persian,
-                              style: DemiBoldStyle.sm
-                                  .copyWith(color: MyColors.secondary.shade300),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        const Icon(
-                          Iconsax.tick_circle,
-                          color: MyColors.info,
-                          size: 30,
-                        )
-                      ],
+                    ClickableContainer(
+                      borderRadius: MyRadius.sm,
+                      onTap: () {
+                      },
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Persian",
+                                style: DemiBoldStyle.lg.copyWith(
+                                    color: MyColors.secondary.shade300),
+                              ),
+                              const SizedBox(
+                                height: MySpaces.s8,
+                              ),
+                              Text(
+                                al.persian,
+                                style: DemiBoldStyle.sm.copyWith(
+                                    color: MyColors.secondary.shade300),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          if (Localizations.localeOf(context).toString() ==
+                              'fa')
+                            const Icon(
+                              Iconsax.tick_circle,
+                              color: MyColors.info,
+                              size: 30,
+                            )
+                        ],
+                      ),
                     ),
                   ],
                 ),
