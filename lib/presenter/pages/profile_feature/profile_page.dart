@@ -5,7 +5,9 @@ import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
+import 'package:easy_lamp/data/model/user_model.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/more_group_bottom_sheet.dart';
@@ -13,6 +15,7 @@ import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_page.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/change_language_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/change_password_page.dart';
+import 'package:easy_lamp/presenter/pages/profile_feature/edit_profile_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/member_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<GroupBloc>(context).add(GetGroupListEvent());
+    BlocProvider.of<UserBloc>(context).add(GetUserEvent());
   }
 
   @override
@@ -185,17 +188,38 @@ class _ProfilePageState extends State<ProfilePage> {
       Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'فرناز کشتکارباقری',
-            style: Light400Style.normal.copyWith(color: MyColors.white),
+          BlocBuilder<UserBloc, UserState>(
+            buildWhen: (prev, curr) {
+              if (prev.getUserStatus is BaseSuccess &&
+                  curr.getUserStatus is BaseNoAction) {
+                return false;
+              }
+              return true;
+            },
+            builder: (context, state) {
+              if (state.getUserStatus is BaseSuccess) {
+                UserModel user = (state.getUserStatus as BaseSuccess).entity;
+                return Text(
+                  '${user.firstName} ${user.lastName}',
+                  style: Light400Style.normal.copyWith(color: MyColors.white),
+                );
+              }
+              return const SizedBox();
+            },
           ),
-          const SizedBox(
-            width: MySpaces.s4,
-          ),
-          Icon(
-            Iconsax.edit_2,
-            color: MyColors.secondary.shade200,
-            size: 20,
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  barrierColor: MyColors.noColor,
+                  builder: (context) => EditProfileBottomSheet());
+            },
+            icon: Icon(
+              Iconsax.edit_2,
+              color: MyColors.secondary.shade200,
+              size: 20,
+            ),
           )
         ],
       )

@@ -4,12 +4,14 @@ import 'package:easy_lamp/data/repositories/auth_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/group_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/local_storage_repositoryimpl.dart';
 import 'package:easy_lamp/data/repositories/splash_repository_impl.dart';
+import 'package:easy_lamp/data/repositories/user_repository_impl.dart';
 import 'package:easy_lamp/domain/repositories/auth_repository.dart';
 import 'package:easy_lamp/domain/repositories/group_repository.dart';
 import 'package:easy_lamp/data/repositories/lamp_repository_impl.dart';
 import 'package:easy_lamp/domain/repositories/lamp_repository.dart';
 import 'package:easy_lamp/domain/repositories/local_storage_repository.dart';
 import 'package:easy_lamp/domain/repositories/splash_repository.dart';
+import 'package:easy_lamp/domain/repositories/user_repository.dart';
 import 'package:easy_lamp/domain/usecases/create_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_lamp_usecase.dart';
@@ -17,6 +19,7 @@ import 'package:easy_lamp/domain/usecases/get_group_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_list_usecase.dart';
+import 'package:easy_lamp/domain/usecases/get_user_usecase.dart';
 import 'package:easy_lamp/domain/usecases/login_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/refresh_token_usecase.dart';
@@ -30,11 +33,13 @@ import 'package:easy_lamp/domain/usecases/update_group_owner_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_lamp_owner_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_lamp_usecase.dart';
+import 'package:easy_lamp/domain/usecases/update_user_usecase.dart';
 import 'package:easy_lamp/domain/usecases/write_localstorage_usecase.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -141,6 +146,19 @@ setupLamp() async {
     locator(),
     locator(),
     locator(),
+    locator(),
+    locator(),
+  ));
+}
+
+setupUser() async {
+  // repositories
+  locator.registerSingleton<UserRepository>(UserRepositoryImpl());
+  // useCases
+  locator.registerSingleton<GetUserUseCase>(GetUserUseCase(locator()));
+  locator.registerSingleton<UpdateUserUseCase>(UpdateUserUseCase(locator()));
+  //bloc
+  locator.registerSingleton<UserBloc>(UserBloc(
     locator(),
     locator(),
   ));

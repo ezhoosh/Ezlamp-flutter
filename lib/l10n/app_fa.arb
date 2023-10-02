@@ -73,5 +73,8 @@
   "requestList": "لیست درخواست\u200Cها",
   "acceptRequest": "قبول درخواست",
   "delete": "حذف",
-  "request": "درخواست"
+  "request": "درخواست",
+  "email": "ایمیل",
+  "firstName": "نام",
+  "lastName": "نام خانوادگی"
 }
