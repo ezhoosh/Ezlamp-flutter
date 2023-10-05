@@ -1,8 +1,8 @@
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
-import 'package:easy_lamp/presenter/pages/group_feature/edit_group_name_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/group_feature/edit_group_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_group_bottom_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

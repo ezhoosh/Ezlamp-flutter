@@ -1,8 +1,9 @@
+import 'package:easy_lamp/presenter/pages/group_feature/group_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/profile_page.dart';
 import 'package:easy_lamp/presenter/pages/schedule_feature/schedule_page.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
-import 'package:easy_lamp/presenter/pages/group_feature/group_page.dart';
+import 'package:easy_lamp/presenter/pages/internet_box_feature/internet_box_page.dart';
 import 'package:easy_lamp/core/widgets/dot_navigation/dot_navigation_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

@@ -1,3 +1,4 @@
+import 'package:easy_lamp/core/params/change_password_params.dart';
 import 'package:easy_lamp/core/params/login_params.dart';
 import 'package:easy_lamp/core/params/register_verify_params.dart';
 import 'package:easy_lamp/core/params/send_phone_number_params.dart';
@@ -101,6 +102,22 @@ class AuthRepositoryImpl extends AuthRepository {
     if (response.statusCode == 200) {
       return DataSuccess<SendLoginOtpModel>(
           SendLoginOtpModel.fromJson(response.data));
+    } else {
+      return DataFailed(response.statusMessage.toString());
+    }
+  }
+
+  @override
+  Future<DataState<String>> changePassword(ChangePasswordParams params) async {
+    var response = await ApiAccess.makeHttpRequestWithoutAuth(
+      "auth/change_password/",
+      data: {
+        "old_password": params.oldPassword,
+        "new_password": params.newPassword,
+      },
+    );
+    if (response.statusCode == 200) {
+      return DataSuccess(response.data.toString());
     } else {
       return DataFailed(response.statusMessage.toString());
     }

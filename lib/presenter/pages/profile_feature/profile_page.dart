@@ -8,9 +8,10 @@ import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/user_model.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
-import 'package:easy_lamp/presenter/pages/group_feature/edit_group_name_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/group_feature/edit_group_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/group_feature/more_group_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/internet_box_feature/internet_box_page.dart';
+import 'package:easy_lamp/presenter/pages/internet_box_feature/more_internet_box_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_page.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/change_language_page.dart';
@@ -34,6 +35,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late AppLocalizations al;
+  int _currentTab = 0;
 
   @override
   void initState() {
@@ -50,47 +52,59 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: MyColors.black,
       body: SafeArea(
-        child: Column(
-          children: [
-            TopBar(
-              title: al.profile,
-            ),
-            const SizedBox(
-              height: MySpaces.s32,
-            ),
-            ...getProfileRow(),
-            const SizedBox(
-              height: MySpaces.s40,
-            ),
-            getRow(
-              target: const MemberPage(),
-              text: al.member,
-              icon: const Icon(
-                Iconsax.lock,
-                color: MyColors.white,
-                size: 30,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TopBar(
+                title: al.profile,
               ),
-            ),
-            getRow(
-              target: const ChangePasswordPage(),
-              text: al.changePassword,
-              icon: const Icon(
-                Iconsax.profile_2user,
-                color: MyColors.white,
-                size: 30,
+              const SizedBox(
+                height: MySpaces.s32,
               ),
-            ),
-            getRow(
-              target: const ChangeLanguagePage(),
-              text: al.changeLanguage,
-              icon: const Icon(
-                Iconsax.global,
-                color: MyColors.white,
-                size: 30,
+              ...getProfileRow(),
+              const SizedBox(
+                height: MySpaces.s40,
               ),
-            ),
-            getRowExit()
-          ],
+              getRowConnection(),
+              getRow(
+                target: const InternetBoxPage(),
+                text: al.internetLamp,
+                icon: const Icon(
+                  Iconsax.global,
+                  color: MyColors.white,
+                  size: 30,
+                ),
+              ),
+              getRow(
+                target: const MemberPage(),
+                text: al.member,
+                icon: const Icon(
+                  Iconsax.lock,
+                  color: MyColors.white,
+                  size: 30,
+                ),
+              ),
+              getRow(
+                target: const ChangePasswordPage(),
+                text: al.changePassword,
+                icon: const Icon(
+                  Iconsax.profile_2user,
+                  color: MyColors.white,
+                  size: 30,
+                ),
+              ),
+              getRow(
+                target: const ChangeLanguagePage(),
+                text: al.changeLanguage,
+                icon: const Icon(
+                  Iconsax.translate,
+                  color: MyColors.white,
+                  size: 30,
+                ),
+              ),
+              getRowExit()
+            ],
+          ),
         ),
       ),
     );
@@ -126,6 +140,44 @@ class _ProfilePageState extends State<ProfilePage> {
             child: SvgPicture.asset(
               "assets/icons/arrow_right.svg",
               color: MyColors.white,
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  getRowConnection() {
+    return ClickableContainer(
+      margin: const EdgeInsets.only(
+          right: MySpaces.s24, left: MySpaces.s24, bottom: MySpaces.s16),
+      padding: const EdgeInsets.all(MySpaces.s24),
+      onTap: () {},
+      borderRadius: MyRadius.base,
+      color: MyColors.black.shade600,
+      child: Row(
+        children: [
+          const Icon(
+            Iconsax.wifi,
+            color: MyColors.white,
+            size: 30,
+          ),
+          const SizedBox(
+            width: MySpaces.s12,
+          ),
+          Text(
+            al.connectionType,
+            style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
+          ),
+          const Spacer(),
+          Container(
+            decoration: BoxDecoration(
+              color: MyColors.black.shade300,
+              borderRadius: MyRadius.sm,
+            ),
+            padding: EdgeInsets.all(MySpaces.s4),
+            child: Row(
+              children: [getTab(al.internet, 0), getTab(al.blue, 1)],
             ),
           )
         ],
@@ -224,5 +276,25 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       )
     ];
+  }
+
+  getTab(String tabImportantDates, int i) {
+    bool c = i == _currentTab;
+    return ClickableContainer(
+      onTap: () {
+        setState(() {
+          _currentTab = i;
+        });
+      },
+      padding: const EdgeInsets.symmetric(
+          vertical: MySpaces.s6, horizontal: MySpaces.s16),
+      color: c ? MyColors.info : MyColors.noColor,
+      borderRadius: MyRadius.sm,
+      child: Text(
+        tabImportantDates,
+        style: DemiBoldStyle.sm.copyWith(color: MyColors.white),
+        textAlign: TextAlign.center,
+      ),
+    );
   }
 }

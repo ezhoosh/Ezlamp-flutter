@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_lamp/core/params/change_password_params.dart';
 import 'package:easy_lamp/core/params/login_params.dart';
 import 'package:easy_lamp/core/params/register_verify_params.dart';
 import 'package:easy_lamp/core/params/write_local_storage_params.dart';
@@ -6,6 +7,7 @@ import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/constants.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/data/model/login_model.dart';
+import 'package:easy_lamp/domain/usecases/change_password_usecase.dart';
 import 'package:easy_lamp/domain/usecases/login_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_usecase.dart';
@@ -30,6 +32,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   ReadLocalStorageUseCase readLocalStorageUseCase;
   RegisterVerifyUseCase registerVerifyUseCase;
   SendLoginOtpUseCase sendLoginOtpUseCase;
+  ChangePasswordUseCase changePasswordUseCase;
 
   AuthBloc(
     this.loginUseCase,
@@ -40,6 +43,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.readLocalStorageUseCase,
     this.registerVerifyUseCase,
     this.sendLoginOtpUseCase,
+    this.changePasswordUseCase,
   ) : super(AuthState(
           loginStatus: BaseNoAction(),
           registerStatus: BaseNoAction(),
@@ -48,6 +52,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           registerVerifyStatus: BaseNoAction(),
           sendLoginOtpStatus: BaseNoAction(),
           sendResetOtpStatus: BaseNoAction(),
+          changePasswordStatus: BaseNoAction(),
         )) {
     on<SendPhoneNumberEvent>((event, emit) async {
       emit(state.copyWith(newSendPhoneStatus: BaseLoading()));
@@ -176,6 +181,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(newSendResetOtpStatus: BaseError(e.toString())));
       }
       emit(state.copyWith(newSendResetOtpStatus: BaseNoAction()));
+    });
+    on<ChangePasswordEvent>((event, emit) async {
+      emit(state.copyWith(newChangePasswordStatus: BaseLoading()));
+      try {
+        DataState dataState = await changePasswordUseCase(
+            ChangePasswordParams(event.oldPassword, event.newPassword));
+        if (dataState is DataSuccess) {
+          emit(state.copyWith(
+              newChangePasswordStatus: BaseSuccess(dataState.data)));
+        } else {
+          emit(state.copyWith(
+              newChangePasswordStatus: BaseError(dataState.error)));
+        }
+      } catch (e) {
+        emit(state.copyWith(newChangePasswordStatus: BaseError(e.toString())));
+      }
+      emit(state.copyWith(newChangePasswordStatus: BaseNoAction()));
     });
   }
 }

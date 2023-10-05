@@ -10,10 +10,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 
-class MoreGroupBottomSheet extends StatelessWidget {
+class MoreInternetBoxBottomSheet extends StatelessWidget {
   int groupId;
 
-  MoreGroupBottomSheet(this.groupId, {super.key});
+  MoreInternetBoxBottomSheet(this.groupId, {super.key});
 
   late AppLocalizations al;
 

@@ -7,7 +7,9 @@ class AuthState {
       resetPasswordStatus,
       registerVerifyStatus,
       sendLoginOtpStatus,
+      changePasswordStatus,
       sendResetOtpStatus;
+
   AuthState({
     required this.loginStatus,
     required this.registerStatus,
@@ -15,6 +17,7 @@ class AuthState {
     required this.sendPhoneStatus,
     required this.registerVerifyStatus,
     required this.sendLoginOtpStatus,
+    required this.changePasswordStatus,
     required this.sendResetOtpStatus,
   });
 
@@ -26,6 +29,7 @@ class AuthState {
     newRegisterVerifyStatus,
     newSendLoginOtpStatus,
     newSendResetOtpStatus,
+    newChangePasswordStatus,
   }) {
     return AuthState(
       loginStatus: newLoginStatus ?? loginStatus,
@@ -35,6 +39,7 @@ class AuthState {
       registerVerifyStatus: newRegisterVerifyStatus ?? registerStatus,
       sendLoginOtpStatus: newSendLoginOtpStatus ?? sendLoginOtpStatus,
       sendResetOtpStatus: newSendResetOtpStatus ?? sendResetOtpStatus,
+      changePasswordStatus: newChangePasswordStatus ?? changePasswordStatus,
     );
   }
 }

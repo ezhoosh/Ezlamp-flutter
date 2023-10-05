@@ -2,21 +2,27 @@ import 'package:dio/dio.dart';
 import 'package:easy_lamp/core/utils/local_data_provider.dart';
 import 'package:easy_lamp/data/repositories/auth_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/group_repository_impl.dart';
+import 'package:easy_lamp/data/repositories/internet_box_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/local_storage_repositoryimpl.dart';
 import 'package:easy_lamp/data/repositories/splash_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/user_repository_impl.dart';
 import 'package:easy_lamp/domain/repositories/auth_repository.dart';
 import 'package:easy_lamp/domain/repositories/group_repository.dart';
 import 'package:easy_lamp/data/repositories/lamp_repository_impl.dart';
+import 'package:easy_lamp/domain/repositories/internet_box_repository.dart';
 import 'package:easy_lamp/domain/repositories/lamp_repository.dart';
 import 'package:easy_lamp/domain/repositories/local_storage_repository.dart';
 import 'package:easy_lamp/domain/repositories/splash_repository.dart';
 import 'package:easy_lamp/domain/repositories/user_repository.dart';
+import 'package:easy_lamp/domain/usecases/change_password_usecase.dart';
 import 'package:easy_lamp/domain/usecases/create_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_group_usecase.dart';
+import 'package:easy_lamp/domain/usecases/delete_internet_box_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_lamp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_list_usecase.dart';
+import 'package:easy_lamp/domain/usecases/get_internet_box_by_id_usecase.dart';
+import 'package:easy_lamp/domain/usecases/get_internet_box_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_user_usecase.dart';
@@ -31,12 +37,16 @@ import 'package:easy_lamp/domain/usecases/send_phone_number_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_group_name_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_group_owner_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_group_usecase.dart';
+import 'package:easy_lamp/domain/usecases/update_internet_box_name_usecase.dart';
+import 'package:easy_lamp/domain/usecases/update_internet_box_owner_usecase.dart';
+import 'package:easy_lamp/domain/usecases/update_internet_box_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_lamp_owner_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_lamp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_user_usecase.dart';
 import 'package:easy_lamp/domain/usecases/write_localstorage_usecase.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
@@ -86,9 +96,12 @@ setupAuth() async {
       RegisterVerifyUseCase(locator()));
   locator
       .registerSingleton<SendLoginOtpUseCase>(SendLoginOtpUseCase(locator()));
+  locator.registerSingleton<ChangePasswordUseCase>(
+      ChangePasswordUseCase(locator()));
 
   //bloc
   locator.registerSingleton<AuthBloc>(AuthBloc(
+    locator(),
     locator(),
     locator(),
     locator(),
@@ -118,6 +131,37 @@ setupGroup() async {
 
   //bloc
   locator.registerSingleton<GroupBloc>(GroupBloc(
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+  ));
+}
+
+setupInternetBox() async {
+  // repositories
+  locator.registerSingleton<InternetBoxRepository>(InternetBoxRepositoryImpl());
+  // useCases
+  locator.registerSingleton<GetInternetBoxListUseCase>(
+      GetInternetBoxListUseCase(locator()));
+  locator.registerSingleton<GetInternetBoxByIdUseCase>(
+      GetInternetBoxByIdUseCase(locator()));
+  locator.registerSingleton<UpdateInternetBoxOwnerUseCase>(
+      UpdateInternetBoxOwnerUseCase(locator()));
+  locator.registerSingleton<UpdateInternetBoxUseCase>(
+      UpdateInternetBoxUseCase(locator()));
+  locator.registerSingleton<DeleteInternetBoxUseCase>(
+      DeleteInternetBoxUseCase(locator()));
+  locator.registerSingleton<UpdateInternetBoxNameUseCase>(
+      UpdateInternetBoxNameUseCase(locator()));
+
+  //bloc
+  locator.registerSingleton<InternetBoxBloc>(InternetBoxBloc(
     locator(),
     locator(),
     locator(),

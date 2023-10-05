@@ -5,8 +5,8 @@ import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
-import 'package:easy_lamp/presenter/pages/group_feature/edit_group_name_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/group_feature/edit_group_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -113,7 +113,7 @@ class _LampPageState extends State<LampPage> {
                                         ),
                                       ),
                                       builder: (context) {
-                                        return EditGroupBottomSheet();
+                                        return EditInternetBoxBottomSheet();
                                       },
                                     );
                                   },

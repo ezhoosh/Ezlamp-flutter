@@ -18,14 +18,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class GroupPage extends StatefulWidget {
-  const GroupPage({Key? key}) : super(key: key);
+class InternetBoxPage extends StatefulWidget {
+  const InternetBoxPage({Key? key}) : super(key: key);
 
   @override
-  State<GroupPage> createState() => _GroupPageState();
+  State<InternetBoxPage> createState() => _InternetBoxPageState();
 }
 
-class _GroupPageState extends State<GroupPage> {
+class _InternetBoxPageState extends State<InternetBoxPage> {
   late AppLocalizations al;
 
   @override
@@ -46,7 +46,7 @@ class _GroupPageState extends State<GroupPage> {
         child: Column(
           children: [
             TopBar(
-                title: al.groupsList,
+                title: al.internetLamp,
                 onTapLeft: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) => AddLampPage()),

@@ -51,3 +51,10 @@ class SendResetOtpEvent extends AuthEvent {
 
   SendResetOtpEvent(this.number);
 }
+
+class ChangePasswordEvent extends AuthEvent {
+  String oldPassword;
+  String newPassword;
+
+  ChangePasswordEvent(this.oldPassword, this.newPassword);
+}

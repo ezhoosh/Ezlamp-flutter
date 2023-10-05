@@ -76,5 +76,9 @@
   "request": "درخواست",
   "email": "ایمیل",
   "firstName": "نام",
-  "lastName": "نام خانوادگی"
+  "lastName": "نام خانوادگی",
+  "internetLamp": "لامپ اینترنتی",
+  "connectionType": "نوع اتصال",
+  "blue": "بلوتوث",
+  "internet": "اینترنت"
 }
