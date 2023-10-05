@@ -58,3 +58,5 @@ class ChangePasswordEvent extends AuthEvent {
 
   ChangePasswordEvent(this.oldPassword, this.newPassword);
 }
+
+class LogOutEvent extends AuthEvent {}

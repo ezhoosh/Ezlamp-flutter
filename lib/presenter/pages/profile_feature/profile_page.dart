@@ -17,6 +17,7 @@ import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/change_language_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/change_password_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/edit_profile_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/profile_feature/logout_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/member_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -190,7 +191,13 @@ class _ProfilePageState extends State<ProfilePage> {
       margin: const EdgeInsets.only(
           right: MySpaces.s24, left: MySpaces.s24, bottom: MySpaces.s16),
       padding: const EdgeInsets.all(MySpaces.s24),
-      onTap: () {},
+      onTap: () {
+        showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            barrierColor: MyColors.noColor,
+            builder: (context) => LogOutBottomSheet());
+      },
       borderRadius: MyRadius.base,
       color: MyColors.black.shade600,
       child: Row(

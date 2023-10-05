@@ -24,6 +24,7 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   late AppLocalizations al;
   late TextEditingController _controller;
+
   @override
   void initState() {
     super.initState();

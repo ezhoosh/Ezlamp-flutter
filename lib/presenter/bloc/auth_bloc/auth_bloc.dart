@@ -53,6 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           sendLoginOtpStatus: BaseNoAction(),
           sendResetOtpStatus: BaseNoAction(),
           changePasswordStatus: BaseNoAction(),
+          logOutStatus: BaseNoAction(),
         )) {
     on<SendPhoneNumberEvent>((event, emit) async {
       emit(state.copyWith(newSendPhoneStatus: BaseLoading()));
@@ -198,6 +199,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(state.copyWith(newChangePasswordStatus: BaseError(e.toString())));
       }
       emit(state.copyWith(newChangePasswordStatus: BaseNoAction()));
+    });
+    on<LogOutEvent>((event, emit) async {
+      await writeLocalStorageUseCase(
+          WriteLocalStorageParam(Constants.accessKey, ''));
+      await writeLocalStorageUseCase(
+          WriteLocalStorageParam(Constants.refreshKey, ''));
+      await writeLocalStorageUseCase(
+          WriteLocalStorageParam(Constants.phoneKey, ''));
+      emit(state.copyWith(newLogOutStatus: BaseSuccess(null)));
+      emit(state.copyWith(newLogOutStatus: BaseNoAction()));
     });
   }
 }

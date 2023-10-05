@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 class CustomBottomSheet extends StatelessWidget {
   String? title;
   Widget? child;
+
   CustomBottomSheet({super.key, this.child, this.title});
 
   @override
@@ -17,52 +18,50 @@ class CustomBottomSheet extends StatelessWidget {
         topLeft: Radius.circular(24),
         topRight: Radius.circular(24),
       )),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: MySpaces.s24),
-        child: Wrap(
-          children: [
-            Column(children: [
-              const SizedBox(
-                height: MySpaces.s8,
-              ),
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                    color: MyColors.secondary.shade800,
-                    borderRadius: MyRadius.lg),
-              ),
-              const SizedBox(
-                height: MySpaces.s24,
-              ),
-              Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.close,
-                        color: MyColors.secondary.shade800,
-                      ),
-                      onPressed: () => Navigator.pop(context),
+      padding: const EdgeInsets.symmetric(horizontal: MySpaces.s24),
+      child: Wrap(
+        children: [
+          Column(children: [
+            const SizedBox(
+              height: MySpaces.s8,
+            ),
+            Container(
+              width: 40,
+              height: 4,
+              decoration: BoxDecoration(
+                  color: MyColors.secondary.shade800,
+                  borderRadius: MyRadius.lg),
+            ),
+            const SizedBox(
+              height: MySpaces.s24,
+            ),
+            Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.close,
+                      color: MyColors.secondary.shade800,
                     ),
+                    onPressed: () => Navigator.pop(context),
                   ),
-                  Center(
-                    child: Text(
-                      title ?? '',
-                      style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
-                    ),
-                  )
-                ],
-              ),
-              Divider(
-                color: MyColors.secondary.shade800,
-                height: MySpaces.s40,
-              ),
-              if (child != null) child!
-            ]),
-          ],
-        ),
+                ),
+                Center(
+                  child: Text(
+                    title ?? '',
+                    style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
+                  ),
+                )
+              ],
+            ),
+            Divider(
+              color: MyColors.secondary.shade800,
+              height: MySpaces.s40,
+            ),
+            if (child != null) child!
+          ]),
+        ],
       ),
     );
   }

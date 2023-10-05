@@ -80,5 +80,7 @@
   "internetLamp": "لامپ اینترنتی",
   "connectionType": "نوع اتصال",
   "blue": "بلوتوث",
-  "internet": "اینترنت"
+  "internet": "اینترنت",
+  "logoutTitle": "حذف کاربر فرناز کشتکارباقری",
+  "logoutDesc": "آیا از حذف کاربر اطمینان دارین؟"
 }
