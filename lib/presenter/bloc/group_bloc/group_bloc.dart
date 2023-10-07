@@ -48,7 +48,8 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
             deleteGroupStatus: BaseNoAction(),
             getGroupByIdStatus: BaseNoAction(),
             getGroupListStatus: BaseNoAction(),
-            updateGroupOwnerStatus: BaseNoAction())) {
+            updateGroupOwnerStatus: BaseNoAction(),
+            createGroupStatus: BaseNoAction())) {
     on<GetGroupListEvent>((event, emit) async {
       emit(state.copyWith(newGetGroupListStatus: BaseLoading()));
       DataState dataState = await getGroupListUseCase(NoParams());
@@ -116,6 +117,18 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
             newUpdateGroupNameStatus: BaseError(dataState.error)));
       }
       emit(state.copyWith(newUpdateGroupNameStatus: BaseNoAction()));
+    });
+    on<CreateGroupEvent>((event, emit) async {
+      emit(state.copyWith(newCreateGroupStatus: BaseLoading()));
+      DataState dataState =
+          await createGroupUseCase(CreateGroupParams(event.name, event.desc));
+      if (dataState is DataSuccess) {
+        add(GetGroupListEvent());
+        emit(state.copyWith(newCreateGroupStatus: BaseSuccess(dataState.data)));
+      } else {
+        emit(state.copyWith(newCreateGroupStatus: BaseError(dataState.error)));
+      }
+      emit(state.copyWith(newCreateGroupStatus: BaseNoAction()));
     });
   }
 }

@@ -9,12 +9,13 @@ import 'package:easy_lamp/core/params/update_group_params.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/core/utils/api_access.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
+import 'package:easy_lamp/data/model/internet_box_model.dart';
 import 'package:easy_lamp/domain/repositories/group_repository.dart';
 import 'package:easy_lamp/domain/repositories/internet_box_repository.dart';
 
 class InternetBoxRepositoryImpl extends InternetBoxRepository {
   @override
-  Future<DataState<GroupLampModel>> createInternetBox(
+  Future<DataState<InternetBoxModel>> createInternetBox(
       CreateGroupParams params) async {
     try {
       var response = await ApiAccess.makeHttpRequest(
@@ -25,8 +26,7 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
         },
       );
       if (response.statusCode == 201) {
-        return DataSuccess<GroupLampModel>(
-            GroupLampModel.fromJson(response.data));
+        return DataSuccess(InternetBoxModel.fromJson(response.data));
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -43,7 +43,7 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
         method: "DELETE",
       );
       if (response.statusCode == 204) {
-        return DataSuccess<String>(response.data.toString());
+        return DataSuccess(response.data.toString());
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -53,14 +53,13 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
   }
 
   @override
-  Future<DataState<GroupLampModel>> getInternetBoxById(int id) async {
+  Future<DataState<InternetBoxModel>> getInternetBoxById(int id) async {
     try {
       var response = await ApiAccess.makeHttpRequest(
           "internetbox/{${id.toString()}}",
           method: 'GET');
       if (response.statusCode == 200) {
-        return DataSuccess<GroupLampModel>(
-            GroupLampModel.fromJson(response.data));
+        return DataSuccess(InternetBoxModel.fromJson(response.data));
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -70,13 +69,13 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
   }
 
   @override
-  Future<DataState<List<GroupLampModel>>> getInternetBoxList() async {
+  Future<DataState<List<InternetBoxModel>>> getInternetBoxList() async {
     try {
       var response =
           await ApiAccess.makeHttpRequest("internetbox/", method: 'GET');
       if (response.statusCode == 200) {
-        return DataSuccess(List<GroupLampModel>.from(
-            response.data.map((model) => GroupLampModel.fromJson(model))));
+        return DataSuccess(List<InternetBoxModel>.from(
+            response.data.map((model) => InternetBoxModel.fromJson(model))));
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -86,7 +85,7 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
   }
 
   @override
-  Future<DataState<GroupLampModel>> updateInternetBox(
+  Future<DataState<InternetBoxModel>> updateInternetBox(
       UpdateGroupParams params) async {
     try {
       var response =
@@ -97,8 +96,7 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
               },
               method: 'PUT');
       if (response.statusCode == 200) {
-        return DataSuccess<GroupLampModel>(
-            GroupLampModel.fromJson(response.data));
+        return DataSuccess(InternetBoxModel.fromJson(response.data));
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -108,7 +106,7 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
   }
 
   @override
-  Future<DataState<GroupLampModel>> updateInternetBoxOwner(
+  Future<DataState<InternetBoxModel>> updateInternetBoxOwner(
       UpdateGroupOwnerParams params) async {
     try {
       // "internetbox/update-group-owner/${params.uuid.toString()}",
@@ -120,8 +118,7 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
               },
               method: 'PUT');
       if (response.statusCode == 200) {
-        return DataSuccess<GroupLampModel>(
-            GroupLampModel.fromJson(response.data));
+        return DataSuccess(InternetBoxModel.fromJson(response.data));
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -131,7 +128,7 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
   }
 
   @override
-  Future<DataState<GroupLampModel>> editInternetBoxName(
+  Future<DataState<InternetBoxModel>> editInternetBoxName(
       EditGroupNameParams params) async {
     try {
       var response = await ApiAccess.makeHttpRequest(
@@ -141,8 +138,7 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
           },
           method: 'PATCH');
       if (response.statusCode == 200) {
-        return DataSuccess<GroupLampModel>(
-            GroupLampModel.fromJson(response.data));
+        return DataSuccess(InternetBoxModel.fromJson(response.data));
       } else {
         return DataFailed(response.statusMessage.toString());
       }

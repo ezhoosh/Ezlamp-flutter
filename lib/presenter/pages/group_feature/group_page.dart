@@ -6,6 +6,7 @@ import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
+import 'package:easy_lamp/presenter/pages/group_feature/add_group_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/more_internet_box_bottom_sheet.dart';
@@ -48,11 +49,15 @@ class _GroupPageState extends State<GroupPage> {
             TopBar(
                 title: al.groupsList,
                 onTapLeft: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => AddLampPage()),
-                  );
+                  showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      barrierColor: MyColors.noColor,
+                      builder: (context) => AddGroupBottomSheet());
                 },
-                iconLeft: SvgPicture.asset("assets/icons/add_circle.svg")),
+                iconLeft: SvgPicture.asset(
+                  "assets/icons/add_circle.svg",
+                )),
             Expanded(
               child: BlocBuilder<GroupBloc, GroupState>(
                 buildWhen: (prev, curr) {
@@ -75,9 +80,9 @@ class _GroupPageState extends State<GroupPage> {
                         GroupLampModel group = groups[index];
                         return ClickableContainer(
                           margin: const EdgeInsets.only(
-                            right: MySpaces.s24,
-                            left: MySpaces.s24,
-                          ),
+                              right: MySpaces.s24,
+                              left: MySpaces.s24,
+                              bottom: MySpaces.s24),
                           padding: const EdgeInsets.only(
                             left: MySpaces.s24,
                             right: MySpaces.s24,
@@ -150,7 +155,7 @@ class _GroupPageState extends State<GroupPage> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(right: 26),
                                   child: Text(
-                                    al.lamp(group.groupLamps.length.toString()),
+                                    al.lamp(group.lamps.length.toString()),
                                     style: DemiBoldStyle.sm.copyWith(
                                         color: MyColors.black.shade100),
                                   ),

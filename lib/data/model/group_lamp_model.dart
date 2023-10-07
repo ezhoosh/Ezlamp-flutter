@@ -20,7 +20,7 @@ class GroupLampModel {
   String description;
   List<dynamic> members;
   OwnerModel owner;
-  List<LampModel> groupLamps;
+  List<LampModel> lamps;
 
   GroupLampModel({
     required this.id,
@@ -28,7 +28,7 @@ class GroupLampModel {
     required this.description,
     required this.members,
     required this.owner,
-    required this.groupLamps,
+    required this.lamps,
   });
 
   factory GroupLampModel.fromJson(Map<String, dynamic> json) => GroupLampModel(
@@ -37,8 +37,7 @@ class GroupLampModel {
         description: json["description"],
         members: List<dynamic>.from(json["members"].map((x) => x)),
         owner: OwnerModel.fromJson(json["owner"]),
-        groupLamps: List<LampModel>.from(
-            json["group_lamps"].map((x) => LampModel.fromJson(x))),
+        lamps: List<LampModel>.from(json["lamps"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,6 +46,6 @@ class GroupLampModel {
         "description": description,
         "members": List<dynamic>.from(members.map((x) => x)),
         "owner": owner.toJson(),
-        "group_lamps": List<dynamic>.from(groupLamps.map((x) => x.toJson())),
+        "lamps": List<dynamic>.from(lamps.map((x) => x)),
       };
 }

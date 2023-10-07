@@ -4,9 +4,7 @@ import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
-import 'package:easy_lamp/data/model/user_model.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
-import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,73 +13,61 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
 
-class EditProfileBottomSheet extends StatelessWidget {
+class AddGroupBottomSheet extends StatelessWidget {
   late AppLocalizations al;
-  final TextEditingController _controllerFirstName = TextEditingController();
-  final TextEditingController _controllerLastName = TextEditingController();
-  final TextEditingController _controllerEmail = TextEditingController();
-  UserModel userModel;
+  late TextEditingController _controllerName;
+  late TextEditingController _controllerDesc;
 
-  EditProfileBottomSheet(this.userModel, {super.key}) {
-    _controllerEmail.text = userModel.email;
-    _controllerFirstName.text = userModel.firstName;
-    _controllerLastName.text = userModel.lastName;
-  }
+  AddGroupBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
-    return BlocListener<UserBloc, UserState>(
+    _controllerName = TextEditingController();
+    _controllerDesc = TextEditingController();
+    return BlocListener<GroupBloc, GroupState>(
       listenWhen: (prev, curr) {
-        if (prev.updateUserStatus is BaseSuccess &&
-            curr.updateUserStatus is BaseNoAction) {
+        if (prev.createGroupStatus is BaseSuccess &&
+            curr.createGroupStatus is BaseNoAction) {
           return false;
         }
         return true;
       },
       listener: (context, state) {
-        if (state.updateUserStatus is BaseSuccess) {
+        if (state.createGroupStatus is BaseSuccess) {
+          Navigator.pop(context);
           EasyLoading.showSuccess("SUCCESS");
-        } else if (state.updateUserStatus is BaseLoading) {
+        } else if (state.createGroupStatus is BaseLoading) {
           EasyLoading.show();
-        } else if (state.updateUserStatus is BaseError) {
+        } else if (state.createGroupStatus is BaseError) {
           EasyLoading.showError("ERROR");
         }
       },
       child: CustomBottomSheet(
-        title: AppLocalizations.of(context)!.editGroupName,
+        title: AppLocalizations.of(context)!.addGroup,
         child: Column(
           children: [
             BorderTextField(
-              hintText: al.firstName,
-              controller: _controllerFirstName,
+              hintText: al.title,
+              controller: _controllerName,
             ),
             const SizedBox(
               height: MySpaces.s12,
             ),
             BorderTextField(
-              hintText: al.lastName,
-              controller: _controllerLastName,
+              hintText: al.desc,
+              controller: _controllerDesc,
+              maxLines: 4,
             ),
             const SizedBox(
               height: MySpaces.s12,
-            ),
-            BorderTextField(
-              hintText: al.email,
-              controller: _controllerEmail,
-            ),
-            const SizedBox(
-              height: MySpaces.s24,
             ),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  BlocProvider.of<UserBloc>(context).add(UpdateUserEvent(
-                    _controllerLastName.text,
-                    _controllerFirstName.text,
-                    _controllerEmail.text,
-                  ));
+                  BlocProvider.of<GroupBloc>(context).add(CreateGroupEvent(
+                      _controllerName.text, _controllerDesc.text));
                 },
                 child: Text(
                   al.save,

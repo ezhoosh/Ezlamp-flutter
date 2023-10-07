@@ -34,3 +34,10 @@ class UpdateGroupNameEvent extends GroupEvent {
 
   UpdateGroupNameEvent(this.params);
 }
+
+class CreateGroupEvent extends GroupEvent {
+  String name;
+  String desc;
+
+  CreateGroupEvent(this.name, this.desc);
+}

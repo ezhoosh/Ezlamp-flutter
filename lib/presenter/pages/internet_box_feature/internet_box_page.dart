@@ -5,6 +5,7 @@ import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
+import 'package:easy_lamp/data/model/internet_box_model.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
@@ -64,7 +65,7 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
                 },
                 builder: (context, state) {
                   if (state.getGroupListStatus is BaseSuccess) {
-                    List<GroupLampModel> groups =
+                    List<InternetBoxModel> groups =
                         (state.getGroupListStatus as BaseSuccess).entity;
                     if (groups.isEmpty) {
                       return getEmptyPage();
@@ -72,7 +73,7 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
                     return ListView.builder(
                       padding: const EdgeInsets.only(top: MySpaces.s32),
                       itemBuilder: (context, index) {
-                        GroupLampModel group = groups[index];
+                        InternetBoxModel group = groups[index];
                         return ClickableContainer(
                           margin: const EdgeInsets.only(
                             right: MySpaces.s24,
@@ -150,7 +151,7 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(right: 26),
                                   child: Text(
-                                    al.lamp(group.groupLamps.length.toString()),
+                                    al.lamp(group.lamps.length.toString()),
                                     style: DemiBoldStyle.sm.copyWith(
                                         color: MyColors.black.shade100),
                                   ),

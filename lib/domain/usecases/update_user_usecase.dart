@@ -14,6 +14,6 @@ class UpdateUserUseCase extends UseCase<DataState<UserModel>, UserParams> {
 
   @override
   Future<DataState<UserModel>> call(UserParams params) async {
-    return await repository.getUser();
+    return await repository.updateUser(params);
   }
 }

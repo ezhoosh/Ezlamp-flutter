@@ -6,6 +6,7 @@ import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/user_model.dart';
+import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
@@ -244,43 +245,44 @@ class _ProfilePageState extends State<ProfilePage> {
       const SizedBox(
         height: MySpaces.s12,
       ),
-      Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          BlocBuilder<UserBloc, UserState>(
-            buildWhen: (prev, curr) {
-              if (prev.getUserStatus is BaseSuccess &&
-                  curr.getUserStatus is BaseNoAction) {
-                return false;
-              }
-              return true;
-            },
-            builder: (context, state) {
-              if (state.getUserStatus is BaseSuccess) {
-                UserModel user = (state.getUserStatus as BaseSuccess).entity;
-                return Text(
+      BlocBuilder<UserBloc, UserState>(
+        buildWhen: (prev, curr) {
+          if (prev.getUserStatus is BaseSuccess &&
+              curr.getUserStatus is BaseNoAction) {
+            return false;
+          }
+          return true;
+        },
+        builder: (context, state) {
+          if (state.getUserStatus is BaseSuccess) {
+            UserModel user = (state.getUserStatus as BaseSuccess).entity;
+
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
                   '${user.firstName} ${user.lastName}',
                   style: Light400Style.normal.copyWith(color: MyColors.white),
-                );
-              }
-              return const SizedBox();
-            },
-          ),
-          IconButton(
-            onPressed: () {
-              showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  barrierColor: MyColors.noColor,
-                  builder: (context) => EditProfileBottomSheet());
-            },
-            icon: Icon(
-              Iconsax.edit_2,
-              color: MyColors.secondary.shade200,
-              size: 20,
-            ),
-          )
-        ],
+                ),
+                IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        barrierColor: MyColors.noColor,
+                        builder: (context) => EditProfileBottomSheet(user));
+                  },
+                  icon: Icon(
+                    Iconsax.edit_2,
+                    color: MyColors.secondary.shade200,
+                    size: 20,
+                  ),
+                )
+              ],
+            );
+          }
+          return SizedBox();
+        },
       )
     ];
   }
