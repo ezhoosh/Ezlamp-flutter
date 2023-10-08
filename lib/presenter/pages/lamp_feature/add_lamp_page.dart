@@ -1,6 +1,7 @@
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_group_bottom_sheet.dart';
@@ -34,24 +35,10 @@ class _AddLampPageState extends State<AddLampPage> {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Stack(
-                children: [
-                  Align(
-                      alignment: Alignment.centerRight,
-                      child: SvgPicture.asset("assets/icons/arrow_right.svg")),
-                  Center(
-                    child: Text(
-                      al.addLamps,
-                      textAlign: TextAlign.center,
-                      style: TitleStyle.t4.copyWith(
-                        color: MyColors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            TopBar(
+              title: al.addLamps,
+              onTapRight: () => Navigator.pop(context),
+              iconRight: SvgPicture.asset("assets/icons/arrow_right.svg"),
             ),
             Expanded(
                 child: Padding(

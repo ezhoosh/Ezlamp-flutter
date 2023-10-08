@@ -1,5 +1,6 @@
 import 'package:easy_lamp/locator.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
@@ -24,6 +25,7 @@ void main() async {
   await setupLamp();
   await setupUser();
   await setupInternetBox();
+  await setupCommand();
   runApp(const MyApp());
 }
 
@@ -40,6 +42,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => locator<LampBloc>()),
         BlocProvider(create: (_) => locator<UserBloc>()),
         BlocProvider(create: (_) => locator<InternetBoxBloc>()),
+        BlocProvider(create: (_) => locator<CommandBloc>()),
       ],
       child: FlutterWebFrame(
         builder: (BuildContext context) {

@@ -57,146 +57,112 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         )) {
     on<SendPhoneNumberEvent>((event, emit) async {
       emit(state.copyWith(newSendPhoneStatus: BaseLoading()));
-      try {
-        DataState dataState =
-            await sendPhoneNumberUseCase(SendPhoneNumberParams(event.number));
-        if (dataState is DataSuccess) {
-          emit(state.copyWith(newSendPhoneStatus: BaseSuccess(dataState.data)));
-        } else {
-          emit(state.copyWith(newSendPhoneStatus: BaseError(dataState.error)));
-        }
-      } catch (e) {
-        emit(state.copyWith(newSendPhoneStatus: BaseError(e.toString())));
+      DataState dataState =
+          await sendPhoneNumberUseCase(SendPhoneNumberParams(event.number));
+      if (dataState is DataSuccess) {
+        emit(state.copyWith(newSendPhoneStatus: BaseSuccess(dataState.data)));
+      } else {
+        emit(state.copyWith(newSendPhoneStatus: BaseError(dataState.error)));
       }
       emit(state.copyWith(newSendPhoneStatus: BaseNoAction()));
     });
     on<LoginEvent>((event, emit) async {
       emit(state.copyWith(newLoginStatus: BaseLoading()));
-      try {
-        DataState dataState = await loginUseCase(
-            LoginParams(event.number, event.password, event.otp));
-        if (dataState is DataSuccess) {
-          LoginModel model = dataState.data;
-          await writeLocalStorageUseCase(
-              WriteLocalStorageParam(Constants.accessKey, model.access));
-          await writeLocalStorageUseCase(
-              WriteLocalStorageParam(Constants.refreshKey, model.refresh));
-          await writeLocalStorageUseCase(
-              WriteLocalStorageParam(Constants.phoneKey, model.phoneNumber));
+      DataState dataState = await loginUseCase(
+          LoginParams(event.number, event.password, event.otp));
+      if (dataState is DataSuccess) {
+        LoginModel model = dataState.data;
+        await writeLocalStorageUseCase(
+            WriteLocalStorageParam(Constants.accessKey, model.access));
+        await writeLocalStorageUseCase(
+            WriteLocalStorageParam(Constants.refreshKey, model.refresh));
+        await writeLocalStorageUseCase(
+            WriteLocalStorageParam(Constants.phoneKey, model.phoneNumber));
 
-          emit(state.copyWith(newLoginStatus: BaseSuccess(dataState.data)));
-        } else {
-          emit(state.copyWith(newLoginStatus: BaseError(dataState.error)));
-        }
-      } catch (e) {
-        emit(state.copyWith(newLoginStatus: BaseError(e.toString())));
+        emit(state.copyWith(newLoginStatus: BaseSuccess(dataState.data)));
+      } else {
+        emit(state.copyWith(newLoginStatus: BaseError(dataState.error)));
       }
       emit(state.copyWith(newSendPhoneStatus: BaseNoAction()));
     });
     on<RegisterEvent>((event, emit) async {
       emit(state.copyWith(newRegisterStatus: BaseLoading()));
-      try {
-        DataState dataState = await registerUseCase(
-            LoginParams(event.number, event.password, event.otp));
-        if (dataState is DataSuccess) {
-          LoginModel model = dataState.data;
-          await writeLocalStorageUseCase(
-              WriteLocalStorageParam(Constants.accessKey, model.access));
-          await writeLocalStorageUseCase(
-              WriteLocalStorageParam(Constants.refreshKey, model.refresh));
-          await writeLocalStorageUseCase(
-              WriteLocalStorageParam(Constants.phoneKey, model.phoneNumber));
-          emit(state.copyWith(newRegisterStatus: BaseSuccess(dataState.data)));
-        } else {
-          emit(state.copyWith(newRegisterStatus: BaseError(dataState.error)));
-        }
-      } catch (e) {
-        emit(state.copyWith(newRegisterStatus: BaseError(e.toString())));
+      DataState dataState = await registerUseCase(
+          LoginParams(event.number, event.password, event.otp));
+      if (dataState is DataSuccess) {
+        LoginModel model = dataState.data;
+        await writeLocalStorageUseCase(
+            WriteLocalStorageParam(Constants.accessKey, model.access));
+        await writeLocalStorageUseCase(
+            WriteLocalStorageParam(Constants.refreshKey, model.refresh));
+        await writeLocalStorageUseCase(
+            WriteLocalStorageParam(Constants.phoneKey, model.phoneNumber));
+        emit(state.copyWith(newRegisterStatus: BaseSuccess(dataState.data)));
+      } else {
+        emit(state.copyWith(newRegisterStatus: BaseError(dataState.error)));
       }
       emit(state.copyWith(newSendPhoneStatus: BaseNoAction()));
     });
     on<ResetPasswordEvent>((event, emit) async {
       emit(state.copyWith(newResetPasswordStatus: BaseLoading()));
-      try {
-        DataState dataState = await resetPasswordUseCase(
-            LoginParams(event.number, event.password, event.otp));
-        if (dataState is DataSuccess) {
-          emit(state.copyWith(
-              newResetPasswordStatus: BaseSuccess(dataState.data)));
-        } else {
-          emit(state.copyWith(
-              newResetPasswordStatus: BaseError(dataState.error)));
-        }
-      } catch (e) {
-        emit(state.copyWith(newResetPasswordStatus: BaseError(e.toString())));
+      DataState dataState = await resetPasswordUseCase(
+          LoginParams(event.number, event.password, event.otp));
+      if (dataState is DataSuccess) {
+        emit(state.copyWith(
+            newResetPasswordStatus: BaseSuccess(dataState.data)));
+      } else {
+        emit(
+            state.copyWith(newResetPasswordStatus: BaseError(dataState.error)));
       }
       emit(state.copyWith(newSendPhoneStatus: BaseNoAction()));
     });
     on<RegisterVerifyEvent>((event, emit) async {
       emit(state.copyWith(newRegisterVerifyStatus: BaseLoading()));
-      try {
-        DataState dataState = await registerVerifyUseCase(
-            RegisterVerifyParams(event.number, event.otp));
-        if (dataState is DataSuccess) {
-          emit(state.copyWith(
-              newRegisterVerifyStatus: BaseSuccess(dataState.data)));
-        } else {
-          emit(state.copyWith(
-              newRegisterVerifyStatus: BaseError(dataState.error)));
-        }
-      } catch (e) {
-        emit(state.copyWith(newRegisterVerifyStatus: BaseError(e.toString())));
+      DataState dataState = await registerVerifyUseCase(
+          RegisterVerifyParams(event.number, event.otp));
+      if (dataState is DataSuccess) {
+        emit(state.copyWith(
+            newRegisterVerifyStatus: BaseSuccess(dataState.data)));
+      } else {
+        emit(state.copyWith(
+            newRegisterVerifyStatus: BaseError(dataState.error)));
       }
       emit(state.copyWith(newRegisterVerifyStatus: BaseNoAction()));
     });
 
     on<SendLoginOtpEvent>((event, emit) async {
       emit(state.copyWith(newSendLoginOtpStatus: BaseLoading()));
-      try {
-        DataState dataState = await sendLoginOtpUseCase(event.number);
-        if (dataState is DataSuccess) {
-          emit(state.copyWith(
-              newSendLoginOtpStatus: BaseSuccess(dataState.data)));
-        } else {
-          emit(state.copyWith(
-              newSendLoginOtpStatus: BaseError(dataState.error)));
-        }
-      } catch (e) {
-        emit(state.copyWith(newSendLoginOtpStatus: BaseError(e.toString())));
+      DataState dataState = await sendLoginOtpUseCase(event.number);
+      if (dataState is DataSuccess) {
+        emit(
+            state.copyWith(newSendLoginOtpStatus: BaseSuccess(dataState.data)));
+      } else {
+        emit(state.copyWith(newSendLoginOtpStatus: BaseError(dataState.error)));
       }
       emit(state.copyWith(newSendLoginOtpStatus: BaseNoAction()));
     });
 
     on<SendResetOtpEvent>((event, emit) async {
       emit(state.copyWith(newSendResetOtpStatus: BaseLoading()));
-      try {
-        DataState dataState = await sendLoginOtpUseCase(event.number);
-        if (dataState is DataSuccess) {
-          emit(state.copyWith(
-              newSendResetOtpStatus: BaseSuccess(dataState.data)));
-        } else {
-          emit(state.copyWith(
-              newSendResetOtpStatus: BaseError(dataState.error)));
-        }
-      } catch (e) {
-        emit(state.copyWith(newSendResetOtpStatus: BaseError(e.toString())));
+      DataState dataState = await sendLoginOtpUseCase(event.number);
+      if (dataState is DataSuccess) {
+        emit(
+            state.copyWith(newSendResetOtpStatus: BaseSuccess(dataState.data)));
+      } else {
+        emit(state.copyWith(newSendResetOtpStatus: BaseError(dataState.error)));
       }
       emit(state.copyWith(newSendResetOtpStatus: BaseNoAction()));
     });
     on<ChangePasswordEvent>((event, emit) async {
       emit(state.copyWith(newChangePasswordStatus: BaseLoading()));
-      try {
-        DataState dataState = await changePasswordUseCase(
-            ChangePasswordParams(event.oldPassword, event.newPassword));
-        if (dataState is DataSuccess) {
-          emit(state.copyWith(
-              newChangePasswordStatus: BaseSuccess(dataState.data)));
-        } else {
-          emit(state.copyWith(
-              newChangePasswordStatus: BaseError(dataState.error)));
-        }
-      } catch (e) {
-        emit(state.copyWith(newChangePasswordStatus: BaseError(e.toString())));
+      DataState dataState = await changePasswordUseCase(
+          ChangePasswordParams(event.oldPassword, event.newPassword));
+      if (dataState is DataSuccess) {
+        emit(state.copyWith(
+            newChangePasswordStatus: BaseSuccess(dataState.data)));
+      } else {
+        emit(state.copyWith(
+            newChangePasswordStatus: BaseError(dataState.error)));
       }
       emit(state.copyWith(newChangePasswordStatus: BaseNoAction()));
     });

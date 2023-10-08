@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> {
           const ProfilePage(),
           const GroupPage(),
           const SchedulePage(),
-          Container(),
         ],
       ),
       backgroundColor: MyColors.black,
@@ -58,7 +57,6 @@ class _HomePageState extends State<HomePage> {
           getItemBottomNavigation("tab_user.svg"),
           getItemBottomNavigation("tab_group.svg"),
           getItemBottomNavigation("tab_timer.svg"),
-          getItemBottomNavigation("tab_home.svg"),
         ],
       ),
     );

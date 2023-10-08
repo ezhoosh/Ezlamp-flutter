@@ -1,12 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:easy_lamp/core/utils/local_data_provider.dart';
 import 'package:easy_lamp/data/repositories/auth_repository_impl.dart';
+import 'package:easy_lamp/data/repositories/command_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/group_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/internet_box_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/local_storage_repositoryimpl.dart';
 import 'package:easy_lamp/data/repositories/splash_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/user_repository_impl.dart';
 import 'package:easy_lamp/domain/repositories/auth_repository.dart';
+import 'package:easy_lamp/domain/repositories/command_repository.dart';
 import 'package:easy_lamp/domain/repositories/group_repository.dart';
 import 'package:easy_lamp/data/repositories/lamp_repository_impl.dart';
 import 'package:easy_lamp/domain/repositories/internet_box_repository.dart';
@@ -32,6 +34,7 @@ import 'package:easy_lamp/domain/usecases/refresh_token_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_verify_usecase.dart';
 import 'package:easy_lamp/domain/usecases/reset_password_usecase.dart';
+import 'package:easy_lamp/domain/usecases/send_command_usecase.dart';
 import 'package:easy_lamp/domain/usecases/send_login_otp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/send_phone_number_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_group_name_usecase.dart';
@@ -45,6 +48,7 @@ import 'package:easy_lamp/domain/usecases/update_lamp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_user_usecase.dart';
 import 'package:easy_lamp/domain/usecases/write_localstorage_usecase.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
@@ -204,6 +208,17 @@ setupUser() async {
   //bloc
   locator.registerSingleton<UserBloc>(UserBloc(
     locator(),
+    locator(),
+  ));
+}
+
+setupCommand() async {
+  // repositories
+  locator.registerSingleton<CommandRepository>(CommandRepositoryImpl());
+  // useCases
+  locator.registerSingleton<SendCommandUseCase>(SendCommandUseCase(locator()));
+  //bloc
+  locator.registerSingleton<CommandBloc>(CommandBloc(
     locator(),
   ));
 }
