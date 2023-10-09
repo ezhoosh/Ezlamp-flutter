@@ -1,7 +1,14 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:easy_lamp/core/utils/local_data_provider.dart';
+import 'package:easy_lamp/data/isar_model/isar_command.dart';
+import 'package:easy_lamp/data/isar_model/isar_group.dart';
+import 'package:easy_lamp/data/isar_model/isar_lamp.dart';
+import 'package:easy_lamp/data/isar_model/isar_owner.dart';
 import 'package:easy_lamp/data/repositories/auth_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/command_repository_impl.dart';
+import 'package:easy_lamp/data/repositories/group_isar_service.dart';
 import 'package:easy_lamp/data/repositories/group_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/internet_box_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/local_storage_repositoryimpl.dart';
@@ -29,6 +36,7 @@ import 'package:easy_lamp/domain/usecases/get_lamp_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_user_usecase.dart';
 import 'package:easy_lamp/domain/usecases/login_usecase.dart';
+import 'package:easy_lamp/domain/usecases/read_connection_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/refresh_token_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_usecase.dart';
@@ -55,12 +63,15 @@ import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:isar/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart';
 
 GetIt locator = GetIt.instance;
 
 setupMain() async {
   locator.registerSingleton<Dio>(Dio());
+  locator.registerSingleton<Isar>(await openDB());
   locator.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());
   locator.registerSingleton<LocalDataProvider>(LocalDataProvider(locator()));
@@ -70,6 +81,8 @@ setupMain() async {
       WriteLocalStorageUseCase(locator()));
   locator.registerSingleton<ReadLocalStorageUseCase>(
       ReadLocalStorageUseCase(locator()));
+  locator.registerSingleton<ReadConnectionUseCase>(
+      ReadConnectionUseCase(locator()));
 }
 
 setupSplash() async {
@@ -114,12 +127,15 @@ setupAuth() async {
     locator(),
     locator(),
     locator(),
+    locator(),
   ));
 }
 
 setupGroup() async {
   // repositories
   locator.registerSingleton<GroupRepository>(GroupRepositoryImpl());
+  locator
+      .registerSingleton<IsarGroupRepository>(IsarGroupRepository(locator()));
   // useCases
   locator
       .registerSingleton<GetGroupListUseCase>(GetGroupListUseCase(locator()));
@@ -135,6 +151,8 @@ setupGroup() async {
 
   //bloc
   locator.registerSingleton<GroupBloc>(GroupBloc(
+    locator(),
+    locator(),
     locator(),
     locator(),
     locator(),
@@ -221,4 +239,24 @@ setupCommand() async {
   locator.registerSingleton<CommandBloc>(CommandBloc(
     locator(),
   ));
+}
+
+Future<Isar> openDB() async {
+  if (Isar.instanceNames.isEmpty) {
+    Directory appDocDirectory = await getApplicationDocumentsDirectory();
+    await Directory('${appDocDirectory.path}/dir').create(recursive: true);
+    Isar isar = await Isar.open(
+      [
+        IsarLampSchema,
+        IsarGroupSchema,
+        IsarCommandSchema,
+        IsarOwnerSchema,
+      ],
+      inspector: true,
+      directory: '${appDocDirectory.path}/dir',
+    );
+    return isar;
+  }
+
+  return Future.value(Isar.getInstance());
 }

@@ -4,6 +4,7 @@ import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
+import 'package:easy_lamp/data/model/connection_type.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/user_model.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
@@ -37,7 +38,6 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late AppLocalizations al;
-  int _currentTab = 0;
 
   @override
   void initState() {
@@ -172,15 +172,32 @@ class _ProfilePageState extends State<ProfilePage> {
             style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
           ),
           const Spacer(),
-          Container(
-            decoration: BoxDecoration(
-              color: MyColors.black.shade300,
-              borderRadius: MyRadius.sm,
-            ),
-            padding: EdgeInsets.all(MySpaces.s4),
-            child: Row(
-              children: [getTab(al.internet, 0), getTab(al.blue, 1)],
-            ),
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              int current =
+                  state.connectionType == ConnectionType.Bluetooth ? 1 : 0;
+              return Container(
+                decoration: BoxDecoration(
+                  color: MyColors.black.shade300,
+                  borderRadius: MyRadius.sm,
+                ),
+                padding: const EdgeInsets.all(MySpaces.s4),
+                child: Row(
+                  children: [
+                    getTab(
+                      al.internet,
+                      0,
+                      current,
+                    ),
+                    getTab(
+                      al.blue,
+                      1,
+                      current,
+                    )
+                  ],
+                ),
+              );
+            },
           )
         ],
       ),
@@ -287,13 +304,12 @@ class _ProfilePageState extends State<ProfilePage> {
     ];
   }
 
-  getTab(String tabImportantDates, int i) {
-    bool c = i == _currentTab;
+  getTab(String tabImportantDates, int i, int current) {
+    bool c = i == current;
     return ClickableContainer(
       onTap: () {
-        setState(() {
-          _currentTab = i;
-        });
+        BlocProvider.of<AuthBloc>(context).add(ChangeConnectionTypeEvent(
+            i == 1 ? ConnectionType.Bluetooth : ConnectionType.Internet));
       },
       padding: const EdgeInsets.symmetric(
           vertical: MySpaces.s6, horizontal: MySpaces.s16),

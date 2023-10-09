@@ -15,6 +15,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,6 +27,15 @@ void main() async {
   await setupUser();
   await setupInternetBox();
   await setupCommand();
+
+  Connectivity()
+      .onConnectivityChanged
+      .listen((ConnectivityResult result) async {
+    final connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      print('connection disconnected');
+    }
+  });
   runApp(const MyApp());
 }
 

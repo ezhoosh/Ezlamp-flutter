@@ -1,11 +1,11 @@
+import 'package:easy_lamp/data/repositories/group_isar_service.dart';
+import 'package:easy_lamp/locator.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/group_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/profile_page.dart';
 import 'package:easy_lamp/presenter/pages/schedule_feature/schedule_page.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
-import 'package:easy_lamp/presenter/pages/internet_box_feature/internet_box_page.dart';
 import 'package:easy_lamp/core/widgets/dot_navigation/dot_navigation_bar.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -19,17 +19,21 @@ class _HomePageState extends State<HomePage> {
   int currentPage = 1;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // double w = MediaQuery.of(context).size.width;
     // double h = MediaQuery.of(context).size.height;
-
     return Scaffold(
       body: PageView(
         controller: controller,
-        children: [
-          const ProfilePage(),
-          const GroupPage(),
-          const SchedulePage(),
+        children: const [
+          ProfilePage(),
+          GroupPage(),
+          SchedulePage(),
         ],
       ),
       backgroundColor: MyColors.black,

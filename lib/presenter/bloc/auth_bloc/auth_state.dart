@@ -10,6 +10,7 @@ class AuthState {
       changePasswordStatus,
       logOutStatus,
       sendResetOtpStatus;
+  ConnectionType connectionType;
 
   AuthState({
     required this.loginStatus,
@@ -21,19 +22,20 @@ class AuthState {
     required this.changePasswordStatus,
     required this.sendResetOtpStatus,
     required this.logOutStatus,
+    required this.connectionType,
   });
 
-  AuthState copyWith({
-    BaseStatus? newSendPhoneStatus,
-    newLoginStatus,
-    newRegisterStatus,
-    newResetPasswordStatus,
-    newRegisterVerifyStatus,
-    newSendLoginOtpStatus,
-    newSendResetOtpStatus,
-    newChangePasswordStatus,
-    newLogOutStatus,
-  }) {
+  AuthState copyWith(
+      {BaseStatus? newSendPhoneStatus,
+      newLoginStatus,
+      newRegisterStatus,
+      newResetPasswordStatus,
+      newRegisterVerifyStatus,
+      newSendLoginOtpStatus,
+      newSendResetOtpStatus,
+      newChangePasswordStatus,
+      newLogOutStatus,
+      ConnectionType? newConnectionType}) {
     return AuthState(
       loginStatus: newLoginStatus ?? loginStatus,
       registerStatus: newRegisterStatus ?? registerStatus,
@@ -44,6 +46,7 @@ class AuthState {
       sendResetOtpStatus: newSendResetOtpStatus ?? sendResetOtpStatus,
       changePasswordStatus: newChangePasswordStatus ?? changePasswordStatus,
       logOutStatus: newLogOutStatus ?? logOutStatus,
+      connectionType: newConnectionType ?? connectionType,
     );
   }
 }

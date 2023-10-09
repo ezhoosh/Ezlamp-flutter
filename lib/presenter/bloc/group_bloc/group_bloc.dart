@@ -4,17 +4,25 @@ import 'package:easy_lamp/core/params/edit_group_name_params.dart';
 import 'package:easy_lamp/core/params/update_group_owner_params.dart';
 import 'package:easy_lamp/core/params/update_group_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
+import 'package:easy_lamp/core/resource/constants.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/core/resource/use_case.dart';
+import 'package:easy_lamp/core/utils/converter.dart';
+import 'package:easy_lamp/data/isar_model/isar_group.dart';
+import 'package:easy_lamp/data/model/connection_type.dart';
+import 'package:easy_lamp/data/model/group_lamp_model.dart';
+import 'package:easy_lamp/data/repositories/group_isar_service.dart';
 import 'package:easy_lamp/domain/usecases/create_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_list_usecase.dart';
+import 'package:easy_lamp/domain/usecases/read_connection_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_group_name_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_group_owner_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/write_localstorage_usecase.dart';
+import 'package:easy_lamp/locator.dart';
 import 'package:meta/meta.dart';
 
 part 'group_event.dart';
@@ -31,18 +39,22 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
   WriteLocalStorageUseCase writeLocalStorageUseCase;
   ReadLocalStorageUseCase readLocalStorageUseCase;
   UpdateGroupNameUseCase updateGroupNameUseCase;
+  IsarGroupRepository isarGroupRepository;
+  ReadConnectionUseCase readConnectionUseCase;
 
   GroupBloc(
-      this.writeLocalStorageUseCase,
-      this.readLocalStorageUseCase,
-      this.createGroupUseCase,
-      this.deleteGroupUseCase,
-      this.getGroupByIdUseCase,
-      this.getGroupListUseCase,
-      this.updateGroupOwnerUseCase,
-      this.updateGroupUseCase,
-      this.updateGroupNameUseCase)
-      : super(GroupState(
+    this.writeLocalStorageUseCase,
+    this.readLocalStorageUseCase,
+    this.createGroupUseCase,
+    this.deleteGroupUseCase,
+    this.getGroupByIdUseCase,
+    this.getGroupListUseCase,
+    this.updateGroupOwnerUseCase,
+    this.updateGroupUseCase,
+    this.updateGroupNameUseCase,
+    this.isarGroupRepository,
+    this.readConnectionUseCase,
+  ) : super(GroupState(
             updateGroupStatus: BaseNoAction(),
             updateGroupNameStatus: BaseNoAction(),
             deleteGroupStatus: BaseNoAction(),
@@ -52,12 +64,23 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
             createGroupStatus: BaseNoAction())) {
     on<GetGroupListEvent>((event, emit) async {
       emit(state.copyWith(newGetGroupListStatus: BaseLoading()));
-      DataState dataState = await getGroupListUseCase(NoParams());
-      if (dataState is DataSuccess) {
-        emit(
-            state.copyWith(newGetGroupListStatus: BaseSuccess(dataState.data)));
+      ConnectionType type = await readConnectionUseCase(NoParams());
+      if (type == ConnectionType.Bluetooth) {
+        List<GroupLampModel> groups = await Converter.isarGroupToGroupLampModel(
+            await isarGroupRepository.getAll());
+        emit(state.copyWith(newGetGroupListStatus: BaseSuccess(groups)));
       } else {
-        emit(state.copyWith(newGetGroupListStatus: BaseError(dataState.error)));
+        DataState dataState = await getGroupListUseCase(NoParams());
+        if (dataState is DataSuccess) {
+          // await isarGroupRepository.clearCollection();
+          await isarGroupRepository
+              .saveAll(Converter.groupLampModelToIsarGroup(dataState.data));
+          emit(state.copyWith(
+              newGetGroupListStatus: BaseSuccess(dataState.data)));
+        } else {
+          emit(state.copyWith(
+              newGetGroupListStatus: BaseError(dataState.error)));
+        }
       }
       emit(state.copyWith(newGetGroupListStatus: BaseNoAction()));
     });

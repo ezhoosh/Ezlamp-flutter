@@ -59,4 +59,16 @@ class ChangePasswordEvent extends AuthEvent {
   ChangePasswordEvent(this.oldPassword, this.newPassword);
 }
 
+class ChangeConnectionTypeEvent extends AuthEvent {
+  ConnectionType type;
+
+  ChangeConnectionTypeEvent(this.type);
+}
+
+class GetConnectionTypeEvent extends AuthEvent {
+  ConnectionType type;
+
+  GetConnectionTypeEvent(this.type);
+}
+
 class LogOutEvent extends AuthEvent {}
