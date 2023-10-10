@@ -1,21 +1,13 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
-import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/connection_type.dart';
-import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/user_model.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
-import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
-import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/internet_box_page.dart';
-import 'package:easy_lamp/presenter/pages/internet_box_feature/more_internet_box_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_page.dart';
-import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/change_language_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/change_password_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/edit_profile_bottom_sheet.dart';
@@ -43,6 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     BlocProvider.of<UserBloc>(context).add(GetUserEvent());
+    BlocProvider.of<AuthBloc>(context).add(GetConnectionTypeEvent());
   }
 
   @override

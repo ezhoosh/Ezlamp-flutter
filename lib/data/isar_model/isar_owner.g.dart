@@ -51,6 +51,13 @@ const IsarOwnerSchema = CollectionSchema(
       target: r'IsarGroup',
       single: false,
       linkName: r'owner',
+    ),
+    r'internetBox': LinkSchema(
+      id: -8470636946403945530,
+      name: r'internetBox',
+      target: r'IsarInternetBox',
+      single: false,
+      linkName: r'owner',
     )
   },
   embeddedSchemas: {},
@@ -146,12 +153,14 @@ Id _isarOwnerGetId(IsarOwner object) {
 }
 
 List<IsarLinkBase<dynamic>> _isarOwnerGetLinks(IsarOwner object) {
-  return [object.groups];
+  return [object.groups, object.internetBox];
 }
 
 void _isarOwnerAttach(IsarCollection<dynamic> col, Id id, IsarOwner object) {
   object.idDb = id;
   object.groups.attach(col, col.isar.collection<IsarGroup>(), r'groups', id);
+  object.internetBox
+      .attach(col, col.isar.collection<IsarInternetBox>(), r'internetBox', id);
 }
 
 extension IsarOwnerQueryWhereSort
@@ -943,6 +952,67 @@ extension IsarOwnerQueryLinks
     return QueryBuilder.apply(this, (query) {
       return query.linkLength(
           r'groups', lower, includeLower, upper, includeUpper);
+    });
+  }
+
+  QueryBuilder<IsarOwner, IsarOwner, QAfterFilterCondition> internetBox(
+      FilterQuery<IsarInternetBox> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'internetBox');
+    });
+  }
+
+  QueryBuilder<IsarOwner, IsarOwner, QAfterFilterCondition>
+      internetBoxLengthEqualTo(int length) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'internetBox', length, true, length, true);
+    });
+  }
+
+  QueryBuilder<IsarOwner, IsarOwner, QAfterFilterCondition>
+      internetBoxIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'internetBox', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<IsarOwner, IsarOwner, QAfterFilterCondition>
+      internetBoxIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'internetBox', 0, false, 999999, true);
+    });
+  }
+
+  QueryBuilder<IsarOwner, IsarOwner, QAfterFilterCondition>
+      internetBoxLengthLessThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'internetBox', 0, true, length, include);
+    });
+  }
+
+  QueryBuilder<IsarOwner, IsarOwner, QAfterFilterCondition>
+      internetBoxLengthGreaterThan(
+    int length, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'internetBox', length, include, 999999, true);
+    });
+  }
+
+  QueryBuilder<IsarOwner, IsarOwner, QAfterFilterCondition>
+      internetBoxLengthBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(
+          r'internetBox', lower, includeLower, upper, includeUpper);
     });
   }
 }

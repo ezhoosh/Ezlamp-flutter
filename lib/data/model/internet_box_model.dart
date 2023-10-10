@@ -17,8 +17,8 @@ class InternetBoxModel {
   int id;
   String name;
   String description;
-  OwnerModel owner;
-  String lamps;
+  OwnerModel? owner;
+  List<dynamic> lamps;
 
   InternetBoxModel({
     required this.id,
@@ -41,7 +41,7 @@ class InternetBoxModel {
         "id": id,
         "name": name,
         "description": description,
-        "owner": owner.toJson(),
+        "owner": owner!.toJson(),
         "lamps": lamps,
       };
 }

@@ -65,10 +65,6 @@ class ChangeConnectionTypeEvent extends AuthEvent {
   ChangeConnectionTypeEvent(this.type);
 }
 
-class GetConnectionTypeEvent extends AuthEvent {
-  ConnectionType type;
-
-  GetConnectionTypeEvent(this.type);
-}
+class GetConnectionTypeEvent extends AuthEvent {}
 
 class LogOutEvent extends AuthEvent {}

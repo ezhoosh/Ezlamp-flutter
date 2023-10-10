@@ -7,6 +7,7 @@ import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -58,21 +59,21 @@ class _AddLampGroupBottomSheetState extends State<AddLampGroupBottomSheet> {
           EasyLoading.showError("ERROR");
         }
       },
-      child: BlocListener<GroupBloc, GroupState>(
+      child: BlocListener<InternetBoxBloc, InternetBoxState>(
         listenWhen: (prev, curr) {
-          if (prev.updateGroupOwnerStatus is BaseSuccess &&
-              curr.updateGroupOwnerStatus is BaseNoAction) {
+          if (prev.updateInternetBoxOwnerStatus is BaseSuccess &&
+              curr.updateInternetBoxOwnerStatus is BaseNoAction) {
             return false;
           }
           return true;
         },
         listener: (context, state) {
-          if (state.updateGroupOwnerStatus is BaseSuccess) {
+          if (state.updateInternetBoxOwnerStatus is BaseSuccess) {
             Navigator.pop(context);
             EasyLoading.showSuccess("SUCCESS");
-          } else if (state.updateGroupOwnerStatus is BaseLoading) {
+          } else if (state.updateInternetBoxOwnerStatus is BaseLoading) {
             EasyLoading.show();
-          } else if (state.updateGroupOwnerStatus is BaseError) {
+          } else if (state.updateInternetBoxOwnerStatus is BaseError) {
             EasyLoading.showError("ERROR");
           }
         },
@@ -100,9 +101,9 @@ class _AddLampGroupBottomSheetState extends State<AddLampGroupBottomSheet> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (widget.uuid
-                        .startsWith('group-lamp/update-group-owner/')) {
-                      BlocProvider.of<GroupBloc>(context).add(
-                        UpdateGroupOwnerEvent(
+                        .startsWith('internetbox/update-internetbox-owner/')) {
+                      BlocProvider.of<InternetBoxBloc>(context).add(
+                        UpdateInternetBoxOwnerEvent(
                           UpdateGroupOwnerParams(
                             widget.uuid,
                             _controllerName.text,

@@ -185,7 +185,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ChangeConnectionTypeEvent>((event, emit) async {
       await writeLocalStorageUseCase(WriteLocalStorageParam(
           Constants.connectionTypeKey, event.type.toString()));
-      add(GetConnectionTypeEvent(event.type));
+      add(GetConnectionTypeEvent());
     });
     on<GetConnectionTypeEvent>((event, emit) async {
       ConnectionType type = await readConnectionUseCase(NoParams());

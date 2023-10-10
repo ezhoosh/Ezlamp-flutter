@@ -1,4 +1,5 @@
 import 'package:easy_lamp/data/isar_model/isar_group.dart';
+import 'package:easy_lamp/data/isar_model/isar_internet_box.dart';
 import 'package:isar/isar.dart';
 
 part 'isar_owner.g.dart';
@@ -12,6 +13,9 @@ class IsarOwner {
   String? email;
   @Backlink(to: 'owner')
   final groups = IsarLinks<IsarGroup>();
+
+  @Backlink(to: 'owner')
+  final internetBox = IsarLinks<IsarInternetBox>();
 
   IsarOwner({
     this.phoneNumber,

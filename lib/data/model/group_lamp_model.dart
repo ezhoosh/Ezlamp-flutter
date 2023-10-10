@@ -37,7 +37,8 @@ class GroupLampModel {
         description: json["description"],
         members: List<dynamic>.from(json["members"].map((x) => x)),
         owner: OwnerModel.fromJson(json["owner"]),
-        lamps: List<LampModel>.from(json["lamps"].map((x) => x)),
+        lamps: List<LampModel>.from(
+            json["lamps"].map((x) => LampModel.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

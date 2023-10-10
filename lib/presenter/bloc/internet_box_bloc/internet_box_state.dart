@@ -1,20 +1,20 @@
 part of 'internet_box_bloc.dart';
 
 class InternetBoxState {
-  BaseStatus getGroupListStatus,
-      getGroupByIdStatus,
-      updateGroupOwnerStatus,
-      updateGroupStatus,
-      deleteGroupStatus,
-      updateGroupNameStatus;
+  BaseStatus getInternetBoxListStatus,
+      getInternetBoxByIdStatus,
+      updateInternetBoxOwnerStatus,
+      updateInternetBoxStatus,
+      deleteInternetBoxStatus,
+      updateInternetBoxNameStatus;
 
   InternetBoxState(
-      {required this.getGroupByIdStatus,
-      required this.updateGroupNameStatus,
-      required this.deleteGroupStatus,
-      required this.getGroupListStatus,
-      required this.updateGroupOwnerStatus,
-      required this.updateGroupStatus});
+      {required this.getInternetBoxByIdStatus,
+      required this.updateInternetBoxNameStatus,
+      required this.deleteInternetBoxStatus,
+      required this.getInternetBoxListStatus,
+      required this.updateInternetBoxOwnerStatus,
+      required this.updateInternetBoxStatus});
 
   InternetBoxState copyWith(
       {BaseStatus? newGetGroupListStatus,
@@ -24,13 +24,17 @@ class InternetBoxState {
       newDeleteGroupStatus,
       newUpdateGroupNameStatus}) {
     return InternetBoxState(
-        updateGroupNameStatus:
-            newUpdateGroupNameStatus ?? updateGroupNameStatus,
-        deleteGroupStatus: newDeleteGroupStatus ?? deleteGroupStatus,
-        updateGroupStatus: newUpdateGroupStatus ?? updateGroupStatus,
-        getGroupByIdStatus: newGetGroupByIdStatus ?? getGroupByIdStatus,
-        getGroupListStatus: newGetGroupListStatus ?? getGroupListStatus,
-        updateGroupOwnerStatus:
-            newUpdateGroupOwnerStatus ?? updateGroupOwnerStatus);
+        updateInternetBoxNameStatus:
+            newUpdateGroupNameStatus ?? updateInternetBoxNameStatus,
+        deleteInternetBoxStatus:
+            newDeleteGroupStatus ?? deleteInternetBoxStatus,
+        updateInternetBoxStatus:
+            newUpdateGroupStatus ?? updateInternetBoxStatus,
+        getInternetBoxByIdStatus:
+            newGetGroupByIdStatus ?? getInternetBoxByIdStatus,
+        getInternetBoxListStatus:
+            newGetGroupListStatus ?? getInternetBoxListStatus,
+        updateInternetBoxOwnerStatus:
+            newUpdateGroupOwnerStatus ?? updateInternetBoxOwnerStatus);
   }
 }

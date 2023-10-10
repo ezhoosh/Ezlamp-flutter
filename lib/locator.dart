@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_lamp/core/utils/local_data_provider.dart';
 import 'package:easy_lamp/data/isar_model/isar_command.dart';
 import 'package:easy_lamp/data/isar_model/isar_group.dart';
+import 'package:easy_lamp/data/isar_model/isar_internet_box.dart';
 import 'package:easy_lamp/data/isar_model/isar_lamp.dart';
 import 'package:easy_lamp/data/isar_model/isar_owner.dart';
 import 'package:easy_lamp/data/repositories/auth_repository_impl.dart';
@@ -11,6 +12,8 @@ import 'package:easy_lamp/data/repositories/command_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/isar_group_repository.dart';
 import 'package:easy_lamp/data/repositories/group_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/internet_box_repository_impl.dart';
+import 'package:easy_lamp/data/repositories/isar_internet_box_repository.dart';
+import 'package:easy_lamp/data/repositories/isar_lamp_repository.dart';
 import 'package:easy_lamp/data/repositories/local_storage_repositoryimpl.dart';
 import 'package:easy_lamp/data/repositories/splash_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/user_repository_impl.dart';
@@ -181,9 +184,12 @@ setupInternetBox() async {
       DeleteInternetBoxUseCase(locator()));
   locator.registerSingleton<UpdateInternetBoxNameUseCase>(
       UpdateInternetBoxNameUseCase(locator()));
+  locator.registerSingleton<IsarInternetBoxRepository>(
+      IsarInternetBoxRepository(locator()));
 
   //bloc
   locator.registerSingleton<InternetBoxBloc>(InternetBoxBloc(
+    locator(),
     locator(),
     locator(),
     locator(),
@@ -206,9 +212,12 @@ setupLamp() async {
       UpdateLampOwnerUseCase(locator()));
   locator.registerSingleton<UpdateLampUseCase>(UpdateLampUseCase(locator()));
   locator.registerSingleton<DeleteLampUseCase>(DeleteLampUseCase(locator()));
+  locator.registerSingleton<IsarLampRepository>(IsarLampRepository(locator()));
 
   //bloc
   locator.registerSingleton<LampBloc>(LampBloc(
+    locator(),
+    locator(),
     locator(),
     locator(),
     locator(),
@@ -251,6 +260,7 @@ Future<Isar> openDB() async {
         IsarGroupSchema,
         IsarCommandSchema,
         IsarOwnerSchema,
+        IsarInternetBoxSchema,
       ],
       inspector: true,
       directory: '${appDocDirectory.path}/dir',

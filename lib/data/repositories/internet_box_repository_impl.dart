@@ -109,14 +109,12 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
   Future<DataState<InternetBoxModel>> updateInternetBoxOwner(
       UpdateGroupOwnerParams params) async {
     try {
-      // "internetbox/update-group-owner/${params.uuid.toString()}",
-      var response =
-          await ApiAccess.makeHttpRequest("${params.uuid.toString()}/",
-              data: {
-                "name": params.name,
-                "description": params.description,
-              },
-              method: 'PUT');
+      var response = await ApiAccess.makeHttpRequest("${params.uuid}/",
+          data: {
+            "name": params.name,
+            "description": params.description,
+          },
+          method: 'PUT');
       if (response.statusCode == 200) {
         return DataSuccess(InternetBoxModel.fromJson(response.data));
       } else {

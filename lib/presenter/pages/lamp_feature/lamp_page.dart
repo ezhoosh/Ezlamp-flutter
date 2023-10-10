@@ -2,6 +2,8 @@ import 'package:easy_lamp/core/params/get_lamps_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/clickable_container.dart';
+import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
@@ -45,33 +47,21 @@ class _LampPageState extends State<LampPage> {
       body: SafeArea(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Row(
-                children: [
-                  SvgPicture.asset("assets/icons/arrow_right.svg"),
-                  Expanded(
-                    child: Text(
-                      al.lampList,
-                      textAlign: TextAlign.center,
-                      style: TitleStyle.t4.copyWith(
-                        color: MyColors.white,
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                      borderRadius: MyRadius.sm,
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => AddLampPage(
-                                    groupId: widget.groupId,
-                                  )),
-                        );
-                      },
-                      child: SvgPicture.asset("assets/icons/add_circle.svg")),
-                ],
-              ),
+            TopBar(
+              title: al.lampList,
+              iconRight: SvgPicture.asset("assets/icons/arrow_right.svg"),
+              iconLeft: SvgPicture.asset("assets/icons/add_circle.svg"),
+              onTapLeft: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => AddLampPage(
+                            groupId: widget.groupId,
+                          )),
+                );
+              },
+              onTapRight: () {
+                Navigator.pop(context);
+              },
             ),
             Expanded(
               child: BlocBuilder<LampBloc, LampState>(
@@ -90,15 +80,14 @@ class _LampPageState extends State<LampPage> {
                       padding: const EdgeInsets.only(top: MySpaces.s32),
                       itemBuilder: (context, index) {
                         LampModel lamp = lamps[index];
-                        return Container(
+                        return ClickableContainer(
+                          padding: const EdgeInsets.all(15),
                           margin: const EdgeInsets.only(
                               left: MySpaces.s24,
                               right: MySpaces.s24,
                               bottom: MySpaces.s16),
-                          decoration: BoxDecoration(
-                              borderRadius: MyRadius.base,
-                              color: MyColors.black.shade600),
-                          padding: const EdgeInsets.all(15),
+                          borderRadius: MyRadius.base,
+                          color: MyColors.black.shade600,
                           child: Row(
                             children: [
                               IconButton(

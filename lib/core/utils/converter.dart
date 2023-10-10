@@ -1,7 +1,9 @@
 import 'package:easy_lamp/data/isar_model/isar_group.dart';
+import 'package:easy_lamp/data/isar_model/isar_internet_box.dart';
 import 'package:easy_lamp/data/isar_model/isar_lamp.dart';
 import 'package:easy_lamp/data/isar_model/isar_owner.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
+import 'package:easy_lamp/data/model/internet_box_model.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/data/model/owner_model.dart';
 import 'package:isar/isar.dart';
@@ -77,6 +79,34 @@ class Converter {
             mainPower: e.mainPower ?? '',
             lastCommand: e.lastCommand ?? '',
             uuid: e.uuid ?? ''))
+        .toList();
+  }
+
+  static List<InternetBoxModel> isarInternetBoxToInternetBoxModel(
+      List<IsarInternetBox> data) {
+    return data
+        .map((e) => InternetBoxModel(
+            id: e.id ?? 0,
+            name: e.name ?? '',
+            description: e.description ?? '',
+            owner: null,
+            lamps: []))
+        .toList();
+  }
+
+  static List<IsarInternetBox> internetBoxModelToIsarInternetBox(
+      List<InternetBoxModel> data) {
+    return data
+        .map((e) => IsarInternetBox(
+              id: e.id,
+              name: e.name,
+              description: e.description,
+            )..owner.value = IsarOwner(
+                phoneNumber: e.owner!.phoneNumber,
+                firstName: e.owner!.firstName,
+                lastName: e.owner!.lastName,
+                email: e.owner!.email,
+              ))
         .toList();
   }
 }
