@@ -6,12 +6,14 @@ import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_seekbar/flutter_seekbar.dart';
 import 'package:flutter_svg/svg.dart';
 
 class EditInternetBoxBottomSheet extends StatelessWidget {
   EditInternetBoxBottomSheet({super.key});
 
   late AppLocalizations al;
+
   @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
@@ -35,21 +37,15 @@ class EditInternetBoxBottomSheet extends StatelessWidget {
           const SizedBox(
             height: MySpaces.s8,
           ),
-          HuePicker(
-            initialColor: HSVColor.fromColor(Colors.white),
-            onChanged: (color) {},
-            thumbShape: const HueSliderThumbShape(
-              color: Colors.white,
-              borderColor: Colors.black,
-              filled: false,
-              showBorder: true,
-            ),
-            hueColors: const [
-              Colors.red,
-              Colors.black,
-              Colors.blue,
-              Colors.yellow
-            ],
+          Slider(
+            value: 0,
+            onChanged: (newValue) {},
+            min: 0.0,
+            // Minimum value
+            max: 100.0,
+            // Maximum value
+            divisions: 100,
+            // Number of divisions
           ),
           const SizedBox(
             height: MySpaces.s32,
@@ -65,21 +61,25 @@ class EditInternetBoxBottomSheet extends StatelessWidget {
             height: MySpaces.s8,
           ),
           HuePicker(
-              initialColor: HSVColor.fromColor(Colors.white),
-              onChanged: (color) {},
-              thumbShape: const HueSliderThumbShape(
-                color: Colors.white,
-                borderColor: Colors.black,
-                filled: false,
-                showBorder: true,
-              ),
-              hueColors: const [
-                Colors.red,
-                Colors.black,
-                Colors.blue,
-                Colors.yellow,
-                Colors.green
-              ]),
+            initialColor: HSVColor.fromColor(Colors.white),
+            onChanged: (color) {},
+            thumbShape: const HueSliderThumbShape(
+              color: Colors.white,
+              borderColor: Colors.black,
+              filled: false,
+              showBorder: true,
+            ),
+            hueColors: const [
+              Colors.orange,
+              Colors.yellow,
+              Colors.green,
+              Colors.lightBlueAccent,
+              Colors.blueAccent,
+              Colors.blue,
+              Colors.pink,
+              Colors.red,
+            ],
+          ),
           const SizedBox(
             height: MySpaces.s32,
           ),
@@ -170,5 +170,4 @@ class EditInternetBoxBottomSheet extends StatelessWidget {
       ),
     ));
   }
-
 }

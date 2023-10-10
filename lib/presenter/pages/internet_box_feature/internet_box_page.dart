@@ -43,13 +43,18 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
         child: Column(
           children: [
             TopBar(
-                title: al.internetLamp,
-                onTapLeft: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => AddLampPage()),
-                  );
-                },
-                iconLeft: SvgPicture.asset("assets/icons/add_circle.svg")),
+              title: al.internetLamp,
+              onTapLeft: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => AddLampPage()),
+                );
+              },
+              iconLeft: SvgPicture.asset("assets/icons/add_circle.svg"),
+              onTapRight: () {
+                Navigator.pop(context);
+              },
+              iconRight: SvgPicture.asset("assets/icons/arrow_right.svg"),
+            ),
             Expanded(
               child: BlocBuilder<InternetBoxBloc, InternetBoxState>(
                 buildWhen: (prev, curr) {

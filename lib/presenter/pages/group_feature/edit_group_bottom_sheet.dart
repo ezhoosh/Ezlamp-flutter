@@ -6,6 +6,7 @@ import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_seekbar/flutter_seekbar.dart';
 import 'package:flutter_svg/svg.dart';
 
 class EditGroupBottomSheet extends StatelessWidget {
@@ -36,21 +37,23 @@ class EditGroupBottomSheet extends StatelessWidget {
           const SizedBox(
             height: MySpaces.s8,
           ),
-          HuePicker(
-            initialColor: HSVColor.fromColor(Colors.white),
-            onChanged: (color) {},
-            thumbShape: const HueSliderThumbShape(
-              color: Colors.white,
-              borderColor: Colors.black,
-              filled: false,
-              showBorder: true,
+          SliderTheme(
+            data: const SliderThemeData(
+              trackHeight: 10.0, // Adjust the track height here
+              thumbShape: RoundSliderThumbShape(
+                enabledThumbRadius: 12.0, // Adjust the thumb size here
+              ),
             ),
-            hueColors: const [
-              Colors.red,
-              Colors.black,
-              Colors.blue,
-              Colors.yellow
-            ],
+            child: Slider(
+              value: 0,
+              onChanged: (newValue) {},
+              min: 0.0,
+              // Minimum value
+              max: 100.0,
+              // Maximum value
+              divisions: 100,
+              // Number of divisions
+            ),
           ),
           const SizedBox(
             height: MySpaces.s32,
@@ -76,10 +79,11 @@ class EditGroupBottomSheet extends StatelessWidget {
               ),
               hueColors: const [
                 Colors.red,
-                Colors.black,
                 Colors.blue,
                 Colors.yellow,
-                Colors.green
+                Colors.green,
+                Colors.pink,
+                Colors.orange,
               ]),
           const SizedBox(
             height: MySpaces.s32,
@@ -141,9 +145,6 @@ class EditGroupBottomSheet extends StatelessWidget {
               ),
               getButton(al.informationData, 'assets/icons/favorite_chart.svg'),
             ],
-          ),
-          const SizedBox(
-            height: MySpaces.s16,
           ),
         ],
       ),
