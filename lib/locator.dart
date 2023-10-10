@@ -8,7 +8,7 @@ import 'package:easy_lamp/data/isar_model/isar_lamp.dart';
 import 'package:easy_lamp/data/isar_model/isar_owner.dart';
 import 'package:easy_lamp/data/repositories/auth_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/command_repository_impl.dart';
-import 'package:easy_lamp/data/repositories/group_isar_service.dart';
+import 'package:easy_lamp/data/repositories/isar_group_repository.dart';
 import 'package:easy_lamp/data/repositories/group_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/internet_box_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/local_storage_repositoryimpl.dart';

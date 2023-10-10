@@ -61,4 +61,22 @@ class Converter {
       );
     }).toList();
   }
+
+  static List<LampModel> isarLampToLampModel(List<IsarLamp> data) {
+    return data
+        .map((e) => LampModel(
+            id: e.id ?? 0,
+            name: e.name ?? '',
+            description: e.description ?? '',
+            owner: e.owner ?? 0,
+            isActive: e.isActive ?? false,
+            latitude: e.latitude ?? "",
+            longitude: e.longitude ?? "",
+            address: e.address ?? "",
+            groupLamp: e.groupLamp ?? 0,
+            mainPower: e.mainPower ?? '',
+            lastCommand: e.lastCommand ?? '',
+            uuid: e.uuid ?? ''))
+        .toList();
+  }
 }

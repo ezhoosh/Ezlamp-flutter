@@ -25,11 +25,11 @@ class IsarGroupRepository extends IsarRepository<IsarGroup> {
   }
 
   @override
-  Future<List<IsarGroup>> getById(IsarGroup group) async {
+  Future<IsarGroup?> getById(IsarGroup group) async {
     return await isar.isarGroups
         .filter()
         .group((q) => q.idDbEqualTo(group.idDb))
-        .findAll();
+        .findFirst();
   }
 
   @override

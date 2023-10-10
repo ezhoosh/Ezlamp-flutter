@@ -11,7 +11,7 @@ import 'package:easy_lamp/core/utils/converter.dart';
 import 'package:easy_lamp/data/isar_model/isar_group.dart';
 import 'package:easy_lamp/data/model/connection_type.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
-import 'package:easy_lamp/data/repositories/group_isar_service.dart';
+import 'package:easy_lamp/data/repositories/isar_group_repository.dart';
 import 'package:easy_lamp/domain/usecases/create_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_by_id_usecase.dart';

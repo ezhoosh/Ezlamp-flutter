@@ -6,9 +6,15 @@ import 'package:easy_lamp/core/params/update_lamps_owner_params.dart';
 import 'package:easy_lamp/core/params/update_lamps_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
+import 'package:easy_lamp/core/resource/use_case.dart';
+import 'package:easy_lamp/core/utils/converter.dart';
+import 'package:easy_lamp/data/model/connection_type.dart';
+import 'package:easy_lamp/data/model/lamp_model.dart';
+import 'package:easy_lamp/data/repositories/isar_lamp_repository.dart';
 import 'package:easy_lamp/domain/usecases/delete_lamp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_list_usecase.dart';
+import 'package:easy_lamp/domain/usecases/read_connection_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_group_name_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_lamp_owner_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_lamp_usecase.dart';
@@ -24,6 +30,8 @@ class LampBloc extends Bloc<LampEvent, LampState> {
   UpdateLampOwnerUseCase updateLampOwnerUseCase;
   UpdateLampUseCase updateLampUseCase;
   DeleteLampUseCase deleteLampUseCase;
+  IsarLampRepository isarLampRepository;
+  ReadConnectionUseCase readConnectionUseCase;
 
   LampBloc(
     this.updateLampOwnerUseCase,
@@ -31,6 +39,8 @@ class LampBloc extends Bloc<LampEvent, LampState> {
     this.getLampByIdUseCase,
     this.getLampListUseCase,
     this.deleteLampUseCase,
+    this.isarLampRepository,
+    this.readConnectionUseCase,
   ) : super(LampState(
             getLampByIdStatus: BaseNoAction(),
             deleteLampStatus: BaseNoAction(),
@@ -40,10 +50,19 @@ class LampBloc extends Bloc<LampEvent, LampState> {
     on<GetLampListEvent>((event, emit) async {
       emit(state.copyWith(newGetLampListStatus: BaseLoading()));
       DataState dataState = await getLampListUseCase(event.params);
-      if (dataState is DataSuccess) {
-        emit(state.copyWith(newGetLampListStatus: BaseSuccess(dataState.data)));
+      ConnectionType type = await readConnectionUseCase(NoParams());
+      if (type == ConnectionType.Bluetooth) {
+        List<LampModel> lamps =
+            Converter.isarLampToLampModel(await isarLampRepository.getAll());
+        emit(state.copyWith(newGetLampListStatus: BaseSuccess(lamps)));
       } else {
-        emit(state.copyWith(newGetLampListStatus: BaseError(dataState.error)));
+        if (dataState is DataSuccess) {
+          emit(state.copyWith(
+              newGetLampListStatus: BaseSuccess(dataState.data)));
+        } else {
+          emit(
+              state.copyWith(newGetLampListStatus: BaseError(dataState.error)));
+        }
       }
       emit(state.copyWith(newGetLampListStatus: BaseNoAction()));
     });

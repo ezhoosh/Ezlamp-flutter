@@ -15,7 +15,7 @@ abstract class IsarRepository<T> {
 
   Future<List<T>> getAll();
 
-  Future<List<T>> getById(T t);
+  Future<T?> getById(T t);
 
   Future<bool> delete(T t);
 

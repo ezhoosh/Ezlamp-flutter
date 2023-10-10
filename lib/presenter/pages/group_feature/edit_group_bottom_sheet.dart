@@ -12,6 +12,7 @@ class EditGroupBottomSheet extends StatelessWidget {
   EditGroupBottomSheet({super.key});
 
   late AppLocalizations al;
+
   @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
@@ -170,5 +171,4 @@ class EditGroupBottomSheet extends StatelessWidget {
       ),
     ));
   }
-
 }

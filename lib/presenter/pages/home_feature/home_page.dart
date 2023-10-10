@@ -1,4 +1,4 @@
-import 'package:easy_lamp/data/repositories/group_isar_service.dart';
+import 'package:easy_lamp/data/repositories/isar_group_repository.dart';
 import 'package:easy_lamp/locator.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/group_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/profile_page.dart';
