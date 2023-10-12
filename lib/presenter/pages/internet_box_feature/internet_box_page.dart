@@ -7,7 +7,7 @@ import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/internet_box_model.dart';
 import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_page.dart';
+import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_group_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
@@ -46,7 +46,7 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
               title: al.internetLamp,
               onTapLeft: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => AddLampPage()),
+                  MaterialPageRoute(builder: (context) => AddLampGroupPage()),
                 );
               },
               iconLeft: SvgPicture.asset("assets/icons/add_circle.svg"),

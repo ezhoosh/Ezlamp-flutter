@@ -7,10 +7,9 @@ import 'dart:convert';
 CommandParams commandParamsFromJson(String str) =>
     CommandParams.fromJson(json.decode(str));
 
-String commandParamsToJson(CommandParams data) => json.encode(data.toJson());
 
 class CommandParams {
-  List<int> lamps;
+  List<int>? lamps;
   int w;
   int y;
   int r;
@@ -19,10 +18,10 @@ class CommandParams {
   int c;
   bool pir;
   String type;
-  int gid;
+  int? gid;
 
   CommandParams({
-    required this.lamps,
+    this.lamps,
     required this.w,
     required this.y,
     required this.r,
@@ -31,7 +30,7 @@ class CommandParams {
     required this.c,
     required this.pir,
     required this.type,
-    required this.gid,
+    this.gid,
   });
 
   factory CommandParams.fromJson(Map<String, dynamic> json) => CommandParams(
@@ -46,17 +45,4 @@ class CommandParams {
         type: json["type"],
         gid: json["gid"],
       );
-
-  Map<String, dynamic> toJson() => {
-        "lamps": List<dynamic>.from(lamps.map((x) => x)),
-        "w": w,
-        "y": y,
-        "r": r,
-        "g": g,
-        "b": b,
-        "c": c,
-        "pir": pir,
-        "type": type,
-        "gid": gid,
-      };
 }

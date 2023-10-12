@@ -20,34 +20,37 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-        onPressed: onPress,
-        style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all(bg),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                  borderRadius: MyRadius.sm,
-                  side: BorderSide(
-                    color: bg,
-                  ))),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (right != null) right!,
-            const SizedBox(
-              width: MySpaces.s12,
-            ),
-            Text(
-              text ?? '',
-              style: Light400Style.normal.copyWith(color: MyColors.white),
-            ),
-            const SizedBox(
-              width: MySpaces.s12,
-            ),
-            if (left != null) left!,
-          ],
-        ));
+    return SizedBox(
+      height: 45,
+      child: ElevatedButton(
+          onPressed: onPress,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(bg),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                    borderRadius: MyRadius.sm,
+                    side: BorderSide(
+                      color: bg,
+                    ))),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (right != null) right!,
+              const SizedBox(
+                width: MySpaces.s12,
+              ),
+              Text(
+                text ?? '',
+                style: Light400Style.normal.copyWith(color: MyColors.white),
+              ),
+              const SizedBox(
+                width: MySpaces.s12,
+              ),
+              if (left != null) left!,
+            ],
+          )),
+    );
   }
 }
