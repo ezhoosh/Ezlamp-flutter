@@ -105,7 +105,10 @@ class _AddLampInternetBoxPageState extends State<AddLampInternetBoxPage> {
                           if (widget.groupId != null) {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) => const AddLampPage()),
+                                  builder: (context) => AddLampPage(
+                                        result.rawContent.toString(),
+                                        widget.groupId,
+                                      )),
                             );
                           } else {
                             showModalBottomSheet(

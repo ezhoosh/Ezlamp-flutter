@@ -32,3 +32,9 @@ class DeleteLampEvent extends LampEvent {
 
   DeleteLampEvent(this.id);
 }
+
+class PatchLampEvent extends LampEvent {
+  PatchLampListParams params;
+
+  PatchLampEvent(this.params);
+}

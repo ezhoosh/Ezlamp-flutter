@@ -85,5 +85,16 @@
   "logoutDesc": "آیا از حذف کاربر اطمینان دارین؟",
   "name": "نام",
   "defaultText": "متن پیش فرض",
-  "addInternetLamp": "افزودن لامپ اینترنتی"
+  "addInternetLamp": "افزودن لامپ اینترنتی",
+  "addYourLamp": "لامپ خود را اضافه کنید...",
+  "selectButton": "انتخاب",
+  "unselectButton": "لغو انتخاب",
+  "numberSelectLamp": "{value} تا لامپ انتخاب شده",
+  "@numberSelectLamp": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  }
 }

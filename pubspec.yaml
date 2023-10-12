@@ -101,6 +101,7 @@ dependencies:
   isar: ^3.1.0+1
   isar_flutter_libs: 3.1.0+1 # contains Isar Core
   flutter_seekbar: ^1.0.1
+  flutter_switch: ^0.3.2
 
 dev_dependencies:
   flutter_test:

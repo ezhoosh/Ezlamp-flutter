@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:easy_lamp/core/params/get_lamps_params.dart';
+import 'package:easy_lamp/core/params/patch_lamps_params.dart';
 import 'package:easy_lamp/core/params/update_lamps_owner_params.dart';
 import 'package:easy_lamp/core/params/update_lamps_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
@@ -14,6 +15,7 @@ import 'package:easy_lamp/data/repositories/isar_lamp_repository.dart';
 import 'package:easy_lamp/domain/usecases/delete_lamp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_list_usecase.dart';
+import 'package:easy_lamp/domain/usecases/patch_lamp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_connection_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_group_name_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_lamp_owner_usecase.dart';
@@ -29,6 +31,7 @@ class LampBloc extends Bloc<LampEvent, LampState> {
   GetLampByIdUseCase getLampByIdUseCase;
   UpdateLampOwnerUseCase updateLampOwnerUseCase;
   UpdateLampUseCase updateLampUseCase;
+  PatchLampUseCase patchLampUseCase;
   DeleteLampUseCase deleteLampUseCase;
   IsarLampRepository isarLampRepository;
   ReadConnectionUseCase readConnectionUseCase;
@@ -41,12 +44,15 @@ class LampBloc extends Bloc<LampEvent, LampState> {
     this.deleteLampUseCase,
     this.isarLampRepository,
     this.readConnectionUseCase,
+    this.patchLampUseCase,
   ) : super(LampState(
-            getLampByIdStatus: BaseNoAction(),
-            deleteLampStatus: BaseNoAction(),
-            getLampListStatus: BaseNoAction(),
-            updateLampOwnerStatus: BaseNoAction(),
-            updateLampStatus: BaseNoAction())) {
+          getLampByIdStatus: BaseNoAction(),
+          deleteLampStatus: BaseNoAction(),
+          getLampListStatus: BaseNoAction(),
+          updateLampOwnerStatus: BaseNoAction(),
+          updateLampStatus: BaseNoAction(),
+          patchLampStatus: BaseNoAction(),
+        )) {
     on<GetLampListEvent>((event, emit) async {
       emit(state.copyWith(newGetLampListStatus: BaseLoading()));
       ConnectionType type = await readConnectionUseCase(NoParams());
@@ -85,6 +91,16 @@ class LampBloc extends Bloc<LampEvent, LampState> {
         emit(state.copyWith(newUpdateLampStatus: BaseError(dataState.error)));
       }
       emit(state.copyWith(newUpdateLampStatus: BaseNoAction()));
+    });
+    on<PatchLampEvent>((event, emit) async {
+      emit(state.copyWith(newPatchLampStatus: BaseLoading()));
+      DataState dataState = await patchLampUseCase(event.params);
+      if (dataState is DataSuccess) {
+        emit(state.copyWith(newPatchLampStatus: BaseSuccess(dataState.data)));
+      } else {
+        emit(state.copyWith(newPatchLampStatus: BaseError(dataState.error)));
+      }
+      emit(state.copyWith(newPatchLampStatus: BaseNoAction()));
     });
     on<UpdateLampOwnerEvent>((event, emit) async {
       emit(state.copyWith(newUpdateLampOwnerStatus: BaseLoading()));

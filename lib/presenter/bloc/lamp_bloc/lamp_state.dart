@@ -5,6 +5,7 @@ class LampState {
       getLampByIdStatus,
       updateLampOwnerStatus,
       updateLampStatus,
+      patchLampStatus,
       deleteLampStatus;
 
   LampState(
@@ -12,6 +13,7 @@ class LampState {
       required this.deleteLampStatus,
       required this.getLampListStatus,
       required this.updateLampOwnerStatus,
+      required this.patchLampStatus,
       required this.updateLampStatus});
 
   LampState copyWith(
@@ -19,13 +21,15 @@ class LampState {
       newGetLampByIdStatus,
       newUpdateLampOwnerStatus,
       newUpdateLampStatus,
+      newPatchLampStatus,
       newDeleteLampStatus}) {
     return LampState(
-        deleteLampStatus: newDeleteLampStatus ?? deleteLampStatus,
-        updateLampStatus: newUpdateLampStatus ?? updateLampStatus,
-        getLampByIdStatus: newGetLampByIdStatus ?? getLampByIdStatus,
-        getLampListStatus: newGetLampListStatus ?? getLampListStatus,
-        updateLampOwnerStatus:
-            newUpdateLampOwnerStatus ?? updateLampOwnerStatus);
+      deleteLampStatus: newDeleteLampStatus ?? deleteLampStatus,
+      updateLampStatus: newUpdateLampStatus ?? updateLampStatus,
+      getLampByIdStatus: newGetLampByIdStatus ?? getLampByIdStatus,
+      getLampListStatus: newGetLampListStatus ?? getLampListStatus,
+      updateLampOwnerStatus: newUpdateLampOwnerStatus ?? updateLampOwnerStatus,
+      patchLampStatus: newPatchLampStatus ?? patchLampStatus,
+    );
   }
 }

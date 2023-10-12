@@ -15,10 +15,10 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 
-class MoreGroupBottomSheet extends StatelessWidget {
+class MoreLampBottomSheet extends StatelessWidget {
   int groupId;
 
-  MoreGroupBottomSheet(this.groupId, {super.key});
+  MoreLampBottomSheet(this.groupId, {super.key});
 
   late AppLocalizations al;
 

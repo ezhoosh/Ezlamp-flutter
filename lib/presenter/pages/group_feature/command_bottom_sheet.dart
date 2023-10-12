@@ -4,9 +4,11 @@ import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/button/primary_button.dart';
+import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
+import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,19 +43,19 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
       title: AppLocalizations.of(context)!.settings,
       child: Column(
         children: [
-          Row(
-            children: [
-              Text(
-                AppLocalizations.of(context)!.contrast,
-                style: Light300Style.sm.copyWith(color: MyColors.secondary),
-              ),
-              const Spacer(),
-              Text(
-                '${c.toInt()}',
-                style: Light300Style.sm.copyWith(color: MyColors.secondary),
-              ),
-            ],
-          ),
+            Row(
+              children: [
+                Text(
+                  AppLocalizations.of(context)!.contrast,
+                  style: Light300Style.sm.copyWith(color: MyColors.secondary),
+                ),
+                const Spacer(),
+                Text(
+                  '${c.toInt()}',
+                  style: Light300Style.sm.copyWith(color: MyColors.secondary),
+                ),
+              ],
+            ),
           const SizedBox(
             height: MySpaces.s8,
           ),
@@ -210,7 +212,11 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
           ),
           Row(
             children: [
-              getButton(al.lampList, 'assets/icons/lamp_on.svg'),
+              if (widget.groupId != null)
+                getButton(al.lampList, 'assets/icons/lamp_on.svg', onTab: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => LampPage(widget.groupId ?? 0)));
+                }),
               const SizedBox(
                 width: 20,
               ),
@@ -249,12 +255,13 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
     );
   }
 
-  getButton(String informationData, String icon) {
+  getButton(String informationData, String icon, {Function()? onTab}) {
     return Expanded(
-        child: Container(
+        child: ClickableContainer(
+      onTap: onTab,
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          color: MyColors.black.shade400, borderRadius: MyRadius.sm),
+      color: MyColors.black.shade400,
+      borderRadius: MyRadius.sm,
       child: Row(
         children: [
           SvgPicture.asset(icon),
