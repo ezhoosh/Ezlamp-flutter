@@ -16,7 +16,7 @@ class MyColors {
     200: Color(0xffDEDFE0),
     300: Color(0xffBEBEC1),
     400: Color(0xff9D9EA1),
-    500: Color(0xff8D8E92),
+      500: Color(0xff8D8E92),
     600: Color(0xff7D7E82),
     700: Color(0xff6D6E72),
     800: Color(0xff57585A),

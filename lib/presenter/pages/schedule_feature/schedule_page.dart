@@ -53,9 +53,9 @@ class _SchedulePageState extends State<SchedulePage> {
                 size: 30,
               ),
               onTapLeft: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => AddLampGroupPage()),
-                );
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (context) => AddLampInternetBoxPage()),
+                // );
               },
             ),
             Expanded(

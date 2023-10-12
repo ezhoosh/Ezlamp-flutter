@@ -3,12 +3,17 @@ import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
+import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
+import 'package:easy_lamp/core/widgets/top_bar.dart';
+import 'package:easy_lamp/data/model/internet_box_model.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:iconsax/iconsax.dart';
 
 class AddLampPage extends StatefulWidget {
   const AddLampPage({super.key});
@@ -19,12 +24,16 @@ class AddLampPage extends StatefulWidget {
 
 class _AddLampPageState extends State<AddLampPage> {
   late AppLocalizations al;
-  late TextEditingController _controller;
+  late TextEditingController _controllerName;
+  late TextEditingController _controllerDesc;
+  int? internetBoxId;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController();
+    _controllerName = TextEditingController();
+    _controllerDesc = TextEditingController();
+    BlocProvider.of<InternetBoxBloc>(context).add(GetInternetBoxListEvent());
   }
 
   @override
@@ -47,31 +56,134 @@ class _AddLampPageState extends State<AddLampPage> {
           EasyLoading.showError("ERROR");
         }
       },
-      child: CustomBottomSheet(
-        title: AppLocalizations.of(context)!.editGroupName,
-        child: Column(
-          children: [
-            BorderTextField(
-              hintText: al.title,
-              controller: _controller,
-            ),
-            const SizedBox(
-              height: MySpaces.s12,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {},
-                child: Text(
-                  al.save,
-                  style: DemiBoldStyle.normal.copyWith(color: MyColors.white),
+      child: Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(MySpaces.s24),
+            child: Column(
+              children: [
+                TopBar(
+                  title: al.addLamps,
                 ),
-              ),
+                const SizedBox(
+                  height: MySpaces.s12,
+                ),
+                BorderTextField(
+                  title: al.name,
+                  controller: _controllerName,
+                  optional: false,
+                ),
+                const SizedBox(
+                  height: MySpaces.s24,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: MySpaces.s12, right: MySpaces.s4),
+                  child: Row(
+                    children: [
+                      Text(
+                        al.select(al.internetLamp) ?? '',
+                        style: Light300Style.sm
+                            .copyWith(color: MyColors.secondary.shade300),
+                      ),
+                      Text(
+                        '*',
+                        style: Light300Style.sm.copyWith(color: MyColors.error),
+                      ),
+                    ],
+                  ),
+                ),
+                BlocBuilder<InternetBoxBloc, InternetBoxState>(
+                  buildWhen: (prev, curr) {
+                    if (prev.getInternetBoxListStatus is BaseSuccess &&
+                        curr.getInternetBoxListStatus is BaseNoAction) {
+                      return false;
+                    }
+                    return true;
+                  },
+                  builder: (context, state) {
+                    if (state.getInternetBoxListStatus is BaseSuccess) {
+                      List<InternetBoxModel> items =
+                          (state.getInternetBoxListStatus as BaseSuccess)
+                              .entity;
+                      return Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: MyColors.black.shade500,
+                          borderRadius: MyRadius.sm,
+                        ),
+                        padding: const EdgeInsets.all(
+                          MySpaces.s24,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  al.select(''),
+                                  style: Light300Style.normal.copyWith(
+                                      color: MyColors.secondary.shade500),
+                                ),
+                                const Spacer(),
+                                const Icon(Icons.keyboard_arrow_down_sharp),
+                              ],
+                            ),
+                            const Divider(
+                              height: MySpaces.s40,
+                            ),
+                            ...items
+                                .map((e) => Row(
+                                      children: [
+                                        Radio(
+                                          fillColor: MaterialStateProperty.all(
+                                              MyColors.primary),
+                                          activeColor: MyColors.primary,
+                                          value: 0,
+                                          groupValue: internetBoxId ?? 0,
+                                          onChanged: (t) {
+                                            setState(() {
+                                              internetBoxId = e.id;
+                                            });
+                                          },
+                                        ),
+                                        Text(
+                                          e.name,
+                                          style: Light300Style.normal.copyWith(
+                                              color:
+                                                  MyColors.secondary.shade500),
+                                        ),
+                                      ],
+                                    ))
+                                .toList()
+                          ],
+                        ),
+                      );
+                    }
+                    return const SizedBox();
+                  },
+                ),
+                const SizedBox(
+                  height: MySpaces.s24,
+                ),
+                BorderTextField(
+                  title: al.desc,
+                  maxLines: 6,
+                  hintText: al.defaultText,
+                  controller: _controllerDesc,
+                  optional: false,
+                ),
+                const SizedBox(
+                  height: MySpaces.s24,
+                ),
+                SizedBox(
+                    width: double.infinity,
+                    child: PrimaryButton(
+                      text: al.save,
+                    ))
+              ],
             ),
-            const SizedBox(
-              height: MySpaces.s24,
-            ),
-          ],
+          ),
         ),
       ),
     );

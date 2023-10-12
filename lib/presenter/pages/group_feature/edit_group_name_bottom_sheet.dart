@@ -15,7 +15,7 @@ import 'package:easy_lamp/core/widgets/border_text_field.dart';
 
 class EditGroupNameBottomSheet extends StatelessWidget {
   late AppLocalizations al;
-  late TextEditingController _controller;
+  final TextEditingController _controller = TextEditingController();
   int groupId;
 
   EditGroupNameBottomSheet(this.groupId, {super.key});
@@ -23,7 +23,6 @@ class EditGroupNameBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
-    _controller = TextEditingController();
     return BlocListener<GroupBloc, GroupState>(
       listenWhen: (prev, curr) {
         if (prev.updateGroupNameStatus is BaseSuccess &&

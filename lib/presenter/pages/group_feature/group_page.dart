@@ -10,6 +10,7 @@ import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/add_group_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/command_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/group_feature/more_group_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/more_internet_box_bottom_sheet.dart';
@@ -131,7 +132,7 @@ class _GroupPageState extends State<GroupPage> {
                                               ),
                                             ),
                                             builder: (context) {
-                                              return MoreInternetBoxBottomSheet(
+                                              return MoreGroupBottomSheet(
                                                   group.id);
                                             },
                                           );

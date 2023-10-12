@@ -38,7 +38,7 @@ class GroupRepositoryImpl extends GroupRepository {
   Future<DataState<String>> deleteGroup(int params) async {
     try {
       var response = await ApiAccess.makeHttpRequest(
-        "group-lamp/{${params.toString()}}",
+        "group-lamp/${params.toString()}/",
         method: "DELETE",
       );
       if (response.statusCode == 204) {

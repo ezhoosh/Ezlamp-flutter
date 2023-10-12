@@ -4,7 +4,7 @@ import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_group_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/lamp_feature/add_internet_box_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,18 +13,19 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class AddLampGroupPage extends StatefulWidget {
+class AddLampInternetBoxPage extends StatefulWidget {
   int? groupId;
+  bool isInternetBox;
 
-  AddLampGroupPage({Key? key, this.groupId}) : super(key: key);
+  AddLampInternetBoxPage({Key? key, this.groupId, required this.isInternetBox})
+      : super(key: key);
 
   @override
-  State<AddLampGroupPage> createState() => _AddLampGroupPageState();
+  State<AddLampInternetBoxPage> createState() => _AddLampInternetBoxPageState();
 }
 
-class _AddLampGroupPageState extends State<AddLampGroupPage> {
+class _AddLampInternetBoxPageState extends State<AddLampInternetBoxPage> {
   late AppLocalizations al;
-
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,7 @@ class _AddLampGroupPageState extends State<AddLampGroupPage> {
         child: Column(
           children: [
             TopBar(
-              title: al.addLamps,
+              title: widget.isInternetBox ? al.addInternetLamp : al.addLamps,
               onTapRight: () => Navigator.pop(context),
               iconRight: SvgPicture.asset("assets/icons/arrow_right.svg"),
             ),
@@ -111,7 +112,7 @@ class _AddLampGroupPageState extends State<AddLampGroupPage> {
                                 isScrollControlled: true,
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return AddLampGroupBottomSheet(
+                                  return AddInternetBoxBottomSheet(
                                     result.rawContent.toString(),
                                     groupId: widget.groupId,
                                   );

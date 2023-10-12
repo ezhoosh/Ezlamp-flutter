@@ -123,6 +123,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
       DataState dataState = await deleteGroupUseCase(event.id);
       if (dataState is DataSuccess) {
         emit(state.copyWith(newDeleteGroupStatus: BaseSuccess(dataState.data)));
+        add(GetGroupListEvent());
       } else {
         emit(state.copyWith(newDeleteGroupStatus: BaseError(dataState.error)));
       }

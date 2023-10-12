@@ -54,8 +54,14 @@ class BorderTextField extends StatelessWidget {
             style: Light400Style.normal.copyWith(color: MyColors.white),
             maxLines: maxLines,
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(horizontal: 10),
-              hintStyle: Light400Style.normal.copyWith(color: MyColors.white),
+              border: OutlineInputBorder(
+              borderSide: BorderSide(color: MyColors.secondary.shade500),
+              ),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              hintStyle: Light400Style.normal.copyWith(
+                color: MyColors.white.shade500,
+              ),
               hintText: hintText,
               fillColor: MyColors.black.shade500,
               disabledBorder: OutlineInputBorder(

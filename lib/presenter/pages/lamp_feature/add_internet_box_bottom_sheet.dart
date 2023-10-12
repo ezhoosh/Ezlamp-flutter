@@ -17,18 +17,17 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
 
-class AddLampGroupBottomSheet extends StatefulWidget {
+class AddInternetBoxBottomSheet extends StatefulWidget {
   String uuid;
   int? groupId;
 
-  AddLampGroupBottomSheet(this.uuid, {super.key, this.groupId}) {}
+  AddInternetBoxBottomSheet(this.uuid, {super.key, this.groupId}) {}
 
   @override
-  State<AddLampGroupBottomSheet> createState() =>
-      _AddLampGroupBottomSheetState();
+  State<AddInternetBoxBottomSheet> createState() => _AddInternetBoxBottomSheetState();
 }
 
-class _AddLampGroupBottomSheetState extends State<AddLampGroupBottomSheet> {
+class _AddInternetBoxBottomSheetState extends State<AddInternetBoxBottomSheet> {
   late AppLocalizations al;
   final TextEditingController _controllerName = TextEditingController();
   final TextEditingController _controllerDesc = TextEditingController();
@@ -78,7 +77,7 @@ class _AddLampGroupBottomSheetState extends State<AddLampGroupBottomSheet> {
           }
         },
         child: CustomBottomSheet(
-          title: AppLocalizations.of(context)!.editGroupName,
+          title: AppLocalizations.of(context)!.addInternetLamp,
           child: Column(
             children: [
               BorderTextField(

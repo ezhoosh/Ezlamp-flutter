@@ -44,11 +44,7 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
           children: [
             TopBar(
               title: al.internetLamp,
-              onTapLeft: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => AddLampGroupPage()),
-                );
-              },
+              onTapLeft: _addClick,
               iconLeft: SvgPicture.asset("assets/icons/add_circle.svg"),
               onTapRight: () {
                 Navigator.pop(context);
@@ -171,7 +167,7 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
               height: MySpaces.s16,
             ),
             Text(
-              AppLocalizations.of(context)!.addYourGroup,
+              AppLocalizations.of(context)!.addInternetLamp,
               style: Light300Style.normal.copyWith(color: MyColors.white),
             ),
             const SizedBox(
@@ -180,7 +176,8 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
             SizedBox(
               width: double.infinity,
               child: SecondaryButton(
-                text: 'افزودن گروه',
+                onPress: _addClick,
+                text: al.addInternetLamp,
                 right: const Icon(
                   Icons.add,
                   color: MyColors.white,
@@ -190,6 +187,15 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
           ],
         ),
       ),
+    );
+  }
+
+  void _addClick() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) => AddLampInternetBoxPage(
+                isInternetBox: true,
+              )),
     );
   }
 }

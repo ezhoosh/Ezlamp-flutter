@@ -53,8 +53,9 @@ class _LampPageState extends State<LampPage> {
               onTapLeft: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                      builder: (context) => AddLampGroupPage(
+                      builder: (context) => AddLampInternetBoxPage(
                             groupId: widget.groupId,
+                            isInternetBox: false,
                           )),
                 );
               },
