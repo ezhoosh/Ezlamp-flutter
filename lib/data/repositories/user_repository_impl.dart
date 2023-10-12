@@ -36,7 +36,7 @@ class UserRepositoryImpl extends UserRepository {
   Future<DataState<UserModel>> updateUser(UserParams params) async {
     try {
       var response =
-          await ApiAccess.makeHttpRequest("auth/user", method: "PUT", data: {
+          await ApiAccess.makeHttpRequest("auth/user/", method: "PUT", data: {
         'first_name': params.firstName,
         'last_name': params.lastName,
         'email': params.email

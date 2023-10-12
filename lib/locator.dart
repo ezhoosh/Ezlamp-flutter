@@ -39,6 +39,7 @@ import 'package:easy_lamp/domain/usecases/get_lamp_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_user_usecase.dart';
 import 'package:easy_lamp/domain/usecases/login_usecase.dart';
+import 'package:easy_lamp/domain/usecases/patch_lamp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_connection_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/refresh_token_usecase.dart';
@@ -213,9 +214,11 @@ setupLamp() async {
   locator.registerSingleton<UpdateLampUseCase>(UpdateLampUseCase(locator()));
   locator.registerSingleton<DeleteLampUseCase>(DeleteLampUseCase(locator()));
   locator.registerSingleton<IsarLampRepository>(IsarLampRepository(locator()));
+  locator.registerSingleton<PatchLampUseCase>(PatchLampUseCase(locator()));
 
   //bloc
   locator.registerSingleton<LampBloc>(LampBloc(
+    locator(),
     locator(),
     locator(),
     locator(),

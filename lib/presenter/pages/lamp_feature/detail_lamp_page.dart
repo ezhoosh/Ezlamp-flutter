@@ -1,11 +1,21 @@
+import 'package:easy_lamp/core/params/command_params.dart';
+import 'package:easy_lamp/core/params/patch_lamps_params.dart';
+import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
+import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
+import 'package:easy_lamp/presenter/pages/internet_box_feature/internet_box_page.dart';
+import 'package:easy_lamp/presenter/pages/lamp_feature/add_member_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/more_lamp_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -32,30 +42,128 @@ class _DetailLampPageState extends State<DetailLampPage> {
   @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
-    return Scaffold(
-        backgroundColor: MyColors.black,
-        body: SafeArea(
-          child: Column(
-            children: [
-              TopBar(
-                title: widget.lamps.first.name,
-                onTapRight: () {
-                  Navigator.pop(context);
-                },
-                iconRight: SvgPicture.asset("assets/icons/arrow_right.svg"),
-                iconLeft: Text(
-                  al.save,
-                  style: Light400Style.normal.copyWith(color: MyColors.primary),
+    return BlocListener<LampBloc, LampState>(
+      listenWhen: (prev, curr) {
+        if (prev.patchLampStatus is BaseSuccess &&
+            curr.patchLampStatus is BaseNoAction) {
+          return false;
+        }
+        return true;
+      },
+      listener: (context, state) {
+        if (state.patchLampStatus is BaseSuccess) {
+          LampModel lamp = (state.patchLampStatus as BaseSuccess).entity;
+          setState(() {
+            widget.lamps.first = lamp;
+          });
+          EasyLoading.showSuccess("SUCCESS");
+        } else if (state.patchLampStatus is BaseLoading) {
+          EasyLoading.show();
+        } else if (state.patchLampStatus is BaseError) {
+          EasyLoading.showError("ERROR");
+        }
+      },
+      child: Scaffold(
+          backgroundColor: MyColors.black,
+          body: SafeArea(
+            child: Column(
+              children: [
+                TopBar(
+                  title: widget.lamps.first.name,
+                  onTapRight: () {
+                    Navigator.pop(context);
+                  },
+                  iconRight: SvgPicture.asset("assets/icons/arrow_right.svg"),
+                  iconLeft: Text(
+                    al.save,
+                    style:
+                        Light400Style.normal.copyWith(color: MyColors.primary),
+                  ),
+                  onTapLeft: () {
+                    BlocProvider.of<CommandBloc>(context)
+                        .add(SendCommandEvent(CommandParams(
+                      lamps: widget.lamps.map((e) => e.id).toList(),
+                      w: isColor ? 0 : w.toInt(),
+                      y: isColor ? 0 : y.toInt(),
+                      r: !isColor ? 0 : (rgb == null ? 0 : rgb!.red),
+                      g: !isColor ? 0 : (rgb == null ? 0 : rgb!.green),
+                      b: !isColor ? 0 : (rgb == null ? 0 : rgb!.blue),
+                      c: c.toInt(),
+                      pir: true,
+                      type: 'apply',
+                    )));
+                  },
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: MySpaces.s24),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: MySpaces.s24,
-                    ),
-                    if (widget.lamps.length == 1)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: MySpaces.s24),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: MySpaces.s24,
+                      ),
+                      if (widget.lamps.length == 1)
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: MyColors.black.shade500,
+                              borderRadius: MyRadius.base),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: MySpaces.s12,
+                            vertical: MySpaces.s16,
+                          ),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                      isScrollControlled: true,
+                                      context: context,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(24),
+                                          topRight: Radius.circular(24),
+                                        ),
+                                      ),
+                                      builder: (context) {
+                                        return MoreLampBottomSheet(
+                                            widget.lamps.first.id);
+                                      },
+                                    );
+                                  },
+                                  icon: SvgPicture.asset(
+                                    "assets/icons/edit.svg",
+                                    width: 30,
+                                    height: 30,
+                                  )),
+                              const SizedBox(
+                                width: MySpaces.s4,
+                              ),
+                              Text(
+                                widget.lamps.first.name,
+                                style: DemiBoldStyle.lg
+                                    .copyWith(color: MyColors.white),
+                              ),
+                              const Spacer(),
+                              FlutterSwitch(
+                                activeColor: MyColors.primary,
+                                value: widget.lamps.first.isActive,
+                                onToggle: (bool value) {
+                                  BlocProvider.of<LampBloc>(context).add(
+                                    PatchLampEvent(
+                                      PatchLampListParams(
+                                        lampId: widget.lamps.first.id,
+                                        isActive: value,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              )
+                            ],
+                          ),
+                        ),
+                      const SizedBox(
+                        height: MySpaces.s32,
+                      ),
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -63,225 +171,199 @@ class _DetailLampPageState extends State<DetailLampPage> {
                             borderRadius: MyRadius.base),
                         padding: const EdgeInsets.symmetric(
                           horizontal: MySpaces.s12,
-                          vertical: MySpaces.s16,
+                          vertical: MySpaces.s24,
                         ),
-                        child: Row(
+                        child: Column(
                           children: [
-                            IconButton(
-                                onPressed: () {
-                                  showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    context: context,
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(24),
-                                        topRight: Radius.circular(24),
-                                      ),
-                                    ),
-                                    builder: (context) {
-                                      return MoreLampBottomSheet(
-                                          widget.lamps.first.id);
-                                    },
-                                  );
-                                },
-                                icon: SvgPicture.asset(
-                                  "assets/icons/edit.svg",
-                                  width: 30,
-                                  height: 30,
-                                )),
-                            const SizedBox(
-                              width: MySpaces.s4,
-                            ),
-                            Text(
-                              widget.lamps.first.name,
-                              style: DemiBoldStyle.lg
-                                  .copyWith(color: MyColors.white),
-                            ),
-                            const Spacer(),
-                            FlutterSwitch(
-                              activeColor: MyColors.primary,
-                              value: widget.lamps.first.isActive,
-                              onToggle: (bool value) {},
-                            )
-                          ],
-                        ),
-                      ),
-                    const SizedBox(
-                      height: MySpaces.s32,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: MyColors.black.shade500,
-                          borderRadius: MyRadius.base),
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: MySpaces.s12,
-                        vertical: MySpaces.s24,
-                      ),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                AppLocalizations.of(context)!.contrast,
-                                style: Light300Style.sm
-                                    .copyWith(color: MyColors.secondary),
-                              ),
-                              const Spacer(),
-                              Text(
-                                '${c.toInt()}',
-                                style: Light300Style.sm
-                                    .copyWith(color: MyColors.secondary),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: MySpaces.s8,
-                          ),
-                          SliderTheme(
-                            data: SliderThemeData(
-                                trackHeight: 10.0,
-                                // Adjust the track height here
-                                thumbShape: const RoundSliderThumbShape(
-                                  enabledThumbRadius: 12.0,
+                            Row(
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context)!.contrast,
+                                  style: Light300Style.sm
+                                      .copyWith(color: MyColors.secondary),
                                 ),
-                                activeTrackColor: Colors.white,
-                                overlayShape: SliderComponentShape.noOverlay,
-                                inactiveTrackColor: MyColors.black.shade300,
-                                disabledThumbColor: MyColors.white,
-                                activeTickMarkColor: Colors.white,
-                                thumbColor: Colors.white),
-                            child: Slider(
-                              value: c,
-                              onChanged: (newValue) {
-                                setState(() {
-                                  c = newValue;
-                                });
-                              },
-                              min: 0.0,
-                              // Minimum value
-                              max: 20.0,
-                              // Maximum value
-                              divisions: 100,
-                              // Number of divisions
-                            ),
-                          ),
-                          const SizedBox(
-                            height: MySpaces.s12,
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              AppLocalizations.of(context)!.coloring,
-                              style: Light300Style.sm
-                                  .copyWith(color: MyColors.secondary),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: MySpaces.s8,
-                          ),
-                          Opacity(
-                            opacity: isColor ? 1 : 0.5,
-                            child: HuePicker(
-                              initialColor: HSVColor.fromColor(Colors.white),
-                              onChanged: (color) {
-                                setState(() {
-                                  isColor = true;
-                                  rgb = color.toColor();
-                                });
-                              },
-                              thumbShape: HueSliderThumbShape(
-                                color: Colors.white,
-                                borderColor: Colors.white.withOpacity(0.3),
-                                filled: true,
-                                showBorder: true,
-                                borderWidth: 3,
-                              ),
-                              hueColors: const [
-                                Colors.red,
-                                Colors.blue,
-                                Colors.yellow,
-                                Colors.green,
-                                Colors.pink,
-                                Colors.orange,
+                                const Spacer(),
+                                Text(
+                                  '${c.toInt()}',
+                                  style: Light300Style.sm
+                                      .copyWith(color: MyColors.secondary),
+                                ),
                               ],
                             ),
-                          ),
-                          const SizedBox(
-                            height: MySpaces.s32,
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Text(
-                              AppLocalizations.of(context)!.yellowAndWhite,
-                              style: Light300Style.sm
-                                  .copyWith(color: MyColors.secondary),
+                            const SizedBox(
+                              height: MySpaces.s8,
                             ),
-                          ),
-                          const SizedBox(
-                            height: MySpaces.s8,
-                          ),
-                          Opacity(
-                            opacity: isColor ? 0.5 : 1,
-                            child: SliderTheme(
+                            SliderTheme(
                               data: SliderThemeData(
                                   trackHeight: 10.0,
                                   // Adjust the track height here
                                   thumbShape: const RoundSliderThumbShape(
                                     enabledThumbRadius: 12.0,
                                   ),
-                                  overlayShape: SliderComponentShape.noOverlay,
                                   activeTrackColor: Colors.white,
-                                  inactiveTrackColor: const Color(0xffFFDA55),
+                                  overlayShape: SliderComponentShape.noOverlay,
+                                  inactiveTrackColor: MyColors.black.shade300,
                                   disabledThumbColor: MyColors.white,
                                   activeTickMarkColor: Colors.white,
                                   thumbColor: Colors.white),
-                              child: SizedBox(
-                                child: Slider(
-                                  value: v,
-                                  onChanged: (newValue) {
-                                    setState(() {
-                                      isColor = false;
-                                      v = newValue;
-                                    });
-                                    if (v < 50) {
-                                      w = 0;
-                                      y = 100 - v;
-                                    } else {
-                                      y = 0;
-                                      w = v;
-                                    }
-                                    print("w : $w and y : $y");
-                                  },
-                                  min: 0.0,
-                                  // Minimum value
-                                  max: 100.0,
-                                  // Maximum value
-                                  divisions: 100,
-                                  // Number of divisions
+                              child: Slider(
+                                value: c,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    c = newValue;
+                                  });
+                                },
+                                min: 0.0,
+                                // Minimum value
+                                max: 20.0,
+                                // Maximum value
+                                divisions: 100,
+                                // Number of divisions
+                              ),
+                            ),
+                            const SizedBox(
+                              height: MySpaces.s12,
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                AppLocalizations.of(context)!.coloring,
+                                style: Light300Style.sm
+                                    .copyWith(color: MyColors.secondary),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: MySpaces.s8,
+                            ),
+                            Opacity(
+                              opacity: isColor ? 1 : 0.5,
+                              child: HuePicker(
+                                initialColor: HSVColor.fromColor(Colors.white),
+                                onChanged: (color) {
+                                  setState(() {
+                                    isColor = true;
+                                    rgb = color.toColor();
+                                  });
+                                },
+                                thumbShape: HueSliderThumbShape(
+                                  color: Colors.white,
+                                  borderColor: Colors.white.withOpacity(0.3),
+                                  filled: true,
+                                  showBorder: true,
+                                  borderWidth: 3,
+                                ),
+                                hueColors: const [
+                                  Colors.red,
+                                  Colors.blue,
+                                  Colors.yellow,
+                                  Colors.green,
+                                  Colors.pink,
+                                  Colors.orange,
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: MySpaces.s32,
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                AppLocalizations.of(context)!.yellowAndWhite,
+                                style: Light300Style.sm
+                                    .copyWith(color: MyColors.secondary),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: MySpaces.s8,
+                            ),
+                            Opacity(
+                              opacity: isColor ? 0.5 : 1,
+                              child: SliderTheme(
+                                data: SliderThemeData(
+                                    trackHeight: 10.0,
+                                    // Adjust the track height here
+                                    thumbShape: const RoundSliderThumbShape(
+                                      enabledThumbRadius: 12.0,
+                                    ),
+                                    overlayShape:
+                                        SliderComponentShape.noOverlay,
+                                    activeTrackColor: Colors.white,
+                                    inactiveTrackColor: const Color(0xffFFDA55),
+                                    disabledThumbColor: MyColors.white,
+                                    activeTickMarkColor: Colors.white,
+                                    thumbColor: Colors.white),
+                                child: SizedBox(
+                                  child: Slider(
+                                    value: v,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        isColor = false;
+                                        v = newValue;
+                                      });
+                                      if (v < 50) {
+                                        w = 0;
+                                        y = 100 - v;
+                                      } else {
+                                        y = 0;
+                                        w = v;
+                                      }
+                                      print("w : $w and y : $y");
+                                    },
+                                    min: 0.0,
+                                    // Minimum value
+                                    max: 100.0,
+                                    // Maximum value
+                                    divisions: 100,
+                                    // Number of divisions
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    getCard(al.addMember, Iconsax.profile_2user, () => null),
-                    getCard(al.internetLamp, Iconsax.global, () => null)
-                  ],
+                      getCard(
+                        al.addMember,
+                        Iconsax.profile_2user,
+                        () {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(24),
+                                topRight: Radius.circular(24),
+                              ),
+                            ),
+                            builder: (context) {
+                              return AddMemberNameBottomSheet();
+                            },
+                          );
+                        },
+                      ),
+                      getCard(al.internetLamp, Iconsax.global, () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => InternetBoxPage(),
+                          ),
+                        );
+                      })
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ));
+              ],
+            ),
+          )),
+    );
   }
 
   getCard(String text, IconData icon, Function()? onTab) {
-    return Container(
-      margin: EdgeInsets.only(top: MySpaces.s24),
+    return ClickableContainer(
+      onTap: onTab,
+      margin: const EdgeInsets.only(top: MySpaces.s24),
       width: double.infinity,
-      decoration: BoxDecoration(
-          color: MyColors.black.shade500, borderRadius: MyRadius.base),
+      color: MyColors.black.shade500,
+      borderRadius: MyRadius.base,
       padding: const EdgeInsets.symmetric(
         horizontal: MySpaces.s12,
         vertical: MySpaces.s16,

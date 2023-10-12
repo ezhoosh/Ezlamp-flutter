@@ -111,7 +111,7 @@ class LampRepositoryImpl extends LampRepository {
   @override
   Future<DataState<LampModel>> patchLampById(PatchLampListParams params) async {
     var response =
-        await ApiAccess.makeHttpRequest("lamps/${params.lampId.toString()}",
+        await ApiAccess.makeHttpRequest("lamps/${params.lampId.toString()}/",
             data: {
               if (params.name != null) "name": params.name,
               if (params.description != null) "description": params.description,

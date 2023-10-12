@@ -8,6 +8,7 @@ import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/lamp_feature/edit_lamp_name_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,9 +17,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 
 class MoreLampBottomSheet extends StatelessWidget {
-  int groupId;
+  int lampId;
 
-  MoreLampBottomSheet(this.groupId, {super.key});
+  MoreLampBottomSheet(this.lampId, {super.key});
 
   late AppLocalizations al;
 
@@ -68,7 +69,7 @@ class MoreLampBottomSheet extends StatelessWidget {
                             )),
                             context: context,
                             builder: (context) {
-                              return EditGroupNameBottomSheet(groupId);
+                              return EditLampNameBottomSheet(lampId);
                             });
                       },
                       child: Row(
@@ -79,7 +80,7 @@ class MoreLampBottomSheet extends StatelessWidget {
                             width: MySpaces.s4,
                           ),
                           Text(
-                            AppLocalizations.of(context)!.renameGroup,
+                            AppLocalizations.of(context)!.editLampName,
                             style: DemiBoldStyle.normal
                                 .copyWith(color: MyColors.white),
                           ),
@@ -98,7 +99,7 @@ class MoreLampBottomSheet extends StatelessWidget {
                       ),
                       onPressed: () {
                         BlocProvider.of<GroupBloc>(context)
-                            .add(DeleteGroupEvent(groupId));
+                            .add(DeleteGroupEvent(lampId));
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,

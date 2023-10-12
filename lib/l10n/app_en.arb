@@ -81,7 +81,6 @@
   "connectionType": "نوع اتصال",
   "blue": "بلوتوث",
   "internet": "اینترنت",
-  "logoutTitle": "حذف کاربر فرناز کشتکارباقری",
   "logoutDesc": "آیا از حذف کاربر اطمینان دارین؟",
   "name": "نام",
   "defaultText": "متن پیش فرض",
@@ -91,6 +90,15 @@
   "unselectButton": "لغو انتخاب",
   "numberSelectLamp": "{value} تا لامپ انتخاب شده",
   "@numberSelectLamp": {
+    "placeholders": {
+      "value": {
+        "type": "String"
+      }
+    }
+  },
+  "editLampName": "ویرایش نام لامپ",
+  "logoutTitle": "حذف کاربر {value}",
+  "@logoutTitle": {
     "placeholders": {
       "value": {
         "type": "String"

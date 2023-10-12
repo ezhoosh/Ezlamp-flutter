@@ -11,7 +11,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LogOutBottomSheet extends StatelessWidget {
-  LogOutBottomSheet({super.key});
+  String name;
+
+  LogOutBottomSheet(this.name, {super.key});
 
   late AppLocalizations al;
 
@@ -62,7 +64,7 @@ class LogOutBottomSheet extends StatelessWidget {
                   height: MySpaces.s24,
                 ),
                 Text(
-                  al.logoutTitle,
+                  al.logoutTitle(name),
                   style: TitleStyle.t4.copyWith(color: MyColors.error.shade700),
                 ),
                 const SizedBox(
