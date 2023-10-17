@@ -3,17 +3,16 @@ import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/bottom_sheet_input_date.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart' as intl;
-import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
-class InputDate extends StatelessWidget {
-  InputDate({
+class InputGroupSelect extends StatelessWidget {
+  InputGroupSelect(
+    this.data, {
     Key? key,
     required this.title,
     required this.onNewDateSelected,
@@ -32,6 +31,8 @@ class InputDate extends StatelessWidget {
   final String? hint;
   final bool optional;
   final bool isDate;
+  List<String> data;
+
   final Function(String newDate) onNewDateSelected;
 
   late BuildContext _buildContext;
@@ -90,8 +91,8 @@ class InputDate extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: MySpaces.s8),
-                Icon(
-                  isDate ? Iconsax.calendar : Iconsax.clock,
+                const Icon(
+                  Icons.keyboard_arrow_down_sharp,
                   size: 24,
                   color: Colors.white,
                 ),
@@ -101,25 +102,16 @@ class InputDate extends StatelessWidget {
     );
   }
 
-  Future<void> _handleClickOnSelectDate() async {
-    if (isDate) {
-      var picked = await showModalBottomSheet(
+  void _handleClickOnSelectDate() {
+    showModalBottomSheet(
         context: _buildContext,
-        builder: (BuildContext context) {
-          return Container();
-        },
-      );
-    } else {
-      showModalBottomSheet(
-          context: _buildContext,
-          isScrollControlled: true,
-          barrierColor: MyColors.noColor,
-          builder: (context) => BottomSheetSelectDate(
-                title: AppLocalizations.of(context)!.selectDate,
-                isDate: isDate,
-                onSubmit: (value) => onNewDateSelected(_formatDate("-", value)),
-              ));
-    }
+        isScrollControlled: true,
+        barrierColor: MyColors.noColor,
+        builder: (context) => BottomSheetSelectDate(
+              title: AppLocalizations.of(context)!.selectDate,
+              isDate: isDate,
+              onSubmit: (value) => onNewDateSelected(_formatDate("-", value)),
+            ));
   }
 
   String _formatDate(String delimiter, DateTime? dateTime) {

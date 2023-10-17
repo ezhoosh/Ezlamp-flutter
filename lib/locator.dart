@@ -16,6 +16,7 @@ import 'package:easy_lamp/data/repositories/isar_internet_box_repository.dart';
 import 'package:easy_lamp/data/repositories/isar_lamp_repository.dart';
 import 'package:easy_lamp/data/repositories/local_storage_repositoryimpl.dart';
 import 'package:easy_lamp/data/repositories/splash_repository_impl.dart';
+import 'package:easy_lamp/data/repositories/state_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/user_repository_impl.dart';
 import 'package:easy_lamp/domain/repositories/auth_repository.dart';
 import 'package:easy_lamp/domain/repositories/command_repository.dart';
@@ -25,12 +26,14 @@ import 'package:easy_lamp/domain/repositories/internet_box_repository.dart';
 import 'package:easy_lamp/domain/repositories/lamp_repository.dart';
 import 'package:easy_lamp/domain/repositories/local_storage_repository.dart';
 import 'package:easy_lamp/domain/repositories/splash_repository.dart';
+import 'package:easy_lamp/domain/repositories/state_repository.dart';
 import 'package:easy_lamp/domain/repositories/user_repository.dart';
 import 'package:easy_lamp/domain/usecases/change_password_usecase.dart';
 import 'package:easy_lamp/domain/usecases/create_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_internet_box_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_lamp_usecase.dart';
+import 'package:easy_lamp/domain/usecases/get_data_state_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_internet_box_by_id_usecase.dart';
@@ -65,6 +68,7 @@ import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
@@ -251,6 +255,16 @@ setupCommand() async {
   locator.registerSingleton<CommandBloc>(CommandBloc(
     locator(),
   ));
+}
+
+setupState() async {
+  // repositories
+  locator.registerSingleton<StateRepository>(StateRepositoryImpl());
+  // useCases
+  locator
+      .registerSingleton<GetDataStateUseCase>(GetDataStateUseCase(locator()));
+  //bloc
+  locator.registerSingleton<StateBloc>(StateBloc(locator()));
 }
 
 Future<Isar> openDB() async {

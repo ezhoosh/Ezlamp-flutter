@@ -55,8 +55,6 @@
     }
   },
   "selectDate": "انتخاب تاریخ",
-  "startDate": "ساعت شروع",
-  "finishDate": "ساعت پایان",
   "again": "تکرار",
   "selectHour": "ساعت را انتخاب کنید",
   "member": "اعضا",
@@ -104,5 +102,12 @@
         "type": "String"
       }
     }
+  },
+  "startHour": "ساعت شروع",
+  "finishHour": "ساعت پایان",
+  "startDate": "تاریخ شروع",
+  "finishDate": "تاریخ پایان",
+  "show": "نمایش",
+  "exportType": "نوع خروجی",
+  "selectGroup": "انتخاب گروه"
   }
-}

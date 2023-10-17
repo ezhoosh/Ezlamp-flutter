@@ -55,8 +55,6 @@
     }
   },
   "selectDate": "انتخاب تاریخ",
-  "startDate": "ساعت شروع",
-  "finishDate": "ساعت پایان",
   "again": "تکرار",
   "member": "اعضا",
   "changePassword": "تغییر رمز عبور",
@@ -104,5 +102,12 @@
         "type": "String"
       }
     }
-  }
+  },
+  "startDate": "تاریخ شروع",
+  "finishDate": "تاریخ پایان",
+  "startHour": "ساعت شروع",
+  "finishHour": "ساعت پایان",
+  "show": "نمایش",
+  "exportType": "نوع خروجی",
+  "selectGroup": "انتخاب گروه"
 }

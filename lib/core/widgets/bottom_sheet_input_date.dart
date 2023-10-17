@@ -11,9 +11,10 @@ class BottomSheetSelectDate extends StatelessWidget {
       this.initialDateTime,
       this.maxDateTime,
       this.minDateTime,
+      this.isDate = false,
       this.onSubmit})
       : super(key: key);
-
+  final bool isDate;
   final String title;
   final DateTime? minDateTime;
   final DateTime? initialDateTime;

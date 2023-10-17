@@ -3,6 +3,7 @@ import 'package:easy_lamp/locator.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/group_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/profile_page.dart';
 import 'package:easy_lamp/presenter/pages/schedule_feature/schedule_page.dart';
+import 'package:easy_lamp/presenter/pages/state_feature/state_page.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/widgets/dot_navigation/dot_navigation_bar.dart';
@@ -33,6 +34,7 @@ class _HomePageState extends State<HomePage> {
         children: const [
           ProfilePage(),
           GroupPage(),
+          StatePage(),
           SchedulePage(),
         ],
       ),
@@ -60,6 +62,7 @@ class _HomePageState extends State<HomePage> {
         items: [
           getItemBottomNavigation("tab_user.svg"),
           getItemBottomNavigation("tab_group.svg"),
+          getItemBottomNavigation("chart.svg"),
           getItemBottomNavigation("tab_timer.svg"),
         ],
       ),
