@@ -5,6 +5,7 @@ import 'package:easy_lamp/core/params/patch_lamps_params.dart';
 import 'package:easy_lamp/core/params/update_lamps_owner_params.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/core/utils/api_access.dart';
+import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/domain/repositories/lamp_repository.dart';
 
@@ -65,21 +66,12 @@ class LampRepositoryImpl extends LampRepository {
   @override
   Future<DataState<List<LampModel>>> getLampList(
       GetLampListParams params) async {
-    Map<String, String> data = {};
-    if (params.name != null) {
-      data.addAll({'name': params.name!});
-    }
-    if (params.groupId != null) {
-      data.addAll({'group_lamp': params.groupId.toString()});
-    }
-    if (params.isActive != null) {
-      data.addAll({'is_active': params.isActive.toString()});
-    }
-    var response =
-        await ApiAccess.makeHttpRequest("lamps/", method: 'GET', data: data);
+    var response = await ApiAccess.makeHttpRequest(
+        "group-lamp/${params.groupId.toString()}/",
+        method: 'GET');
     if (response.statusCode == 200) {
-      return DataSuccess<List<LampModel>>(List<LampModel>.from(
-          response.data.map((model) => LampModel.fromJson(model))));
+      return DataSuccess<List<LampModel>>(
+          GroupLampModel.fromJson(response.data).lamps);
     } else {
       return DataFailed(response.statusMessage.toString());
     }

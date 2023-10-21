@@ -19,6 +19,7 @@ import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 class ScheduleDetailPage extends StatefulWidget {
   const ScheduleDetailPage({Key? key}) : super(key: key);
@@ -78,7 +79,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                           child: InputDate(
                             optional: false,
                             title: al.startDate,
-                            onNewDateSelected: (String newDate) {},
+                            onNewDateSelected: (DateTime newDate) {},
                           ),
                         ),
                         const SizedBox(
@@ -88,7 +89,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                           child: InputDate(
                             title: al.finishDate,
                             optional: false,
-                            onNewDateSelected: (String newDate) {},
+                            onNewDateSelected: (DateTime newDate) {},
                           ),
                         ),
                       ],

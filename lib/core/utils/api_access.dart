@@ -16,7 +16,7 @@ class ApiAccess {
           method: method,
           headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
             'Connection': 'keep-alive',
             "Authorization":
                 "Bearer ${locator<SharedPreferences>().getString(Constants.accessKey)}",

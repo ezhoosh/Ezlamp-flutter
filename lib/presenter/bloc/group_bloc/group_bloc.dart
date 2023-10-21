@@ -82,7 +82,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
               newGetGroupListStatus: BaseError(dataState.error)));
         }
       }
-      emit(state.copyWith(newGetGroupListStatus: BaseNoAction()));
+      // emit(state.copyWith(newGetGroupListStatus: BaseNoAction()));
     });
     on<GetGroupByIdEvent>((event, emit) async {
       emit(state.copyWith(newGetGroupByIdStatus: BaseLoading()));

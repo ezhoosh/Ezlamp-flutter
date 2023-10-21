@@ -6,7 +6,7 @@ import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/input_date.dart';
 import 'package:easy_lamp/core/widgets/input_export_type.dart';
-import 'package:easy_lamp/core/widgets/input_select.dart';
+import 'package:easy_lamp/core/widgets/input_group.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/state_model.dart';
 import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
@@ -56,7 +56,6 @@ class _StatePageState extends State<StatePage> {
                 child: Column(
                   children: [
                     InputGroupSelect(
-                      [],
                       title: al.selectGroup,
                       isDate: true,
                       onNewDateSelected: (String newDate) {},
@@ -69,7 +68,7 @@ class _StatePageState extends State<StatePage> {
                         Expanded(
                           child: InputDate(
                             title: al.startDate,
-                            onNewDateSelected: (String newDate) {},
+                            onNewDateSelected: (DateTime newDate) {},
                             isDate: true,
                           ),
                         ),
@@ -80,7 +79,7 @@ class _StatePageState extends State<StatePage> {
                           child: InputDate(
                             title: al.finishDate,
                             isDate: true,
-                            onNewDateSelected: (String newDate) {},
+                            onNewDateSelected: (DateTime newDate) {},
                           ),
                         ),
                       ],
@@ -89,7 +88,6 @@ class _StatePageState extends State<StatePage> {
                       height: MySpaces.s24,
                     ),
                     InputExportType(
-                      [],
                       title: al.exportType,
                       isDate: true,
                       onNewDateSelected: (String newDate) {},
@@ -108,15 +106,15 @@ class _StatePageState extends State<StatePage> {
               ),
               BlocBuilder<StateBloc, StateState>(
                 buildWhen: (prev, curr) {
-                  // if (prev.getDataStateStatus is BaseSuccess &&
-                  //     curr.getDataStateStatus is BaseNoAction) {
-                  //   return false;
-                  // }
-                  // return false;
-                  return (prev.getDataStateStatus is BaseSuccess &&
-                          curr.getDataStateStatus is BaseNoAction)
-                      ? false
-                      : true;
+                  if (prev.getDataStateStatus is BaseSuccess &&
+                      curr.getDataStateStatus is BaseNoAction) {
+                    return false;
+                  }
+                  return true;
+                  // return (prev.getDataStateStatus is BaseSuccess &&
+                  //         curr.getDataStateStatus is BaseNoAction)
+                  //     ? false
+                  //     : true;
                 },
                 builder: (context, state) {
                   if (state.getDataStateStatus is BaseSuccess) {
@@ -172,7 +170,7 @@ class _StatePageState extends State<StatePage> {
                               ),
                             ),
                           ),
-                          LineChartSample2(items)
+                          Chart(items)
                         ],
                       ),
                     );
@@ -188,22 +186,14 @@ class _StatePageState extends State<StatePage> {
   }
 }
 
-class LineChartSample2 extends StatefulWidget {
-  List<StateModel> data;
-
-  LineChartSample2(this.data, {super.key});
-
-  @override
-  State<LineChartSample2> createState() => _LineChartSample2State();
-}
-
-class _LineChartSample2State extends State<LineChartSample2> {
+class Chart extends StatelessWidget {
   List<Color> gradientColors = [
     MyColors.primary,
     MyColors.primary,
   ];
+  List<StateModel> items;
 
-  bool showAvg = false;
+  Chart(this.items, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -224,20 +214,23 @@ class _LineChartSample2State extends State<LineChartSample2> {
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    final style = Light400Style.sm.copyWith(color: MyColors.secondary);
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+    );
     Widget text;
     switch (value.toInt()) {
       case 2:
-        text = Text('3/10', style: style);
+        text = const Text('3/10', style: style);
         break;
       case 5:
-        text = Text('3/10', style: style);
+        text = const Text('3/10', style: style);
         break;
       case 8:
-        text = Text('3/10', style: style);
+        text = const Text('3/10', style: style);
         break;
       default:
-        text = Text('', style: style);
+        text = const Text('', style: style);
         break;
     }
 
@@ -290,29 +283,13 @@ class _LineChartSample2State extends State<LineChartSample2> {
           );
         },
       ),
-      titlesData: FlTitlesData(
+      titlesData: const FlTitlesData(
         show: true,
-        rightTitles: const AxisTitles(
+        rightTitles: AxisTitles(
           sideTitles: SideTitles(showTitles: false),
         ),
-        topTitles: const AxisTitles(
+        topTitles: AxisTitles(
           sideTitles: SideTitles(showTitles: false),
-        ),
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            interval: 1,
-            getTitlesWidget: bottomTitleWidgets,
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            interval: 1,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
-          ),
         ),
       ),
       borderData: FlBorderData(
@@ -321,12 +298,10 @@ class _LineChartSample2State extends State<LineChartSample2> {
       ),
       lineBarsData: [
         LineChartBarData(
-          spots: widget.data
+          spots: items
               .map(
                 (e) => FlSpot(
-                  e.timestamp.millisecondsSinceEpoch.toDouble(),
-                  e.humidity.toDouble(),
-                ),
+                    e.white.toDouble(), e.timestamp.millisecond.toDouble()),
               )
               .toList(),
           isCurved: true,
@@ -411,10 +386,6 @@ class _LineChartSample2State extends State<LineChartSample2> {
             FlSpot(0, 3.44),
             FlSpot(2.6, 3.44),
             FlSpot(4.9, 3.44),
-            FlSpot(6.8, 3.44),
-            FlSpot(8, 3.44),
-            FlSpot(9.5, 3.44),
-            FlSpot(11, 3.44),
           ],
           isCurved: true,
           gradient: LinearGradient(

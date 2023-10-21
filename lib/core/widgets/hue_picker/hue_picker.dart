@@ -75,8 +75,16 @@ class _HuePickerState extends State<HuePicker> {
     _controller = widget.controller ?? HueController(widget.initialColor!);
 
     _controller.addListener(() {
-      widget.onChanged?.call(_controller.value);
+      widget.onChanged?.call(toColor(_controller.value));
     });
+  }
+
+  Color toColor(HSVColor color) {
+    int h = (color.hue * 360.0).round();
+    int s = (color.saturation * 100.0).round();
+    int v = (color.value * 100.0).round();
+
+    return Color.fromARGB(255, h, s, v);
   }
 
   @override
@@ -101,10 +109,12 @@ class _HuePickerState extends State<HuePicker> {
           value: _controller.value.hue,
           onChanged: (hue) {
             _controller.value = _controller.value.withHue(hue);
-            widget.onChanged?.call(_controller.value);
+            widget.onChanged?.call(toColor(_controller.value));
           },
-          onChangeStart: (_) => widget.onChangeStart?.call(_controller.value),
-          onChangeEnd: (_) => widget.onChangeEnd?.call(_controller.value),
+          onChangeStart: (_) =>
+              widget.onChangeStart?.call(toColor(_controller.value)),
+          onChangeEnd: (_) =>
+              widget.onChangeEnd?.call(toColor(_controller.value)),
         ),
       ),
     );

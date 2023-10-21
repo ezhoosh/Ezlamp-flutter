@@ -9,16 +9,16 @@ CommandModel commandModelFromJson(String str) => CommandModel.fromJson(json.deco
 String commandModelToJson(CommandModel data) => json.encode(data.toJson());
 
 class CommandModel {
-  List<int> lamps;
-  int w;
-  int y;
-  int r;
-  int g;
-  int b;
-  int c;
-  bool pir;
-  String type;
-  int gid;
+  List<int>? lamps;
+  int? w;
+  int? y;
+  int? r;
+  int? g;
+  int? b;
+  int? c;
+  bool? pir;
+  String? type;
+  int? gid;
 
   CommandModel({
     required this.lamps,
@@ -47,7 +47,7 @@ class CommandModel {
   );
 
   Map<String, dynamic> toJson() => {
-    "lamps": List<dynamic>.from(lamps.map((x) => x)),
+    "lamps": List<dynamic>.from(lamps!.map((x) => x)),
     "w": w,
     "y": y,
     "r": r,

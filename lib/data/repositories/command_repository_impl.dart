@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:easy_lamp/core/params/command_params.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
@@ -12,12 +14,12 @@ class CommandRepositoryImpl extends CommandRepository {
       var response = await ApiAccess.makeHttpRequest(
         "mqtt/lamp-command/",
         data: {
-          "w": params.w.toString(),
-          "y": params.y.toString(),
-          "r": params.r.toString(),
-          "g": params.g.toString(),
-          "b": params.b.toString(),
-          "c": params.c.toString(),
+          "w": params.w,
+          "y": params.y,
+          "r": params.r,
+          "g": params.g,
+          "b": params.b,
+          "c": params.c,
           "pir": true,
           "type": "apply",
           if (params.lamps != null) "lamps": params.lamps,

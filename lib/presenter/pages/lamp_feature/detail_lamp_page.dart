@@ -238,11 +238,12 @@ class _DetailLampPageState extends State<DetailLampPage> {
                             Opacity(
                               opacity: isColor ? 1 : 0.5,
                               child: HuePicker(
-                                initialColor: HSVColor.fromColor(Colors.white),
+                                initialColor:
+                                    HSVColor.fromColor(rgb ?? Colors.white),
                                 onChanged: (color) {
                                   setState(() {
                                     isColor = true;
-                                    rgb = color.toColor();
+                                    rgb = color;
                                   });
                                 },
                                 thumbShape: HueSliderThumbShape(

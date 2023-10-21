@@ -21,6 +21,7 @@ class GroupLampModel {
   List<dynamic> members;
   OwnerModel owner;
   List<LampModel> lamps;
+  bool open = false;
 
   GroupLampModel({
     required this.id,

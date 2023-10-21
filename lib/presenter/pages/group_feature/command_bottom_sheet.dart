@@ -43,19 +43,19 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
       title: AppLocalizations.of(context)!.settings,
       child: Column(
         children: [
-            Row(
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.contrast,
-                  style: Light300Style.sm.copyWith(color: MyColors.secondary),
-                ),
-                const Spacer(),
-                Text(
-                  '${c.toInt()}',
-                  style: Light300Style.sm.copyWith(color: MyColors.secondary),
-                ),
-              ],
-            ),
+          Row(
+            children: [
+              Text(
+                AppLocalizations.of(context)!.contrast,
+                style: Light300Style.sm.copyWith(color: MyColors.secondary),
+              ),
+              const Spacer(),
+              Text(
+                '${c.toInt()}',
+                style: Light300Style.sm.copyWith(color: MyColors.secondary),
+              ),
+            ],
+          ),
           const SizedBox(
             height: MySpaces.s8,
           ),
@@ -103,12 +103,13 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
           Opacity(
             opacity: isColor ? 1 : 0.5,
             child: HuePicker(
-              initialColor: HSVColor.fromColor(Colors.white),
+              initialColor: HSVColor.fromColor(rgb ?? Colors.white),
               onChanged: (color) {
                 setState(() {
                   isColor = true;
-                  rgb = color.toColor();
+                  rgb = color;
                 });
+                print(color.value);
               },
               thumbShape: HueSliderThumbShape(
                 color: Colors.white,

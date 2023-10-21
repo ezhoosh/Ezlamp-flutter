@@ -100,27 +100,40 @@ class _LampPageState extends State<LampPage> {
                               onTab: _addClick,
                             );
                           }
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.only(top: MySpaces.s32),
-                            itemBuilder: (context, index) {
-                              LampModel lamp = lamps[index];
-                              return LampCard(
-                                  lamp, isSelect, selectedLamps.contains(lamp),
-                                  (t) {
-                                if (t as bool) {
-                                  setState(() {
-                                    selectedLamps.add(lamp);
+                          return Column(
+                            children: [
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding: const EdgeInsets.only(top: MySpaces.s32),
+                                itemBuilder: (context, index) {
+                                  LampModel lamp = lamps[index];
+                                  return LampCard(
+                                      lamp, isSelect, selectedLamps.contains(lamp),
+                                      (t) {
+                                    if (t as bool) {
+                                      setState(() {
+                                        selectedLamps.add(lamp);
+                                      });
+                                    } else {
+                                      setState(() {
+                                        selectedLamps.remove(lamp);
+                                      });
+                                    }
                                   });
-                                } else {
-                                  setState(() {
-                                    selectedLamps.remove(lamp);
-                                  });
-                                }
-                              });
-                            },
-                            itemCount: lamps.length,
+                                },
+                                itemCount: lamps.length,
+                              ),
+                              Container(
+                                margin:
+                                const EdgeInsets.symmetric(horizontal: MySpaces.s24),
+                                width: double.infinity,
+                                child: PrimaryButton(
+                                  text: al.addLamps,
+                                  onPress: _addClick,
+                                ),
+                              )
+                            ],
                           );
                         } else if (state.getLampListStatus is BaseLoading) {
                           return const Center(
@@ -139,15 +152,6 @@ class _LampPageState extends State<LampPage> {
                     const SizedBox(
                       height: MySpaces.s24,
                     ),
-                    Container(
-                      margin:
-                          const EdgeInsets.symmetric(horizontal: MySpaces.s24),
-                      width: double.infinity,
-                      child: PrimaryButton(
-                        text: al.addLamps,
-                        onPress: _addClick,
-                      ),
-                    )
                   ],
                 ),
               ),

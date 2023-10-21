@@ -10,9 +10,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart' as intl;
 
-class InputExportType extends StatelessWidget {
-  InputExportType(
-    this.data, {
+class InputExportType extends StatefulWidget {
+  InputExportType({
     Key? key,
     required this.title,
     required this.onNewDateSelected,
@@ -25,36 +24,39 @@ class InputExportType extends StatelessWidget {
   }) : super(key: key);
 
   final String? title;
-  final String? prevDate;
+  String? prevDate;
   final Widget? description;
   final bool? isDisabled;
   final String? hint;
   final bool optional;
   final bool isDate;
-  List<String> data;
 
   final Function(String newDate) onNewDateSelected;
 
-  late BuildContext _buildContext;
+  @override
+  State<InputExportType> createState() => _InputExportTypeState();
+}
 
+class _InputExportTypeState extends State<InputExportType> {
+  late BuildContext _buildContext;
 
   @override
   Widget build(BuildContext context) {
     _buildContext = context;
     return Column(
       children: [
-        if (title != null)
+        if (widget.title != null)
           Padding(
             padding:
                 const EdgeInsets.only(bottom: MySpaces.s12, right: MySpaces.s4),
             child: Row(
               children: [
                 Text(
-                  title ?? '',
+                  widget.title ?? '',
                   style: Light300Style.sm
                       .copyWith(color: MyColors.secondary.shade300),
                 ),
-                if (!optional)
+                if (!widget.optional)
                   Text(
                     '*',
                     style: Light300Style.sm.copyWith(color: MyColors.error),
@@ -66,12 +68,12 @@ class InputExportType extends StatelessWidget {
           height: 54,
           child: ClickableContainer(
               onTap: () {
-                if (isDisabled != null && isDisabled!) return;
-                FocusManager.instance.primaryFocus?.unfocus();
+                if (widget.isDisabled != null && widget.isDisabled!) return;
+
                 _handleClickOnSelectDate();
               },
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              color: (isDisabled != null && isDisabled!)
+              color: (widget.isDisabled != null && widget.isDisabled!)
                   ? MyColors.primary
                   : MyColors.black.shade500,
               borderRadius: MyRadius.sm,
@@ -79,12 +81,13 @@ class InputExportType extends StatelessWidget {
               child: Row(children: [
                 Expanded(
                   child: Text(
-                    prevDate ??
-                        hint ??
+                    widget.prevDate ??
+                        widget.hint ??
                         AppLocalizations.of(context)!.select(""),
-                    textAlign:
-                        prevDate == null ? TextAlign.start : TextAlign.end,
-                    style: prevDate == null
+                    textAlign: widget.prevDate == null
+                        ? TextAlign.start
+                        : TextAlign.end,
+                    style: widget.prevDate == null
                         ? Light300Style.sm
                             .copyWith(color: MyColors.secondary.shade300)
                         : Light300Style.sm
@@ -135,7 +138,7 @@ class InputExportType extends StatelessWidget {
                       ),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 6),
-                      color: (isDisabled != null && isDisabled!)
+                      color: (widget.isDisabled != null && widget.isDisabled!)
                           ? MyColors.primary
                           : MyColors.black.shade500,
                       borderRadius: MyRadius.sm,
@@ -144,12 +147,10 @@ class InputExportType extends StatelessWidget {
                       child: Row(children: [
                         Expanded(
                           child: Text(
-                            prevDate ??
-                                hint ??
+                            widget.prevDate ??
+                                widget.hint ??
                                 AppLocalizations.of(context)!.select(""),
-                            textAlign: prevDate == null
-                                ? TextAlign.start
-                                : TextAlign.end,
+                            textAlign: TextAlign.end,
                             style: Light300Style.sm
                                 .copyWith(color: MyColors.secondary.shade300),
                           ),
@@ -170,7 +171,11 @@ class InputExportType extends StatelessWidget {
                                 activeColor: MyColors.primary,
                                 value: e,
                                 groupValue: current,
-                                onChanged: (t) {},
+                                onChanged: (t) {
+                                  this.setState(() {
+                                    widget.prevDate = t;
+                                  });
+                                },
                               ),
                               Text(
                                 e,
@@ -187,12 +192,5 @@ class InputExportType extends StatelessWidget {
         );
       }),
     );
-  }
-
-  String _formatDate(String delimiter, DateTime? dateTime) {
-    if (dateTime == null) {
-      return "";
-    }
-    return intl.DateFormat("yyyy${delimiter}MM${delimiter}dd").format(dateTime);
   }
 }
