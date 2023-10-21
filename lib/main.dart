@@ -1,3 +1,4 @@
+import 'package:easy_lamp/data/model/schudule_model.dart';
 import 'package:easy_lamp/locator.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
@@ -5,6 +6,7 @@ import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/invitation_bloc/invitation_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/schedule_bloc/schedule_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
@@ -31,6 +33,7 @@ void main() async {
   await setupCommand();
   await setupState();
   await setupInvitation();
+  await setupSchedule();
 
   Connectivity()
       .onConnectivityChanged
@@ -59,6 +62,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => locator<CommandBloc>()),
         BlocProvider(create: (_) => locator<StateBloc>()),
         BlocProvider(create: (_) => locator<InvitationBloc>()),
+        BlocProvider(create: (_) => locator<ScheduleBloc>()),
       ],
       child: FlutterWebFrame(
         builder: (BuildContext context) {

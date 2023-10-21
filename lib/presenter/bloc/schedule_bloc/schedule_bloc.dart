@@ -19,7 +19,7 @@ part 'schedule_event.dart';
 part 'schedule_state.dart';
 
 class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
-  CreateScheduleListUseCase createScheduleListUseCase;
+  CreateScheduleUseCase createScheduleListUseCase;
   PutScheduleByIdUseCase putScheduleByIdUseCase;
   PatchScheduleByIdUseCase patchScheduleByIdUseCase;
   DeleteScheduleByIdUseCase deleteScheduleByIdUseCase;

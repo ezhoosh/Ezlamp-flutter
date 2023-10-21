@@ -16,6 +16,7 @@ import 'package:easy_lamp/data/repositories/internet_box_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/isar_internet_box_repository.dart';
 import 'package:easy_lamp/data/repositories/isar_lamp_repository.dart';
 import 'package:easy_lamp/data/repositories/local_storage_repositoryimpl.dart';
+import 'package:easy_lamp/data/repositories/schedule_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/splash_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/state_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/user_repository_impl.dart';
@@ -27,6 +28,7 @@ import 'package:easy_lamp/domain/repositories/internet_box_repository.dart';
 import 'package:easy_lamp/domain/repositories/invitation_repository.dart';
 import 'package:easy_lamp/domain/repositories/lamp_repository.dart';
 import 'package:easy_lamp/domain/repositories/local_storage_repository.dart';
+import 'package:easy_lamp/domain/repositories/schedule_repository.dart';
 import 'package:easy_lamp/domain/repositories/splash_repository.dart';
 import 'package:easy_lamp/domain/repositories/state_repository.dart';
 import 'package:easy_lamp/domain/repositories/user_repository.dart';
@@ -34,11 +36,13 @@ import 'package:easy_lamp/domain/usecases/accept_invite_usecase.dart';
 import 'package:easy_lamp/domain/usecases/change_password_usecase.dart';
 import 'package:easy_lamp/domain/usecases/create_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/create_invitation_list_usecase.dart';
+import 'package:easy_lamp/domain/usecases/create_schedule_usecase.dart';
 import 'package:easy_lamp/domain/usecases/decline_invite_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_internet_box_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_invitation_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_lamp_usecase.dart';
+import 'package:easy_lamp/domain/usecases/delete_schedule_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_data_state_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_list_usecase.dart';
@@ -50,11 +54,15 @@ import 'package:easy_lamp/domain/usecases/get_invitation_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_my_invitation_assignment_list_usecase.dart';
+import 'package:easy_lamp/domain/usecases/get_schedule_by_id_usecase.dart';
+import 'package:easy_lamp/domain/usecases/get_schedule_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_user_usecase.dart';
 import 'package:easy_lamp/domain/usecases/login_usecase.dart';
 import 'package:easy_lamp/domain/usecases/patch_invitation_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/patch_lamp_usecase.dart';
+import 'package:easy_lamp/domain/usecases/patch_schedule_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/put_invitation_by_id_usecase.dart';
+import 'package:easy_lamp/domain/usecases/put_schedule_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_connection_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/refresh_token_usecase.dart';
@@ -80,6 +88,7 @@ import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/invitation_bloc/invitation_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/schedule_bloc/schedule_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
@@ -278,6 +287,33 @@ setupState() async {
       .registerSingleton<GetDataStateUseCase>(GetDataStateUseCase(locator()));
   //bloc
   locator.registerSingleton<StateBloc>(StateBloc(locator()));
+}
+
+setupSchedule() async {
+  // repositories
+  locator.registerSingleton<ScheduleRepository>(ScheduleRepositoryImpl());
+  // useCases
+  locator.registerSingleton<GetScheduleByIdUseCase>(
+      GetScheduleByIdUseCase(locator()));
+  locator.registerSingleton<GetScheduleListUseCase>(
+      GetScheduleListUseCase(locator()));
+  locator.registerSingleton<DeleteScheduleByIdUseCase>(
+      DeleteScheduleByIdUseCase(locator()));
+  locator.registerSingleton<PatchScheduleByIdUseCase>(
+      PatchScheduleByIdUseCase(locator()));
+  locator.registerSingleton<PutScheduleByIdUseCase>(
+      PutScheduleByIdUseCase(locator()));
+  locator.registerSingleton<CreateScheduleUseCase>(
+      CreateScheduleUseCase(locator()));
+  //bloc
+  locator.registerSingleton<ScheduleBloc>(ScheduleBloc(
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+  ));
 }
 
 setupInvitation() async {

@@ -9,11 +9,11 @@ import 'package:easy_lamp/domain/repositories/auth_repository.dart';
 import 'package:easy_lamp/domain/repositories/invitation_repository.dart';
 import 'package:easy_lamp/domain/repositories/schedule_repository.dart';
 
-class CreateScheduleListUseCase
+class CreateScheduleUseCase
     extends UseCase<DataState<ScheduleModel>, CreateScheduleParams> {
   ScheduleRepository repository;
 
-  CreateScheduleListUseCase(this.repository);
+  CreateScheduleUseCase(this.repository);
 
   @override
   Future<DataState<ScheduleModel>> call(CreateScheduleParams params) async {
