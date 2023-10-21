@@ -3,6 +3,7 @@ import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/invitation_bloc/invitation_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
@@ -29,6 +30,7 @@ void main() async {
   await setupInternetBox();
   await setupCommand();
   await setupState();
+  await setupInvitation();
 
   Connectivity()
       .onConnectivityChanged
@@ -56,6 +58,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => locator<InternetBoxBloc>()),
         BlocProvider(create: (_) => locator<CommandBloc>()),
         BlocProvider(create: (_) => locator<StateBloc>()),
+        BlocProvider(create: (_) => locator<InvitationBloc>()),
       ],
       child: FlutterWebFrame(
         builder: (BuildContext context) {

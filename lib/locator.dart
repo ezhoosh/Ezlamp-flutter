@@ -9,6 +9,7 @@ import 'package:easy_lamp/data/isar_model/isar_lamp.dart';
 import 'package:easy_lamp/data/isar_model/isar_owner.dart';
 import 'package:easy_lamp/data/repositories/auth_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/command_repository_impl.dart';
+import 'package:easy_lamp/data/repositories/invitation_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/isar_group_repository.dart';
 import 'package:easy_lamp/data/repositories/group_repository_impl.dart';
 import 'package:easy_lamp/data/repositories/internet_box_repository_impl.dart';
@@ -23,26 +24,37 @@ import 'package:easy_lamp/domain/repositories/command_repository.dart';
 import 'package:easy_lamp/domain/repositories/group_repository.dart';
 import 'package:easy_lamp/data/repositories/lamp_repository_impl.dart';
 import 'package:easy_lamp/domain/repositories/internet_box_repository.dart';
+import 'package:easy_lamp/domain/repositories/invitation_repository.dart';
 import 'package:easy_lamp/domain/repositories/lamp_repository.dart';
 import 'package:easy_lamp/domain/repositories/local_storage_repository.dart';
 import 'package:easy_lamp/domain/repositories/splash_repository.dart';
 import 'package:easy_lamp/domain/repositories/state_repository.dart';
 import 'package:easy_lamp/domain/repositories/user_repository.dart';
+import 'package:easy_lamp/domain/usecases/accept_invite_usecase.dart';
 import 'package:easy_lamp/domain/usecases/change_password_usecase.dart';
 import 'package:easy_lamp/domain/usecases/create_group_usecase.dart';
+import 'package:easy_lamp/domain/usecases/create_invitation_list_usecase.dart';
+import 'package:easy_lamp/domain/usecases/decline_invite_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_internet_box_usecase.dart';
+import 'package:easy_lamp/domain/usecases/delete_invitation_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_lamp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_data_state_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_internet_box_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_internet_box_list_usecase.dart';
+import 'package:easy_lamp/domain/usecases/get_invitation_by_group_id_usecase.dart';
+import 'package:easy_lamp/domain/usecases/get_invitation_by_id_usecase.dart';
+import 'package:easy_lamp/domain/usecases/get_invitation_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_lamp_list_usecase.dart';
+import 'package:easy_lamp/domain/usecases/get_my_invitation_assignment_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_user_usecase.dart';
 import 'package:easy_lamp/domain/usecases/login_usecase.dart';
+import 'package:easy_lamp/domain/usecases/patch_invitation_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/patch_lamp_usecase.dart';
+import 'package:easy_lamp/domain/usecases/put_invitation_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_connection_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/refresh_token_usecase.dart';
@@ -66,6 +78,7 @@ import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/invitation_bloc/invitation_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
@@ -265,6 +278,45 @@ setupState() async {
       .registerSingleton<GetDataStateUseCase>(GetDataStateUseCase(locator()));
   //bloc
   locator.registerSingleton<StateBloc>(StateBloc(locator()));
+}
+
+setupInvitation() async {
+  // repositories
+  locator.registerSingleton<InvitationRepository>(InvitationRepositoryImpl());
+  // useCases
+  locator.registerSingleton<GetInvitationListUseCase>(
+      GetInvitationListUseCase(locator()));
+  locator.registerSingleton<GetMyInvitationAssignmentListUseCase>(
+      GetMyInvitationAssignmentListUseCase(locator()));
+  locator.registerSingleton<GetInvitationByIdUseCase>(
+      GetInvitationByIdUseCase(locator()));
+  locator.registerSingleton<GetInvitationByGroupIdUseCase>(
+      GetInvitationByGroupIdUseCase(locator()));
+  locator.registerSingleton<DeleteInvitationUseCase>(
+      DeleteInvitationUseCase(locator()));
+  locator.registerSingleton<CreateInvitationUseCase>(
+      CreateInvitationUseCase(locator()));
+  locator
+      .registerSingleton<PutInvitationUseCase>(PutInvitationUseCase(locator()));
+  locator
+      .registerSingleton<AcceptInviteUseCase>(AcceptInviteUseCase(locator()));
+  locator
+      .registerSingleton<DeclineInviteUseCase>(DeclineInviteUseCase(locator()));
+  locator.registerSingleton<PatchInvitationUseCase>(
+      PatchInvitationUseCase(locator()));
+  //bloc
+  locator.registerSingleton<InvitationBloc>(InvitationBloc(
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+    locator(),
+  ));
 }
 
 Future<Isar> openDB() async {
