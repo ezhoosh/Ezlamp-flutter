@@ -112,5 +112,6 @@
   "selectGroup": "انتخاب گروه",
   "message": "پیام",
   "emptyScheduleMessage": "میتوانید برای لامپ ها برنامه ریزی زمانی داشته باشید",
-  "addSchedule": "افزودن برنامه زمانی"
+  "addSchedule": "افزودن برنامه زمانی",
+  "selectYourConnection": "نوع اتصال خودرا وارد کنید"
 }
