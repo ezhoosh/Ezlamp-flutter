@@ -83,21 +83,22 @@ class _LampPageState extends State<LampPage> {
                       height: MySpaces.s24,
                     ),
                     BlocBuilder<LampBloc, LampState>(
-                      buildWhen: (prev, curr) {
-                        if (prev.getLampListStatus is BaseSuccess &&
-                            curr.getLampListStatus is BaseNoAction) {
-                          return false;
-                        }
-                        return true;
-                      },
+                      // buildWhen: (prev, curr) {
+                      //   if (prev.getLampListStatus is BaseSuccess &&
+                      //       curr.getLampListStatus is BaseNoAction) {
+                      //     return false;
+                      //   }
+                      //   return true;
+                      // },
                       builder: (context, state) {
                         if (state.getLampListStatus is BaseSuccess) {
                           List<LampModel> lamps =
                               (state.getLampListStatus as BaseSuccess).entity;
                           if (lamps.isEmpty) {
                             return EmptyPage(
-                              al.addLamps,
+                              al.addYourLamp,
                               onTab: _addClick,
+                              btnText: al.addLamps,
                             );
                           }
                           return Column(
@@ -105,12 +106,12 @@ class _LampPageState extends State<LampPage> {
                               ListView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                padding: const EdgeInsets.only(top: MySpaces.s32),
+                                padding:
+                                    const EdgeInsets.only(top: MySpaces.s32),
                                 itemBuilder: (context, index) {
                                   LampModel lamp = lamps[index];
-                                  return LampCard(
-                                      lamp, isSelect, selectedLamps.contains(lamp),
-                                      (t) {
+                                  return LampCard(lamp, isSelect,
+                                      selectedLamps.contains(lamp), (t) {
                                     if (t as bool) {
                                       setState(() {
                                         selectedLamps.add(lamp);
@@ -120,13 +121,13 @@ class _LampPageState extends State<LampPage> {
                                         selectedLamps.remove(lamp);
                                       });
                                     }
-                                  });
+                                  }, widget.groupId);
                                 },
                                 itemCount: lamps.length,
                               ),
                               Container(
-                                margin:
-                                const EdgeInsets.symmetric(horizontal: MySpaces.s24),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: MySpaces.s24),
                                 width: double.infinity,
                                 child: PrimaryButton(
                                   text: al.addLamps,
@@ -177,6 +178,7 @@ class _LampPageState extends State<LampPage> {
                           MaterialPageRoute(
                             builder: (context) => DetailLampPage(
                               selectedLamps,
+                              widget.groupId,
                             ),
                           ),
                         );

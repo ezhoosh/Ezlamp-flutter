@@ -1,74 +1,75 @@
 //Section/Section 1
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class SectionStyle {
-  static const TextStyle s1 =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.w900);
-  static const TextStyle s2 =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.w900);
-  static const TextStyle s3 =
-      TextStyle(fontSize: 14, fontWeight: FontWeight.w900);
+  static TextStyle s1 =
+      TextStyle(fontSize: (20 - 5).sp, fontWeight: FontWeight.w900);
+  static TextStyle s2 =
+      TextStyle(fontSize: (16 - 5).sp, fontWeight: FontWeight.w900);
+  static TextStyle s3 =
+      TextStyle(fontSize: (14 - 5).sp, fontWeight: FontWeight.w900);
 }
 
 class SectionLightStyle {
-  static const TextStyle s1 =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.w500);
-  static const TextStyle s2 =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.w500);
-  static const TextStyle s3 =
-      TextStyle(fontSize: 14, fontWeight: FontWeight.w500);
+  static TextStyle s1 =
+      TextStyle(fontSize: (20 - 5).sp, fontWeight: FontWeight.w500);
+  static TextStyle s2 =
+      TextStyle(fontSize: (16 - 5).sp, fontWeight: FontWeight.w500);
+  static TextStyle s3 =
+      TextStyle(fontSize: (14 - 5).sp, fontWeight: FontWeight.w500);
 }
 
 class TitleStyle {
-  static const TextStyle t1 =
-      TextStyle(fontSize: 28, fontWeight: FontWeight.w600);
-  static const TextStyle t2 =
-      TextStyle(fontSize: 24, fontWeight: FontWeight.w600);
-  static const TextStyle t3 =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.w600);
-  static const TextStyle t4 =
-      TextStyle(fontSize: 18, fontWeight: FontWeight.w600);
-  static const TextStyle t5 =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
-  static const TextStyle t6 =
-      TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
+  static TextStyle t1 =
+      TextStyle(fontSize: (28 - 5).sp, fontWeight: FontWeight.w600);
+  static TextStyle t2 =
+      TextStyle(fontSize: (24 - 5).sp, fontWeight: FontWeight.w600);
+  static TextStyle t3 =
+      TextStyle(fontSize: (20 - 5).sp, fontWeight: FontWeight.w600);
+  static TextStyle t4 =
+      TextStyle(fontSize: (18 - 5).sp, fontWeight: FontWeight.w600);
+  static TextStyle t5 =
+      TextStyle(fontSize: (16 - 5).sp, fontWeight: FontWeight.w600);
+  static TextStyle t6 =
+      TextStyle(fontSize: (14 - 5).sp, fontWeight: FontWeight.w600);
 }
 
 class Light300Style {
-  static const TextStyle xl =
-      TextStyle(fontSize: 18, fontWeight: FontWeight.w300);
-  static const TextStyle lg =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.w300);
-  static const TextStyle normal =
-      TextStyle(fontSize: 14, fontWeight: FontWeight.w300);
-  static const TextStyle sm =
-      TextStyle(fontSize: 12, fontWeight: FontWeight.w300);
-  static const TextStyle xs =
-      TextStyle(fontSize: 10, fontWeight: FontWeight.w300);
+  static TextStyle xl =
+      TextStyle(fontSize: (18 - 5).sp, fontWeight: FontWeight.w300);
+  static TextStyle lg =
+      TextStyle(fontSize: (16 - 5).sp, fontWeight: FontWeight.w300);
+  static TextStyle normal =
+      TextStyle(fontSize: (14 - 5).sp, fontWeight: FontWeight.w300);
+  static TextStyle sm =
+      TextStyle(fontSize: (12 - 5).sp, fontWeight: FontWeight.w300);
+  static TextStyle xs =
+      TextStyle(fontSize: (10 - 5).sp, fontWeight: FontWeight.w300);
 }
 
 class Light400Style {
-  static const TextStyle xl =
-      TextStyle(fontSize: 18, fontWeight: FontWeight.w400);
-  static const TextStyle lg =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.w400);
-  static const TextStyle normal =
-      TextStyle(fontSize: 14, fontWeight: FontWeight.w400);
-  static const TextStyle sm =
-      TextStyle(fontSize: 12, fontWeight: FontWeight.w400);
-  static const TextStyle xs =
-      TextStyle(fontSize: 10, fontWeight: FontWeight.w400);
+  static TextStyle xl =
+      TextStyle(fontSize: (18 - 5).sp, fontWeight: FontWeight.w400);
+  static TextStyle lg =
+      TextStyle(fontSize: (16 - 5).sp, fontWeight: FontWeight.w400);
+  static TextStyle normal =
+      TextStyle(fontSize: (14 - 5).sp, fontWeight: FontWeight.w400);
+  static TextStyle sm =
+      TextStyle(fontSize: (12 - 5).sp, fontWeight: FontWeight.w400);
+  static TextStyle xs =
+      TextStyle(fontSize: (10 - 5).sp, fontWeight: FontWeight.w400);
 }
 
 class DemiBoldStyle {
-  static const TextStyle xl =
-      TextStyle(fontSize: 18, fontWeight: FontWeight.w600);
-  static const TextStyle lg =
-      TextStyle(fontSize: 16, fontWeight: FontWeight.w600);
-  static const TextStyle normal =
-      TextStyle(fontSize: 14, fontWeight: FontWeight.w600);
-  static const TextStyle sm =
-      TextStyle(fontSize: 12, fontWeight: FontWeight.w600);
-  static const TextStyle xs =
-      TextStyle(fontSize: 10, fontWeight: FontWeight.w600);
+  static TextStyle xl =
+      TextStyle(fontSize: (18 - 5).sp, fontWeight: FontWeight.w600);
+  static TextStyle lg =
+      TextStyle(fontSize: (16 - 5).sp, fontWeight: FontWeight.w600);
+  static TextStyle normal =
+      TextStyle(fontSize: (14 - 5).sp, fontWeight: FontWeight.w600);
+  static TextStyle sm =
+      TextStyle(fontSize: (12 - 5).sp, fontWeight: FontWeight.w600);
+  static TextStyle xs =
+      TextStyle(fontSize: (10 - 5).sp, fontWeight: FontWeight.w600);
 }

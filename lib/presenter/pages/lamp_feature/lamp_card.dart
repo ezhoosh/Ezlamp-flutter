@@ -12,9 +12,11 @@ class LampCard extends StatelessWidget {
   bool isSelect;
   LampModel lamp;
   bool selected;
+  int groupId;
   ValueChanged<bool?>? onCheckSelect;
 
-  LampCard(this.lamp, this.isSelect, this.selected, this.onCheckSelect,
+  LampCard(
+      this.lamp, this.isSelect, this.selected, this.onCheckSelect, this.groupId,
       {super.key});
 
   @override
@@ -25,9 +27,7 @@ class LampCard extends StatelessWidget {
           : () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => DetailLampPage(
-                    [lamp],
-                  ),
+                  builder: (context) => DetailLampPage([lamp], groupId),
                 ),
               );
             },

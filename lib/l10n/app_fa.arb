@@ -109,5 +109,8 @@
   "finishDate": "تاریخ پایان",
   "show": "نمایش",
   "exportType": "نوع خروجی",
-  "selectGroup": "انتخاب گروه"
+  "selectGroup": "انتخاب گروه",
+  "message": "پیام",
+  "emptyScheduleMessage": "میتوانید برای لامپ ها برنامه ریزی زمانی داشته باشید",
+  "addSchedule": "افزودن برنامه زمانی"
 }

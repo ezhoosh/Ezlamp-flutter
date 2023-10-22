@@ -65,7 +65,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
         emit(state.copyWith(
             newGetScheduleListStatus: BaseError(dataState.error)));
       }
-      emit(state.copyWith(newGetScheduleListStatus: BaseNoAction()));
+      // emit(state.copyWith(newGetScheduleListStatus: BaseNoAction()));
     });
     on<GetScheduleByIdEvent>((event, emit) async {
       emit(state.copyWith(newGetScheduleByIdStatus: BaseLoading()));

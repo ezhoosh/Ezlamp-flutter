@@ -20,6 +20,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:sizer/sizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,29 +65,31 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => locator<InvitationBloc>()),
         BlocProvider(create: (_) => locator<ScheduleBloc>()),
       ],
-      child: FlutterWebFrame(
-        builder: (BuildContext context) {
-          return MaterialApp(
-            builder: EasyLoading.init(),
-            theme: ThemeConfig.lightTheme,
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: const [
-              Locale('en', ''),
-              Locale('fa', ''),
-            ],
-            locale: const Locale('fa', ''),
-            home: const SplashPage(),
-          );
-        },
-        maximumSize: const Size(450.0, 812),
-        enabled: kIsWeb,
-        backgroundColor: Colors.grey,
-      ),
+      child: Sizer(builder: (context, w, e) {
+        return FlutterWebFrame(
+          builder: (BuildContext context) {
+            return MaterialApp(
+              builder: EasyLoading.init(),
+              theme: ThemeConfig.lightTheme,
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en', ''),
+                Locale('fa', ''),
+              ],
+              locale: const Locale('fa', ''),
+              home: const SplashPage(),
+            );
+          },
+          maximumSize: const Size(450.0, 812),
+          enabled: kIsWeb,
+          backgroundColor: Colors.grey,
+        );
+      }),
     );
   }
 }

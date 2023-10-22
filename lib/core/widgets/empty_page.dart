@@ -7,9 +7,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EmptyPage extends StatelessWidget {
   String text;
+  String? btnText;
+  String imagePath;
   Function()? onTab;
 
-  EmptyPage(this.text, {super.key, this.onTab});
+  EmptyPage(this.text,
+      {super.key,
+      this.onTab,
+      this.btnText,
+      this.imagePath = "assets/images/cuate_lamp.png"});
 
   @override
   Widget build(BuildContext context) {
@@ -20,13 +26,13 @@ class EmptyPage extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              "assets/images/cuate.png",
+              imagePath,
             ),
             const SizedBox(
               height: MySpaces.s16,
             ),
             Text(
-              AppLocalizations.of(context)!.addYourLamp,
+              text ?? AppLocalizations.of(context)!.addYourLamp,
               style: Light300Style.normal.copyWith(color: MyColors.white),
             ),
             const SizedBox(
@@ -36,7 +42,7 @@ class EmptyPage extends StatelessWidget {
               width: double.infinity,
               child: SecondaryButton(
                 onPress: onTab,
-                text: text,
+                text: btnText,
                 right: const Icon(
                   Icons.add,
                   color: MyColors.white,

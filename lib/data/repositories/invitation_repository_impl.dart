@@ -28,7 +28,7 @@ class InvitationRepositoryImpl extends InvitationRepository {
         method: 'POST',
       );
       if (response.statusCode == 200) {
-        return DataSuccess(response.data);
+        return DataSuccess(response.data.toString());
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -45,7 +45,7 @@ class InvitationRepositoryImpl extends InvitationRepository {
         method: 'POST',
       );
       if (response.statusCode == 200) {
-        return DataSuccess(response.data);
+        return DataSuccess(response.data.toString());
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -61,8 +61,8 @@ class InvitationRepositoryImpl extends InvitationRepository {
       var response = await ApiAccess.makeHttpRequest(
         "invitations/",
         data: {
-          'group_lamp': params.groupLamp,
-          'phone_number': params.phoneNumber,
+          if (params.groupLamp != null) 'group_lamp': params.groupLamp,
+          if (params.phoneNumber != null) 'phone_number': params.phoneNumber,
         },
         method: 'GET',
       );
@@ -105,13 +105,13 @@ class InvitationRepositoryImpl extends InvitationRepository {
         data: {
           'group_lamp': params.groupLamp,
           'phone_number': params.phoneNumber,
-          'assignee': params.assignee,
+          // 'assignee': params.assignee,
           'message': params.message,
-          'lamps': jsonEncode(params.lamps),
+          'lamps': params.lamps,
         },
         method: 'POST',
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         return DataSuccess(InvitationModel.fromJson(response.data));
       } else {
         return DataFailed(response.statusMessage.toString());
@@ -125,12 +125,12 @@ class InvitationRepositoryImpl extends InvitationRepository {
   Future<DataState<String>> deleteInvitationGetById(int id) async {
     try {
       var response = await ApiAccess.makeHttpRequest(
-        "invitations/",
+        "invitations/$id/",
         data: {},
         method: 'DELETE',
       );
-      if (response.statusCode == 200) {
-        return DataSuccess(response.data);
+      if (response.statusCode == 204) {
+        return DataSuccess(response.data.toString());
       } else {
         return DataFailed(response.statusMessage.toString());
       }

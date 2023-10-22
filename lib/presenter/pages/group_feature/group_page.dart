@@ -91,8 +91,9 @@ class _GroupPageState extends State<GroupPage> {
                           (state.getGroupListStatus as BaseSuccess).entity;
                       if (groups.isEmpty) {
                         return EmptyPage(
-                          al.addGroup,
+                          al.addYourGroup,
                           onTab: _addClick,
+                          btnText: al.addGroup,
                         );
                       }
                       return ListView.builder(

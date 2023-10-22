@@ -70,7 +70,7 @@ class LampBloc extends Bloc<LampEvent, LampState> {
               state.copyWith(newGetLampListStatus: BaseError(dataState.error)));
         }
       }
-      emit(state.copyWith(newGetLampListStatus: BaseNoAction()));
+      // emit(state.copyWith(newGetLampListStatus: BaseNoAction()));
     });
     on<GetLampByIdEvent>((event, emit) async {
       emit(state.copyWith(newGetLampByIdStatus: BaseLoading()));

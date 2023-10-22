@@ -88,9 +88,7 @@ class _InputDateState extends State<InputDate> {
                     widget.prevDate ??
                         widget.hint ??
                         AppLocalizations.of(context)!.select(""),
-                    textAlign: widget.prevDate == null
-                        ? TextAlign.start
-                        : TextAlign.end,
+                    textAlign: TextAlign.start,
                     style: widget.prevDate == null
                         ? Light300Style.sm
                             .copyWith(color: MyColors.secondary.shade300)

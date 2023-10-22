@@ -5,6 +5,7 @@ import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
@@ -26,20 +27,20 @@ class MoreLampBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
-    return BlocListener<GroupBloc, GroupState>(
+    return BlocListener<LampBloc, LampState>(
       listenWhen: (prev, curr) {
-        if (prev.deleteGroupStatus is BaseSuccess &&
-            curr.deleteGroupStatus is BaseNoAction) {
+        if ((prev.deleteLampStatus is BaseSuccess &&
+            curr.deleteLampStatus is BaseNoAction)) {
           return false;
         }
         return true;
       },
       listener: (context, state) {
-        if (state.deleteGroupStatus is BaseSuccess) {
+        if (state.deleteLampStatus is BaseSuccess) {
           EasyLoading.showSuccess("SUCCESS");
-        } else if (state.deleteGroupStatus is BaseLoading) {
+        } else if (state.deleteLampStatus is BaseLoading) {
           EasyLoading.show();
-        } else if (state.deleteGroupStatus is BaseError) {
+        } else if (state.deleteLampStatus is BaseError) {
           EasyLoading.showError("ERROR");
         }
       },
@@ -98,8 +99,8 @@ class MoreLampBottomSheet extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        BlocProvider.of<GroupBloc>(context)
-                            .add(DeleteGroupEvent(lampId));
+                        BlocProvider.of<LampBloc>(context)
+                            .add(DeleteLampEvent(lampId));
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,

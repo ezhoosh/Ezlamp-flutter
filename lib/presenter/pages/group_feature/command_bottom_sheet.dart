@@ -61,10 +61,10 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
           ),
           SliderTheme(
             data: SliderThemeData(
-                trackHeight: 10.0,
+                trackHeight: 6.0,
                 // Adjust the track height here
                 thumbShape: const RoundSliderThumbShape(
-                  enabledThumbRadius: 12.0,
+                  enabledThumbRadius: 8.0,
                 ),
                 activeTrackColor: Colors.white,
                 overlayShape: SliderComponentShape.noOverlay,
@@ -100,32 +100,36 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
           const SizedBox(
             height: MySpaces.s8,
           ),
-          Opacity(
-            opacity: isColor ? 1 : 0.5,
-            child: HuePicker(
-              initialColor: HSVColor.fromColor(rgb ?? Colors.white),
-              onChanged: (color) {
-                setState(() {
-                  isColor = true;
-                  rgb = color;
-                });
-                print(color.value);
-              },
-              thumbShape: HueSliderThumbShape(
-                color: Colors.white,
-                borderColor: Colors.white.withOpacity(0.3),
-                filled: true,
-                showBorder: true,
-                borderWidth: 3,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Opacity(
+              opacity: isColor ? 1 : 0.5,
+              child: HuePicker(
+                initialColor: HSVColor.fromColor(rgb ?? Colors.white),
+                onChanged: (color) {
+                  setState(() {
+                    isColor = true;
+                    rgb = color;
+                  });
+                  print(color.value);
+                },
+                thumbShape: HueSliderThumbShape(
+                  color: Colors.white,
+                  borderColor: Colors.white.withOpacity(0.3),
+                  filled: true,
+                  showBorder: true,
+                  borderWidth: 3,
+                ),
+                trackHeight: 6,
+                hueColors: const [
+                  Colors.red,
+                  Colors.blue,
+                  Colors.yellow,
+                  Colors.green,
+                  Colors.pink,
+                  Colors.orange,
+                ],
               ),
-              hueColors: const [
-                Colors.red,
-                Colors.blue,
-                Colors.yellow,
-                Colors.green,
-                Colors.pink,
-                Colors.orange,
-              ],
             ),
           ),
           const SizedBox(
@@ -145,10 +149,10 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
             opacity: isColor ? 0.5 : 1,
             child: SliderTheme(
               data: SliderThemeData(
-                  trackHeight: 10.0,
+                  trackHeight: 6.0,
                   // Adjust the track height here
                   thumbShape: const RoundSliderThumbShape(
-                    enabledThumbRadius: 12.0,
+                    enabledThumbRadius: 8.0,
                   ),
                   overlayShape: SliderComponentShape.noOverlay,
                   activeTrackColor: Colors.white,

@@ -1,6 +1,6 @@
 class GetInvitationListParams {
-  int groupLamp;
-  String phoneNumber;
+  int? groupLamp;
+  String? phoneNumber;
 
-  GetInvitationListParams(this.groupLamp, this.phoneNumber);
+  GetInvitationListParams({this.groupLamp, this.phoneNumber});
 }

@@ -105,6 +105,8 @@ dependencies:
   persian_datetime_picker: ^2.6.0
 #  jalali_table_calendar: ^1.2.0
   jiffy: ^6.2.1
+  sizer: ^2.0.15
+
 
 dev_dependencies:
   flutter_test:

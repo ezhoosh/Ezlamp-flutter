@@ -1,3 +1,4 @@
+import 'package:easy_lamp/core/params/get_invitation_list_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
@@ -6,6 +7,7 @@ import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/invitation_bloc/invitation_bloc.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/more_internet_box_bottom_sheet.dart';
@@ -17,6 +19,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
@@ -35,7 +38,10 @@ class _MemberPageState extends State<MemberPage> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<GroupBloc>(context).add(GetGroupListEvent());
+    BlocProvider.of<InvitationBloc>(context)
+        .add(GetInvitationListEvent(GetInvitationListParams()));
+    BlocProvider.of<InvitationBloc>(context)
+        .add(GetMyInvitationAssignmentListEvent());
   }
 
   @override
@@ -74,10 +80,36 @@ class _MemberPageState extends State<MemberPage> {
                   ],
                 ),
               ),
-              Expanded(
-                  child: _currentTab == 0
-                      ? const MemberTab()
-                      : const RequestListTab())
+              BlocListener<InvitationBloc, InvitationState>(
+                listener: (BuildContext context, InvitationState state) {
+                  if (state.acceptInviteStatus is BaseSuccess ||
+                      state.declineInviteStatus is BaseSuccess ||
+                      state.deleteInvitationStatus is BaseSuccess) {
+                    EasyLoading.showSuccess("SUCCESS");
+                  } else if (state.acceptInviteStatus is BaseLoading ||
+                      state.declineInviteStatus is BaseLoading ||
+                      state.deleteInvitationStatus is BaseLoading) {
+                    EasyLoading.show();
+                  } else if (state.acceptInviteStatus is BaseError ||
+                      state.declineInviteStatus is BaseError ||
+                      state.deleteInvitationStatus is BaseError) {
+                    EasyLoading.showError("ERROR");
+                  }
+                },
+                listenWhen: (prev, curr) {
+                  if ((prev.acceptInviteStatus is BaseSuccess &&
+                          curr.acceptInviteStatus is BaseNoAction) ||
+                      (prev.declineInviteStatus is BaseSuccess &&
+                          curr.declineInviteStatus is BaseNoAction)) {
+                    return false;
+                  }
+                  return true;
+                },
+                child: Expanded(
+                    child: _currentTab == 0
+                        ? const MemberTab()
+                        : const RequestListTab()),
+              )
             ],
           ),
         ),

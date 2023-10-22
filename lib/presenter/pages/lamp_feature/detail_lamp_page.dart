@@ -23,8 +23,9 @@ import 'package:iconsax/iconsax.dart';
 
 class DetailLampPage extends StatefulWidget {
   List<LampModel> lamps;
+  int groupId;
 
-  DetailLampPage(this.lamps, {super.key});
+  DetailLampPage(this.lamps, this.groupId, {super.key});
 
   @override
   State<DetailLampPage> createState() => _DetailLampPageState();
@@ -195,10 +196,10 @@ class _DetailLampPageState extends State<DetailLampPage> {
                             ),
                             SliderTheme(
                               data: SliderThemeData(
-                                  trackHeight: 10.0,
+                                  trackHeight: 6.0,
                                   // Adjust the track height here
                                   thumbShape: const RoundSliderThumbShape(
-                                    enabledThumbRadius: 12.0,
+                                    enabledThumbRadius: 8.0,
                                   ),
                                   activeTrackColor: Colors.white,
                                   overlayShape: SliderComponentShape.noOverlay,
@@ -246,6 +247,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                     rgb = color;
                                   });
                                 },
+                                trackHeight: 6,
                                 thumbShape: HueSliderThumbShape(
                                   color: Colors.white,
                                   borderColor: Colors.white.withOpacity(0.3),
@@ -281,10 +283,10 @@ class _DetailLampPageState extends State<DetailLampPage> {
                               opacity: isColor ? 0.5 : 1,
                               child: SliderTheme(
                                 data: SliderThemeData(
-                                    trackHeight: 10.0,
+                                    trackHeight: 6.0,
                                     // Adjust the track height here
                                     thumbShape: const RoundSliderThumbShape(
-                                      enabledThumbRadius: 12.0,
+                                      enabledThumbRadius: 8.0,
                                     ),
                                     overlayShape:
                                         SliderComponentShape.noOverlay,
@@ -337,7 +339,8 @@ class _DetailLampPageState extends State<DetailLampPage> {
                               ),
                             ),
                             builder: (context) {
-                              return AddMemberNameBottomSheet();
+                              return AddMemberNameBottomSheet(
+                                  widget.groupId, widget.lamps);
                             },
                           );
                         },

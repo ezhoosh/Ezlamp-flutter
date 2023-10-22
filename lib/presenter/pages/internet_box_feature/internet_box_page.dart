@@ -85,27 +85,11 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
                           color: MyColors.black.shade600,
                           child: Row(
                             children: [
-                              IconButton(
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      context: context,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(24),
-                                          topRight: Radius.circular(24),
-                                        ),
-                                      ),
-                                      builder: (context) {
-                                        return EditInternetBoxBottomSheet();
-                                      },
-                                    );
-                                  },
-                                  icon: SvgPicture.asset(
-                                    "assets/icons/lamp_on.svg",
-                                    width: 30,
-                                    height: 30,
-                                  )),
+                              SvgPicture.asset(
+                                "assets/icons/lamp_on.svg",
+                                width: 30,
+                                height: 30,
+                              ),
                               const SizedBox(
                                 width: MySpaces.s6,
                               ),
@@ -119,8 +103,8 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
                                   ),
                                   Text(
                                     item.description,
-                                    style: DemiBoldStyle.sm
-                                        .copyWith(color: MyColors.black.shade100),
+                                    style: DemiBoldStyle.sm.copyWith(
+                                        color: MyColors.black.shade100),
                                   ),
                                 ],
                               ),

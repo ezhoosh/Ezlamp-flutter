@@ -224,7 +224,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset(
-              "assets/images/cuate.png",
+              "assets/images/cuate_lamp.png",
             ),
             const SizedBox(
               height: MySpaces.s16,

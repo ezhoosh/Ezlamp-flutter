@@ -79,7 +79,7 @@ class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
         emit(state.copyWith(
             newGetInvitationListStatus: BaseError(dataState.error)));
       }
-      emit(state.copyWith(newGetInvitationListStatus: BaseNoAction()));
+      // emit(state.copyWith(newGetInvitationListStatus: BaseNoAction()));
     });
     on<GetInvitationByIdEvent>((event, emit) async {
       emit(state.copyWith(newGetInvitationByIdStatus: BaseLoading()));
@@ -99,6 +99,7 @@ class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
       if (dataState is DataSuccess) {
         emit(state.copyWith(
             newDeleteInvitationStatus: BaseSuccess(dataState.data)));
+        add(GetInvitationListEvent(GetInvitationListParams()));
       } else {
         emit(state.copyWith(
             newDeleteInvitationStatus: BaseError(dataState.error)));
@@ -131,8 +132,8 @@ class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
             newGetMyInvitationAssignmentListStatus:
                 BaseError(dataState.error)));
       }
-      emit(state.copyWith(
-          newGetMyInvitationAssignmentListStatus: BaseNoAction()));
+      // emit(state.copyWith(
+      //     newGetMyInvitationAssignmentListStatus: BaseNoAction()));
     });
     on<AcceptInviteEvent>((event, emit) async {
       emit(state.copyWith(newAcceptInviteStatus: BaseLoading()));
@@ -140,6 +141,7 @@ class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
       if (dataState is DataSuccess) {
         emit(
             state.copyWith(newAcceptInviteStatus: BaseSuccess(dataState.data)));
+        add(GetMyInvitationAssignmentListEvent());
       } else {
         emit(state.copyWith(newAcceptInviteStatus: BaseError(dataState.error)));
       }
@@ -151,6 +153,7 @@ class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
       if (dataState is DataSuccess) {
         emit(state.copyWith(
             newDeclineInviteStatus: BaseSuccess(dataState.data)));
+        add(GetMyInvitationAssignmentListEvent());
       } else {
         emit(
             state.copyWith(newDeclineInviteStatus: BaseError(dataState.error)));
