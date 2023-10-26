@@ -8,10 +8,12 @@ import 'package:easy_lamp/core/resource/constants.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/core/resource/use_case.dart';
 import 'package:easy_lamp/data/model/connection_type.dart';
+import 'package:easy_lamp/data/model/language_type.dart';
 import 'package:easy_lamp/data/model/login_model.dart';
 import 'package:easy_lamp/domain/usecases/change_password_usecase.dart';
 import 'package:easy_lamp/domain/usecases/login_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_connection_usecase.dart';
+import 'package:easy_lamp/domain/usecases/read_language_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_verify_usecase.dart';
@@ -37,6 +39,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   SendLoginOtpUseCase sendLoginOtpUseCase;
   ChangePasswordUseCase changePasswordUseCase;
   ReadConnectionUseCase readConnectionUseCase;
+  ReadLanguageUseCase readLanguageUseCase;
 
   AuthBloc(
     this.loginUseCase,
@@ -49,6 +52,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.sendLoginOtpUseCase,
     this.changePasswordUseCase,
     this.readConnectionUseCase,
+    this.readLanguageUseCase,
   ) : super(AuthState(
           loginStatus: BaseNoAction(),
           registerStatus: BaseNoAction(),
@@ -60,6 +64,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           changePasswordStatus: BaseNoAction(),
           logOutStatus: BaseNoAction(),
           connectionType: ConnectionType.Internet,
+          languageType: LanguageType.PS,
         )) {
     on<SendPhoneNumberEvent>((event, emit) async {
       emit(state.copyWith(newSendPhoneStatus: BaseLoading()));
@@ -190,6 +195,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<GetConnectionTypeEvent>((event, emit) async {
       ConnectionType type = await readConnectionUseCase(NoParams());
       emit(state.copyWith(newConnectionType: type));
+    });
+    on<GetLanguageTypeEvent>((event, emit) async {
+      LanguageType type = await readLanguageUseCase(NoParams());
+      emit(state.copyWith(newLanguageType: type));
+    });
+    on<ChangeLanguageTypeEvent>((event, emit) async {
+      await writeLocalStorageUseCase(
+          WriteLocalStorageParam(Constants.languageKey, event.type.toString()));
+      add(GetLanguageTypeEvent());
     });
   }
 }

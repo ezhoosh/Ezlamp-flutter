@@ -64,6 +64,7 @@ import 'package:easy_lamp/domain/usecases/patch_schedule_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/put_invitation_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/put_schedule_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_connection_usecase.dart';
+import 'package:easy_lamp/domain/usecases/read_language_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/refresh_token_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_usecase.dart';
@@ -145,9 +146,12 @@ setupAuth() async {
       .registerSingleton<SendLoginOtpUseCase>(SendLoginOtpUseCase(locator()));
   locator.registerSingleton<ChangePasswordUseCase>(
       ChangePasswordUseCase(locator()));
+  locator
+      .registerSingleton<ReadLanguageUseCase>(ReadLanguageUseCase(locator()));
 
   //bloc
   locator.registerSingleton<AuthBloc>(AuthBloc(
+    locator(),
     locator(),
     locator(),
     locator(),

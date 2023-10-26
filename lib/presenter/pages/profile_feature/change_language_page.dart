@@ -7,7 +7,9 @@ import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
+import 'package:easy_lamp/data/model/language_type.dart';
 import 'package:easy_lamp/main.dart';
+import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
@@ -80,7 +82,8 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
                   children: [
                     ClickableContainer(
                       onTap: () {
-                        MyApp.of(context)?.setLocale(const Locale('en', ''));
+                        BlocProvider.of<AuthBloc>(context)
+                            .add(ChangeLanguageTypeEvent(LanguageType.EN));
                       },
                       borderRadius: MyRadius.sm,
                       child: ClickableContainer(
@@ -122,7 +125,8 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
                     ClickableContainer(
                       borderRadius: MyRadius.sm,
                       onTap: () {
-                        MyApp.of(context)?.setLocale(const Locale('fa', ''));
+                        BlocProvider.of<AuthBloc>(context)
+                            .add(ChangeLanguageTypeEvent(LanguageType.PS));
                       },
                       child: Row(
                         children: [

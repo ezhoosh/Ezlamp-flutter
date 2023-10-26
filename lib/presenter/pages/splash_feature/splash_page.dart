@@ -1,4 +1,5 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
+import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,6 @@ class _SplashPageState extends State<SplashPage> {
       listener: (context, state) {
         if (state.checkLoginStatus is BaseSuccess &&
             (state.checkLoginStatus as BaseSuccess).entity) {
-            
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => HomePage()),
           );
@@ -57,5 +57,6 @@ class _SplashPageState extends State<SplashPage> {
       //   MaterialPageRoute(builder: (context) => AuthPage()),
       // );
     });
+    BlocProvider.of<AuthBloc>(context).add(GetLanguageTypeEvent());
   }
 }

@@ -65,6 +65,14 @@ class ChangeConnectionTypeEvent extends AuthEvent {
   ChangeConnectionTypeEvent(this.type);
 }
 
+class ChangeLanguageTypeEvent extends AuthEvent {
+  LanguageType type;
+
+  ChangeLanguageTypeEvent(this.type);
+}
+
 class GetConnectionTypeEvent extends AuthEvent {}
+
+class GetLanguageTypeEvent extends AuthEvent {}
 
 class LogOutEvent extends AuthEvent {}

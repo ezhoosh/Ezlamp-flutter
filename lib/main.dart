@@ -1,3 +1,4 @@
+import 'package:easy_lamp/data/model/language_type.dart';
 import 'package:easy_lamp/data/model/schudule_model.dart';
 import 'package:easy_lamp/locator.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
@@ -58,14 +59,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale = const Locale('fa', '');
-
-  void setLocale(Locale value) {
-    setState(() {
-      _locale = value;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -84,21 +77,27 @@ class _MyAppState extends State<MyApp> {
       child: Sizer(builder: (context, w, e) {
         return FlutterWebFrame(
           builder: (BuildContext context) {
-            return MaterialApp(
-              builder: EasyLoading.init(),
-              theme: ThemeConfig.lightTheme,
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: const [
-                Locale('en', ''),
-                Locale('fa', ''),
-              ],
-              locale: _locale,
-              home: const SplashPage(),
+            return BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                return MaterialApp(
+                  builder: EasyLoading.init(),
+                  theme: ThemeConfig.lightTheme,
+                  localizationsDelegates: const [
+                    AppLocalizations.delegate,
+                    GlobalMaterialLocalizations.delegate,
+                    GlobalWidgetsLocalizations.delegate,
+                    GlobalCupertinoLocalizations.delegate,
+                  ],
+                  supportedLocales: const [
+                    Locale('en', ''),
+                    Locale('fa', ''),
+                  ],
+                  locale: state.languageType == LanguageType.PS
+                      ? const Locale('fa', '')
+                      : const Locale('en', ''),
+                  home: const SplashPage(),
+                );
+              },
             );
           },
           maximumSize: const Size(450.0, 812),
