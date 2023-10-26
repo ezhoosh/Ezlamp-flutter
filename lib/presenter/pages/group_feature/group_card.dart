@@ -14,7 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GroupCard extends StatelessWidget {
-  GroupLampModel group;
+  GroupModel group;
 
   GroupCard(this.group, {super.key});
 

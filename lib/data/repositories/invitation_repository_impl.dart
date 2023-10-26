@@ -97,7 +97,7 @@ class InvitationRepositoryImpl extends InvitationRepository {
   }
 
   @override
-  Future<DataState<InvitationModel>> createInvitation(
+  Future<DataState<String>> createInvitation(
       CreateInvitationParams params) async {
     try {
       var response = await ApiAccess.makeHttpRequest(
@@ -112,7 +112,7 @@ class InvitationRepositoryImpl extends InvitationRepository {
         method: 'POST',
       );
       if (response.statusCode == 201) {
-        return DataSuccess(InvitationModel.fromJson(response.data));
+        return DataSuccess(response.data.toString());
       } else {
         return DataFailed(response.statusMessage.toString());
       }

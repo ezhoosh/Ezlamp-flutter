@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
         currentIndex: currentPage,
         backgroundColor: MyColors.black,
         marginR: EdgeInsets.zero,
-        itemPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        itemPadding: const EdgeInsets.symmetric(horizontal: 20),
         onTap: (i) {
           setState(() {
             currentPage = i;

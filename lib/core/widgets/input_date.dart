@@ -30,7 +30,7 @@ class InputDate extends StatefulWidget {
   }) : super(key: key);
 
   final String? title;
-  String? prevDate;
+  DateTime? prevDate;
   final Widget? description;
   final bool? isDisabled;
   final String? hint;
@@ -85,9 +85,7 @@ class _InputDateState extends State<InputDate> {
               child: Row(children: [
                 Expanded(
                   child: Text(
-                    widget.prevDate ??
-                        widget.hint ??
-                        AppLocalizations.of(context)!.select(""),
+                    _formatDate(widget.prevDate),
                     textAlign: TextAlign.start,
                     style: widget.prevDate == null
                         ? Light300Style.sm
@@ -124,7 +122,7 @@ class _InputDateState extends State<InputDate> {
                         events: {},
                         onDaySelected: (value) {
                           setState(() {
-                            widget.prevDate = _formatDate(value);
+                            widget.prevDate = value;
                           });
                           widget.onNewDateSelected(value);
                         }),
@@ -157,7 +155,7 @@ class _InputDateState extends State<InputDate> {
                 isDate: widget.isDate,
                 onSubmit: (value) {
                   setState(() {
-                    widget.prevDate = _formatDate(value);
+                    widget.prevDate = value;
                   });
                   widget.onNewDateSelected(value);
                 },
@@ -167,7 +165,7 @@ class _InputDateState extends State<InputDate> {
 
   String _formatDate(DateTime? dateTime) {
     if (dateTime == null) {
-      return "";
+      return widget.hint ?? AppLocalizations.of(context)!.select("");
     }
     if (widget.isDate) {
       Jalali j = Jalali.fromDateTime(dateTime);

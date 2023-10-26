@@ -8,6 +8,7 @@ import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
+import 'package:easy_lamp/presenter/pages/group_feature/add_member_group_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -191,25 +192,42 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
             color: MyColors.secondary.shade800,
             height: MySpaces.s40,
           ),
-          Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(left: 10),
-                padding: const EdgeInsets.all(8),
-                decoration: const BoxDecoration(
-                    color: MyColors.secondary, shape: BoxShape.circle),
-                child: SvgPicture.asset("assets/icons/profile_user.svg"),
-              ),
-              Text(
-                AppLocalizations.of(context)!.addMember,
-                style: Light400Style.lg.copyWith(color: MyColors.secondary),
-              ),
-              const Spacer(),
-              RotationTransition(
-                turns: const AlwaysStoppedAnimation(180 / 360),
-                child: SvgPicture.asset('assets/icons/arrow_right.svg'),
-              )
-            ],
+          ClickableContainer(
+            onTap: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(24),
+                    topRight: Radius.circular(24),
+                  ),
+                ),
+                builder: (context) {
+                  return AddMemberGroupBottomSheet();
+                },
+              );
+            },
+            child: Row(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                      color: MyColors.secondary, shape: BoxShape.circle),
+                  child: SvgPicture.asset("assets/icons/profile_user.svg"),
+                ),
+                Text(
+                  AppLocalizations.of(context)!.addMember,
+                  style: Light400Style.lg.copyWith(color: MyColors.secondary),
+                ),
+                const Spacer(),
+                RotationTransition(
+                  turns: const AlwaysStoppedAnimation(180 / 360),
+                  child: SvgPicture.asset('assets/icons/arrow_right.svg'),
+                )
+              ],
+            ),
           ),
           Divider(
             color: MyColors.secondary.shade800,

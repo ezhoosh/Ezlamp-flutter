@@ -9,7 +9,7 @@ import 'package:easy_lamp/data/model/owner_model.dart';
 import 'package:isar/isar.dart';
 
 class Converter {
-  static List<IsarGroup> groupLampModelToIsarGroup(List<GroupLampModel> data) {
+  static List<IsarGroup> groupLampModelToIsarGroup(List<GroupModel> data) {
     return data
         .map(
           (e) => IsarGroup(
@@ -43,12 +43,12 @@ class Converter {
         .toList();
   }
 
-  static Future<List<GroupLampModel>> isarGroupToGroupLampModel(
+  static Future<List<GroupModel>> isarGroupToGroupLampModel(
       List<IsarGroup> data) async {
     return data.map((e) {
       IsarOwner? owner = e.owner.value;
       // List<IsarLamp> lamps = await e.lamps.filter().findAll();
-      return GroupLampModel(
+      return GroupModel(
         id: e.id ?? 0,
         name: e.name ?? '',
         description: e.description ?? '',

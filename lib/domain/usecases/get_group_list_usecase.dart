@@ -4,13 +4,13 @@ import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/domain/repositories/group_repository.dart';
 
 class GetGroupListUseCase
-    extends UseCase<DataState<List<GroupLampModel>>, NoParams> {
+    extends UseCase<DataState<List<GroupModel>>, NoParams> {
   GroupRepository repository;
 
   GetGroupListUseCase(this.repository);
 
   @override
-  Future<DataState<List<GroupLampModel>>> call(NoParams params) async {
+  Future<DataState<List<GroupModel>>> call(NoParams params) async {
     return await repository.getGroupList();
   }
 }

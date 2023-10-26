@@ -118,8 +118,7 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
                     ),
                     ClickableContainer(
                       borderRadius: MyRadius.sm,
-                      onTap: () {
-                      },
+                      onTap: () {},
                       child: Row(
                         children: [
                           Column(

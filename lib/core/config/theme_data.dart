@@ -175,7 +175,7 @@ class ThemeConfig {
   }
 
   static ThemeData get lightTheme => createTheme(
-      brightness: Brightness.light,
+      brightness: Brightness.dark,
       background: MyColors.black.shade700,
       cardBackground: MyColors.black.shade400,
       primaryText: MyColors.primary,

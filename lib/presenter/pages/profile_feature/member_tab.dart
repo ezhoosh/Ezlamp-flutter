@@ -102,7 +102,9 @@ class MemberTab extends StatelessWidget {
           );
         } else if (state.getInvitationListStatus is BaseLoading) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: CircularProgressIndicator(
+              color: MyColors.primary,
+            ),
           );
         } else if (state.getInvitationListStatus is BaseError) {
           return const Center(

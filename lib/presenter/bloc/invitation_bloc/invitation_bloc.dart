@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:easy_lamp/core/params/create_invitation_group_params.dart';
 import 'package:easy_lamp/core/params/create_invitation_params.dart';
 import 'package:easy_lamp/core/params/get_invitation_list_params.dart';
 import 'package:easy_lamp/core/params/patch_invitation_params.dart';
@@ -117,6 +118,26 @@ class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
             newCreateInvitationStatus: BaseError(dataState.error)));
       }
       emit(state.copyWith(newCreateInvitationStatus: BaseNoAction()));
+    });
+    on<CreateInvitationGroupEvent>((event, emit) async {
+      for (int k in event.params.lamps.keys.toList()) {
+        emit(state.copyWith(newCreateInvitationStatus: BaseLoading()));
+        DataState dataState = await createInvitationUseCase(
+            CreateInvitationParams(
+                phoneNumber: event.params.phoneNumber,
+                message: event.params.message,
+                groupLamp: k,
+                lamps: event.params.lamps[k] ?? []));
+
+        if (dataState is DataSuccess) {
+          emit(state.copyWith(
+              newCreateInvitationStatus: BaseSuccess(dataState.data)));
+        } else {
+          emit(state.copyWith(
+              newCreateInvitationStatus: BaseError(dataState.error)));
+        }
+        emit(state.copyWith(newCreateInvitationStatus: BaseNoAction()));
+      }
     });
     on<GetMyInvitationAssignmentListEvent>((event, emit) async {
       emit(state.copyWith(

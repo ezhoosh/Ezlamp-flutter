@@ -35,6 +35,12 @@ class CreateInvitationEvent extends InvitationEvent {
   CreateInvitationEvent(this.params);
 }
 
+class CreateInvitationGroupEvent extends InvitationEvent {
+  CreateInvitationGroupParams params;
+
+  CreateInvitationGroupEvent(this.params);
+}
+
 class PutInvitationEvent extends InvitationEvent {
   UpdateInvitationParams params;
 

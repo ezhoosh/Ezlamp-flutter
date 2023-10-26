@@ -66,7 +66,7 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
       emit(state.copyWith(newGetGroupListStatus: BaseLoading()));
       ConnectionType type = await readConnectionUseCase(NoParams());
       if (type == ConnectionType.Bluetooth) {
-        List<GroupLampModel> groups = await Converter.isarGroupToGroupLampModel(
+        List<GroupModel> groups = await Converter.isarGroupToGroupLampModel(
             await isarGroupRepository.getAll());
         emit(state.copyWith(newGetGroupListStatus: BaseSuccess(groups)));
       } else {

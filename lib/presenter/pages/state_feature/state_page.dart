@@ -8,6 +8,7 @@ import 'package:easy_lamp/core/widgets/input_date.dart';
 import 'package:easy_lamp/core/widgets/input_export_type.dart';
 import 'package:easy_lamp/core/widgets/input_group.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
+import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/data/model/state_model.dart';
 import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,11 +27,22 @@ class StatePage extends StatefulWidget {
 
 class _StatePageState extends State<StatePage> {
   late AppLocalizations al;
+  List<LampModel>? lamps;
+  DateTime? startDate, endDate;
+  Map type = {'title': 'مصرف بر حسب وات', 'value': 'power'};
+  List<Map> exportData = [
+    {'title': 'مصرف بر حسب وات', 'value': 'power'},
+    {'title': 'دما رطوبت', 'value': 'temperature'},
+    {'title': 'سنسور حرکتی', 'value': 'pir'},
+    {'title': 'سنسور نور', 'value': 'light'},
+  ];
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<StateBloc>(context).add(GetDataStateEvent(StateParams()));
+    BlocProvider.of<StateBloc>(context).add(GetDataStateEvent(StateParams(
+      type['value'],
+    )));
   }
 
   @override
@@ -58,7 +70,10 @@ class _StatePageState extends State<StatePage> {
                     InputGroupSelect(
                       title: al.selectGroup,
                       isDate: true,
-                      onNewDateSelected: (String newDate) {},
+                      prevValue: lamps,
+                      onNewDateSelected: (List<LampModel> newValue) {
+                        lamps = newValue;
+                      },
                     ),
                     const SizedBox(
                       height: MySpaces.s24,
@@ -68,7 +83,10 @@ class _StatePageState extends State<StatePage> {
                         Expanded(
                           child: InputDate(
                             title: al.startDate,
-                            onNewDateSelected: (DateTime newDate) {},
+                            prevDate: startDate,
+                            onNewDateSelected: (DateTime newDate) {
+                              startDate = newDate;
+                            },
                             isDate: true,
                           ),
                         ),
@@ -78,8 +96,11 @@ class _StatePageState extends State<StatePage> {
                         Expanded(
                           child: InputDate(
                             title: al.finishDate,
+                            prevDate: endDate,
                             isDate: true,
-                            onNewDateSelected: (DateTime newDate) {},
+                            onNewDateSelected: (DateTime newDate) {
+                              endDate = newDate;
+                            },
                           ),
                         ),
                       ],
@@ -88,9 +109,13 @@ class _StatePageState extends State<StatePage> {
                       height: MySpaces.s24,
                     ),
                     InputExportType(
+                      exportData,
                       title: al.exportType,
                       isDate: true,
-                      onNewDateSelected: (String newDate) {},
+                      prevValue: type,
+                      onNewDateSelected: (Map newValue) {
+                        type = newValue;
+                      },
                     ),
                     const SizedBox(
                       height: MySpaces.s24,
@@ -99,6 +124,23 @@ class _StatePageState extends State<StatePage> {
                       width: double.infinity,
                       child: PrimaryButton(
                         text: al.show,
+                        onPress: () {
+                          String? lampsStr;
+                          if (lamps != null) {
+                            lampsStr = lamps!
+                                .map((e) => e.id)
+                                .toList()
+                                .join(',')
+                                .toString();
+                          }
+                          BlocProvider.of<StateBloc>(context)
+                              .add(GetDataStateEvent(StateParams(
+                            type['value'],
+                            lamps: lampsStr,
+                            timeStampGte: startDate,
+                            timeStampLte: endDate,
+                          )));
+                        },
                       ),
                     ),
                   ],
@@ -172,6 +214,12 @@ class _StatePageState extends State<StatePage> {
                           ),
                           Chart(items)
                         ],
+                      ),
+                    );
+                  } else if (state.getDataStateStatus is BaseLoading) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: MyColors.primary,
                       ),
                     );
                   }
@@ -301,7 +349,7 @@ class Chart extends StatelessWidget {
           spots: items
               .map(
                 (e) => FlSpot(
-                    e.white.toDouble(), e.timestamp.millisecond.toDouble()),
+                    e.power ?? 0.toDouble(), e.timestamp.second.toDouble()),
               )
               .toList(),
           isCurved: true,

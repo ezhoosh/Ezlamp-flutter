@@ -4,6 +4,7 @@ import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
@@ -11,7 +12,7 @@ import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/internet_box_page.dart';
-import 'package:easy_lamp/presenter/pages/lamp_feature/add_member_name_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/pages/lamp_feature/add_member_lamp_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/more_lamp_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -112,53 +113,100 @@ class _DetailLampPageState extends State<DetailLampPage> {
                             horizontal: MySpaces.s12,
                             vertical: MySpaces.s16,
                           ),
-                          child: Row(
+                          child: Column(
                             children: [
-                              IconButton(
-                                  onPressed: () {
-                                    showModalBottomSheet(
-                                      isScrollControlled: true,
-                                      context: context,
-                                      shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(24),
-                                          topRight: Radius.circular(24),
-                                        ),
-                                      ),
-                                      builder: (context) {
-                                        return MoreLampBottomSheet(
-                                            widget.lamps.first.id);
+                              Row(
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        showModalBottomSheet(
+                                          isScrollControlled: true,
+                                          context: context,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                              topLeft: Radius.circular(24),
+                                              topRight: Radius.circular(24),
+                                            ),
+                                          ),
+                                          builder: (context) {
+                                            return MoreLampBottomSheet(
+                                                widget.lamps.first.id);
+                                          },
+                                        );
                                       },
-                                    );
-                                  },
-                                  icon: SvgPicture.asset(
-                                    "assets/icons/edit.svg",
-                                    width: 30,
-                                    height: 30,
-                                  )),
+                                      icon: SvgPicture.asset(
+                                        "assets/icons/edit.svg",
+                                        width: 30,
+                                        height: 30,
+                                      )),
+                                  const SizedBox(
+                                    width: MySpaces.s4,
+                                  ),
+                                  Text(
+                                    widget.lamps.first.name,
+                                    style: DemiBoldStyle.lg
+                                        .copyWith(color: MyColors.white),
+                                  ),
+                                ],
+                              ),
                               const SizedBox(
-                                width: MySpaces.s4,
+                                height: MySpaces.s12,
                               ),
-                              Text(
-                                widget.lamps.first.name,
-                                style: DemiBoldStyle.lg
-                                    .copyWith(color: MyColors.white),
-                              ),
-                              const Spacer(),
-                              FlutterSwitch(
-                                activeColor: MyColors.primary,
-                                value: widget.lamps.first.isActive,
-                                onToggle: (bool value) {
-                                  BlocProvider.of<LampBloc>(context).add(
-                                    PatchLampEvent(
-                                      PatchLampListParams(
-                                        lampId: widget.lamps.first.id,
-                                        isActive: value,
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: SecondaryButton(
+                                      onPress: () {
+                                        BlocProvider.of<CommandBloc>(context)
+                                            .add(SendCommandEvent(CommandParams(
+                                                w: 0,
+                                                y: 0,
+                                                r: 0,
+                                                g: 0,
+                                                b: 0,
+                                                c: 0,
+                                                pir: true,
+                                                type: 'apply',
+                                                lamps: widget.lamps
+                                                    .map((e) => e.id)
+                                                    .toList())));
+                                      },
+                                      text: al.off,
+                                      right: const Icon(
+                                        Icons.power_settings_new_outlined,
+                                        color: MyColors.white,
                                       ),
                                     ),
-                                  );
-                                },
-                              )
+                                  ),
+                                  const SizedBox(
+                                    width: MySpaces.s8,
+                                  ),
+                                  Expanded(
+                                    child: SecondaryButton(
+                                      onPress: () {
+                                        BlocProvider.of<CommandBloc>(context)
+                                            .add(SendCommandEvent(CommandParams(
+                                                w: 100,
+                                                y: 50,
+                                                r: 0,
+                                                g: 0,
+                                                b: 0,
+                                                c: 0,
+                                                pir: true,
+                                                type: 'apply',
+                                                lamps: widget.lamps
+                                                    .map((e) => e.id)
+                                                    .toList())));
+                                      },
+                                      text: al.on,
+                                      right: const Icon(
+                                        Icons.power_settings_new_outlined,
+                                        color: MyColors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -339,7 +387,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
                               ),
                             ),
                             builder: (context) {
-                              return AddMemberNameBottomSheet(
+                              return AddMemberLampBottomSheet(
                                   widget.groupId, widget.lamps);
                             },
                           );

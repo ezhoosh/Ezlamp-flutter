@@ -13,7 +13,7 @@ import 'package:easy_lamp/domain/repositories/group_repository.dart';
 
 class GroupRepositoryImpl extends GroupRepository {
   @override
-  Future<DataState<GroupLampModel>> createGroup(
+  Future<DataState<GroupModel>> createGroup(
       CreateGroupParams params) async {
     try {
       var response = await ApiAccess.makeHttpRequest(
@@ -24,8 +24,8 @@ class GroupRepositoryImpl extends GroupRepository {
         },
       );
       if (response.statusCode == 201) {
-        return DataSuccess<GroupLampModel>(
-            GroupLampModel.fromJson(response.data));
+        return DataSuccess<GroupModel>(
+            GroupModel.fromJson(response.data));
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -52,14 +52,14 @@ class GroupRepositoryImpl extends GroupRepository {
   }
 
   @override
-  Future<DataState<GroupLampModel>> getGroupById(int id) async {
+  Future<DataState<GroupModel>> getGroupById(int id) async {
     try {
       var response = await ApiAccess.makeHttpRequest(
           "group-lamp/{${id.toString()}}",
           method: 'GET');
       if (response.statusCode == 200) {
-        return DataSuccess<GroupLampModel>(
-            GroupLampModel.fromJson(response.data));
+        return DataSuccess<GroupModel>(
+            GroupModel.fromJson(response.data));
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -69,13 +69,13 @@ class GroupRepositoryImpl extends GroupRepository {
   }
 
   @override
-  Future<DataState<List<GroupLampModel>>> getGroupList() async {
+  Future<DataState<List<GroupModel>>> getGroupList() async {
     try {
       var response =
           await ApiAccess.makeHttpRequest("group-lamp/", method: 'GET');
       if (response.statusCode == 200) {
-        return DataSuccess(List<GroupLampModel>.from(
-            response.data.map((model) => GroupLampModel.fromJson(model))));
+        return DataSuccess(List<GroupModel>.from(
+            response.data.map((model) => GroupModel.fromJson(model))));
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -85,7 +85,7 @@ class GroupRepositoryImpl extends GroupRepository {
   }
 
   @override
-  Future<DataState<GroupLampModel>> updateGroup(
+  Future<DataState<GroupModel>> updateGroup(
       UpdateGroupParams params) async {
     try {
       var response =
@@ -96,8 +96,8 @@ class GroupRepositoryImpl extends GroupRepository {
               },
               method: 'PUT');
       if (response.statusCode == 200) {
-        return DataSuccess<GroupLampModel>(
-            GroupLampModel.fromJson(response.data));
+        return DataSuccess<GroupModel>(
+            GroupModel.fromJson(response.data));
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -107,7 +107,7 @@ class GroupRepositoryImpl extends GroupRepository {
   }
 
   @override
-  Future<DataState<GroupLampModel>> updateGroupOwner(
+  Future<DataState<GroupModel>> updateGroupOwner(
       UpdateGroupOwnerParams params) async {
     try {
       // "group-lamp/update-group-owner/${params.uuid.toString()}",
@@ -119,8 +119,8 @@ class GroupRepositoryImpl extends GroupRepository {
               },
               method: 'PUT');
       if (response.statusCode == 200) {
-        return DataSuccess<GroupLampModel>(
-            GroupLampModel.fromJson(response.data));
+        return DataSuccess<GroupModel>(
+            GroupModel.fromJson(response.data));
       } else {
         return DataFailed(response.statusMessage.toString());
       }
@@ -130,7 +130,7 @@ class GroupRepositoryImpl extends GroupRepository {
   }
 
   @override
-  Future<DataState<GroupLampModel>> editGroupName(
+  Future<DataState<GroupModel>> editGroupName(
       EditGroupNameParams params) async {
     try {
       var response =
@@ -140,8 +140,8 @@ class GroupRepositoryImpl extends GroupRepository {
               },
               method: 'PATCH');
       if (response.statusCode == 200) {
-        return DataSuccess<GroupLampModel>(
-            GroupLampModel.fromJson(response.data));
+        return DataSuccess<GroupModel>(
+            GroupModel.fromJson(response.data));
       } else {
         return DataFailed(response.statusMessage.toString());
       }

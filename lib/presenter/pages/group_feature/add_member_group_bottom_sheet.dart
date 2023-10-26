@@ -1,3 +1,4 @@
+import 'package:easy_lamp/core/params/create_invitation_group_params.dart';
 import 'package:easy_lamp/core/params/create_invitation_params.dart';
 import 'package:easy_lamp/core/params/edit_group_name_params.dart';
 import 'package:easy_lamp/core/params/patch_lamps_params.dart';
@@ -7,6 +8,8 @@ import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
+import 'package:easy_lamp/core/widgets/input_group.dart';
+import 'package:easy_lamp/core/widgets/input_phone.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/invitation_bloc/invitation_bloc.dart';
@@ -19,14 +22,19 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
 
-class AddMemberNameBottomSheet extends StatelessWidget {
+class AddMemberGroupBottomSheet extends StatefulWidget {
+  AddMemberGroupBottomSheet({super.key});
+
+  @override
+  State<AddMemberGroupBottomSheet> createState() =>
+      _AddMemberGroupBottomSheetState();
+}
+
+class _AddMemberGroupBottomSheetState extends State<AddMemberGroupBottomSheet> {
   late AppLocalizations al;
+  List<LampModel> lamps = [];
   final TextEditingController _controllerPhone = TextEditingController();
   final TextEditingController _controllerMessage = TextEditingController();
-  List<LampModel> lamps;
-  int groupId;
-
-  AddMemberNameBottomSheet(this.groupId, this.lamps, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +50,6 @@ class AddMemberNameBottomSheet extends StatelessWidget {
       listener: (context, state) {
         if (state.createInvitationStatus is BaseSuccess) {
           EasyLoading.showSuccess("SUCCESS");
-          Navigator.pop(context);
         } else if (state.createInvitationStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.createInvitationStatus is BaseError) {
@@ -53,11 +60,22 @@ class AddMemberNameBottomSheet extends StatelessWidget {
         title: al.addMember,
         child: Column(
           children: [
-            BorderTextField(
+            InputPhone(
               title: al.phone,
-              controller: _controllerPhone,
-              optional: false,
-              hintText: "+98",
+              hint: "000 000",
+              textEditingController: _controllerPhone,
+              isOptional: false,
+            ),
+            const SizedBox(
+              height: MySpaces.s12,
+            ),
+            InputGroupSelect(
+              title: al.selectGroup,
+              isDate: true,
+              prevValue: lamps,
+              onNewDateSelected: (List<LampModel> newValue) {
+                lamps = newValue;
+              },
             ),
             const SizedBox(
               height: MySpaces.s12,
@@ -76,12 +94,19 @@ class AddMemberNameBottomSheet extends StatelessWidget {
               width: double.infinity,
               child: PrimaryButton(
                 onPress: () {
-                  BlocProvider.of<InvitationBloc>(context)
-                      .add(CreateInvitationEvent(CreateInvitationParams(
+                  Map<int, List<int>> data = {};
+                  for (LampModel lamp in lamps) {
+                    if (data.containsKey(lamp.groupLamp)) {
+                      data[lamp.groupLamp]?.add(lamp.id);
+                    } else {
+                      data[lamp.groupLamp] = [lamp.id];
+                    }
+                  }
+                  BlocProvider.of<InvitationBloc>(context).add(
+                      CreateInvitationGroupEvent(CreateInvitationGroupParams(
                     phoneNumber: _controllerPhone.text,
                     message: _controllerMessage.text,
-                    groupLamp: groupId,
-                    lamps: lamps.map((e) => e.id).toList(),
+                    lamps: data,
                   )));
                 },
                 text: al.save,

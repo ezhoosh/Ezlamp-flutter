@@ -7,11 +7,13 @@ class ApiAccess {
   static Future<Response> makeHttpRequest(
     String url, {
     Map<String, dynamic>? data,
+    Map<String, dynamic>? query,
     String method = 'POST',
   }) async {
     Dio dio = locator();
     return await dio.request("${Constants.baseUrl}$url",
         data: data,
+        queryParameters: query,
         options: Options(
           method: method,
           headers: {

@@ -6,13 +6,13 @@ import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/domain/repositories/group_repository.dart';
 
 class UpdateGroupNameUseCase
-    extends UseCase<DataState<GroupLampModel>, EditGroupNameParams> {
+    extends UseCase<DataState<GroupModel>, EditGroupNameParams> {
   GroupRepository repository;
 
   UpdateGroupNameUseCase(this.repository);
 
   @override
-  Future<DataState<GroupLampModel>> call(EditGroupNameParams params) async {
+  Future<DataState<GroupModel>> call(EditGroupNameParams params) async {
     return await repository.editGroupName(params);
   }
 }

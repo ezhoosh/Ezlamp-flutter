@@ -96,7 +96,7 @@ dependencies:
   flutter_otp_text_field: ^1.1.1
   #  simple_barcode_scanner: ^0.0.8
   barcode_scan2: ^4.2.4
-  bottom_picker: ^2.0.4
+#  bottom_picker: ^2.0.4
   iconsax: ^0.0.8
   isar: ^3.1.0+1
   isar_flutter_libs: 3.1.0+1 # contains Isar Core

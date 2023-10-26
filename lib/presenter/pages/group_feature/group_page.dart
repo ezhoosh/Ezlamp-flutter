@@ -87,7 +87,7 @@ class _GroupPageState extends State<GroupPage> {
                   },
                   builder: (context, state) {
                     if (state.getGroupListStatus is BaseSuccess) {
-                      List<GroupLampModel> groups =
+                      List<GroupModel> groups =
                           (state.getGroupListStatus as BaseSuccess).entity;
                       if (groups.isEmpty) {
                         return EmptyPage(

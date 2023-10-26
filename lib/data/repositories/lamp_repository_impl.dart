@@ -86,7 +86,7 @@ class LampRepositoryImpl extends LampRepository {
           method: 'GET');
       if (response.statusCode == 200) {
         return DataSuccess<List<LampModel>>(
-            GroupLampModel.fromJson(response.data).lamps);
+            GroupModel.fromJson(response.data).lamps);
       } else {
         return DataFailed(response.statusMessage.toString());
       }

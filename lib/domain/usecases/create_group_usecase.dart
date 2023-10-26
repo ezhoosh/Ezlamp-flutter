@@ -5,13 +5,13 @@ import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/domain/repositories/group_repository.dart';
 
 class CreateGroupUseCase
-    extends UseCase<DataState<GroupLampModel>, CreateGroupParams> {
+    extends UseCase<DataState<GroupModel>, CreateGroupParams> {
   GroupRepository repository;
 
   CreateGroupUseCase(this.repository);
 
   @override
-  Future<DataState<GroupLampModel>> call(CreateGroupParams params) async {
+  Future<DataState<GroupModel>> call(CreateGroupParams params) async {
     return await repository.createGroup(params);
   }
 }

@@ -1,24 +1,25 @@
-import 'package:easy_lamp/core/resource/base_status.dart';
+import 'package:easy_lamp/core/params/create_schedule_params.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
+import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/input_date.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
+import 'package:easy_lamp/data/model/command_model.dart';
+import 'package:easy_lamp/data/model/crontab_model.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
-import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
-import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
+import 'package:easy_lamp/presenter/bloc/schedule_bloc/schedule_bloc.dart';
+import 'package:easy_lamp/presenter/pages/group_feature/select_group_page.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/internet_box_feature/more_internet_box_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_group_page.dart';
-import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 class ScheduleDetailPage extends StatefulWidget {
@@ -30,6 +31,12 @@ class ScheduleDetailPage extends StatefulWidget {
 
 class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
   late AppLocalizations al;
+  List<int> dayOffWeek = [];
+  List<GroupModel> groups = [];
+  DateTime? startDate;
+  DateTime? endDate;
+  TextEditingController _controllerName = TextEditingController();
+  CommandModel? command;
 
   @override
   void initState() {
@@ -77,6 +84,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                       children: [
                         Expanded(
                           child: InputDate(
+                            prevDate: startDate,
                             optional: false,
                             title: al.startDate,
                             onNewDateSelected: (DateTime newDate) {},
@@ -88,6 +96,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                         Expanded(
                           child: InputDate(
                             title: al.finishDate,
+                            prevDate: endDate,
                             optional: false,
                             onNewDateSelected: (DateTime newDate) {},
                           ),
@@ -108,14 +117,39 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        getCircleDate('ش', true),
-                        getCircleDate('ی', true),
-                        getCircleDate('د', true),
-                        getCircleDate('س', true),
-                        getCircleDate('چ', true),
-                        getCircleDate('پ', true),
-                        getCircleDate('ج', true),
+                        getCircleDate('ش', 0),
+                        getCircleDate('ی', 1),
+                        getCircleDate('د', 2),
+                        getCircleDate('س', 3),
+                        getCircleDate('چ', 4),
+                        getCircleDate('پ', 5),
+                        getCircleDate('ج', 6),
                       ],
+                    ),
+                    const SizedBox(
+                      height: MySpaces.s40,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                          color: MyColors.black.shade600,
+                          borderRadius: MyRadius.base),
+                      padding: const EdgeInsets.all(MySpaces.s24),
+                      child: Row(
+                        children: [
+                          Text(
+                            al.lightSetting,
+                            style: DemiBoldStyle.normal
+                                .copyWith(color: MyColors.white),
+                          ),
+                          const Spacer(),
+                          const Icon(
+                            Iconsax.setting_2,
+                            color: MyColors.white,
+                            size: 24,
+                          )
+                        ],
+                      ),
                     ),
                     const Divider(
                       height: MySpaces.s40,
@@ -128,17 +162,35 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                               .copyWith(color: MyColors.secondary.shade300),
                         ),
                         const Spacer(),
-                        const Icon(
-                          Icons.add,
-                          color: MyColors.primary,
-                          size: 20,
-                        ),
-                        Text(
-                          al.addGroup,
-                          style: DemiBoldStyle.sm.copyWith(
-                            color: MyColors.primary,
+                        InkWell(
+                          onTap: () async {
+                            List<GroupModel> select =
+                                await Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SelectGroupPage(groups)),
+                            );
+                            setState(() {
+                              groups = select;
+                            });
+                          },
+                          borderRadius: MyRadius.sm,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.add,
+                                color: MyColors.primary,
+                                size: 20,
+                              ),
+                              Text(
+                                al.addGroup,
+                                style: DemiBoldStyle.sm.copyWith(
+                                  color: MyColors.primary,
+                                ),
+                              )
+                            ],
                           ),
-                        )
+                        ),
                       ],
                     ),
                     const SizedBox(
@@ -146,8 +198,9 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                     ),
                     ListView.separated(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
+                        GroupModel group = groups[index];
                         return ClickableContainer(
                           padding: const EdgeInsets.only(
                             left: MySpaces.s24,
@@ -164,12 +217,16 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "group.name",
+                                    group.name,
                                     style: DemiBoldStyle.lg
                                         .copyWith(color: MyColors.white),
                                   ),
+                                  const SizedBox(
+                                    height: MySpaces.s6,
+                                  ),
                                   Text(
-                                    al.lamp("A1"),
+                                    al.lamp(
+                                        al.lamp(group.lamps.length.toString())),
                                     style: DemiBoldStyle.sm.copyWith(
                                         color: MyColors.black.shade100),
                                   ),
@@ -183,23 +240,16 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                   size: 30,
                                 ),
                                 onPressed: () {
-                                  showModalBottomSheet(
-                                      shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(24),
-                                        topRight: Radius.circular(24),
-                                      )),
-                                      context: context,
-                                      builder: (context) {
-                                        return EditInternetBoxBottomSheet();
-                                      });
+                                  setState(() {
+                                    groups.remove(group);
+                                  });
                                 },
                               )
                             ],
                           ),
                         );
                       },
-                      itemCount: 10,
+                      itemCount: groups.length,
                       separatorBuilder: (BuildContext context, int index) {
                         return const SizedBox(
                           height: MySpaces.s16,
@@ -208,6 +258,48 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                     )
                   ],
                 ),
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.only(
+                left: MySpaces.s24,
+                right: MySpaces.s24,
+                bottom: MySpaces.s12,
+              ),
+              width: double.infinity,
+              child: PrimaryButton(
+                text: al.save,
+                onPress: () {
+                  // BlocProvider.of<ScheduleBloc>(context).add(
+                  //   CreateScheduleEvent(
+                  //     CreateScheduleParams(
+                  //       periodicTaskAssigned: CrontabModel(
+                  //           minute: startDate == null
+                  //               ? ''
+                  //               : startDate!.minute.toString(),
+                  //           hour: startDate == null
+                  //               ? ''
+                  //               : startDate!.hour.toString(),
+                  //           dayOfWeek: '*',
+                  //           dayOfMonth: '*',
+                  //           monthOfYear: '*'),
+                  //       periodicTaskOffAssigned: CrontabModel(
+                  //           minute: endDate == null
+                  //               ? ''
+                  //               : endDate!.minute.toString(),
+                  //           hour:
+                  //               endDate == null ? '' : endDate!.hour.toString(),
+                  //           dayOfWeek: '*',
+                  //           dayOfMonth: '*',
+                  //           monthOfYear: '*'),
+                  //       name: _controllerName.text,
+                  //       command: command!,
+                  //       groupAssigned: null,
+                  //       oneOff: null,
+                  //     ),
+                  //   ),
+                  // );
+                },
               ),
             )
           ],
@@ -252,23 +344,37 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
     );
   }
 
-  getCircleDate(String t, bool enable) {
-    return Container(
-      constraints: const BoxConstraints(
-        minHeight: 40.0,
-        minWidth: 40.0,
-      ),
-      margin: const EdgeInsets.all(3),
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: enable ? MyColors.primary : MyColors.black.shade600,
-        shape: BoxShape.circle,
-      ),
-      child: Center(
-        child: Text(
-          t,
-          style: DemiBoldStyle.normal.copyWith(
-            color: MyColors.white,
+  getCircleDate(String t, int index) {
+    return InkWell(
+      onTap: () {
+        setState(() {
+          if (dayOffWeek.contains(index)) {
+            dayOffWeek.remove(index);
+          } else {
+            dayOffWeek.add(index);
+          }
+        });
+      },
+      borderRadius: MyRadius.xl,
+      child: Container(
+        constraints: const BoxConstraints(
+          minHeight: 40.0,
+          minWidth: 40.0,
+        ),
+        margin: const EdgeInsets.all(3),
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: dayOffWeek.contains(index)
+              ? MyColors.primary
+              : MyColors.black.shade600,
+          shape: BoxShape.circle,
+        ),
+        child: Center(
+          child: Text(
+            t,
+            style: DemiBoldStyle.normal.copyWith(
+              color: MyColors.white,
+            ),
           ),
         ),
       ),

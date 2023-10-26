@@ -11,27 +11,29 @@ import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart' as intl;
 
 class InputExportType extends StatefulWidget {
-  InputExportType({
+  InputExportType(
+    this.data, {
     Key? key,
     required this.title,
     required this.onNewDateSelected,
     this.description,
     this.isDisabled,
     this.hint,
-    this.prevDate,
+    this.prevValue,
     this.optional = true,
     this.isDate = false,
   }) : super(key: key);
 
   final String? title;
-  String? prevDate;
+  Map? prevValue;
   final Widget? description;
   final bool? isDisabled;
   final String? hint;
   final bool optional;
   final bool isDate;
+  List<Map> data;
 
-  final Function(String newDate) onNewDateSelected;
+  final Function(Map newDate) onNewDateSelected;
 
   @override
   State<InputExportType> createState() => _InputExportTypeState();
@@ -81,11 +83,11 @@ class _InputExportTypeState extends State<InputExportType> {
               child: Row(children: [
                 Expanded(
                   child: Text(
-                    widget.prevDate ??
+                    widget.prevValue?['title'] ??
                         widget.hint ??
                         AppLocalizations.of(context)!.select(""),
                     textAlign: TextAlign.start,
-                    style: widget.prevDate == null
+                    style: widget.prevValue == null
                         ? Light300Style.sm
                             .copyWith(color: MyColors.secondary.shade300)
                         : Light300Style.sm
@@ -104,26 +106,21 @@ class _InputExportTypeState extends State<InputExportType> {
     );
   }
 
-  void _handleClickOnSelectDate() {
-    List<String> items = [
-      'مصرف بر حسب وات',
-      'دما رطوبت',
-      'سنسور حرکتی',
-      'سنسور نور'
-    ];
+  Future<void> _handleClickOnSelectDate() async {
     String current = '';
-    showModalBottomSheet(
+    Map? type = await showModalBottomSheet(
       context: _buildContext,
       isScrollControlled: true,
       barrierColor: MyColors.noColor,
       builder: (context) => StatefulBuilder(builder: (context, setState) {
         return Container(
           decoration: BoxDecoration(
-              color: MyColors.black.shade500,
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(20),
-                topLeft: Radius.circular(20),
-              )),
+            color: MyColors.black.shade500,
+            borderRadius: const BorderRadius.only(
+              topRight: Radius.circular(20),
+              topLeft: Radius.circular(20),
+            ),
+          ),
           child: Wrap(
             children: [
               Column(
@@ -145,7 +142,7 @@ class _InputExportTypeState extends State<InputExportType> {
                       child: Row(children: [
                         Expanded(
                           child: Text(
-                            widget.prevDate ??
+                            widget.prevValue?['title'] ??
                                 widget.hint ??
                                 AppLocalizations.of(context)!.select(""),
                             textAlign: TextAlign.end,
@@ -160,7 +157,7 @@ class _InputExportTypeState extends State<InputExportType> {
                           color: Colors.white,
                         ),
                       ])),
-                  ...items
+                  ...widget.data
                       .map((e) => Row(
                             children: [
                               Radio(
@@ -170,13 +167,11 @@ class _InputExportTypeState extends State<InputExportType> {
                                 value: e,
                                 groupValue: current,
                                 onChanged: (t) {
-                                  this.setState(() {
-                                    widget.prevDate = t;
-                                  });
+                                  Navigator.pop(context, t);
                                 },
                               ),
                               Text(
-                                e,
+                                e['title'],
                                 style: Light300Style.normal.copyWith(
                                     color: MyColors.secondary.shade300),
                               ),
@@ -190,5 +185,11 @@ class _InputExportTypeState extends State<InputExportType> {
         );
       }),
     );
+    if (type != null) {
+      setState(() {
+        widget.prevValue = type;
+      });
+      widget.onNewDateSelected(type);
+    }
   }
 }

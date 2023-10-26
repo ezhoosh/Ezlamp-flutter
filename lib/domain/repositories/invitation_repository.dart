@@ -26,8 +26,7 @@ abstract class InvitationRepository {
 
   Future<DataState<String>> deleteInvitationGetById(int id);
 
-  Future<DataState<InvitationModel>> createInvitation(
-      CreateInvitationParams params);
+  Future<DataState<String>> createInvitation(CreateInvitationParams params);
 
   Future<DataState<InvitationModel>> putInvitation(
       UpdateInvitationParams params);

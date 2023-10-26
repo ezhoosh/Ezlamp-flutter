@@ -5,6 +5,7 @@ import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/empty_page.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
+import 'package:easy_lamp/data/model/crontab_model.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/schudule_model.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
@@ -124,8 +125,8 @@ class _SchedulePageState extends State<SchedulePage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Builder(builder: (context) {
-                                        Crontab c =
-                                            item.periodicTaskAssigned.crontab;
+                                        CrontabModel c =
+                                            item.periodicTaskAssigned;
                                         return Text(
                                           '${c.hour.toString()}:${c.minute.toString()}',
                                           style: DemiBoldStyle.lg
@@ -136,7 +137,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                         height: MySpaces.s4,
                                       ),
                                       Text(
-                                        item.periodicTaskAssigned.name,
+                                        item.name,
                                         style: DemiBoldStyle.sm.copyWith(
                                             color: MyColors.black.shade100),
                                       ),

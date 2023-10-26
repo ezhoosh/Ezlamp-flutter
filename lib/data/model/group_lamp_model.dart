@@ -7,14 +7,14 @@ import 'dart:convert';
 import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/data/model/owner_model.dart';
 
-List<GroupLampModel> groupLampModelFromJson(String str) =>
-    List<GroupLampModel>.from(
-        json.decode(str).map((x) => GroupLampModel.fromJson(x)));
+List<GroupModel> groupLampModelFromJson(String str) =>
+    List<GroupModel>.from(
+        json.decode(str).map((x) => GroupModel.fromJson(x)));
 
-String groupLampModelToJson(List<GroupLampModel> data) =>
+String groupLampModelToJson(List<GroupModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class GroupLampModel {
+class GroupModel {
   int id;
   String name;
   String description;
@@ -23,7 +23,7 @@ class GroupLampModel {
   List<LampModel> lamps;
   bool open = false;
 
-  GroupLampModel({
+  GroupModel({
     required this.id,
     required this.name,
     required this.description,
@@ -32,7 +32,7 @@ class GroupLampModel {
     required this.lamps,
   });
 
-  factory GroupLampModel.fromJson(Map<String, dynamic> json) => GroupLampModel(
+  factory GroupModel.fromJson(Map<String, dynamic> json) => GroupModel(
         id: json["id"],
         name: json["name"],
         description: json["description"],

@@ -9,13 +9,13 @@ import 'package:easy_lamp/domain/repositories/auth_repository.dart';
 import 'package:easy_lamp/domain/repositories/invitation_repository.dart';
 
 class CreateInvitationUseCase
-    extends UseCase<DataState<InvitationModel>, CreateInvitationParams> {
+    extends UseCase<DataState<String>, CreateInvitationParams> {
   InvitationRepository repository;
 
   CreateInvitationUseCase(this.repository);
 
   @override
-  Future<DataState<InvitationModel>> call(CreateInvitationParams params) async {
+  Future<DataState<String>> call(CreateInvitationParams params) async {
     return await repository.createInvitation(params);
   }
 }

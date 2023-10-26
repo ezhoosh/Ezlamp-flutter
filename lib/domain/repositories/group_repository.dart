@@ -6,18 +6,18 @@ import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
 
 abstract class GroupRepository {
-  Future<DataState<List<GroupLampModel>>> getGroupList();
+  Future<DataState<List<GroupModel>>> getGroupList();
 
-  Future<DataState<GroupLampModel>> getGroupById(int id);
+  Future<DataState<GroupModel>> getGroupById(int id);
 
-  Future<DataState<GroupLampModel>> updateGroup(UpdateGroupParams params);
+  Future<DataState<GroupModel>> updateGroup(UpdateGroupParams params);
 
-  Future<DataState<GroupLampModel>> createGroup(CreateGroupParams params);
+  Future<DataState<GroupModel>> createGroup(CreateGroupParams params);
 
-  Future<DataState<GroupLampModel>> editGroupName(EditGroupNameParams params);
+  Future<DataState<GroupModel>> editGroupName(EditGroupNameParams params);
 
   Future<DataState<String>> deleteGroup(int params);
 
-  Future<DataState<GroupLampModel>> updateGroupOwner(
+  Future<DataState<GroupModel>> updateGroupOwner(
       UpdateGroupOwnerParams params);
 }
