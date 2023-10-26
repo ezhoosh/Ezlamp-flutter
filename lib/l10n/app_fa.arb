@@ -113,5 +113,9 @@
   "message": "پیام",
   "emptyScheduleMessage": "میتوانید برای لامپ ها برنامه ریزی زمانی داشته باشید",
   "addSchedule": "افزودن برنامه زمانی",
-  "selectYourConnection": "نوع اتصال خودرا وارد کنید"
+  "selectYourConnection": "نوع اتصال خودرا وارد کنید",
+  "state1": "مصرف بر حسب وات",
+  "state2": "دما رطوبت",
+  "state3": "سنسور حرکتی",
+  "state4": "سنسور نور"
 }

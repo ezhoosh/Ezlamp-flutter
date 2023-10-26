@@ -47,8 +47,24 @@ void main() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  static _MyAppState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_MyAppState>();
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Locale _locale = const Locale('fa', '');
+
+  void setLocale(Locale value) {
+    setState(() {
+      _locale = value;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +97,7 @@ class MyApp extends StatelessWidget {
                 Locale('en', ''),
                 Locale('fa', ''),
               ],
-              locale: const Locale('fa', ''),
+              locale: _locale,
               home: const SplashPage(),
             );
           },

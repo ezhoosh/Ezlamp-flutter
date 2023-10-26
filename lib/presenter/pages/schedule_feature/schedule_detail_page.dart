@@ -129,28 +129,28 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                     const SizedBox(
                       height: MySpaces.s40,
                     ),
-                    Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                          color: MyColors.black.shade600,
-                          borderRadius: MyRadius.base),
-                      padding: const EdgeInsets.all(MySpaces.s24),
-                      child: Row(
-                        children: [
-                          Text(
-                            al.lightSetting,
-                            style: DemiBoldStyle.normal
-                                .copyWith(color: MyColors.white),
-                          ),
-                          const Spacer(),
-                          const Icon(
-                            Iconsax.setting_2,
-                            color: MyColors.white,
-                            size: 24,
-                          )
-                        ],
-                      ),
-                    ),
+                    // Container(
+                    //   width: double.infinity,
+                    //   decoration: BoxDecoration(
+                    //       color: MyColors.black.shade600,
+                    //       borderRadius: MyRadius.base),
+                    //   padding: const EdgeInsets.all(MySpaces.s24),
+                    //   child: Row(
+                    //     children: [
+                    //       Text(
+                    //         al.lightSetting,
+                    //         style: DemiBoldStyle.normal
+                    //             .copyWith(color: MyColors.white),
+                    //       ),
+                    //       const Spacer(),
+                    //       const Icon(
+                    //         Iconsax.setting_2,
+                    //         color: MyColors.white,
+                    //         size: 24,
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
                     const Divider(
                       height: MySpaces.s40,
                     ),

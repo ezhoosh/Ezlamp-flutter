@@ -7,6 +7,7 @@ import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
+import 'package:easy_lamp/main.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
@@ -78,7 +79,9 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
                 child: Column(
                   children: [
                     ClickableContainer(
-                      onTap: () {},
+                      onTap: () {
+                        MyApp.of(context)?.setLocale(const Locale('en', ''));
+                      },
                       borderRadius: MyRadius.sm,
                       child: ClickableContainer(
                         child: Row(
@@ -118,7 +121,9 @@ class _ChangeLanguagePageState extends State<ChangeLanguagePage> {
                     ),
                     ClickableContainer(
                       borderRadius: MyRadius.sm,
-                      onTap: () {},
+                      onTap: () {
+                        MyApp.of(context)?.setLocale(const Locale('fa', ''));
+                      },
                       child: Row(
                         children: [
                           Column(

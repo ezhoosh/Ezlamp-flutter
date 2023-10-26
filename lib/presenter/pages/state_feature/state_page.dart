@@ -29,12 +29,12 @@ class _StatePageState extends State<StatePage> {
   late AppLocalizations al;
   List<LampModel>? lamps;
   DateTime? startDate, endDate;
-  Map type = {'title': 'مصرف بر حسب وات', 'value': 'power'};
+  Map type = {'value': 'power'};
   List<Map> exportData = [
-    {'title': 'مصرف بر حسب وات', 'value': 'power'},
-    {'title': 'دما رطوبت', 'value': 'temperature'},
-    {'title': 'سنسور حرکتی', 'value': 'pir'},
-    {'title': 'سنسور نور', 'value': 'light'},
+    {'value': 'power'},
+    {'value': 'temperature'},
+    {'value': 'pir'},
+    {'value': 'light'},
   ];
 
   @override
@@ -51,6 +51,11 @@ class _StatePageState extends State<StatePage> {
     // double h = MediaQuery.of(context).size.height;
     al = AppLocalizations.of(context)!;
 
+    exportData[0].addAll({'title': al.state1});
+    exportData[1].addAll({'title': al.state2});
+    exportData[2].addAll({'title': al.state3});
+    exportData[3].addAll({'title': al.state4});
+    type.addAll({'title': al.state1});
     return Scaffold(
       backgroundColor: MyColors.black,
       body: SafeArea(
