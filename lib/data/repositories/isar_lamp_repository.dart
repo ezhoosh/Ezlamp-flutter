@@ -33,11 +33,8 @@ class IsarLampRepository extends IsarRepository<IsarLamp> {
         .findFirst();
   }
 
-  Future<List<IsarLamp>> getByGroupId(IsarGroup group) async {
-    return await isar.isarLamps
-        .filter()
-        .group((q) => q.idDbEqualTo(group.idDb))
-        .findAll();
+  Future<List<IsarLamp>> getByGroupId(int groupId) async {
+    return await isar.isarLamps.filter().groupLampEqualTo(groupId).findAll();
   }
 
   @override

@@ -32,66 +32,62 @@ class _ConnectionPageState extends State<ConnectionPage> {
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
     return Material(
-      child: Scaffold(
-        backgroundColor: MyColors.black.shade700,
-        body: Container(
-          padding: const EdgeInsets.all(MySpaces.s24),
-          child: Column(
-            children: [
-              Expanded(
-                child: Image.asset(
-                  'assets/images/bg_connection.png',
-                ),
+      child: Container(
+        padding: const EdgeInsets.all(MySpaces.s24),
+        child: Column(
+          children: [
+            Expanded(
+              child: Image.asset(
+                'assets/images/bg_connection.png',
               ),
-              const SizedBox(
-                height: MySpaces.s24,
+            ),
+            const SizedBox(
+              height: MySpaces.s24,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Text(
+                al.selectYourConnection,
+                style: Light300Style.normal
+                    .copyWith(color: MyColors.black.shade100),
               ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  al.selectYourConnection,
-                  style: Light300Style.normal
-                      .copyWith(color: MyColors.black.shade100),
-                ),
-              ),
-              const SizedBox(
-                height: MySpaces.s24,
-              ),
-              BlocBuilder<AuthBloc, AuthState>(
-                builder: (context, state) {
-                  int current =
-                      state.connectionType == ConnectionType.Bluetooth ? 1 : 0;
+            ),
+            const SizedBox(
+              height: MySpaces.s24,
+            ),
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                int current =
+                    state.connectionType == ConnectionType.Bluetooth ? 1 : 0;
 
-                  return Row(
-                    children: [
-                      getCard(Iconsax.global, al.internet, MyColors.primary, 0,
-                          current),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      getCard(Iconsax.bluetooth, al.blue, MyColors.info, 1,
-                          current),
-                    ],
-                  );
+                return Row(
+                  children: [
+                    getCard(Iconsax.global, al.internet, MyColors.primary, 0,
+                        current),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    getCard(
+                        Iconsax.bluetooth, al.blue, MyColors.info, 1, current),
+                  ],
+                );
+              },
+            ),
+            const SizedBox(
+              height: MySpaces.s40,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: PrimaryButton(
+                onPress: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const HomePage()),
+                      ModalRoute.withName("/"));
                 },
+                text: al.login,
               ),
-              const SizedBox(
-                height: MySpaces.s40,
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: PrimaryButton(
-                  onPress: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()),
-                        ModalRoute.withName("/"));
-                  },
-                  text: al.login,
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );

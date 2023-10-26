@@ -4,6 +4,7 @@ import 'package:easy_lamp/data/model/register_verify_model.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/password_page.dart';
 import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
+import 'package:easy_lamp/presenter/pages/splash_feature/connection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
@@ -60,7 +61,7 @@ class _OtpPageState extends State<OtpPage> {
           } else if (state.loginStatus is BaseSuccess ||
               state.registerStatus is BaseSuccess) {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const HomePage()),
+                MaterialPageRoute(builder: (context) => const ConnectionPage()),
                 ModalRoute.withName("/"));
             EasyLoading.showSuccess("success");
           } else if (state.loginStatus is BaseError ||

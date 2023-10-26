@@ -30,6 +30,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   late AppLocalizations al;
+  String firstName = '';
+  String lastName = '';
 
   @override
   void initState() {
@@ -198,60 +200,43 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   getRowExit() {
-    return BlocBuilder<UserBloc, UserState>(
-      buildWhen: (prev, curr) {
-        if (prev.getUserStatus is BaseSuccess &&
-            curr.getUserStatus is BaseNoAction) {
-          return false;
-        }
-        return true;
+    return ClickableContainer(
+      margin: const EdgeInsets.only(
+          right: MySpaces.s24, left: MySpaces.s24, bottom: MySpaces.s16),
+      padding: const EdgeInsets.all(MySpaces.s24),
+      onTap: () {
+        showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            barrierColor: MyColors.noColor,
+            builder: (context) => LogOutBottomSheet("$firstName $lastName"));
       },
-      builder: (context, state) {
-        if (state.getUserStatus is BaseSuccess) {
-          UserModel user = (state.getUserStatus as BaseSuccess).entity;
-
-          return ClickableContainer(
-            margin: const EdgeInsets.only(
-                right: MySpaces.s24, left: MySpaces.s24, bottom: MySpaces.s16),
-            padding: const EdgeInsets.all(MySpaces.s24),
-            onTap: () {
-              showModalBottomSheet(
-                  context: context,
-                  isScrollControlled: true,
-                  barrierColor: MyColors.noColor,
-                  builder: (context) =>
-                      LogOutBottomSheet("${user.firstName} ${user.lastName}"));
-            },
-            borderRadius: MyRadius.base,
-            color: MyColors.black.shade600,
-            child: Row(
-              children: [
-                const Icon(
-                  Iconsax.logout,
-                  color: MyColors.error,
-                  size: 30,
-                ),
-                const SizedBox(
-                  width: MySpaces.s12,
-                ),
-                Text(
-                  al.logout,
-                  style: DemiBoldStyle.lg.copyWith(color: MyColors.error),
-                ),
-                const Spacer(),
-                RotationTransition(
-                  turns: const AlwaysStoppedAnimation(180 / 360),
-                  child: SvgPicture.asset(
-                    "assets/icons/arrow_right.svg",
-                    color: MyColors.error,
-                  ),
-                )
-              ],
+      borderRadius: MyRadius.base,
+      color: MyColors.black.shade600,
+      child: Row(
+        children: [
+          const Icon(
+            Iconsax.logout,
+            color: MyColors.error,
+            size: 30,
+          ),
+          const SizedBox(
+            width: MySpaces.s12,
+          ),
+          Text(
+            al.logout,
+            style: DemiBoldStyle.lg.copyWith(color: MyColors.error),
+          ),
+          const Spacer(),
+          RotationTransition(
+            turns: const AlwaysStoppedAnimation(180 / 360),
+            child: SvgPicture.asset(
+              "assets/icons/arrow_right.svg",
+              color: MyColors.error,
             ),
-          );
-        }
-        return const SizedBox();
-      },
+          )
+        ],
+      ),
     );
   }
 
@@ -283,6 +268,8 @@ class _ProfilePageState extends State<ProfilePage> {
         builder: (context, state) {
           if (state.getUserStatus is BaseSuccess) {
             UserModel user = (state.getUserStatus as BaseSuccess).entity;
+            lastName = user.lastName;
+            firstName = user.firstName;
 
             return Row(
               mainAxisSize: MainAxisSize.min,

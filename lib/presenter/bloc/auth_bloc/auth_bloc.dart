@@ -89,7 +89,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else {
         emit(state.copyWith(newLoginStatus: BaseError(dataState.error)));
       }
-      emit(state.copyWith(newSendPhoneStatus: BaseNoAction()));
+      emit(state.copyWith(newLoginStatus: BaseNoAction()));
     });
     on<RegisterEvent>((event, emit) async {
       emit(state.copyWith(newRegisterStatus: BaseLoading()));
