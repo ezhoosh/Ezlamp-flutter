@@ -4,6 +4,8 @@ import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/arrow_back.dart';
+import 'package:easy_lamp/core/widgets/arrow_list.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
@@ -75,7 +77,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
                   onTapRight: () {
                     Navigator.pop(context);
                   },
-                  iconRight: SvgPicture.asset("assets/icons/arrow_right.svg"),
+                  iconRight: ArrowBack(),
                   iconLeft: Text(
                     al.save,
                     style:
@@ -451,13 +453,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
             style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
           ),
           const Spacer(),
-          RotationTransition(
-            turns: const AlwaysStoppedAnimation(180 / 360),
-            child: SvgPicture.asset(
-              "assets/icons/arrow_right.svg",
-              color: MyColors.white,
-            ),
-          )
+          ArrowList(),
         ],
       ),
     );

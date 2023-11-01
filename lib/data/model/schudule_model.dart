@@ -15,31 +15,32 @@ String scheduleModelToJson(List<ScheduleModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ScheduleModel {
-  CrontabModel periodicTaskAssigned;
-  CrontabModel periodicTaskOffAssigned;
+  PeriodicTaskAssigned periodicTaskAssigned;
+  PeriodicTaskAssigned periodicTaskOffAssigned;
   CommandModel command;
   int groupAssigned;
-  bool oneOff;
   String name;
+  bool enabled;
 
   ScheduleModel({
     required this.periodicTaskAssigned,
     required this.periodicTaskOffAssigned,
     required this.command,
     required this.groupAssigned,
-    required this.oneOff,
     required this.name,
+    required this.enabled,
   });
 
   factory ScheduleModel.fromJson(Map<String, dynamic> json) => ScheduleModel(
-      periodicTaskAssigned:
-          CrontabModel.fromJson(json["periodic_task_assigned"]),
-      periodicTaskOffAssigned:
-          CrontabModel.fromJson(json["periodic_task_off_assigned"]),
-      command: CommandModel.fromJson(json["command"]),
-      groupAssigned: json["group_assigned"],
-      oneOff: json['one_off'],
-      name: json["name"]);
+        periodicTaskAssigned:
+            PeriodicTaskAssigned.fromJson(json["periodic_task_assigned"]),
+        periodicTaskOffAssigned:
+            PeriodicTaskAssigned.fromJson(json["periodic_task_off_assigned"]),
+        command: CommandModel.fromJson(json["command"]),
+        groupAssigned: json["group_assigned"],
+        name: json["name"],
+        enabled: json["enabled"],
+      );
 
   Map<String, dynamic> toJson() => {
         "periodic_task_assigned": periodicTaskAssigned.toJson(),
@@ -47,6 +48,27 @@ class ScheduleModel {
         "command": command.toJson(),
         "group_assigned": groupAssigned,
         "name": name,
-        "off_one": oneOff,
+        "enabled": enabled,
+      };
+}
+
+class PeriodicTaskAssigned {
+  CrontabModel crontab;
+  String name;
+
+  PeriodicTaskAssigned({
+    required this.crontab,
+    required this.name,
+  });
+
+  factory PeriodicTaskAssigned.fromJson(Map<String, dynamic> json) =>
+      PeriodicTaskAssigned(
+        crontab: CrontabModel.fromJson(json["crontab"]),
+        name: json["name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "crontab": crontab.toJson(),
+        "name": name,
       };
 }

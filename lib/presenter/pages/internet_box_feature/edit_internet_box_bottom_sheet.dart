@@ -1,6 +1,7 @@
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/arrow_list.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:flutter/material.dart';
@@ -122,10 +123,7 @@ class EditInternetBoxBottomSheet extends StatelessWidget {
                 style: Light400Style.lg.copyWith(color: MyColors.secondary),
               ),
               const Spacer(),
-              RotationTransition(
-                turns: const AlwaysStoppedAnimation(180 / 360),
-                child: SvgPicture.asset('assets/icons/arrow_right.svg'),
-              )
+              ArrowList()
             ],
           ),
           Divider(

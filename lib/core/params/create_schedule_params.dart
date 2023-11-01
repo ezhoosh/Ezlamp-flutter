@@ -1,52 +1,70 @@
 // To parse this JSON data, do
 //
-//     final createScheduleParams = createScheduleParamsFromJson(jsonString);
+//     final scheduleModel = scheduleModelFromJson(jsonString);
 
 import 'dart:convert';
 
 import 'package:easy_lamp/data/model/command_model.dart';
 import 'package:easy_lamp/data/model/crontab_model.dart';
 
-CreateScheduleParams createScheduleParamsFromJson(String str) =>
+CreateScheduleParams scheduleModelFromJson(String str) =>
     CreateScheduleParams.fromJson(json.decode(str));
 
-String createScheduleParamsToJson(CreateScheduleParams data) =>
+String scheduleModelToJson(CreateScheduleParams data) =>
     json.encode(data.toJson());
 
 class CreateScheduleParams {
-  CrontabModel periodicTaskAssigned;
-  CrontabModel periodicTaskOffAssigned;
   CommandModel command;
-  int groupAssigned;
-  bool oneOff;
+  PeriodicTaskAssigned periodicTaskAssigned;
+  PeriodicTaskAssigned periodicTaskOffAssigned;
   String name;
+  List<int> groupAssigned;
+  bool enabled;
 
   CreateScheduleParams({
     required this.periodicTaskAssigned,
-    required this.periodicTaskOffAssigned,
     required this.command,
-    required this.groupAssigned,
-    required this.oneOff,
+    required this.periodicTaskOffAssigned,
     required this.name,
+    required this.groupAssigned,
+    required this.enabled,
   });
 
   factory CreateScheduleParams.fromJson(Map<String, dynamic> json) =>
       CreateScheduleParams(
-          periodicTaskAssigned:
-              CrontabModel.fromJson(json["periodic_task_assigned"]),
-          periodicTaskOffAssigned:
-              CrontabModel.fromJson(json["periodic_task_off_assigned"]),
-          command: CommandModel.fromJson(json["command"]),
-          groupAssigned: json["group_assigned"],
-          oneOff: json['one_off'],
-          name: json["name"]);
+        periodicTaskAssigned:
+            PeriodicTaskAssigned.fromJson(json["periodic_task_assigned"]),
+        command: CommandModel.fromJson(json["command"]),
+        periodicTaskOffAssigned:
+            PeriodicTaskAssigned.fromJson(json["periodic_task_off_assigned"]),
+        name: json["name"],
+        groupAssigned: json["group_assigned"],
+        enabled: json['enabled'],
+      );
 
   Map<String, dynamic> toJson() => {
         "periodic_task_assigned": periodicTaskAssigned.toJson(),
-        "periodic_task_off_assigned": periodicTaskOffAssigned.toJson(),
         "command": command.toJson(),
-        "group_assigned": groupAssigned,
+        "periodic_task_off_assigned": periodicTaskOffAssigned.toJson(),
         "name": name,
-        "off_one": oneOff,
+        "group_assigned": groupAssigned,
+        'enabled': enabled,
+      };
+}
+
+class PeriodicTaskAssigned {
+  CrontabModel crontab;
+
+  PeriodicTaskAssigned({
+    required this.crontab,
+  });
+
+  factory PeriodicTaskAssigned.fromJson(Map<String, dynamic> json) =>
+      PeriodicTaskAssigned(
+        crontab: CrontabModel.fromJson(json["crontab"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "crontab": crontab.toJson(),
       };
 }

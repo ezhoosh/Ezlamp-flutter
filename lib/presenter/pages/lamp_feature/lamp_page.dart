@@ -2,6 +2,7 @@ import 'package:easy_lamp/core/params/get_lamps_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/arrow_back.dart';
 import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/empty_page.dart';
@@ -61,7 +62,7 @@ class _LampPageState extends State<LampPage> {
                         Navigator.pop(context);
                       },
                       iconRight:
-                          SvgPicture.asset("assets/icons/arrow_right.svg"),
+                          ArrowBack(),
                       iconLeft: Container(
                         decoration: BoxDecoration(
                             color: MyColors.black.shade500,

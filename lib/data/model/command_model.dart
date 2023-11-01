@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-CommandModel commandModelFromJson(String str) => CommandModel.fromJson(json.decode(str));
+CommandModel commandModelFromJson(String str) =>
+    CommandModel.fromJson(json.decode(str));
 
 String commandModelToJson(CommandModel data) => json.encode(data.toJson());
 
@@ -34,28 +35,28 @@ class CommandModel {
   });
 
   factory CommandModel.fromJson(Map<String, dynamic> json) => CommandModel(
-    lamps: List<int>.from(json["lamps"].map((x) => x)),
-    w: json["w"],
-    y: json["y"],
-    r: json["r"],
-    g: json["g"],
-    b: json["b"],
-    c: json["c"],
-    pir: json["pir"],
-    type: json["type"],
-    gid: json["gid"],
-  );
+        lamps: List<int>.from(json["lamps"].map((x) => x)),
+        w: json["w"],
+        y: json["y"],
+        r: json["r"],
+        g: json["g"],
+        b: json["b"],
+        c: json["c"],
+        pir: json["pir"],
+        type: json["type"],
+        gid: json["gid"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "lamps": List<dynamic>.from(lamps!.map((x) => x)),
-    "w": w,
-    "y": y,
-    "r": r,
-    "g": g,
-    "b": b,
-    "c": c,
-    "pir": pir,
-    "type": type,
-    "gid": gid,
-  };
+        if (lamps != null) "lamps": List<dynamic>.from(lamps!.map((x) => x)),
+        "w": w,
+        "y": y,
+        "r": r,
+        "g": g,
+        "b": b,
+        "c": c,
+        "pir": pir,
+        "type": type,
+        if (gid != null) "gid": gid,
+      };
 }

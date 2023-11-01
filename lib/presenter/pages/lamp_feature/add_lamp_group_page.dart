@@ -1,6 +1,7 @@
 import 'package:barcode_scan2/barcode_scan2.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/arrow_back.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
@@ -41,7 +42,7 @@ class _AddLampInternetBoxPageState extends State<AddLampInternetBoxPage> {
             TopBar(
               title: widget.isInternetBox ? al.addInternetLamp : al.addLamps,
               onTapRight: () => Navigator.pop(context),
-              iconRight: SvgPicture.asset("assets/icons/arrow_right.svg"),
+              iconRight: ArrowBack(),
             ),
             Expanded(
                 child: Padding(

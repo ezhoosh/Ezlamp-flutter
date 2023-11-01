@@ -13,8 +13,8 @@ class ScheduleRepositoryImpl extends ScheduleRepository {
     try {
       var response = await ApiAccess.makeHttpRequest("schedule/",
           method: "POST", data: params.toJson());
-      if (response.statusCode == 204) {
-        return DataSuccess(response.data);
+      if (response.statusCode == 201) {
+        return DataSuccess(ScheduleModel.fromJson(response.data));
       } else {
         return DataFailed(response.statusMessage.toString());
       }

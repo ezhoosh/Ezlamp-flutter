@@ -1,6 +1,7 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/arrow_back.dart';
 import 'package:easy_lamp/core/widgets/border_text_field_password.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
@@ -73,7 +74,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             child: Column(children: [
               TopBar(
                 title: al.changePassword,
-                iconRight: SvgPicture.asset("assets/icons/arrow_right.svg"),
+                iconRight: ArrowBack(),
                 onTapRight: () {
                   Navigator.pop(context);
                 },

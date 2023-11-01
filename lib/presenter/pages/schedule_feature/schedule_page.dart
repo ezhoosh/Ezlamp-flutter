@@ -6,15 +6,8 @@ import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/empty_page.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/crontab_model.dart';
-import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/schudule_model.dart';
-import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/schedule_bloc/schedule_bloc.dart';
-import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/internet_box_feature/more_internet_box_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_group_page.dart';
-import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:easy_lamp/presenter/pages/schedule_feature/schedule_detail_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -126,7 +119,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                     children: [
                                       Builder(builder: (context) {
                                         CrontabModel c =
-                                            item.periodicTaskAssigned;
+                                            item.periodicTaskAssigned.crontab;
                                         return Text(
                                           '${c.hour.toString()}:${c.minute.toString()}',
                                           style: DemiBoldStyle.lg
@@ -145,7 +138,7 @@ class _SchedulePageState extends State<SchedulePage> {
                                   ),
                                   const Spacer(),
                                   CupertinoSwitch(
-                                    value: true,
+                                    value: item.enabled,
                                     onChanged: (t) {},
                                     activeColor: MyColors.primary,
                                   ),

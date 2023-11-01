@@ -2,6 +2,7 @@ import 'package:easy_lamp/core/params/get_invitation_list_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/arrow_back.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
@@ -59,7 +60,7 @@ class _MemberPageState extends State<MemberPage> {
             children: [
               TopBar(
                 title: al.addMember,
-                iconRight: SvgPicture.asset("assets/icons/arrow_right.svg"),
+                iconRight: ArrowBack(),
                 onTapRight: () {
                   Navigator.pop(context);
                 },

@@ -1,6 +1,8 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/arrow_back.dart';
+import 'package:easy_lamp/core/widgets/arrow_list.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/empty_page.dart';
@@ -50,7 +52,7 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
               onTapRight: () {
                 Navigator.pop(context);
               },
-              iconRight: SvgPicture.asset("assets/icons/arrow_right.svg"),
+              iconRight: ArrowBack(),
             ),
             Expanded(
               child: BlocBuilder<InternetBoxBloc, InternetBoxState>(
@@ -109,13 +111,7 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
                                 ],
                               ),
                               const Spacer(),
-                              RotationTransition(
-                                turns: const AlwaysStoppedAnimation(180 / 360),
-                                child: SvgPicture.asset(
-                                  "assets/icons/arrow_right.svg",
-                                  color: MyColors.white,
-                                ),
-                              )
+                              ArrowList()
                             ],
                           ),
                         );

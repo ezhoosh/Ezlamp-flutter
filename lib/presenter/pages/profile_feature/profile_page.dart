@@ -1,6 +1,7 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/arrow_list.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/connection_type.dart';
@@ -132,13 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
             style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
           ),
           const Spacer(),
-          RotationTransition(
-            turns: const AlwaysStoppedAnimation(180 / 360),
-            child: SvgPicture.asset(
-              "assets/icons/arrow_right.svg",
-              color: MyColors.white,
-            ),
-          )
+          ArrowList()
         ],
       ),
     );
@@ -228,13 +223,7 @@ class _ProfilePageState extends State<ProfilePage> {
             style: DemiBoldStyle.lg.copyWith(color: MyColors.error),
           ),
           const Spacer(),
-          RotationTransition(
-            turns: const AlwaysStoppedAnimation(180 / 360),
-            child: SvgPicture.asset(
-              "assets/icons/arrow_right.svg",
-              color: MyColors.error,
-            ),
-          )
+          ArrowList()
         ],
       ),
     );

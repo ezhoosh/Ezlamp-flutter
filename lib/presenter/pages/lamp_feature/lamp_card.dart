@@ -1,5 +1,6 @@
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/arrow_list.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
@@ -69,13 +70,7 @@ class LampCard extends StatelessWidget {
               checkColor: MyColors.white,
             )
           else
-            RotationTransition(
-              turns: const AlwaysStoppedAnimation(180 / 360),
-              child: SvgPicture.asset(
-                "assets/icons/arrow_right.svg",
-                color: MyColors.white,
-              ),
-            )
+            ArrowList()
         ],
       ),
     );
