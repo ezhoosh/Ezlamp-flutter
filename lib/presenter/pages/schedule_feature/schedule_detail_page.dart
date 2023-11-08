@@ -1,4 +1,5 @@
 import 'package:easy_lamp/core/params/create_schedule_params.dart';
+import 'package:easy_lamp/core/params/update_schedule_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
@@ -7,11 +8,14 @@ import 'package:easy_lamp/core/widgets/border_text_field.dart';
 import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
+import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
+import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:easy_lamp/core/widgets/input_date.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/command_model.dart';
 import 'package:easy_lamp/data/model/crontab_model.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
+import 'package:easy_lamp/data/model/schudule_model.dart';
 import 'package:easy_lamp/presenter/bloc/schedule_bloc/schedule_bloc.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/select_group_page.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
@@ -26,7 +30,9 @@ import 'package:iconsax/iconsax.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 class ScheduleDetailPage extends StatefulWidget {
-  const ScheduleDetailPage({Key? key}) : super(key: key);
+  ScheduleModel? schedule;
+
+  ScheduleDetailPage({Key? key, this.schedule}) : super(key: key);
 
   @override
   State<ScheduleDetailPage> createState() => _ScheduleDetailPageState();
@@ -38,12 +44,34 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
   List<GroupModel> groups = [];
   DateTime? startDate;
   DateTime? endDate;
-  TextEditingController _controllerName = TextEditingController();
+  final TextEditingController _controllerName = TextEditingController();
   CommandModel? command;
 
   @override
   void initState() {
     super.initState();
+    if (widget.schedule != null) {
+      _controllerName.text = widget.schedule!.name;
+      command = widget.schedule!.command;
+      command!.pir = true;
+      command!.type = 'apply';
+      CrontabModel pta = widget.schedule!.periodicTaskAssigned.crontab;
+      CrontabModel ptaOff = widget.schedule!.periodicTaskOffAssigned.crontab;
+      startDate = DateTime(
+        2020,
+        1,
+        1,
+        int.parse(pta.hour),
+        int.parse(pta.minute),
+      );
+      endDate = DateTime(
+        2020,
+        1,
+        1,
+        int.parse(ptaOff.hour),
+        int.parse(ptaOff.minute),
+      );
+    }
   }
 
   @override
@@ -57,11 +85,15 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
       body: SafeArea(
         child: BlocListener<ScheduleBloc, ScheduleState>(
           listener: (BuildContext context, ScheduleState state) {
-            if (state.createScheduleListStatus is BaseLoading) {
+            if (state.createScheduleListStatus is BaseLoading ||
+                state.putScheduleByIdStatus is BaseLoading) {
               EasyLoading.show();
-            } else if (state.createScheduleListStatus is BaseSuccess) {
+            } else if (state.createScheduleListStatus is BaseSuccess ||
+                state.putScheduleByIdStatus is BaseSuccess) {
               EasyLoading.showSuccess("success");
-            } else if (state.createScheduleListStatus is BaseError) {
+              Navigator.pop(context);
+            } else if (state.createScheduleListStatus is BaseError ||
+                state.putScheduleByIdStatus is BaseError) {
               EasyLoading.showError("error");
             }
           },
@@ -144,28 +176,227 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                       const SizedBox(
                         height: MySpaces.s40,
                       ),
-                      // Container(
-                      //   width: double.infinity,
-                      //   decoration: BoxDecoration(
-                      //       color: MyColors.black.shade600,
-                      //       borderRadius: MyRadius.base),
-                      //   padding: const EdgeInsets.all(MySpaces.s24),
-                      //   child: Row(
-                      //     children: [
-                      //       Text(
-                      //         al.lightSetting,
-                      //         style: DemiBoldStyle.normal
-                      //             .copyWith(color: MyColors.white),
-                      //       ),
-                      //       const Spacer(),
-                      //       const Icon(
-                      //         Iconsax.setting_2,
-                      //         color: MyColors.white,
-                      //         size: 24,
-                      //       )
-                      //     ],
-                      //   ),
-                      // ),
+                      ClickableContainer(
+                        onTap: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                double c = 0;
+                                double y = 0;
+                                double w = 0;
+                                double v = 0;
+                                Color? rgb;
+                                bool isColor = true;
+                                return CustomBottomSheet(
+                                  title: al.lightSetting,
+                                  child: StatefulBuilder(
+                                      builder: (context, setState) {
+                                    return Column(
+                                      children: [
+                                        SliderTheme(
+                                          data: SliderThemeData(
+                                              trackHeight: 6.0,
+                                              // Adjust the track height here
+                                              thumbShape:
+                                                  const RoundSliderThumbShape(
+                                                enabledThumbRadius: 8.0,
+                                              ),
+                                              activeTrackColor: Colors.white,
+                                              overlayShape: SliderComponentShape
+                                                  .noOverlay,
+                                              inactiveTrackColor:
+                                                  MyColors.black.shade300,
+                                              disabledThumbColor:
+                                                  MyColors.white,
+                                              activeTickMarkColor: Colors.white,
+                                              thumbColor: Colors.white),
+                                          child: Slider(
+                                            value: c,
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                c = newValue;
+                                              });
+                                            },
+                                            min: 0.0,
+                                            // Minimum value
+                                            max: 20.0,
+                                            // Maximum value
+                                            divisions: 100,
+                                            // Number of divisions
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: MySpaces.s12,
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .coloring,
+                                            style: Light300Style.sm.copyWith(
+                                                color: MyColors.secondary),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: MySpaces.s8,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          child: Opacity(
+                                            opacity: isColor ? 1 : 0.5,
+                                            child: HuePicker(
+                                              initialColor: HSVColor.fromColor(
+                                                  rgb ?? Colors.white),
+                                              onChanged: (color) {
+                                                setState(() {
+                                                  isColor = true;
+                                                  rgb = color;
+                                                });
+                                                print(color.value);
+                                              },
+                                              thumbShape: HueSliderThumbShape(
+                                                color: Colors.white,
+                                                borderColor: Colors.white
+                                                    .withOpacity(0.3),
+                                                filled: true,
+                                                showBorder: true,
+                                                borderWidth: 3,
+                                              ),
+                                              trackHeight: 6,
+                                              hueColors: const [
+                                                Colors.red,
+                                                Colors.blue,
+                                                Colors.yellow,
+                                                Colors.green,
+                                                Colors.pink,
+                                                Colors.orange,
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: MySpaces.s32,
+                                        ),
+                                        Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Text(
+                                            AppLocalizations.of(context)!
+                                                .yellowAndWhite,
+                                            style: Light300Style.sm.copyWith(
+                                                color: MyColors.secondary),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: MySpaces.s8,
+                                        ),
+                                        Opacity(
+                                          opacity: isColor ? 0.5 : 1,
+                                          child: SliderTheme(
+                                            data: SliderThemeData(
+                                                trackHeight: 6.0,
+                                                // Adjust the track height here
+                                                thumbShape:
+                                                    const RoundSliderThumbShape(
+                                                  enabledThumbRadius: 8.0,
+                                                ),
+                                                overlayShape:
+                                                    SliderComponentShape
+                                                        .noOverlay,
+                                                activeTrackColor: Colors.white,
+                                                inactiveTrackColor:
+                                                    const Color(0xffFFDA55),
+                                                disabledThumbColor:
+                                                    MyColors.white,
+                                                activeTickMarkColor:
+                                                    Colors.white,
+                                                thumbColor: Colors.white),
+                                            child: SizedBox(
+                                              child: Slider(
+                                                value: v,
+                                                onChanged: (newValue) {
+                                                  setState(() {
+                                                    isColor = false;
+                                                    v = newValue;
+                                                  });
+                                                  if (v < 50) {
+                                                    w = 0;
+                                                    y = 100 - v;
+                                                  } else {
+                                                    y = 0;
+                                                    w = v;
+                                                  }
+                                                  print("w : $w and y : $y");
+                                                },
+                                                min: 0.0,
+                                                // Minimum value
+                                                max: 100.0,
+                                                // Maximum value
+                                                divisions: 100,
+                                                // Number of divisions
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: MySpaces.s40,
+                                        ),
+                                        Container(
+                                          margin: const EdgeInsets.only(
+                                            left: MySpaces.s8,
+                                            right: MySpaces.s8,
+                                            bottom: MySpaces.s12,
+                                          ),
+                                          width: double.infinity,
+                                          child: PrimaryButton(
+                                            text: al.save,
+                                            onPress: () {
+                                              this.setState(() {
+                                                command = CommandModel(
+                                                  lamps: [],
+                                                  w: isColor ? 0 : w.toInt(),
+                                                  y: isColor ? 0 : y.toInt(),
+                                                  r: !isColor ? 0 : rgb!.red,
+                                                  g: !isColor ? 0 : rgb!.green,
+                                                  b: !isColor ? 0 : rgb!.blue,
+                                                  c: c.toInt(),
+                                                  pir: true,
+                                                  type: 'apply',
+                                                  gid: null,
+                                                );
+                                              });
+                                              Navigator.pop(
+                                                context,
+                                              );
+                                            },
+                                          ),
+                                        )
+                                      ],
+                                    );
+                                  }),
+                                );
+                              });
+                        },
+                        width: double.infinity,
+                        color: MyColors.black.shade600,
+                        borderRadius: MyRadius.base,
+                        padding: const EdgeInsets.all(MySpaces.s24),
+                        child: Row(
+                          children: [
+                            Text(
+                              al.lightSetting,
+                              style: DemiBoldStyle.normal
+                                  .copyWith(color: MyColors.white),
+                            ),
+                            const Spacer(),
+                            const Icon(
+                              Iconsax.setting_2,
+                              color: MyColors.white,
+                              size: 24,
+                            )
+                          ],
+                        ),
+                      ),
                       const Divider(
                         height: MySpaces.s40,
                       ),
@@ -291,49 +522,79 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                         lamps.add(element.id);
                       }
                     }
-                    BlocProvider.of<ScheduleBloc>(context).add(
-                      CreateScheduleEvent(
-                        CreateScheduleParams(
-                          periodicTaskAssigned: PeriodicTaskAssigned(
-                              crontab: CrontabModel(
-                                  minute: startDate == null
-                                      ? ''
-                                      : startDate!.minute.toString(),
-                                  hour: startDate == null
-                                      ? ''
-                                      : startDate!.hour.toString(),
-                                  dayOfWeek: '*',
-                                  dayOfMonth: '*',
-                                  monthOfYear: '*')),
-                          periodicTaskOffAssigned: PeriodicTaskAssigned(
-                              crontab: CrontabModel(
-                                  minute: endDate == null
-                                      ? ''
-                                      : endDate!.minute.toString(),
-                                  hour: endDate == null
-                                      ? ''
-                                      : endDate!.hour.toString(),
-                                  dayOfWeek: '*',
-                                  dayOfMonth: '*',
-                                  monthOfYear: '*')),
-                          name: _controllerName.text,
-                          command: CommandModel(
-                            lamps: lamps,
-                            w: 1,
-                            y: 1,
-                            r: 1,
-                            g: 1,
-                            b: 1,
-                            c: 1,
-                            pir: true,
-                            type: 'apply',
-                            gid: null,
+                    if (command == null) {
+                      EasyLoading.showToast(al.lightSettingMessage);
+                      return;
+                    }
+                    command!.lamps = lamps;
+                    if (widget.schedule != null) {
+                      BlocProvider.of<ScheduleBloc>(context).add(
+                        PutScheduleByIdEvent(
+                          UpdateScheduleParams(
+                            id: widget.schedule!.id,
+                            periodicTaskAssigned: PeriodicTaskAssignedParams(
+                                crontab: CrontabModel(
+                                    minute: startDate == null
+                                        ? ''
+                                        : startDate!.minute.toString(),
+                                    hour: startDate == null
+                                        ? ''
+                                        : startDate!.hour.toString(),
+                                    dayOfWeek: '*',
+                                    dayOfMonth: '*',
+                                    monthOfYear: '*')),
+                            periodicTaskOffAssigned: PeriodicTaskAssignedParams(
+                                crontab: CrontabModel(
+                                    minute: endDate == null
+                                        ? ''
+                                        : endDate!.minute.toString(),
+                                    hour: endDate == null
+                                        ? ''
+                                        : endDate!.hour.toString(),
+                                    dayOfWeek: '*',
+                                    dayOfMonth: '*',
+                                    monthOfYear: '*')),
+                            name: _controllerName.text,
+                            command: command!,
+                            groupAssigned: groups.map((e) => e.id).toList(),
+                            enabled: true,
                           ),
-                          groupAssigned: groups.map((e) => e.id).toList(),
-                          enabled: true,
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      BlocProvider.of<ScheduleBloc>(context).add(
+                        CreateScheduleEvent(
+                          CreateScheduleParams(
+                            periodicTaskAssigned: PeriodicTaskAssignedParams(
+                                crontab: CrontabModel(
+                                    minute: startDate == null
+                                        ? ''
+                                        : startDate!.minute.toString(),
+                                    hour: startDate == null
+                                        ? ''
+                                        : startDate!.hour.toString(),
+                                    dayOfWeek: '*',
+                                    dayOfMonth: '*',
+                                    monthOfYear: '*')),
+                            periodicTaskOffAssigned: PeriodicTaskAssignedParams(
+                                crontab: CrontabModel(
+                                    minute: endDate == null
+                                        ? ''
+                                        : endDate!.minute.toString(),
+                                    hour: endDate == null
+                                        ? ''
+                                        : endDate!.hour.toString(),
+                                    dayOfWeek: '*',
+                                    dayOfMonth: '*',
+                                    monthOfYear: '*')),
+                            name: _controllerName.text,
+                            command: command!,
+                            groupAssigned: groups.map((e) => e.id).toList(),
+                            enabled: true,
+                          ),
+                        ),
+                      );
+                    }
                   },
                 ),
               )

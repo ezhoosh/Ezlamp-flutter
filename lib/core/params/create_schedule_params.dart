@@ -15,8 +15,8 @@ String scheduleModelToJson(CreateScheduleParams data) =>
 
 class CreateScheduleParams {
   CommandModel command;
-  PeriodicTaskAssigned periodicTaskAssigned;
-  PeriodicTaskAssigned periodicTaskOffAssigned;
+  PeriodicTaskAssignedParams periodicTaskAssigned;
+  PeriodicTaskAssignedParams periodicTaskOffAssigned;
   String name;
   List<int> groupAssigned;
   bool enabled;
@@ -33,10 +33,10 @@ class CreateScheduleParams {
   factory CreateScheduleParams.fromJson(Map<String, dynamic> json) =>
       CreateScheduleParams(
         periodicTaskAssigned:
-            PeriodicTaskAssigned.fromJson(json["periodic_task_assigned"]),
+            PeriodicTaskAssignedParams.fromJson(json["periodic_task_assigned"]),
         command: CommandModel.fromJson(json["command"]),
-        periodicTaskOffAssigned:
-            PeriodicTaskAssigned.fromJson(json["periodic_task_off_assigned"]),
+        periodicTaskOffAssigned: PeriodicTaskAssignedParams.fromJson(
+            json["periodic_task_off_assigned"]),
         name: json["name"],
         groupAssigned: json["group_assigned"],
         enabled: json['enabled'],
@@ -47,20 +47,20 @@ class CreateScheduleParams {
         "command": command.toJson(),
         "periodic_task_off_assigned": periodicTaskOffAssigned.toJson(),
         "name": name,
-        "group_assigned": groupAssigned,
+        "group_assigneds": groupAssigned,
         'enabled': enabled,
       };
 }
 
-class PeriodicTaskAssigned {
+class PeriodicTaskAssignedParams {
   CrontabModel crontab;
 
-  PeriodicTaskAssigned({
+  PeriodicTaskAssignedParams({
     required this.crontab,
   });
 
-  factory PeriodicTaskAssigned.fromJson(Map<String, dynamic> json) =>
-      PeriodicTaskAssigned(
+  factory PeriodicTaskAssignedParams.fromJson(Map<String, dynamic> json) =>
+      PeriodicTaskAssignedParams(
         crontab: CrontabModel.fromJson(json["crontab"]),
       );
 

@@ -117,5 +117,12 @@
   "state1": "Power Consumption (Watt)",
   "state2": "Temperature and Humidity",
   "state3": "Motion Sensor",
-  "state4": "Light Sensor"
+  "state4": "Light Sensor",
+  "lightSetting": "Light Setting",
+  "lightSettingMessage": "لطفا تنظیمات روشنایی را انتخاب کنید",
+  "addNewConnection": "اضافه کردن اتصال جدید",
+  "connected": "متصل شد",
+  "disconnected": "متصل نیست",
+  "stopScan": "توقف جستوجو",
+  "done": "تمام"
 }

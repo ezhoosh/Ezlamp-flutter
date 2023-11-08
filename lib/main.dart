@@ -11,11 +11,13 @@ import 'package:easy_lamp/presenter/bloc/schedule_bloc/schedule_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
+import 'package:easy_lamp/presenter/pages/blue_feather/blue_app.dart';
 import 'package:easy_lamp/presenter/pages/splash_feature/splash_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/config/theme_data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -24,6 +26,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:sizer/sizer.dart';
 
 void main() async {
+  FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
   WidgetsFlutterBinding.ensureInitialized();
   await setupMain();
   await setupSplash();
@@ -80,6 +83,7 @@ class _MyAppState extends State<MyApp> {
             return BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 return MaterialApp(
+                  navigatorObservers: [BluetoothAdapterStateObserver()],
                   builder: EasyLoading.init(),
                   theme: ThemeConfig.lightTheme,
                   localizationsDelegates: const [

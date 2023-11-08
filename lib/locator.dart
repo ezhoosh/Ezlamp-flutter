@@ -122,8 +122,10 @@ setupSplash() async {
   // usecases
   locator
       .registerSingleton<RefreshTokenUseCase>(RefreshTokenUseCase(locator()));
+
   //bloc
   locator.registerSingleton<SplashBloc>(SplashBloc(
+    locator(),
     locator(),
     locator(),
     locator(),

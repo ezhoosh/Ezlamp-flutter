@@ -24,7 +24,8 @@ class AddInternetBoxBottomSheet extends StatefulWidget {
   AddInternetBoxBottomSheet(this.uuid, {super.key, this.groupId}) {}
 
   @override
-  State<AddInternetBoxBottomSheet> createState() => _AddInternetBoxBottomSheetState();
+  State<AddInternetBoxBottomSheet> createState() =>
+      _AddInternetBoxBottomSheetState();
 }
 
 class _AddInternetBoxBottomSheetState extends State<AddInternetBoxBottomSheet> {
@@ -52,6 +53,7 @@ class _AddInternetBoxBottomSheetState extends State<AddInternetBoxBottomSheet> {
         if (state.updateLampOwnerStatus is BaseSuccess) {
           Navigator.pop(context);
           EasyLoading.showSuccess("SUCCESS");
+          Navigator.pop(context);
         } else if (state.updateLampOwnerStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.updateLampOwnerStatus is BaseError) {

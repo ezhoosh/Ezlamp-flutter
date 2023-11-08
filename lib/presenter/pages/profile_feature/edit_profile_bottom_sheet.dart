@@ -42,6 +42,7 @@ class EditProfileBottomSheet extends StatelessWidget {
       listener: (context, state) {
         if (state.updateUserStatus is BaseSuccess) {
           EasyLoading.showSuccess("SUCCESS");
+          Navigator.pop(context);
         } else if (state.updateUserStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.updateUserStatus is BaseError) {

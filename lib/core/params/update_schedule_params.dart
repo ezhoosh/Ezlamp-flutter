@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:easy_lamp/core/params/create_schedule_params.dart';
 import 'package:easy_lamp/data/model/command_model.dart';
 import 'package:easy_lamp/data/model/crontab_model.dart';
 
@@ -14,40 +15,42 @@ String updateScheduleParamsToJson(UpdateScheduleParams data) =>
     json.encode(data.toJson());
 
 class UpdateScheduleParams {
-  int? id;
-  CrontabModel periodicTaskAssigned;
-  CrontabModel periodicTaskOffAssigned;
   CommandModel command;
-  int groupAssigned;
-  bool oneOff;
+  PeriodicTaskAssignedParams periodicTaskAssigned;
+  PeriodicTaskAssignedParams periodicTaskOffAssigned;
   String name;
+  List<int> groupAssigned;
+  int? id;
+  bool enabled;
 
   UpdateScheduleParams({
     required this.periodicTaskAssigned,
-    required this.periodicTaskOffAssigned,
     required this.command,
-    required this.groupAssigned,
-    required this.oneOff,
+    required this.periodicTaskOffAssigned,
     required this.name,
+    required this.groupAssigned,
+    this.id,
+    required this.enabled,
   });
 
   factory UpdateScheduleParams.fromJson(Map<String, dynamic> json) =>
       UpdateScheduleParams(
-          periodicTaskAssigned:
-              CrontabModel.fromJson(json["periodic_task_assigned"]),
-          periodicTaskOffAssigned:
-              CrontabModel.fromJson(json["periodic_task_off_assigned"]),
-          command: CommandModel.fromJson(json["command"]),
-          groupAssigned: json["group_assigned"],
-          oneOff: json['one_off'],
-          name: json["name"]);
+        periodicTaskAssigned:
+            PeriodicTaskAssignedParams.fromJson(json["periodic_task_assigned"]),
+        command: CommandModel.fromJson(json["command"]),
+        periodicTaskOffAssigned: PeriodicTaskAssignedParams.fromJson(
+            json["periodic_task_off_assigned"]),
+        name: json["name"],
+        groupAssigned: json["group_assigned"],
+        enabled: json['enabled'],
+      );
 
   Map<String, dynamic> toJson() => {
         "periodic_task_assigned": periodicTaskAssigned.toJson(),
-        "periodic_task_off_assigned": periodicTaskOffAssigned.toJson(),
         "command": command.toJson(),
-        "group_assigned": groupAssigned,
+        "periodic_task_off_assigned": periodicTaskOffAssigned.toJson(),
         "name": name,
-        "off_one": oneOff,
+        "group_assigneds": groupAssigned,
+        'enabled': enabled,
       };
 }

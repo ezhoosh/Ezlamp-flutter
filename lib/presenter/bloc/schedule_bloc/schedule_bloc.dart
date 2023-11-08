@@ -95,6 +95,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       emit(state.copyWith(newPutScheduleByIdStatus: BaseLoading()));
       DataState dataState = await putScheduleByIdUseCase(event.params);
       if (dataState is DataSuccess) {
+        add(GetScheduleListEvent());
         emit(state.copyWith(
             newPutScheduleByIdStatus: BaseSuccess(dataState.data)));
       } else {

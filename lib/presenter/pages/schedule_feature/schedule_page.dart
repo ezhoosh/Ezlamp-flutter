@@ -52,8 +52,7 @@ class _SchedulePageState extends State<SchedulePage> {
               ),
               onTapLeft: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => const ScheduleDetailPage()),
+                  MaterialPageRoute(builder: (context) => ScheduleDetailPage()),
                 );
               },
             ),
@@ -71,8 +70,7 @@ class _SchedulePageState extends State<SchedulePage> {
                         onTab: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const ScheduleDetailPage()),
+                                builder: (context) => ScheduleDetailPage()),
                           );
                         },
                       );
@@ -85,8 +83,9 @@ class _SchedulePageState extends State<SchedulePage> {
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ScheduleDetailPage()),
+                                  builder: (context) => ScheduleDetailPage(
+                                        schedule: item,
+                                      )),
                             );
                           },
                           margin: const EdgeInsets.only(

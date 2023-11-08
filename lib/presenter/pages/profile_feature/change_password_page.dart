@@ -118,11 +118,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      BlocProvider.of<AuthBloc>(context).add(
-                          ChangePasswordEvent(
-                              _controllerCurrent.text, _controllerNew.text));
-                    },
+                    onPressed: (!v1 || !v2 || !v3 || !v4)
+                        ? null
+                        : () {
+                            BlocProvider.of<AuthBloc>(context).add(
+                                ChangePasswordEvent(_controllerCurrent.text,
+                                    _controllerNew.text));
+                          },
                     child: Text(
                       al.save,
                       style:

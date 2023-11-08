@@ -16,7 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:fl_chart/fl_chart.dart';
+import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class StatePage extends StatefulWidget {
   const StatePage({Key? key}) : super(key: key);
@@ -187,37 +188,45 @@ class _StatePageState extends State<StatePage> {
                                   .copyWith(color: MyColors.white),
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: RichText(
-                              text: TextSpan(
-                                style: DefaultTextStyle.of(context).style,
-                                children: [
-                                  TextSpan(
-                                    text: 'شروع تاریخ ',
-                                    style: Light400Style.sm
-                                        .copyWith(color: MyColors.white),
+                          if (startDate != null && endDate != null)
+                            Builder(builder: (context) {
+                              Jalali s = Jalali.fromDateTime(startDate!);
+                              Jalali e = Jalali.fromDateTime(endDate!);
+                              return Align(
+                                alignment: Alignment.centerLeft,
+                                child: RichText(
+                                  text: TextSpan(
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: [
+                                      TextSpan(
+                                        text: 'شروع تاریخ ',
+                                        style: Light400Style.sm
+                                            .copyWith(color: MyColors.white),
+                                      ),
+                                      TextSpan(
+                                        text: '${s.year}/${s.month}/${s.day}',
+                                        style: Light400Style.sm
+                                            .copyWith(color: MyColors.primary),
+                                      ),
+                                      TextSpan(
+                                        text: ' تا تاریخ ',
+                                        style: Light400Style.sm
+                                            .copyWith(color: MyColors.white),
+                                      ),
+                                      TextSpan(
+                                        text: '${e.year}/${e.month}/${e.day}',
+                                        style: Light400Style.sm
+                                            .copyWith(color: MyColors.primary),
+                                      ),
+                                    ],
                                   ),
-                                  TextSpan(
-                                    text: '۱۴۰۲/۰۱/۰۷',
-                                    style: Light400Style.sm
-                                        .copyWith(color: MyColors.primary),
-                                  ),
-                                  TextSpan(
-                                    text: ' تا تاریخ ',
-                                    style: Light400Style.sm
-                                        .copyWith(color: MyColors.white),
-                                  ),
-                                  TextSpan(
-                                    text: '۱۴۰۲/۰۱/۰۷',
-                                    style: Light400Style.sm
-                                        .copyWith(color: MyColors.primary),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                ),
+                              );
+                            }),
+                          const SizedBox(
+                            height: 20,
                           ),
-                          Chart(items)
+                          Chart(items, type)
                         ],
                       ),
                     );
@@ -246,229 +255,33 @@ class Chart extends StatelessWidget {
   ];
   List<StateModel> items;
 
-  Chart(this.items, {super.key});
+  Map type = {'value': 'power'};
+
+  Chart(this.items, this.type, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 1.70,
-      child: Padding(
-        padding: const EdgeInsets.only(
-          right: 18,
-          left: 12,
-          top: 24,
-          bottom: 12,
-        ),
-        child: LineChart(
-          mainData(),
-        ),
-      ),
-    );
-  }
-
-  Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 16,
-    );
-    Widget text;
-    switch (value.toInt()) {
-      case 2:
-        text = const Text('3/10', style: style);
-        break;
-      case 5:
-        text = const Text('3/10', style: style);
-        break;
-      case 8:
-        text = const Text('3/10', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
-    }
-
-    return SideTitleWidget(
-      axisSide: meta.axisSide,
-      child: text,
-    );
-  }
-
-  Widget leftTitleWidgets(double value, TitleMeta meta) {
-    const style = TextStyle(
-      fontWeight: FontWeight.bold,
-      fontSize: 15,
-    );
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = '10';
-        break;
-      case 3:
-        text = '30';
-        break;
-      case 5:
-        text = '50';
-        break;
-      default:
-        return Container();
-    }
-
-    return Text(text, style: style, textAlign: TextAlign.left);
-  }
-
-  LineChartData mainData() {
-    return LineChartData(
-      gridData: FlGridData(
-        show: true,
-        drawVerticalLine: true,
-        horizontalInterval: 1,
-        verticalInterval: 1,
-        getDrawingHorizontalLine: (value) {
-          return FlLine(
-            color: MyColors.black.shade400,
-            strokeWidth: 1,
-          );
-        },
-        getDrawingVerticalLine: (value) {
-          return const FlLine(
-            color: MyColors.noColor,
-            strokeWidth: 1,
-          );
-        },
-      ),
-      titlesData: const FlTitlesData(
-        show: true,
-        rightTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        topTitles: AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-      ),
-      borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: MyColors.noColor),
-      ),
-      lineBarsData: [
-        LineChartBarData(
-          spots: items
-              .map(
-                (e) => FlSpot(
-                    e.power ?? 0.toDouble(), e.timestamp.second.toDouble()),
-              )
-              .toList(),
-          isCurved: true,
-          gradient: LinearGradient(
-            colors: gradientColors,
-          ),
-          barWidth: 3,
-          isStrokeCapRound: true,
-          dotData: const FlDotData(
-            show: false,
-          ),
-          // belowBarData: BarAreaData(
-          //   show: true,
-          //   gradient: LinearGradient(
-          //     colors: gradientColors
-          //         .map((color) => color.withOpacity(0.3))
-          //         .toList(),
-          //   ),
-          // ),
-        ),
-      ],
-    );
-  }
-
-  LineChartData avgData() {
-    return LineChartData(
-      lineTouchData: const LineTouchData(enabled: false),
-      gridData: FlGridData(
-        show: true,
-        drawHorizontalLine: true,
-        verticalInterval: 1,
-        horizontalInterval: 1,
-        getDrawingVerticalLine: (value) {
-          return const FlLine(
-            color: Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-        getDrawingHorizontalLine: (value) {
-          return const FlLine(
-            color: Color(0xff37434d),
-            strokeWidth: 1,
-          );
-        },
-      ),
-      titlesData: FlTitlesData(
-        show: true,
-        bottomTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            reservedSize: 30,
-            getTitlesWidget: bottomTitleWidgets,
-            interval: 1,
-          ),
-        ),
-        leftTitles: AxisTitles(
-          sideTitles: SideTitles(
-            showTitles: true,
-            getTitlesWidget: leftTitleWidgets,
-            reservedSize: 42,
-            interval: 1,
-          ),
-        ),
-        topTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-        rightTitles: const AxisTitles(
-          sideTitles: SideTitles(showTitles: false),
-        ),
-      ),
-      borderData: FlBorderData(
-        show: true,
-        border: Border.all(color: const Color(0xff37434d)),
-      ),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
-      lineBarsData: [
-        LineChartBarData(
-          spots: const [
-            FlSpot(0, 3.44),
-            FlSpot(2.6, 3.44),
-            FlSpot(4.9, 3.44),
-          ],
-          isCurved: true,
-          gradient: LinearGradient(
-            colors: [
-              ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                  .lerp(0.2)!,
-              ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                  .lerp(0.2)!,
-            ],
-          ),
-          barWidth: 5,
-          isStrokeCapRound: true,
-          dotData: const FlDotData(
-            show: false,
-          ),
-          belowBarData: BarAreaData(
-            show: true,
-            gradient: LinearGradient(
-              colors: [
-                ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                    .lerp(0.2)!
-                    .withOpacity(0.1),
-                ColorTween(begin: gradientColors[0], end: gradientColors[1])
-                    .lerp(0.2)!
-                    .withOpacity(0.1),
-              ],
-            ),
-          ),
-        ),
-      ],
+    return SfSparkLineChart(
+      color: MyColors.primary,
+      axisLineColor: MyColors.secondary,
+      data: items.map((e) {
+        // {'value': 'power'},
+        // {'value': 'temperature'},
+        // {'value': 'pir'},
+        // {'value': 'light'},
+        switch (type['value']) {
+          case 'power':
+            return e.power ?? 0.0;
+          case 'temperature':
+            return e.temperature ?? 0.0;
+          case 'pir':
+            return e.pir ?? 0.0;
+          case 'light':
+            return e.airQuality ?? 0.0;
+          default:
+            return 0.0;
+        }
+      }).toList(),
     );
   }
 }

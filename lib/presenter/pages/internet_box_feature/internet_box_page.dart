@@ -52,7 +52,7 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
               onTapRight: () {
                 Navigator.pop(context);
               },
-              iconRight: ArrowBack(),
+              iconRight: const ArrowBack(),
             ),
             Expanded(
               child: BlocBuilder<InternetBoxBloc, InternetBoxState>(
@@ -111,7 +111,7 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
                                 ],
                               ),
                               const Spacer(),
-                              ArrowList()
+                              const ArrowList()
                             ],
                           ),
                         );
@@ -129,7 +129,7 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
                       child: Text('ERROR'),
                     );
                   }
-                  return SizedBox();
+                  return const SizedBox();
                 },
               ),
             )

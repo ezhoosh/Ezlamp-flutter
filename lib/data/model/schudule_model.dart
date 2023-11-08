@@ -15,14 +15,16 @@ String scheduleModelToJson(List<ScheduleModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ScheduleModel {
+  int id;
   PeriodicTaskAssigned periodicTaskAssigned;
   PeriodicTaskAssigned periodicTaskOffAssigned;
   CommandModel command;
-  int groupAssigned;
+  List<dynamic> groupAssigned;
   String name;
   bool enabled;
 
   ScheduleModel({
+    required this.id,
     required this.periodicTaskAssigned,
     required this.periodicTaskOffAssigned,
     required this.command,
@@ -32,12 +34,13 @@ class ScheduleModel {
   });
 
   factory ScheduleModel.fromJson(Map<String, dynamic> json) => ScheduleModel(
+        id: json["id"],
         periodicTaskAssigned:
             PeriodicTaskAssigned.fromJson(json["periodic_task_assigned"]),
         periodicTaskOffAssigned:
             PeriodicTaskAssigned.fromJson(json["periodic_task_off_assigned"]),
         command: CommandModel.fromJson(json["command"]),
-        groupAssigned: json["group_assigned"],
+        groupAssigned: json["group_assigneds"],
         name: json["name"],
         enabled: json["enabled"],
       );
@@ -49,12 +52,13 @@ class ScheduleModel {
         "group_assigned": groupAssigned,
         "name": name,
         "enabled": enabled,
+        "id": id,
       };
 }
 
 class PeriodicTaskAssigned {
   CrontabModel crontab;
-  String name;
+  String? name;
 
   PeriodicTaskAssigned({
     required this.crontab,
