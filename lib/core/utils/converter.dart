@@ -24,7 +24,6 @@ class Converter {
                       description: e.description,
                       latitude: e.latitude,
                       longitude: e.longitude,
-                      lastCommand: e.lastCommand,
                       isActive: e.isActive,
                       address: e.address,
                       groupLamp: e.groupLamp,
@@ -77,7 +76,6 @@ class Converter {
             address: e.address ?? "",
             groupLamp: e.groupLamp ?? 0,
             mainPower: e.mainPower ?? '',
-            lastCommand: e.lastCommand ?? '',
             uuid: e.uuid ?? ''))
         .toList();
   }

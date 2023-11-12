@@ -95,7 +95,7 @@
     }
   },
   "editLampName": "Edit Lamp Name",
-  "logoutTitle": "Delete User {value}",
+  "logoutTitle": "exit User {value}",
   "@logoutTitle": {
     "placeholders": {
       "value": {

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_lamp/core/params/command_params.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/core/utils/api_access.dart';
+import 'package:easy_lamp/core/utils/normalize.dart';
 import 'package:easy_lamp/data/model/command_model.dart';
 import 'package:easy_lamp/domain/repositories/command_repository.dart';
 
@@ -16,9 +17,9 @@ class CommandRepositoryImpl extends CommandRepository {
         data: {
           "w": params.w,
           "y": params.y,
-          "r": params.r,
-          "g": params.g,
-          "b": params.b,
+          "r": Normalize.normalizeValue(params.r),
+          "g": Normalize.normalizeValue(params.g),
+          "b": Normalize.normalizeValue(params.b),
           "c": params.c,
           "pir": true,
           "type": "apply",

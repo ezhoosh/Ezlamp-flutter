@@ -4,8 +4,10 @@ import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
+import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
 import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:sizer/sizer.dart';
 
@@ -149,6 +151,8 @@ class _ScanScreenState extends State<ScanScreen> {
       setState(() {
         deviceConnected = device;
       });
+      BlocProvider.of<CommandBloc>(context).add(ConnectedBlueEvent(device));
+      onStopPressed();
     });
     t.catchError((e) {
       Snackbar.show(ABC.c, prettyException("Connect Error:", e),

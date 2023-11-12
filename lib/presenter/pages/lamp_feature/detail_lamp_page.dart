@@ -46,368 +46,391 @@ class _DetailLampPageState extends State<DetailLampPage> {
   @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
-    return BlocListener<LampBloc, LampState>(
-      listenWhen: (prev, curr) {
-        if (prev.patchLampStatus is BaseSuccess &&
-            curr.patchLampStatus is BaseNoAction) {
-          return false;
-        }
-        return true;
-      },
-      listener: (context, state) {
-        if (state.patchLampStatus is BaseSuccess) {
-          LampModel lamp = (state.patchLampStatus as BaseSuccess).entity;
-          setState(() {
-            widget.lamps.first = lamp;
-          });
-          EasyLoading.showSuccess("SUCCESS");
-        } else if (state.patchLampStatus is BaseLoading) {
-          EasyLoading.show();
-        } else if (state.patchLampStatus is BaseError) {
-          EasyLoading.showError("ERROR");
-        }
-      },
-      child: Scaffold(
-          backgroundColor: MyColors.black,
-          body: SafeArea(
-            child: Column(
-              children: [
-                TopBar(
-                  title: widget.lamps.first.name,
-                  onTapRight: () {
-                    Navigator.pop(context);
-                  },
-                  iconRight: ArrowBack(),
-                  iconLeft: Text(
-                    al.save,
-                    style:
-                        Light400Style.normal.copyWith(color: MyColors.primary),
-                  ),
-                  onTapLeft: () {
-                    BlocProvider.of<CommandBloc>(context)
-                        .add(SendCommandEvent(CommandParams(
-                      lamps: widget.lamps.map((e) => e.id).toList(),
-                      w: isColor ? 0 : w.toInt(),
-                      y: isColor ? 0 : y.toInt(),
-                      r: !isColor ? 0 : (rgb == null ? 0 : rgb!.red),
-                      g: !isColor ? 0 : (rgb == null ? 0 : rgb!.green),
-                      b: !isColor ? 0 : (rgb == null ? 0 : rgb!.blue),
-                      c: c.toInt(),
-                      pir: true,
-                      type: 'apply',
-                    )));
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: MySpaces.s24),
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: MySpaces.s24,
+    return BlocBuilder<CommandBloc, CommandState>(
+      builder: (context, commandState) {
+        return BlocListener<LampBloc, LampState>(
+          listenWhen: (prev, curr) {
+            if (prev.patchLampStatus is BaseSuccess &&
+                curr.patchLampStatus is BaseNoAction) {
+              return false;
+            }
+            return true;
+          },
+          listener: (context, state) {
+            if (state.patchLampStatus is BaseSuccess) {
+              LampModel lamp = (state.patchLampStatus as BaseSuccess).entity;
+              setState(() {
+                widget.lamps.first = lamp;
+              });
+              EasyLoading.showSuccess("SUCCESS");
+            } else if (state.patchLampStatus is BaseLoading) {
+              EasyLoading.show();
+            } else if (state.patchLampStatus is BaseError) {
+              EasyLoading.showError("ERROR");
+            }
+          },
+          child: Scaffold(
+              backgroundColor: MyColors.black,
+              body: SafeArea(
+                child: Column(
+                  children: [
+                    TopBar(
+                      title: widget.lamps.first.name,
+                      onTapRight: () {
+                        Navigator.pop(context);
+                      },
+                      iconRight: ArrowBack(),
+                      iconLeft: Text(
+                        al.save,
+                        style: Light400Style.normal
+                            .copyWith(color: MyColors.primary),
                       ),
-                      if (widget.lamps.length == 1)
-                        Container(
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                              color: MyColors.black.shade500,
-                              borderRadius: MyRadius.base),
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: MySpaces.s12,
-                            vertical: MySpaces.s16,
+                      onTapLeft: () {
+                        BlocProvider.of<CommandBloc>(context).add(
+                          SendCommandEvent(
+                            CommandParams(
+                              blueLampId: widget.lamps.first.id,
+                              lamps: widget.lamps.map((e) => e.id).toList(),
+                              w: isColor ? 0 : w.toInt(),
+                              y: isColor ? 0 : y.toInt(),
+                              r: !isColor ? 0 : (rgb == null ? 0 : rgb!.red),
+                              g: !isColor ? 0 : (rgb == null ? 0 : rgb!.green),
+                              b: !isColor ? 0 : (rgb == null ? 0 : rgb!.blue),
+                              c: c.toInt(),
+                              pir: true,
+                              type: 'apply',
+                            ),
                           ),
-                          child: Column(
-                            children: [
-                              Row(
+                        );
+                      },
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.symmetric(horizontal: MySpaces.s24),
+                      child: Column(
+                        children: [
+                          const SizedBox(
+                            height: MySpaces.s24,
+                          ),
+                          if (widget.lamps.length == 1)
+                            Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                  color: MyColors.black.shade500,
+                                  borderRadius: MyRadius.base),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: MySpaces.s12,
+                                vertical: MySpaces.s16,
+                              ),
+                              child: Column(
                                 children: [
-                                  IconButton(
-                                      onPressed: () {
-                                        showModalBottomSheet(
-                                          isScrollControlled: true,
-                                          context: context,
-                                          shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(24),
-                                              topRight: Radius.circular(24),
-                                            ),
-                                          ),
-                                          builder: (context) {
-                                            return MoreLampBottomSheet(
-                                                widget.lamps.first.id);
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                          onPressed: () {
+                                            showModalBottomSheet(
+                                              isScrollControlled: true,
+                                              context: context,
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(24),
+                                                  topRight: Radius.circular(24),
+                                                ),
+                                              ),
+                                              builder: (context) {
+                                                return MoreLampBottomSheet(
+                                                    widget.lamps.first.id);
+                                              },
+                                            );
                                           },
-                                        );
-                                      },
-                                      icon: SvgPicture.asset(
-                                        "assets/icons/edit.svg",
-                                        width: 30,
-                                        height: 30,
-                                      )),
-                                  const SizedBox(
-                                    width: MySpaces.s4,
+                                          icon: SvgPicture.asset(
+                                            "assets/icons/edit.svg",
+                                            width: 30,
+                                            height: 30,
+                                          )),
+                                      const SizedBox(
+                                        width: MySpaces.s4,
+                                      ),
+                                      Text(
+                                        widget.lamps.first.name,
+                                        style: DemiBoldStyle.lg
+                                            .copyWith(color: MyColors.white),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    widget.lamps.first.name,
-                                    style: DemiBoldStyle.lg
-                                        .copyWith(color: MyColors.white),
+                                  const SizedBox(
+                                    height: MySpaces.s12,
+                                  ),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: SecondaryButton(
+                                          onPress: () {
+                                            BlocProvider.of<CommandBloc>(
+                                                    context)
+                                                .add(SendCommandEvent(
+                                                    CommandParams(
+                                                        blueLampId: widget
+                                                            .lamps.first.id,
+                                                        w: 0,
+                                                        y: 0,
+                                                        r: 0,
+                                                        g: 0,
+                                                        b: 0,
+                                                        c: 0,
+                                                        pir: true,
+                                                        type: 'apply',
+                                                        lamps: widget.lamps
+                                                            .map((e) => e.id)
+                                                            .toList())));
+                                          },
+                                          text: al.off,
+                                          right: const Icon(
+                                            Icons.power_settings_new_outlined,
+                                            color: MyColors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: MySpaces.s8,
+                                      ),
+                                      Expanded(
+                                        child: SecondaryButton(
+                                          onPress: () {
+                                            BlocProvider.of<CommandBloc>(
+                                                    context)
+                                                .add(SendCommandEvent(
+                                                    CommandParams(
+                                                        blueLampId: widget
+                                                            .lamps.first.id,
+                                                        w: 100,
+                                                        y: 50,
+                                                        r: 0,
+                                                        g: 0,
+                                                        b: 0,
+                                                        c: 0,
+                                                        pir: true,
+                                                        type: 'apply',
+                                                        lamps: widget.lamps
+                                                            .map((e) => e.id)
+                                                            .toList())));
+                                          },
+                                          text: al.on,
+                                          right: const Icon(
+                                            Icons.power_settings_new_outlined,
+                                            color: MyColors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                              const SizedBox(
-                                height: MySpaces.s12,
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: SecondaryButton(
-                                      onPress: () {
-                                        BlocProvider.of<CommandBloc>(context)
-                                            .add(SendCommandEvent(CommandParams(
-                                                w: 0,
-                                                y: 0,
-                                                r: 0,
-                                                g: 0,
-                                                b: 0,
-                                                c: 0,
-                                                pir: true,
-                                                type: 'apply',
-                                                lamps: widget.lamps
-                                                    .map((e) => e.id)
-                                                    .toList())));
-                                      },
-                                      text: al.off,
-                                      right: const Icon(
-                                        Icons.power_settings_new_outlined,
-                                        color: MyColors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: MySpaces.s8,
-                                  ),
-                                  Expanded(
-                                    child: SecondaryButton(
-                                      onPress: () {
-                                        BlocProvider.of<CommandBloc>(context)
-                                            .add(SendCommandEvent(CommandParams(
-                                                w: 100,
-                                                y: 50,
-                                                r: 0,
-                                                g: 0,
-                                                b: 0,
-                                                c: 0,
-                                                pir: true,
-                                                type: 'apply',
-                                                lamps: widget.lamps
-                                                    .map((e) => e.id)
-                                                    .toList())));
-                                      },
-                                      text: al.on,
-                                      right: const Icon(
-                                        Icons.power_settings_new_outlined,
-                                        color: MyColors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                            ),
+                          const SizedBox(
+                            height: MySpaces.s32,
                           ),
-                        ),
-                      const SizedBox(
-                        height: MySpaces.s32,
-                      ),
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: MyColors.black.shade500,
-                            borderRadius: MyRadius.base),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: MySpaces.s12,
-                          vertical: MySpaces.s24,
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
+                          Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: MyColors.black.shade500,
+                                borderRadius: MyRadius.base),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: MySpaces.s12,
+                              vertical: MySpaces.s24,
+                            ),
+                            child: Column(
                               children: [
-                                Text(
-                                  AppLocalizations.of(context)!.contrast,
-                                  style: Light300Style.sm
-                                      .copyWith(color: MyColors.secondary),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  '${c.toInt()}',
-                                  style: Light300Style.sm
-                                      .copyWith(color: MyColors.secondary),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: MySpaces.s8,
-                            ),
-                            SliderTheme(
-                              data: SliderThemeData(
-                                  trackHeight: 6.0,
-                                  // Adjust the track height here
-                                  thumbShape: const RoundSliderThumbShape(
-                                    enabledThumbRadius: 8.0,
-                                  ),
-                                  activeTrackColor: Colors.white,
-                                  overlayShape: SliderComponentShape.noOverlay,
-                                  inactiveTrackColor: MyColors.black.shade300,
-                                  disabledThumbColor: MyColors.white,
-                                  activeTickMarkColor: Colors.white,
-                                  thumbColor: Colors.white),
-                              child: Slider(
-                                value: c,
-                                onChanged: (newValue) {
-                                  setState(() {
-                                    c = newValue;
-                                  });
-                                },
-                                min: 0.0,
-                                // Minimum value
-                                max: 20.0,
-                                // Maximum value
-                                divisions: 100,
-                                // Number of divisions
-                              ),
-                            ),
-                            const SizedBox(
-                              height: MySpaces.s12,
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                AppLocalizations.of(context)!.coloring,
-                                style: Light300Style.sm
-                                    .copyWith(color: MyColors.secondary),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: MySpaces.s8,
-                            ),
-                            Opacity(
-                              opacity: isColor ? 1 : 0.5,
-                              child: HuePicker(
-                                initialColor:
-                                    HSVColor.fromColor(rgb ?? Colors.white),
-                                onChanged: (color) {
-                                  setState(() {
-                                    isColor = true;
-                                    rgb = color;
-                                  });
-                                },
-                                trackHeight: 6,
-                                thumbShape: HueSliderThumbShape(
-                                  color: Colors.white,
-                                  borderColor: Colors.white.withOpacity(0.3),
-                                  filled: true,
-                                  showBorder: true,
-                                  borderWidth: 3,
-                                ),
-                                hueColors: const [
-                                  Colors.red,
-                                  Colors.blue,
-                                  Colors.yellow,
-                                  Colors.green,
-                                  Colors.pink,
-                                  Colors.orange,
-                                ],
-                              ),
-                            ),
-                            const SizedBox(
-                              height: MySpaces.s32,
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Text(
-                                AppLocalizations.of(context)!.yellowAndWhite,
-                                style: Light300Style.sm
-                                    .copyWith(color: MyColors.secondary),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: MySpaces.s8,
-                            ),
-                            Opacity(
-                              opacity: isColor ? 0.5 : 1,
-                              child: SliderTheme(
-                                data: SliderThemeData(
-                                    trackHeight: 6.0,
-                                    // Adjust the track height here
-                                    thumbShape: const RoundSliderThumbShape(
-                                      enabledThumbRadius: 8.0,
+                                Row(
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!.contrast,
+                                      style: Light300Style.sm
+                                          .copyWith(color: MyColors.secondary),
                                     ),
-                                    overlayShape:
-                                        SliderComponentShape.noOverlay,
-                                    activeTrackColor: Colors.white,
-                                    inactiveTrackColor: const Color(0xffFFDA55),
-                                    disabledThumbColor: MyColors.white,
-                                    activeTickMarkColor: Colors.white,
-                                    thumbColor: Colors.white),
-                                child: SizedBox(
+                                    const Spacer(),
+                                    Text(
+                                      '${c.toInt()}',
+                                      style: Light300Style.sm
+                                          .copyWith(color: MyColors.secondary),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: MySpaces.s8,
+                                ),
+                                SliderTheme(
+                                  data: SliderThemeData(
+                                      trackHeight: 6.0,
+                                      // Adjust the track height here
+                                      thumbShape: const RoundSliderThumbShape(
+                                        enabledThumbRadius: 8.0,
+                                      ),
+                                      activeTrackColor: Colors.white,
+                                      overlayShape:
+                                          SliderComponentShape.noOverlay,
+                                      inactiveTrackColor:
+                                          MyColors.black.shade300,
+                                      disabledThumbColor: MyColors.white,
+                                      activeTickMarkColor: Colors.white,
+                                      thumbColor: Colors.white),
                                   child: Slider(
-                                    value: v,
+                                    value: c,
                                     onChanged: (newValue) {
                                       setState(() {
-                                        isColor = false;
-                                        v = newValue;
+                                        c = newValue;
                                       });
-                                      if (v < 50) {
-                                        w = 0;
-                                        y = 100 - v;
-                                      } else {
-                                        y = 0;
-                                        w = v;
-                                      }
-                                      print("w : $w and y : $y");
                                     },
                                     min: 0.0,
                                     // Minimum value
-                                    max: 100.0,
+                                    max: 20.0,
                                     // Maximum value
                                     divisions: 100,
                                     // Number of divisions
                                   ),
                                 ),
-                              ),
+                                const SizedBox(
+                                  height: MySpaces.s12,
+                                ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    AppLocalizations.of(context)!.coloring,
+                                    style: Light300Style.sm
+                                        .copyWith(color: MyColors.secondary),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: MySpaces.s8,
+                                ),
+                                Opacity(
+                                  opacity: isColor ? 1 : 0.5,
+                                  child: HuePicker(
+                                    initialColor:
+                                        HSVColor.fromColor(rgb ?? Colors.white),
+                                    onChanged: (color) {
+                                      setState(() {
+                                        isColor = true;
+                                        rgb = color;
+                                      });
+                                    },
+                                    trackHeight: 6,
+                                    thumbShape: HueSliderThumbShape(
+                                      color: Colors.white,
+                                      borderColor:
+                                          Colors.white.withOpacity(0.3),
+                                      filled: true,
+                                      showBorder: true,
+                                      borderWidth: 3,
+                                    ),
+                                    hueColors: const [
+                                      Colors.red,
+                                      Colors.blue,
+                                      Colors.yellow,
+                                      Colors.green,
+                                      Colors.pink,
+                                      Colors.orange,
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: MySpaces.s32,
+                                ),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Text(
+                                    AppLocalizations.of(context)!
+                                        .yellowAndWhite,
+                                    style: Light300Style.sm
+                                        .copyWith(color: MyColors.secondary),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: MySpaces.s8,
+                                ),
+                                Opacity(
+                                  opacity: isColor ? 0.5 : 1,
+                                  child: SliderTheme(
+                                    data: SliderThemeData(
+                                        trackHeight: 6.0,
+                                        // Adjust the track height here
+                                        thumbShape: const RoundSliderThumbShape(
+                                          enabledThumbRadius: 8.0,
+                                        ),
+                                        overlayShape:
+                                            SliderComponentShape.noOverlay,
+                                        activeTrackColor: Colors.white,
+                                        inactiveTrackColor:
+                                            const Color(0xffFFDA55),
+                                        disabledThumbColor: MyColors.white,
+                                        activeTickMarkColor: Colors.white,
+                                        thumbColor: Colors.white),
+                                    child: SizedBox(
+                                      child: Slider(
+                                        value: v,
+                                        onChanged: (newValue) {
+                                          setState(() {
+                                            isColor = false;
+                                            v = newValue;
+                                          });
+                                          if (v < 50) {
+                                            w = 0;
+                                            y = 100 - v;
+                                          } else {
+                                            y = 0;
+                                            w = v;
+                                          }
+                                          print("w : $w and y : $y");
+                                        },
+                                        min: 0.0,
+                                        // Minimum value
+                                        max: 100.0,
+                                        // Maximum value
+                                        divisions: 100,
+                                        // Number of divisions
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      getCard(
-                        al.addMember,
-                        Iconsax.profile_2user,
-                        () {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(24),
-                                topRight: Radius.circular(24),
-                              ),
-                            ),
-                            builder: (context) {
-                              return AddMemberLampBottomSheet(
-                                  widget.groupId, widget.lamps);
-                            },
-                          );
-                        },
-                      ),
-                      getCard(al.internetLamp, Iconsax.global, () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => InternetBoxPage(),
                           ),
-                        );
-                      })
-                    ],
-                  ),
+                          getCard(
+                            al.addMember,
+                            Iconsax.profile_2user,
+                            () {
+                              showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(24),
+                                    topRight: Radius.circular(24),
+                                  ),
+                                ),
+                                builder: (context) {
+                                  return AddMemberLampBottomSheet(
+                                      widget.groupId, widget.lamps);
+                                },
+                              );
+                            },
+                          ),
+                          getCard(al.internetLamp, Iconsax.global, () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => InternetBoxPage(),
+                              ),
+                            );
+                          })
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          )),
+              )),
+        );
+      },
     );
   }
 

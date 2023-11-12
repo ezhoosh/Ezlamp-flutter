@@ -112,7 +112,7 @@ class _ScanResultTileState extends State<ScanResultTile> {
         ),
       );
     } else {
-      return Text(widget.result.device.remoteId.toString());
+      return const SizedBox();
     }
   }
 

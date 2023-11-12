@@ -21,7 +21,6 @@ class LampModel {
   String? address;
   int groupLamp;
   String? mainPower;
-  String? lastCommand;
   String uuid;
 
   LampModel({
@@ -35,7 +34,6 @@ class LampModel {
     required this.address,
     required this.groupLamp,
     required this.mainPower,
-    required this.lastCommand,
     required this.uuid,
   });
 
@@ -50,7 +48,6 @@ class LampModel {
         address: json["address"],
         groupLamp: json["group_lamp"],
         mainPower: json["main_power"],
-        lastCommand: json["last_command"],
         uuid: json["uuid"],
       );
 
@@ -65,7 +62,6 @@ class LampModel {
         "address": address,
         "group_lamp": groupLamp,
         "main_power": mainPower,
-        "last_command": lastCommand,
         "uuid": uuid,
       };
 }

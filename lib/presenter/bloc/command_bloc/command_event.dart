@@ -7,3 +7,9 @@ class SendCommandEvent extends CommandEvent {
 
   SendCommandEvent(this.commandParams);
 }
+
+class ConnectedBlueEvent extends CommandEvent {
+  BluetoothDevice device;
+
+  ConnectedBlueEvent(this.device);
+}

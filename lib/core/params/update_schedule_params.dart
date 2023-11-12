@@ -15,22 +15,22 @@ String updateScheduleParamsToJson(UpdateScheduleParams data) =>
     json.encode(data.toJson());
 
 class UpdateScheduleParams {
-  CommandModel command;
-  PeriodicTaskAssignedParams periodicTaskAssigned;
-  PeriodicTaskAssignedParams periodicTaskOffAssigned;
-  String name;
-  List<int> groupAssigned;
+  CommandModel? command;
+  PeriodicTaskAssignedParams? periodicTaskAssigned;
+  PeriodicTaskAssignedParams? periodicTaskOffAssigned;
+  String? name;
+  List<int>? groupAssigned;
   int? id;
-  bool enabled;
+  bool? enabled;
 
   UpdateScheduleParams({
-    required this.periodicTaskAssigned,
-    required this.command,
-    required this.periodicTaskOffAssigned,
-    required this.name,
-    required this.groupAssigned,
+    this.periodicTaskAssigned,
+    this.command,
+    this.periodicTaskOffAssigned,
+    this.name,
+    this.groupAssigned,
     this.id,
-    required this.enabled,
+    this.enabled,
   });
 
   factory UpdateScheduleParams.fromJson(Map<String, dynamic> json) =>
@@ -46,11 +46,13 @@ class UpdateScheduleParams {
       );
 
   Map<String, dynamic> toJson() => {
-        "periodic_task_assigned": periodicTaskAssigned.toJson(),
-        "command": command.toJson(),
-        "periodic_task_off_assigned": periodicTaskOffAssigned.toJson(),
-        "name": name,
-        "group_assigneds": groupAssigned,
-        'enabled': enabled,
+        if (periodicTaskAssigned != null)
+          "periodic_task_assigned": periodicTaskAssigned!.toJson(),
+        if (command != null) "command": command!.toJson(),
+        if (periodicTaskOffAssigned != null)
+          "periodic_task_off_assigned": periodicTaskOffAssigned!.toJson(),
+        if (name != null) "name": name,
+        if (groupAssigned != null) "group_assigneds": groupAssigned,
+        if (enabled != null) 'enabled': enabled,
       };
 }

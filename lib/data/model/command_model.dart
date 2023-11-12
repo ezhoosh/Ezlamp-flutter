@@ -35,7 +35,9 @@ class CommandModel {
   });
 
   factory CommandModel.fromJson(Map<String, dynamic> json) => CommandModel(
-        lamps: List<int>.from(json["lamps"].map((x) => x)),
+        lamps: json.containsKey('lamps')
+            ? List<int>.from(json["lamps"].map((x) => x))
+            : [],
         w: json["w"],
         y: json["y"],
         r: json["r"],

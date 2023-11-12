@@ -95,7 +95,7 @@
     }
   },
   "editLampName": "ویرایش نام لامپ",
-  "logoutTitle": "حذف کاربر {value}",
+  "logoutTitle": "خروج کاربر {value}",
   "@logoutTitle": {
     "placeholders": {
       "value": {

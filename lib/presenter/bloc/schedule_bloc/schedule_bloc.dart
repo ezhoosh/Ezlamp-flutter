@@ -106,7 +106,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     });
     on<PatchScheduleByIdEvent>((event, emit) async {
       emit(state.copyWith(newPatchScheduleByIdStatus: BaseLoading()));
-      DataState dataState = await putScheduleByIdUseCase(event.params);
+      DataState dataState = await patchScheduleByIdUseCase(event.params);
       if (dataState is DataSuccess) {
         emit(state.copyWith(
             newPatchScheduleByIdStatus: BaseSuccess(dataState.data)));

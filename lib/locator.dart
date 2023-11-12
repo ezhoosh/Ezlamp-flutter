@@ -282,6 +282,7 @@ setupCommand() async {
   //bloc
   locator.registerSingleton<CommandBloc>(CommandBloc(
     locator(),
+    locator(),
   ));
 }
 

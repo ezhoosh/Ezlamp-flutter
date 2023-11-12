@@ -1,3 +1,4 @@
+import 'package:easy_lamp/core/params/update_schedule_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
@@ -13,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -57,7 +59,7 @@ class _SchedulePageState extends State<SchedulePage> {
               },
             ),
             Expanded(
-              child: BlocBuilder<ScheduleBloc, ScheduleState>(
+              child: BlocConsumer<ScheduleBloc, ScheduleState>(
                 builder: (context, state) {
                   if (state.getScheduleListStatus is BaseSuccess) {
                     List<ScheduleModel> items =
@@ -138,7 +140,12 @@ class _SchedulePageState extends State<SchedulePage> {
                                   const Spacer(),
                                   CupertinoSwitch(
                                     value: item.enabled,
-                                    onChanged: (t) {},
+                                    onChanged: (t) {
+                                      BlocProvider.of<ScheduleBloc>(context)
+                                          .add(PatchScheduleByIdEvent(
+                                              UpdateScheduleParams(
+                                                  id: item.id, enabled: t)));
+                                    },
                                     activeColor: MyColors.primary,
                                   ),
                                 ],
@@ -161,6 +168,22 @@ class _SchedulePageState extends State<SchedulePage> {
                     );
                   }
                   return const SizedBox();
+                },
+                listenWhen: (prev, curr) {
+                  if (prev.patchScheduleByIdStatus is BaseSuccess &&
+                      curr.patchScheduleByIdStatus is BaseNoAction) {
+                    return false;
+                  }
+                  return true;
+                },
+                listener: (BuildContext context, ScheduleState state) {
+                  if (state.patchScheduleByIdStatus is BaseSuccess) {
+                    EasyLoading.showSuccess("SUCCESS");
+                  } else if (state.patchScheduleByIdStatus is BaseLoading) {
+                    EasyLoading.show();
+                  } else if (state.patchScheduleByIdStatus is BaseError) {
+                    EasyLoading.showError("ERROR");
+                  }
                 },
               ),
             )
