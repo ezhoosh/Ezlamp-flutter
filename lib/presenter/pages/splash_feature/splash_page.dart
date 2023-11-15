@@ -1,4 +1,5 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
+import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_status.dart';
@@ -35,7 +36,7 @@ class _SplashPageState extends State<SplashPage> {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => FlutterBlueApp()),
           );
-        } else {
+        } else if (state.checkLoginStatus is SplashError) {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(builder: (context) => AuthPage()),
           );
@@ -44,11 +45,26 @@ class _SplashPageState extends State<SplashPage> {
       child: Container(
         color: MyColors.black.shade700,
         child: Center(
-          child: Image.asset(
-            'assets/icons/splash_logo.png',
-            width: w * 0.5,
-            height: w * 0.5,
-            fit: BoxFit.cover,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Expanded(
+                child: Center(
+                  child: Image.asset(
+                    'assets/icons/splash_logo.png',
+                    width: w * 0.5,
+                    height: w * 0.5,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const CircularProgressIndicator(
+                color: MyColors.primary,
+              ),
+              const SizedBox(
+                height: MySpaces.s40,
+              ),
+            ],
           ),
         ),
       ),

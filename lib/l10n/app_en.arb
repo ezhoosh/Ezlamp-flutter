@@ -124,5 +124,9 @@
   "connected": "متصل شد",
   "disconnected": "متصل نیست",
   "stopScan": "توقف جستوجو",
-  "done": "تمام"
+  "done": "تمام",
+  "deleteSchedule": "حذف برنامه ریزی",
+  "editInformation": "ویرایش اطلاعات",
+  "exit": "خروج",
+  "endHour": "ساعت پایان"
 }

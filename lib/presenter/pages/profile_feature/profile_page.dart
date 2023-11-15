@@ -8,6 +8,7 @@ import 'package:easy_lamp/data/model/connection_type.dart';
 import 'package:easy_lamp/data/model/user_model.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
+import 'package:easy_lamp/presenter/pages/blue_feather/blue_app.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/internet_box_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/change_language_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/change_password_page.dart';
@@ -294,6 +295,10 @@ class _ProfilePageState extends State<ProfilePage> {
     bool c = i == current;
     return ClickableContainer(
       onTap: () {
+        if (i == 1) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const FlutterBlueApp()));
+        }
         BlocProvider.of<AuthBloc>(context).add(ChangeConnectionTypeEvent(
             i == 1 ? ConnectionType.Bluetooth : ConnectionType.Internet));
       },

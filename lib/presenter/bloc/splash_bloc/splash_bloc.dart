@@ -40,14 +40,47 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
                 dataState is DataSuccess &&
                     dataState.data.toString().isNotEmpty)));
       } else {
-        emit(state.copyWith(
-            newCheckLoginStatus: SplashSuccessWithOutBlue(
-                dataState is DataSuccess &&
-                    dataState.data.toString().isNotEmpty)));
+        emit(state.copyWith(newCheckLoginStatus: SplashLoading()));
+        try {
+          DataState refreshDataState =
+              await readLocalStorageUseCase(Constants.refreshKey);
+          if (refreshDataState.data.toString().isNotEmpty) {
+            DataState dataState =
+                await refreshTokenUseCase(refreshDataState.data);
+            if (dataState is DataSuccess) {
+              RefreshTokenModel model = dataState.data;
+              await writeLocalStorageUseCase(
+                  WriteLocalStorageParam(Constants.accessKey, model.access));
+
+              emit(state.copyWith(
+                  newCheckLoginStatus: SplashSuccessWithOutBlue(
+                      dataState.data.toString().isNotEmpty)));
+            } else {
+              DataState dataState =
+                  await refreshTokenUseCase(refreshDataState.data);
+              if (dataState is DataSuccess) {
+                RefreshTokenModel model = dataState.data;
+                await writeLocalStorageUseCase(
+                    WriteLocalStorageParam(Constants.accessKey, model.access));
+
+                emit(state.copyWith(
+                    newCheckLoginStatus: SplashSuccessWithOutBlue(
+                        dataState.data.toString().isNotEmpty)));
+              } else {
+                emit(state.copyWith(
+                    newCheckLoginStatus: SplashError(dataState.error)));
+              }
+            }
+          } else {
+            emit(state.copyWith(newCheckLoginStatus: SplashError("new User")));
+          }
+        } catch (e) {
+          emit(state.copyWith(newCheckLoginStatus: SplashError(e.toString())));
+        }
       }
-      if (dataState.data.toString().isNotEmpty) {
-        add(RefreshTokenEvent());
-      }
+      // if (dataState.data.toString().isNotEmpty) {
+      //   add(RefreshTokenEvent());
+      // }
     });
     on<RefreshTokenEvent>((event, emit) async {
       emit(state.copyWith(newRefreshTokenStatus: BaseLoading()));

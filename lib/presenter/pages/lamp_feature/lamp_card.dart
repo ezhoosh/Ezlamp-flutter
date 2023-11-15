@@ -47,21 +47,22 @@ class LampCard extends StatelessWidget {
           const SizedBox(
             width: MySpaces.s6,
           ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                lamp.name,
-                style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
-              ),
-              Text(
-                lamp.description,
-                style:
-                    DemiBoldStyle.sm.copyWith(color: MyColors.black.shade100),
-              ),
-            ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  lamp.name,
+                  style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
+                ),
+                Text(
+                  lamp.description,
+                  style:
+                      DemiBoldStyle.sm.copyWith(color: MyColors.black.shade100),
+                ),
+              ],
+            ),
           ),
-          const Spacer(),
           if (isSelect)
             Checkbox(
               value: selected,

@@ -34,12 +34,13 @@ class BottomSheetSelectDate extends StatelessWidget {
         buttonSingleColor: MyColors.primary,
         onSubmit: onSubmit,
         displayButtonIcon: false,
-        buttonTextStyle: DemiBoldStyle.sm.copyWith(color: MyColors.white),
+        buttonTextStyle: DemiBoldStyle.normal.copyWith(color: MyColors.white),
         maxDateTime: maxDateTime,
         minDateTime: minDateTime,
         pickerTextStyle: Light400Style.xl.copyWith(color: MyColors.white),
         titleStyle: DemiBoldStyle.sm,
-        title: '',
+        title: 'ساعت را انتخاب کنید',
+        closeIconColor: Colors.white,
       ),
     );
   }

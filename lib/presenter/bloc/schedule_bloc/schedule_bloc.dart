@@ -83,6 +83,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       emit(state.copyWith(newDeleteScheduleByIdStatus: BaseLoading()));
       DataState dataState = await deleteScheduleByIdUseCase(event.id);
       if (dataState is DataSuccess) {
+        add(GetScheduleListEvent());
         emit(state.copyWith(
             newDeleteScheduleByIdStatus: BaseSuccess(dataState.data)));
       } else {

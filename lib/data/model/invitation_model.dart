@@ -16,7 +16,7 @@ class InvitationModel {
   String message;
   int assignee;
   GroupLamp groupLamp;
-  List<Lamp> lamps;
+  List<Lamp>? lamps;
   bool isOpen = false;
 
   InvitationModel({
@@ -44,7 +44,9 @@ class InvitationModel {
         "message": message,
         "assignee": assignee,
         "group_lamp": groupLamp.toJson(),
-        "lamps": List<dynamic>.from(lamps.map((x) => x.toJson())),
+        "lamps": lamps != null
+            ? List<dynamic>.from(lamps!.map((x) => x.toJson()))
+            : '',
       };
 }
 
@@ -78,14 +80,14 @@ class Lamp {
   String description;
   int owner;
   bool isActive;
-  String latitude;
-  String longitude;
-  String address;
+  String? latitude;
+  String? longitude;
+  String? address;
   int groupLamp;
-  String mainPower;
+  String? mainPower;
   LastCommand? lastCommand;
   String uuid;
-  int internetBox;
+  int? internetBox;
   List<int> members;
 
   Lamp({

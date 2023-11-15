@@ -95,22 +95,23 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
                               const SizedBox(
                                 width: MySpaces.s6,
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item.name,
-                                    style: DemiBoldStyle.lg
-                                        .copyWith(color: MyColors.white),
-                                  ),
-                                  Text(
-                                    item.description,
-                                    style: DemiBoldStyle.sm.copyWith(
-                                        color: MyColors.black.shade100),
-                                  ),
-                                ],
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      item.name,
+                                      style: DemiBoldStyle.lg
+                                          .copyWith(color: MyColors.white),
+                                    ),
+                                    Text(
+                                      item.description,
+                                      style: DemiBoldStyle.sm.copyWith(
+                                          color: MyColors.black.shade100),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              const Spacer(),
                               const ArrowList()
                             ],
                           ),

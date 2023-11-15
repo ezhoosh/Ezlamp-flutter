@@ -130,6 +130,7 @@ class _InputDateState extends State<InputDate> {
                   SizedBox(
                     width: double.infinity,
                     child: PrimaryButton(
+                      h: 60,
                       text: AppLocalizations.of(context)!.save,
                       onPress: () {
                         Navigator.pop(context);

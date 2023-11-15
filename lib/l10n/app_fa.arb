@@ -79,7 +79,7 @@
   "connectionType": "نوع اتصال",
   "blue": "بلوتوث",
   "internet": "اینترنت",
-  "logoutDesc": "آیا از حذف کاربر اطمینان دارین؟",
+  "logoutDesc": "آیا از خروج کاربر اطمینان دارین؟",
   "name": "نام",
   "defaultText": "متن پیش فرض",
   "addInternetLamp": "افزودن لامپ اینترنتی",
@@ -119,5 +119,9 @@
   "state3": "سنسور حرکتی",
   "state4": "سنسور نور",
   "lightSetting": "تنظیمات روشنایی",
-  "lightSettingMessage": "لطفا تنظیمات روشنایی را انتخاب کنید"
+  "lightSettingMessage": "لطفا تنظیمات روشنایی را انتخاب کنید",
+  "deleteSchedule": "حذف برنامه ریزی",
+  "editInformation": "ویرایش اطلاعات",
+  "exit": "خروج",
+  "endHour": "ساعت پایان"
 }

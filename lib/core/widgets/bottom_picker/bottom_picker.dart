@@ -640,6 +640,7 @@ class _BottomPickerState extends State<BottomPicker> {
                 ),
                 child: SizedBox(
                   width: double.infinity,
+                  height: 60,
                   child: BottomPickerButton(
                     onClick: () {
                       if (widget.bottomPickerType == BottomPickerType.simple) {
@@ -693,7 +694,6 @@ class _BottomPickerState extends State<BottomPicker> {
               child: Text(
                 widget.title,
                 style: widget.titleStyle,
-                textAlign: TextAlign.end,
               ),
             ),
             Text(

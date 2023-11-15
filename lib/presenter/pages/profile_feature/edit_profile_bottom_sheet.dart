@@ -50,7 +50,7 @@ class EditProfileBottomSheet extends StatelessWidget {
         }
       },
       child: CustomBottomSheet(
-        title: AppLocalizations.of(context)!.editGroupName,
+        title: AppLocalizations.of(context)!.editInformation,
         child: Column(
           children: [
             BorderTextField(
@@ -76,6 +76,7 @@ class EditProfileBottomSheet extends StatelessWidget {
             ),
             SizedBox(
               width: double.infinity,
+              height: 60,
               child: ElevatedButton(
                 onPressed: () {
                   BlocProvider.of<UserBloc>(context).add(UpdateUserEvent(

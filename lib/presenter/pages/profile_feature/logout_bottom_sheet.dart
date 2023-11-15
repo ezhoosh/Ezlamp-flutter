@@ -94,7 +94,7 @@ class LogOutBottomSheet extends StatelessWidget {
                       child: PrimaryButton(
                         onPress: () => BlocProvider.of<AuthBloc>(context)
                             .add(LogOutEvent()),
-                        text: al.delete,
+                        text: al.exit,
                         bg: MyColors.error.shade700,
                       ),
                     ),

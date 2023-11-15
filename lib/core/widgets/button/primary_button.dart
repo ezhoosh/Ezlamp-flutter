@@ -8,6 +8,8 @@ class PrimaryButton extends StatelessWidget {
   String? text;
   VoidCallback? onPress;
   Color bg;
+  Color textColor;
+  double h;
 
   PrimaryButton(
       {Key? key,
@@ -15,13 +17,15 @@ class PrimaryButton extends StatelessWidget {
       this.left,
       this.text,
       this.onPress,
-      this.bg = MyColors.primary})
+      this.bg = MyColors.primary,
+      this.textColor = MyColors.white,
+      this.h = 35})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 35,
+      height: h,
       child: ElevatedButton(
           onPressed: onPress,
           style: ButtonStyle(
@@ -43,7 +47,7 @@ class PrimaryButton extends StatelessWidget {
               ),
               Text(
                 text ?? '',
-                style: Light400Style.normal.copyWith(color: MyColors.white),
+                style: Light400Style.normal.copyWith(color: textColor),
               ),
               const SizedBox(
                 width: MySpaces.s12,

@@ -86,14 +86,17 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
         child: BlocListener<ScheduleBloc, ScheduleState>(
           listener: (BuildContext context, ScheduleState state) {
             if (state.createScheduleListStatus is BaseLoading ||
-                state.putScheduleByIdStatus is BaseLoading) {
+                state.putScheduleByIdStatus is BaseLoading ||
+                state.deleteScheduleByIdStatus is BaseLoading) {
               EasyLoading.show();
             } else if (state.createScheduleListStatus is BaseSuccess ||
-                state.putScheduleByIdStatus is BaseSuccess) {
+                state.putScheduleByIdStatus is BaseSuccess ||
+                state.deleteScheduleByIdStatus is BaseSuccess) {
               EasyLoading.showSuccess("success");
               Navigator.pop(context);
             } else if (state.createScheduleListStatus is BaseError ||
-                state.putScheduleByIdStatus is BaseError) {
+                state.putScheduleByIdStatus is BaseError ||
+                state.deleteScheduleByIdStatus is BaseError) {
               EasyLoading.showError("error");
             }
           },
@@ -105,6 +108,94 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                 onTapRight: () {
                   Navigator.pop(context);
                 },
+                iconLeft: InkWell(
+                  onTap: () {
+                    List<int> lamps = [];
+                    for (var e in groups) {
+                      for (var element in e.lamps) {
+                        lamps.add(element.id);
+                      }
+                    }
+                    if (command == null) {
+                      EasyLoading.showToast(al.lightSettingMessage);
+                      return;
+                    }
+                    command!.lamps = lamps;
+                    if (widget.schedule != null) {
+                      BlocProvider.of<ScheduleBloc>(context).add(
+                        PutScheduleByIdEvent(
+                          UpdateScheduleParams(
+                            id: widget.schedule!.id,
+                            periodicTaskAssigned: PeriodicTaskAssignedParams(
+                                crontab: CrontabModel(
+                                    minute: startDate == null
+                                        ? ''
+                                        : startDate!.minute.toString(),
+                                    hour: startDate == null
+                                        ? ''
+                                        : startDate!.hour.toString(),
+                                    dayOfWeek: '*',
+                                    dayOfMonth: '*',
+                                    monthOfYear: '*')),
+                            periodicTaskOffAssigned: PeriodicTaskAssignedParams(
+                                crontab: CrontabModel(
+                                    minute: endDate == null
+                                        ? ''
+                                        : endDate!.minute.toString(),
+                                    hour: endDate == null
+                                        ? ''
+                                        : endDate!.hour.toString(),
+                                    dayOfWeek: '*',
+                                    dayOfMonth: '*',
+                                    monthOfYear: '*')),
+                            name: _controllerName.text,
+                            command: command!,
+                            groupAssigned: groups.map((e) => e.id).toList(),
+                            enabled: true,
+                          ),
+                        ),
+                      );
+                    } else {
+                      BlocProvider.of<ScheduleBloc>(context).add(
+                        CreateScheduleEvent(
+                          CreateScheduleParams(
+                            periodicTaskAssigned: PeriodicTaskAssignedParams(
+                                crontab: CrontabModel(
+                                    minute: startDate == null
+                                        ? ''
+                                        : startDate!.minute.toString(),
+                                    hour: startDate == null
+                                        ? ''
+                                        : startDate!.hour.toString(),
+                                    dayOfWeek: '*',
+                                    dayOfMonth: '*',
+                                    monthOfYear: '*')),
+                            periodicTaskOffAssigned: PeriodicTaskAssignedParams(
+                                crontab: CrontabModel(
+                                    minute: endDate == null
+                                        ? ''
+                                        : endDate!.minute.toString(),
+                                    hour: endDate == null
+                                        ? ''
+                                        : endDate!.hour.toString(),
+                                    dayOfWeek: '*',
+                                    dayOfMonth: '*',
+                                    monthOfYear: '*')),
+                            name: _controllerName.text,
+                            command: command!,
+                            groupAssigned: groups.map((e) => e.id).toList(),
+                            enabled: true,
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  child: Text(
+                    al.save,
+                    style:
+                        DemiBoldStyle.normal.copyWith(color: MyColors.primary),
+                  ),
+                ),
               ),
               Expanded(
                 child: SingleChildScrollView(
@@ -129,7 +220,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                             child: InputDate(
                               prevDate: startDate,
                               optional: false,
-                              title: al.startDate,
+                              title: al.startHour,
                               onNewDateSelected: (DateTime newDate) {
                                 startDate = newDate;
                               },
@@ -140,7 +231,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                           ),
                           Expanded(
                             child: InputDate(
-                              title: al.finishDate,
+                              title: al.finishHour,
                               prevDate: endDate,
                               optional: false,
                               onNewDateSelected: (DateTime newDate) {
@@ -506,98 +597,24 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                   ),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(
-                  left: MySpaces.s24,
-                  right: MySpaces.s24,
-                  bottom: MySpaces.s12,
-                ),
-                width: double.infinity,
-                child: PrimaryButton(
-                  text: al.save,
-                  onPress: () {
-                    List<int> lamps = [];
-                    for (var e in groups) {
-                      for (var element in e.lamps) {
-                        lamps.add(element.id);
-                      }
-                    }
-                    if (command == null) {
-                      EasyLoading.showToast(al.lightSettingMessage);
-                      return;
-                    }
-                    command!.lamps = lamps;
-                    if (widget.schedule != null) {
-                      BlocProvider.of<ScheduleBloc>(context).add(
-                        PutScheduleByIdEvent(
-                          UpdateScheduleParams(
-                            id: widget.schedule!.id,
-                            periodicTaskAssigned: PeriodicTaskAssignedParams(
-                                crontab: CrontabModel(
-                                    minute: startDate == null
-                                        ? ''
-                                        : startDate!.minute.toString(),
-                                    hour: startDate == null
-                                        ? ''
-                                        : startDate!.hour.toString(),
-                                    dayOfWeek: '*',
-                                    dayOfMonth: '*',
-                                    monthOfYear: '*')),
-                            periodicTaskOffAssigned: PeriodicTaskAssignedParams(
-                                crontab: CrontabModel(
-                                    minute: endDate == null
-                                        ? ''
-                                        : endDate!.minute.toString(),
-                                    hour: endDate == null
-                                        ? ''
-                                        : endDate!.hour.toString(),
-                                    dayOfWeek: '*',
-                                    dayOfMonth: '*',
-                                    monthOfYear: '*')),
-                            name: _controllerName.text,
-                            command: command!,
-                            groupAssigned: groups.map((e) => e.id).toList(),
-                            enabled: true,
-                          ),
-                        ),
-                      );
-                    } else {
-                      BlocProvider.of<ScheduleBloc>(context).add(
-                        CreateScheduleEvent(
-                          CreateScheduleParams(
-                            periodicTaskAssigned: PeriodicTaskAssignedParams(
-                                crontab: CrontabModel(
-                                    minute: startDate == null
-                                        ? ''
-                                        : startDate!.minute.toString(),
-                                    hour: startDate == null
-                                        ? ''
-                                        : startDate!.hour.toString(),
-                                    dayOfWeek: '*',
-                                    dayOfMonth: '*',
-                                    monthOfYear: '*')),
-                            periodicTaskOffAssigned: PeriodicTaskAssignedParams(
-                                crontab: CrontabModel(
-                                    minute: endDate == null
-                                        ? ''
-                                        : endDate!.minute.toString(),
-                                    hour: endDate == null
-                                        ? ''
-                                        : endDate!.hour.toString(),
-                                    dayOfWeek: '*',
-                                    dayOfMonth: '*',
-                                    monthOfYear: '*')),
-                            name: _controllerName.text,
-                            command: command!,
-                            groupAssigned: groups.map((e) => e.id).toList(),
-                            enabled: true,
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              )
+              if (widget.schedule != null)
+                Container(
+                  margin: const EdgeInsets.only(
+                    left: MySpaces.s24,
+                    right: MySpaces.s24,
+                    bottom: MySpaces.s12,
+                  ),
+                  width: double.infinity,
+                  child: PrimaryButton(
+                    text: al.deleteSchedule,
+                    bg: MyColors.secondary,
+                    textColor: MyColors.error.shade700,
+                    onPress: () {
+                      BlocProvider.of<ScheduleBloc>(context)
+                          .add(DeleteScheduleByIdEvent(widget.schedule!.id));
+                    },
+                  ),
+                )
             ],
           ),
         ),

@@ -112,9 +112,9 @@ class _RequestListTabState extends State<RequestListTab> {
                             ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: item.lamps.length,
+                                itemCount: item.lamps?.length,
                                 itemBuilder: (context, index) {
-                                  Lamp lamp = item.lamps[index];
+                                  Lamp lamp = item.lamps![index];
                                   return Row(
                                     children: [
                                       Expanded(
