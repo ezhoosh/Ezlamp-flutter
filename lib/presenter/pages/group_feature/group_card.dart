@@ -86,7 +86,7 @@ class GroupCard extends StatelessWidget {
                       context: context,
                       isScrollControlled: true,
                       builder: (context) {
-                        return CommandBottomSheet(groupId: group.id);
+                        return CommandBottomSheet(groupId: group);
                       });
                 },
               )

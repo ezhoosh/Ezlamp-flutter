@@ -6,6 +6,7 @@ import 'package:easy_lamp/core/params/user_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/core/resource/use_case.dart';
+import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/domain/usecases/get_data_state_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_user_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_user_usecase.dart';
@@ -22,8 +23,12 @@ class StateBloc extends Bloc<StateEvent, StateState> {
   ) : super(
           StateState(
             getDataStateStatus: BaseNoAction(),
+            getChartInformation: BaseNoAction(),
           ),
         ) {
+    on<GetChartInformation>((event, emit) async {
+      emit(state.copyWith(newGetChartInformation: BaseSuccess(event.lamps)));
+    });
     on<GetDataStateEvent>((event, emit) async {
       emit(state.copyWith(newGetDataStateStatus: BaseLoading()));
       DataState dataState = await getUserUseCase(event.params);

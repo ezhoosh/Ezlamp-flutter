@@ -83,22 +83,22 @@ class _InputDateState extends State<InputDate> {
               borderRadius: MyRadius.sm,
               border: Border.all(color: MyColors.black.shade500, width: 1),
               child: Row(children: [
+                Icon(
+                  widget.isDate ? Iconsax.calendar_edit : Iconsax.clock,
+                  size: 24,
+                  color: MyColors.primary,
+                ),
+                const SizedBox(width: MySpaces.s8),
                 Expanded(
                   child: Text(
                     _formatDate(widget.prevDate),
-                    textAlign: TextAlign.start,
+                    textAlign: TextAlign.end,
                     style: widget.prevDate == null
                         ? Light300Style.sm
                             .copyWith(color: MyColors.secondary.shade300)
                         : Light300Style.sm
                             .copyWith(color: MyColors.secondary.shade500),
                   ),
-                ),
-                const SizedBox(width: MySpaces.s8),
-                Icon(
-                  widget.isDate ? Iconsax.calendar : Iconsax.clock,
-                  size: 24,
-                  color: Colors.white,
                 ),
               ])),
         )

@@ -5,6 +5,7 @@ import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_status.dart';
 import 'package:easy_lamp/presenter/pages/blue_feather/blue_app.dart';
 import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
+import 'package:easy_lamp/presenter/pages/splash_feature/connection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
@@ -34,7 +35,7 @@ class _SplashPageState extends State<SplashPage> {
         } else if (state.checkLoginStatus is SplashSuccessWithBlue &&
             (state.checkLoginStatus as SplashSuccessWithBlue).entity) {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => FlutterBlueApp()),
+            MaterialPageRoute(builder: (context) => ConnectionPage()),
           );
         } else if (state.checkLoginStatus is SplashError) {
           Navigator.of(context).pushReplacement(

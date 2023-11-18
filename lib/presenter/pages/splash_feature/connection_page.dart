@@ -5,6 +5,7 @@ import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/data/model/connection_type.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
+import 'package:easy_lamp/presenter/pages/blue_feather/blue_app.dart';
 import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,33 +61,40 @@ class _ConnectionPageState extends State<ConnectionPage> {
                 int current =
                     state.connectionType == ConnectionType.Bluetooth ? 1 : 0;
 
-                return Row(
+                return Column(
                   children: [
-                    getCard(Iconsax.global, al.internet, MyColors.primary, 0,
-                        current),
-                    const SizedBox(
-                      width: 10,
+                    Row(
+                      children: [
+                        getCard(Iconsax.global, al.internet, MyColors.primary,
+                            0, current),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        getCard(Iconsax.bluetooth, al.blue, MyColors.info, 1,
+                            current),
+                      ],
                     ),
-                    getCard(
-                        Iconsax.bluetooth, al.blue, MyColors.info, 1, current),
+                    const SizedBox(
+                      height: MySpaces.s40,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: PrimaryButton(
+                        onPress: () {
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => current == 1
+                                      ? const FlutterBlueApp()
+                                      : const HomePage()),
+                              ModalRoute.withName("/"));
+                        },
+                        text: al.login,
+                      ),
+                    )
                   ],
                 );
               },
             ),
-            const SizedBox(
-              height: MySpaces.s40,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: PrimaryButton(
-                onPress: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                      ModalRoute.withName("/"));
-                },
-                text: al.login,
-              ),
-            )
           ],
         ),
       ),

@@ -8,7 +8,10 @@ import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
+import 'package:easy_lamp/data/model/group_lamp_model.dart';
+import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/add_member_group_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +23,8 @@ import 'package:flutter_seekbar/flutter_seekbar.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CommandBottomSheet extends StatefulWidget {
-  List<int>? lampIds;
-  int? groupId;
+  List<LampModel>? lampIds;
+  GroupModel? groupId;
 
   CommandBottomSheet({super.key, this.lampIds, this.groupId});
 
@@ -236,12 +239,17 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
               if (widget.groupId != null)
                 getButton(al.lampList, 'assets/icons/lamp_on.svg', onTab: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => LampPage(widget.groupId ?? 0)));
+                      builder: (context) => LampPage(widget.groupId?.id ?? 0)));
                 }),
               const SizedBox(
                 width: 20,
               ),
-              getButton(al.informationData, 'assets/icons/favorite_chart.svg'),
+              getButton(al.informationData, 'assets/icons/favorite_chart.svg',
+                  onTab: () {
+                BlocProvider.of<StateBloc>(context)
+                    .add(GetChartInformation(widget.groupId!.lamps));
+                Navigator.pop(context);
+              }),
             ],
           ),
           const SizedBox(
@@ -254,7 +262,7 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
               onPress: () {
                 BlocProvider.of<CommandBloc>(context)
                     .add(SendCommandEvent(CommandParams(
-                  lamps: widget.lampIds,
+                  lamps: widget.lampIds?.map((e) => e.id).toList(),
                   w: isColor ? 0 : w.toInt(),
                   y: isColor ? 0 : y.toInt(),
                   r: !isColor ? 0 : rgb!.red,
@@ -263,7 +271,7 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
                   c: c.toInt(),
                   pir: true,
                   type: 'apply',
-                  gid: widget.groupId,
+                  gid: widget.groupId?.id,
                 )));
               },
             ),

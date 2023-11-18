@@ -7,3 +7,9 @@ class GetDataStateEvent extends StateEvent {
 
   GetDataStateEvent(this.params);
 }
+
+class GetChartInformation extends StateEvent {
+  List<LampModel> lamps;
+
+  GetChartInformation(this.lamps);
+}

@@ -1,5 +1,7 @@
+import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/data/repositories/isar_group_repository.dart';
 import 'package:easy_lamp/locator.dart';
+import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/group_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/profile_page.dart';
 import 'package:easy_lamp/presenter/pages/schedule_feature/schedule_page.dart';
@@ -7,6 +9,7 @@ import 'package:easy_lamp/presenter/pages/state_feature/state_page.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/widgets/dot_navigation/dot_navigation_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,14 +32,28 @@ class _HomePageState extends State<HomePage> {
     // double w = MediaQuery.of(context).size.width;
     // double h = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: PageView(
-        controller: controller,
-        children: const [
-          ProfilePage(),
-          GroupPage(),
-          StatePage(),
-          SchedulePage(),
-        ],
+      body: BlocListener<StateBloc, StateState>(
+        listener: (context, state) {
+          if (state.getChartInformation is BaseSuccess) {
+            setState(() {
+              currentPage = 2;
+            });
+            controller.animateToPage(
+              2,
+              duration: const Duration(microseconds: 500),
+              curve: Curves.easeIn,
+            );
+          }
+        },
+        child: PageView(
+          controller: controller,
+          children: const [
+            ProfilePage(),
+            GroupPage(),
+            StatePage(),
+            SchedulePage(),
+          ],
+        ),
       ),
       backgroundColor: MyColors.black,
       bottomNavigationBar: DotNavigationBar(
