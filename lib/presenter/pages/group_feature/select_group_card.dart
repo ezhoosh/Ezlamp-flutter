@@ -39,11 +39,13 @@ class SelectGroupCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(
-                group.name,
-                style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
+              Expanded(
+                child: Text(
+                  group.name,
+                  style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
+                  maxLines: 1,
+                ),
               ),
-              const Spacer(),
               if (select)
                 const Icon(
                   Iconsax.tick_circle,

@@ -15,7 +15,7 @@ class LampRepositoryImpl extends LampRepository {
   Future<DataState<String>> deleteLamp(int params) async {
     try {
       var response = await ApiAccess.makeHttpRequest(
-        "lamps/{${params.toString()}}",
+        "lamps/${params.toString()}/",
         method: "DELETE",
       );
       if (response.statusCode == 204) {
@@ -31,7 +31,7 @@ class LampRepositoryImpl extends LampRepository {
   @override
   Future<DataState<LampModel>> getLampById(int id) async {
     try {
-      var response = await ApiAccess.makeHttpRequest("lamps/{${id.toString()}}",
+      var response = await ApiAccess.makeHttpRequest("lamps/${id.toString()}/",
           method: 'GET');
       if (response.statusCode == 200) {
         return DataSuccess<LampModel>(LampModel.fromJson(response.data));

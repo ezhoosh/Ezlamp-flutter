@@ -58,7 +58,7 @@ class LampBloc extends Bloc<LampEvent, LampState> {
       ConnectionType type = await readConnectionUseCase(NoParams());
       if (type == ConnectionType.Bluetooth) {
         List<LampModel> lamps = Converter.isarLampToLampModel(
-            await isarLampRepository.getByGroupId(event.params.groupId??0));
+            await isarLampRepository.getByGroupId(event.params.groupId ?? 0));
         emit(state.copyWith(newGetLampListStatus: BaseSuccess(lamps)));
       } else {
         DataState dataState = await getLampListUseCase(event.params);
@@ -108,7 +108,8 @@ class LampBloc extends Bloc<LampEvent, LampState> {
       if (dataState is DataSuccess) {
         emit(state.copyWith(
             newUpdateLampOwnerStatus: BaseSuccess(dataState.data)));
-        add(GetLampListEvent(GetLampListParams()));
+        add(GetLampListEvent(
+            GetLampListParams(groupId: event.params.groupLamp)));
       } else {
         emit(state.copyWith(
             newUpdateLampOwnerStatus: BaseError(dataState.error)));

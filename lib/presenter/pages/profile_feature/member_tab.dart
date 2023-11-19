@@ -60,25 +60,27 @@ class MemberTab extends StatelessWidget {
                         const SizedBox(
                           width: MySpaces.s12,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              item.message,
-                              style: DemiBoldStyle.lg
-                                  .copyWith(color: MyColors.white),
-                            ),
-                            const SizedBox(
-                              height: MySpaces.s4,
-                            ),
-                            Text(
-                              item.phoneNumber,
-                              style: DemiBoldStyle.sm
-                                  .copyWith(color: MyColors.black.shade100),
-                            ),
-                          ],
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                item.message,
+                                style: DemiBoldStyle.lg
+                                    .copyWith(color: MyColors.white),
+                                maxLines: 2,
+                              ),
+                              const SizedBox(
+                                height: MySpaces.s4,
+                              ),
+                              Text(
+                                item.phoneNumber,
+                                style: DemiBoldStyle.sm
+                                    .copyWith(color: MyColors.black.shade100),
+                              ),
+                            ],
+                          ),
                         ),
-                        const Spacer(),
                         ClickableContainer(
                           onTap: () {
                             BlocProvider.of<InvitationBloc>(context)

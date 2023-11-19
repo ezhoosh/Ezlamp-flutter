@@ -50,6 +50,7 @@ class _AddMemberGroupBottomSheetState extends State<AddMemberGroupBottomSheet> {
       listener: (context, state) {
         if (state.createInvitationStatus is BaseSuccess) {
           EasyLoading.showSuccess("SUCCESS");
+          Navigator.pop(context);
         } else if (state.createInvitationStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.createInvitationStatus is BaseError) {
@@ -62,7 +63,7 @@ class _AddMemberGroupBottomSheetState extends State<AddMemberGroupBottomSheet> {
           children: [
             InputPhone(
               title: al.phone,
-              hint: "000 000",
+              hint: "9123456789",
               textEditingController: _controllerPhone,
               isOptional: false,
             ),

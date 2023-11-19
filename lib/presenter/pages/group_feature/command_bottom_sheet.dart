@@ -17,10 +17,12 @@ import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_seekbar/flutter_seekbar.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:iconsax/iconsax.dart';
 
 class CommandBottomSheet extends StatefulWidget {
   List<LampModel>? lampIds;
@@ -34,11 +36,12 @@ class CommandBottomSheet extends StatefulWidget {
 
 class _CommandBottomSheetState extends State<CommandBottomSheet> {
   late AppLocalizations al;
-  Color? rgb;
+  Color rgb = Colors.white;
   double c = 0;
   double y = 0;
   double w = 0;
   double v = 0;
+  double s = 100;
   bool isColor = true;
 
   @override
@@ -56,7 +59,7 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
               ),
               const Spacer(),
               Text(
-                '${c.toInt()}',
+                '${s.toInt()}%',
                 style: Light300Style.sm.copyWith(color: MyColors.secondary),
               ),
             ],
@@ -78,15 +81,15 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
                 activeTickMarkColor: Colors.white,
                 thumbColor: Colors.white),
             child: Slider(
-              value: c,
+              value: s,
               onChanged: (newValue) {
                 setState(() {
-                  c = newValue;
+                  s = newValue;
                 });
               },
               min: 0.0,
               // Minimum value
-              max: 20.0,
+              max: 100.0,
               // Maximum value
               divisions: 100,
               // Number of divisions
@@ -94,51 +97,6 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
           ),
           const SizedBox(
             height: MySpaces.s12,
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              AppLocalizations.of(context)!.coloring,
-              style: Light300Style.sm.copyWith(color: MyColors.secondary),
-            ),
-          ),
-          const SizedBox(
-            height: MySpaces.s8,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Opacity(
-              opacity: isColor ? 1 : 0.5,
-              child: HuePicker(
-                initialColor: HSVColor.fromColor(rgb ?? Colors.white),
-                onChanged: (color) {
-                  setState(() {
-                    isColor = true;
-                    rgb = color;
-                  });
-                  print(color.value);
-                },
-                thumbShape: HueSliderThumbShape(
-                  color: Colors.white,
-                  borderColor: Colors.white.withOpacity(0.3),
-                  filled: true,
-                  showBorder: true,
-                  borderWidth: 3,
-                ),
-                trackHeight: 6,
-                hueColors: const [
-                  Colors.red,
-                  Colors.blue,
-                  Colors.yellow,
-                  Colors.green,
-                  Colors.pink,
-                  Colors.orange,
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: MySpaces.s32,
           ),
           Align(
             alignment: Alignment.centerRight,
@@ -192,6 +150,56 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
               ),
             ),
           ),
+          const SizedBox(
+            height: MySpaces.s8,
+          ),
+          Row(
+            children: [
+              Text(
+                AppLocalizations.of(context)!.speedLight,
+                style: Light300Style.sm.copyWith(color: MyColors.secondary),
+              ),
+              const Spacer(),
+              Text(
+                '${c.toInt()}',
+                style: Light300Style.sm.copyWith(color: MyColors.secondary),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: MySpaces.s8,
+          ),
+          SliderTheme(
+            data: SliderThemeData(
+                trackHeight: 6.0,
+                // Adjust the track height here
+                thumbShape: const RoundSliderThumbShape(
+                  enabledThumbRadius: 8.0,
+                ),
+                activeTrackColor: Colors.white,
+                overlayShape: SliderComponentShape.noOverlay,
+                inactiveTrackColor: MyColors.black.shade300,
+                disabledThumbColor: MyColors.white,
+                activeTickMarkColor: Colors.white,
+                thumbColor: Colors.white),
+            child: Slider(
+              value: c,
+              onChanged: (newValue) {
+                setState(() {
+                  c = newValue;
+                });
+              },
+              min: 0.0,
+              // Minimum value
+              max: 20.0,
+              // Maximum value
+              divisions: 100,
+              // Number of divisions
+            ),
+          ),
+          const SizedBox(
+            height: MySpaces.s12,
+          ),
           Divider(
             color: MyColors.secondary.shade800,
             height: MySpaces.s40,
@@ -234,6 +242,70 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
             color: MyColors.secondary.shade800,
             height: MySpaces.s40,
           ),
+          getCard(
+            al.selectColor,
+            Iconsax.color_swatch,
+            left: Container(
+              width: 20,
+              height: 20,
+              decoration: BoxDecoration(
+                color: rgb,
+                shape: BoxShape.circle,
+              ),
+            ),
+            () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    Color currentColor = Colors.white;
+                    return AlertDialog(
+                      title: Text(al.selectColor),
+                      content: SingleChildScrollView(
+                        child: ColorPicker(
+                          pickerColor: rgb,
+                          onColorChanged: (c) {
+                            currentColor = c;
+                          },
+                        ),
+                        // Use Material color picker:
+                        //
+                        // child: MaterialPicker(
+                        //   pickerColor: pickerColor,
+                        //   onColorChanged: changeColor,
+                        //   showLabel: true, // only on portrait mode
+                        // ),
+                        //
+                        // Use Block color picker:
+                        //
+                        // child: BlockPicker(
+                        //   pickerColor: currentColor,
+                        //   onColorChanged: changeColor,
+                        // ),
+                        //
+                        // child: MultipleChoiceBlockPicker(
+                        //   pickerColors: currentColors,
+                        //   onColorsChanged: changeColors,
+                        // ),
+                      ),
+                      actions: <Widget>[
+                        SizedBox(
+                          width: double.infinity,
+                          child: PrimaryButton(
+                            text: al.done,
+                            onPress: () {
+                              setState(() => rgb = currentColor);
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ),
+                      ],
+                    );
+                  });
+            },
+          ),
+          const SizedBox(
+            height: MySpaces.s16,
+          ),
           Row(
             children: [
               if (widget.groupId != null)
@@ -268,6 +340,7 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
                   r: !isColor ? 0 : rgb!.red,
                   g: !isColor ? 0 : rgb!.green,
                   b: !isColor ? 0 : rgb!.blue,
+                  s: s.toInt(),
                   c: c.toInt(),
                   pir: true,
                   type: 'apply',
@@ -305,5 +378,37 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
         ],
       ),
     ));
+  }
+
+  getCard(String text, IconData icon, Function()? onTab, {Widget? left}) {
+    return ClickableContainer(
+      onTap: onTab,
+      margin: const EdgeInsets.only(top: MySpaces.s24),
+      width: double.infinity,
+      color: MyColors.black.shade400,
+      borderRadius: MyRadius.sm,
+      padding: const EdgeInsets.symmetric(
+        horizontal: MySpaces.s12,
+        vertical: MySpaces.s16,
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 25,
+            color: MyColors.white,
+          ),
+          const SizedBox(
+            width: MySpaces.s4,
+          ),
+          Text(
+            text,
+            style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
+          ),
+          const Spacer(),
+          left ?? ArrowList(),
+        ],
+      ),
+    );
   }
 }

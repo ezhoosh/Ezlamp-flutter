@@ -56,7 +56,7 @@ class AddMemberLampBottomSheet extends StatelessWidget {
           children: [
             InputPhone(
               title: al.phone,
-              hint: "000 000",
+              hint: "9123456789",
               textEditingController: _controllerPhone,
               isOptional: false,
             ),

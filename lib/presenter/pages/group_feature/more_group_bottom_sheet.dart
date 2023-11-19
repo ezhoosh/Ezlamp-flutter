@@ -5,6 +5,7 @@ import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
+import 'package:easy_lamp/presenter/pages/group_feature/delete_group_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/edit_group_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
@@ -35,7 +36,9 @@ class MoreGroupBottomSheet extends StatelessWidget {
       },
       listener: (context, state) {
         if (state.deleteGroupStatus is BaseSuccess) {
+          Navigator.pop(context);
           EasyLoading.showSuccess("SUCCESS");
+          Navigator.pop(context);
         } else if (state.deleteGroupStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.deleteGroupStatus is BaseError) {
@@ -97,8 +100,17 @@ class MoreGroupBottomSheet extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        BlocProvider.of<GroupBloc>(context)
-                            .add(DeleteGroupEvent(groupId));
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(24),
+                              topRight: Radius.circular(24),
+                            )),
+                            context: context,
+                            builder: (context) {
+                              return DeleteGroupBottomSheet(groupId);
+                            });
                       },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,

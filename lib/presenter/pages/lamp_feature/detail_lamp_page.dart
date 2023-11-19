@@ -6,6 +6,7 @@ import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/arrow_back.dart';
 import 'package:easy_lamp/core/widgets/arrow_list.dart';
+import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
@@ -18,6 +19,7 @@ import 'package:easy_lamp/presenter/pages/lamp_feature/add_member_lamp_bottom_sh
 import 'package:easy_lamp/presenter/pages/lamp_feature/more_lamp_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -36,11 +38,12 @@ class DetailLampPage extends StatefulWidget {
 
 class _DetailLampPageState extends State<DetailLampPage> {
   late AppLocalizations al;
-  Color? rgb;
+  Color rgb = Colors.white;
   double c = 0;
   double y = 0;
   double w = 0;
   double v = 0;
+  double s = 100;
   bool isColor = true;
 
   @override
@@ -79,11 +82,14 @@ class _DetailLampPageState extends State<DetailLampPage> {
                       onTapRight: () {
                         Navigator.pop(context);
                       },
-                      iconRight: ArrowBack(),
-                      iconLeft: Text(
-                        al.save,
-                        style: Light400Style.normal
-                            .copyWith(color: MyColors.primary),
+                      iconRight: const ArrowBack(),
+                      iconLeft: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          al.save,
+                          style: Light400Style.normal
+                              .copyWith(color: MyColors.primary),
+                        ),
                       ),
                       onTapLeft: () {
                         BlocProvider.of<CommandBloc>(context).add(
@@ -98,6 +104,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
                               b: !isColor ? 0 : (rgb == null ? 0 : rgb!.blue),
                               c: c.toInt(),
                               pir: true,
+                              s: s.toInt(),
                               type: 'apply',
                             ),
                           ),
@@ -112,18 +119,18 @@ class _DetailLampPageState extends State<DetailLampPage> {
                           const SizedBox(
                             height: MySpaces.s24,
                           ),
-                          if (widget.lamps.length == 1)
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                  color: MyColors.black.shade500,
-                                  borderRadius: MyRadius.base),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: MySpaces.s12,
-                                vertical: MySpaces.s16,
-                              ),
-                              child: Column(
-                                children: [
+                          Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: MyColors.black.shade500,
+                                borderRadius: MyRadius.base),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: MySpaces.s12,
+                              vertical: MySpaces.s16,
+                            ),
+                            child: Column(
+                              children: [
+                                if (widget.lamps.length == 1)
                                   Row(
                                     children: [
                                       IconButton(
@@ -159,75 +166,59 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                       ),
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: MySpaces.s12,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: SecondaryButton(
-                                          onPress: () {
-                                            BlocProvider.of<CommandBloc>(
-                                                    context)
-                                                .add(SendCommandEvent(
-                                                    CommandParams(
-                                                        blueLampId: widget
-                                                            .lamps.first.id,
-                                                        w: 0,
-                                                        y: 0,
-                                                        r: 0,
-                                                        g: 0,
-                                                        b: 0,
-                                                        c: 0,
-                                                        pir: true,
-                                                        type: 'apply',
-                                                        lamps: widget.lamps
-                                                            .map((e) => e.id)
-                                                            .toList())));
-                                          },
-                                          text: al.off,
-                                          right: const Icon(
-                                            Icons.power_settings_new_outlined,
-                                            color: MyColors.white,
-                                          ),
+                                const SizedBox(
+                                  height: MySpaces.s12,
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      child: SecondaryButton(
+                                        onPress: () {
+                                          BlocProvider.of<CommandBloc>(context)
+                                              .add(SendCommandEvent(
+                                                  CommandParams(
+                                                      blueLampId:
+                                                          widget.lamps.first.id,
+                                                      isOn: false,
+                                                      lamps: widget.lamps
+                                                          .map((e) => e.id)
+                                                          .toList())));
+                                        },
+                                        text: al.off,
+                                        right: const Icon(
+                                          Icons.power_settings_new_outlined,
+                                          color: MyColors.white,
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width: MySpaces.s8,
-                                      ),
-                                      Expanded(
-                                        child: SecondaryButton(
-                                          onPress: () {
-                                            BlocProvider.of<CommandBloc>(
-                                                    context)
-                                                .add(SendCommandEvent(
-                                                    CommandParams(
-                                                        blueLampId: widget
-                                                            .lamps.first.id,
-                                                        w: 100,
-                                                        y: 50,
-                                                        r: 0,
-                                                        g: 0,
-                                                        b: 0,
-                                                        c: 0,
-                                                        pir: true,
-                                                        type: 'apply',
-                                                        lamps: widget.lamps
-                                                            .map((e) => e.id)
-                                                            .toList())));
-                                          },
-                                          text: al.on,
-                                          right: const Icon(
-                                            Icons.power_settings_new_outlined,
-                                            color: MyColors.white,
-                                          ),
+                                    ),
+                                    const SizedBox(
+                                      width: MySpaces.s8,
+                                    ),
+                                    Expanded(
+                                      child: SecondaryButton(
+                                        onPress: () {
+                                          BlocProvider.of<CommandBloc>(context)
+                                              .add(SendCommandEvent(
+                                                  CommandParams(
+                                                      blueLampId:
+                                                          widget.lamps.first.id,
+                                                      isOn: true,
+                                                      lamps: widget.lamps
+                                                          .map((e) => e.id)
+                                                          .toList())));
+                                        },
+                                        text: al.on,
+                                        right: const Icon(
+                                          Icons.power_settings_new_outlined,
+                                          color: MyColors.white,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
+                          ),
                           const SizedBox(
                             height: MySpaces.s32,
                           ),
@@ -251,7 +242,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                     ),
                                     const Spacer(),
                                     Text(
-                                      '${c.toInt()}',
+                                      '${s.toInt()}%',
                                       style: Light300Style.sm
                                           .copyWith(color: MyColors.secondary),
                                     ),
@@ -276,15 +267,15 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                       activeTickMarkColor: Colors.white,
                                       thumbColor: Colors.white),
                                   child: Slider(
-                                    value: c,
+                                    value: s,
                                     onChanged: (newValue) {
                                       setState(() {
-                                        c = newValue;
+                                        s = newValue;
                                       });
                                     },
                                     min: 0.0,
                                     // Minimum value
-                                    max: 20.0,
+                                    max: 100.0,
                                     // Maximum value
                                     divisions: 100,
                                     // Number of divisions
@@ -297,51 +288,6 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                   alignment: Alignment.centerRight,
                                   child: Text(
                                     AppLocalizations.of(context)!.coloring,
-                                    style: Light300Style.sm
-                                        .copyWith(color: MyColors.secondary),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: MySpaces.s8,
-                                ),
-                                Opacity(
-                                  opacity: isColor ? 1 : 0.5,
-                                  child: HuePicker(
-                                    initialColor:
-                                        HSVColor.fromColor(rgb ?? Colors.white),
-                                    onChanged: (color) {
-                                      setState(() {
-                                        isColor = true;
-                                        rgb = color;
-                                      });
-                                    },
-                                    trackHeight: 6,
-                                    thumbShape: HueSliderThumbShape(
-                                      color: Colors.white,
-                                      borderColor:
-                                          Colors.white.withOpacity(0.3),
-                                      filled: true,
-                                      showBorder: true,
-                                      borderWidth: 3,
-                                    ),
-                                    hueColors: const [
-                                      Colors.red,
-                                      Colors.blue,
-                                      Colors.yellow,
-                                      Colors.green,
-                                      Colors.pink,
-                                      Colors.orange,
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: MySpaces.s32,
-                                ),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: Text(
-                                    AppLocalizations.of(context)!
-                                        .yellowAndWhite,
                                     style: Light300Style.sm
                                         .copyWith(color: MyColors.secondary),
                                   ),
@@ -393,8 +339,121 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                     ),
                                   ),
                                 ),
+                                const SizedBox(
+                                  height: MySpaces.s12,
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      AppLocalizations.of(context)!.speedLight,
+                                      style: Light300Style.sm
+                                          .copyWith(color: MyColors.secondary),
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      '${c.toInt()}',
+                                      style: Light300Style.sm
+                                          .copyWith(color: MyColors.secondary),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: MySpaces.s8,
+                                ),
+                                SliderTheme(
+                                  data: SliderThemeData(
+                                      trackHeight: 6.0,
+                                      // Adjust the track height here
+                                      thumbShape: const RoundSliderThumbShape(
+                                        enabledThumbRadius: 8.0,
+                                      ),
+                                      activeTrackColor: Colors.white,
+                                      overlayShape:
+                                          SliderComponentShape.noOverlay,
+                                      inactiveTrackColor:
+                                          MyColors.black.shade300,
+                                      disabledThumbColor: MyColors.white,
+                                      activeTickMarkColor: Colors.white,
+                                      thumbColor: Colors.white),
+                                  child: Slider(
+                                    value: c,
+                                    onChanged: (newValue) {
+                                      setState(() {
+                                        c = newValue;
+                                      });
+                                    },
+                                    min: 0.0,
+                                    // Minimum value
+                                    max: 20.0,
+                                    // Maximum value
+                                    divisions: 100,
+                                    // Number of divisions
+                                  ),
+                                ),
                               ],
                             ),
+                          ),
+                          getCard(
+                            al.selectColor,
+                            Iconsax.color_swatch,
+                            left: Container(
+                              width: 20,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                color: rgb,
+                                shape: BoxShape.circle,
+                              ),
+                            ),
+                            () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    Color currentColor = Colors.white;
+                                    return AlertDialog(
+                                      title: Text(al.selectColor),
+                                      content: SingleChildScrollView(
+                                        child: ColorPicker(
+                                          pickerColor: rgb,
+                                          onColorChanged: (c) {
+                                            currentColor = c;
+                                          },
+                                        ),
+                                        // Use Material color picker:
+                                        //
+                                        // child: MaterialPicker(
+                                        //   pickerColor: pickerColor,
+                                        //   onColorChanged: changeColor,
+                                        //   showLabel: true, // only on portrait mode
+                                        // ),
+                                        //
+                                        // Use Block color picker:
+                                        //
+                                        // child: BlockPicker(
+                                        //   pickerColor: currentColor,
+                                        //   onColorChanged: changeColor,
+                                        // ),
+                                        //
+                                        // child: MultipleChoiceBlockPicker(
+                                        //   pickerColors: currentColors,
+                                        //   onColorsChanged: changeColors,
+                                        // ),
+                                      ),
+                                      actions: <Widget>[
+                                        SizedBox(
+                                          width: double.infinity,
+                                          child: PrimaryButton(
+                                            text: al.done,
+                                            onPress: () {
+                                              setState(
+                                                  () => rgb = currentColor);
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                            },
                           ),
                           getCard(
                             al.addMember,
@@ -434,7 +493,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
     );
   }
 
-  getCard(String text, IconData icon, Function()? onTab) {
+  getCard(String text, IconData icon, Function()? onTab, {Widget? left}) {
     return ClickableContainer(
       onTap: onTab,
       margin: const EdgeInsets.only(top: MySpaces.s24),
@@ -476,7 +535,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
             style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
           ),
           const Spacer(),
-          ArrowList(),
+          left ?? ArrowList(),
         ],
       ),
     );

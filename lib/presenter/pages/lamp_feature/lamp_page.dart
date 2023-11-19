@@ -40,6 +40,7 @@ class _LampPageState extends State<LampPage> {
   }
 
   late AppLocalizations al;
+  bool isEmpty = false;
 
   @override
   Widget build(BuildContext context) {
@@ -60,19 +61,20 @@ class _LampPageState extends State<LampPage> {
                     onTapRight: () {
                       Navigator.pop(context);
                     },
-                    iconRight:
-                        ArrowBack(),
-                    iconLeft: Container(
-                      decoration: BoxDecoration(
-                          color: MyColors.black.shade500,
-                          borderRadius: MyRadius.xs),
-                      padding: const EdgeInsets.all(6),
-                      child: Text(
-                        isSelect ? al.unselectButton : al.selectButton,
-                        style: Light400Style.sm
-                            .copyWith(color: MyColors.primary),
-                      ),
-                    ),
+                    iconRight: const ArrowBack(),
+                    iconLeft: isEmpty
+                        ? null
+                        : Container(
+                            decoration: BoxDecoration(
+                                color: MyColors.black.shade500,
+                                borderRadius: MyRadius.xs),
+                            padding: const EdgeInsets.all(6),
+                            child: Text(
+                              isSelect ? al.unselectButton : al.selectButton,
+                              style: Light400Style.sm
+                                  .copyWith(color: MyColors.primary),
+                            ),
+                          ),
                     onTapLeft: () {
                       setState(() {
                         isSelect = !isSelect;
@@ -82,7 +84,7 @@ class _LampPageState extends State<LampPage> {
                   const SizedBox(
                     height: MySpaces.s24,
                   ),
-                  BlocBuilder<LampBloc, LampState>(
+                  BlocConsumer<LampBloc, LampState>(
                     // buildWhen: (prev, curr) {
                     //   if (prev.getLampListStatus is BaseSuccess &&
                     //       curr.getLampListStatus is BaseNoAction) {
@@ -108,8 +110,7 @@ class _LampPageState extends State<LampPage> {
                             ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              padding:
-                                  const EdgeInsets.only(top: MySpaces.s32),
+                              padding: const EdgeInsets.only(top: MySpaces.s32),
                               itemBuilder: (context, index) {
                                 LampModel lamp = lamps[index];
                                 return LampCard(lamp, isSelect,
@@ -139,8 +140,8 @@ class _LampPageState extends State<LampPage> {
                           ],
                         );
                       } else if (state.getLampListStatus is BaseLoading) {
-                        return Expanded(
-                          child: const Center(
+                        return const Expanded(
+                          child: Center(
                             child: CircularProgressIndicator(
                               color: MyColors.primary,
                             ),
@@ -152,6 +153,15 @@ class _LampPageState extends State<LampPage> {
                         );
                       }
                       return const SizedBox();
+                    },
+                    listener: (BuildContext context, LampState state) {
+                      if (state.getLampListStatus is BaseSuccess) {
+                        List<LampModel> lamps =
+                            (state.getLampListStatus as BaseSuccess).entity;
+                        setState(() {
+                          isEmpty = lamps.isEmpty;
+                        });
+                      }
                     },
                   ),
                   const SizedBox(

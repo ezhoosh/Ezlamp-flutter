@@ -119,7 +119,7 @@ class InputPhone extends StatelessWidget {
               const SizedBox(
                 width: MySpaces.s6,
               ),
-              Text('+98',
+              Text('98+',
                   style: Light400Style.sm
                       .copyWith(color: MyColors.secondary.shade800)),
               const SizedBox(

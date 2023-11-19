@@ -4,6 +4,7 @@ import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/arrow_back.dart';
+import 'package:easy_lamp/core/widgets/arrow_list.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
 import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
@@ -23,6 +24,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -276,7 +278,8 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                 double y = 0;
                                 double w = 0;
                                 double v = 0;
-                                Color? rgb;
+                                double s = 100;
+                                Color rgb = Colors.white;
                                 bool isColor = true;
                                 return CustomBottomSheet(
                                   title: al.lightSetting,
@@ -284,6 +287,25 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                       builder: (context, setState) {
                                     return Column(
                                       children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              AppLocalizations.of(context)!
+                                                  .contrast,
+                                              style: Light300Style.sm.copyWith(
+                                                  color: MyColors.secondary),
+                                            ),
+                                            const Spacer(),
+                                            Text(
+                                              '${s.toInt()}%',
+                                              style: Light300Style.sm.copyWith(
+                                                  color: MyColors.secondary),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: MySpaces.s8,
+                                        ),
                                         SliderTheme(
                                           data: SliderThemeData(
                                               trackHeight: 6.0,
@@ -302,72 +324,22 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                               activeTickMarkColor: Colors.white,
                                               thumbColor: Colors.white),
                                           child: Slider(
-                                            value: c,
+                                            value: s,
                                             onChanged: (newValue) {
                                               setState(() {
-                                                c = newValue;
+                                                s = newValue;
                                               });
                                             },
                                             min: 0.0,
                                             // Minimum value
-                                            max: 20.0,
+                                            max: 100.0,
                                             // Maximum value
                                             divisions: 100,
                                             // Number of divisions
                                           ),
                                         ),
                                         const SizedBox(
-                                          height: MySpaces.s12,
-                                        ),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: Text(
-                                            AppLocalizations.of(context)!
-                                                .coloring,
-                                            style: Light300Style.sm.copyWith(
-                                                color: MyColors.secondary),
-                                          ),
-                                        ),
-                                        const SizedBox(
                                           height: MySpaces.s8,
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0),
-                                          child: Opacity(
-                                            opacity: isColor ? 1 : 0.5,
-                                            child: HuePicker(
-                                              initialColor: HSVColor.fromColor(
-                                                  rgb ?? Colors.white),
-                                              onChanged: (color) {
-                                                setState(() {
-                                                  isColor = true;
-                                                  rgb = color;
-                                                });
-                                                print(color.value);
-                                              },
-                                              thumbShape: HueSliderThumbShape(
-                                                color: Colors.white,
-                                                borderColor: Colors.white
-                                                    .withOpacity(0.3),
-                                                filled: true,
-                                                showBorder: true,
-                                                borderWidth: 3,
-                                              ),
-                                              trackHeight: 6,
-                                              hueColors: const [
-                                                Colors.red,
-                                                Colors.blue,
-                                                Colors.yellow,
-                                                Colors.green,
-                                                Colors.pink,
-                                                Colors.orange,
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: MySpaces.s32,
                                         ),
                                         Align(
                                           alignment: Alignment.centerRight,
@@ -428,6 +400,130 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                               ),
                                             ),
                                           ),
+                                        ),
+                                        const SizedBox(
+                                          height: MySpaces.s12,
+                                        ),
+
+                                        Row(
+                                          children: [
+                                            Text(
+                                              AppLocalizations.of(context)!
+                                                  .speedLight,
+                                              style: Light300Style.sm.copyWith(
+                                                  color: MyColors.secondary),
+                                            ),
+                                            const Spacer(),
+                                            Text(
+                                              '${c.toInt()}',
+                                              style: Light300Style.sm.copyWith(
+                                                  color: MyColors.secondary),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: MySpaces.s8,
+                                        ),
+                                        SliderTheme(
+                                          data: SliderThemeData(
+                                              trackHeight: 6.0,
+                                              // Adjust the track height here
+                                              thumbShape:
+                                              const RoundSliderThumbShape(
+                                                enabledThumbRadius: 8.0,
+                                              ),
+                                              activeTrackColor: Colors.white,
+                                              overlayShape: SliderComponentShape
+                                                  .noOverlay,
+                                              inactiveTrackColor:
+                                              MyColors.black.shade300,
+                                              disabledThumbColor:
+                                              MyColors.white,
+                                              activeTickMarkColor: Colors.white,
+                                              thumbColor: Colors.white),
+                                          child: Slider(
+                                            value: c,
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                c = newValue;
+                                              });
+                                            },
+                                            min: 0.0,
+                                            // Minimum value
+                                            max: 20.0,
+                                            // Maximum value
+                                            divisions: 100,
+                                            // Number of divisions
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: MySpaces.s12,
+                                        ),
+                                        getCard(
+                                          al.selectColor,
+                                          Iconsax.color_swatch,
+                                          left: Container(
+                                            width: 20,
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                              color: rgb,
+                                              shape: BoxShape.circle,
+                                            ),
+                                          ),
+                                          () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  Color currentColor =
+                                                      Colors.white;
+                                                  return AlertDialog(
+                                                    title: Text(al.selectColor),
+                                                    content:
+                                                        SingleChildScrollView(
+                                                      child: ColorPicker(
+                                                        pickerColor: rgb,
+                                                        onColorChanged: (c) {
+                                                          currentColor = c;
+                                                        },
+                                                      ),
+                                                      // Use Material color picker:
+                                                      //
+                                                      // child: MaterialPicker(
+                                                      //   pickerColor: pickerColor,
+                                                      //   onColorChanged: changeColor,
+                                                      //   showLabel: true, // only on portrait mode
+                                                      // ),
+                                                      //
+                                                      // Use Block color picker:
+                                                      //
+                                                      // child: BlockPicker(
+                                                      //   pickerColor: currentColor,
+                                                      //   onColorChanged: changeColor,
+                                                      // ),
+                                                      //
+                                                      // child: MultipleChoiceBlockPicker(
+                                                      //   pickerColors: currentColors,
+                                                      //   onColorsChanged: changeColors,
+                                                      // ),
+                                                    ),
+                                                    actions: <Widget>[
+                                                      SizedBox(
+                                                        width: double.infinity,
+                                                        child: PrimaryButton(
+                                                          text: al.done,
+                                                          onPress: () {
+                                                            setState(() => rgb =
+                                                                currentColor);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  );
+                                                });
+                                          },
                                         ),
                                         const SizedBox(
                                           height: MySpaces.s40,
@@ -691,6 +787,38 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  getCard(String text, IconData icon, Function()? onTab, {Widget? left}) {
+    return ClickableContainer(
+      onTap: onTab,
+      margin: const EdgeInsets.only(top: MySpaces.s24),
+      width: double.infinity,
+      color: MyColors.black.shade500,
+      borderRadius: MyRadius.base,
+      padding: const EdgeInsets.symmetric(
+        horizontal: MySpaces.s12,
+        vertical: MySpaces.s16,
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            size: 25,
+            color: MyColors.white,
+          ),
+          const SizedBox(
+            width: MySpaces.s4,
+          ),
+          Text(
+            text,
+            style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
+          ),
+          const Spacer(),
+          left ?? ArrowList(),
+        ],
       ),
     );
   }

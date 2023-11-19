@@ -128,5 +128,11 @@
   "deleteSchedule": "Delete schedule",
   "editInformation": "Edit information",
   "exit": "Exit",
-  "endHour": "End time"
+  "endHour": "End time",
+  "addYourInternetLamp": "لامپ اینترنتی خود را اضافه کنید",
+  "deleteGroupMessage": "آیا از حذف این گروه اطمینان دارین؟",
+  "deleteGroup": "حذف گروه",
+  "speedLight": "سرعت تغییر نور",
+  "selectColor": "انتخاب رنگ"
+
 }

@@ -103,7 +103,9 @@ class _StatePageState extends State<StatePage> {
                               hint: '____/__/__',
                               prevDate: startDate,
                               onNewDateSelected: (DateTime newDate) {
-                                startDate = newDate;
+                                setState(() {
+                                  startDate = newDate;
+                                });
                               },
                               isDate: true,
                             ),
@@ -118,7 +120,9 @@ class _StatePageState extends State<StatePage> {
                               hint: '____/__/__',
                               isDate: true,
                               onNewDateSelected: (DateTime newDate) {
-                                endDate = newDate;
+                                setState(() {
+                                  endDate = newDate;
+                                });
                               },
                             ),
                           ),
@@ -196,7 +200,7 @@ class _StatePageState extends State<StatePage> {
                             Align(
                               alignment: Alignment.centerRight,
                               child: Text(
-                                'نام چارت',
+                                type['title'],
                                 style: DemiBoldStyle.normal
                                     .copyWith(color: MyColors.white),
                               ),

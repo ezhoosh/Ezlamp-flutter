@@ -69,8 +69,9 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
                         (state.getInternetBoxListStatus as BaseSuccess).entity;
                     if (list.isEmpty) {
                       return EmptyPage(
-                        al.addInternetLamp,
+                        al.addYourInternetLamp,
                         onTab: _addClick,
+                        btnText: al.addInternetLamp,
                       );
                     }
                     return ListView.builder(

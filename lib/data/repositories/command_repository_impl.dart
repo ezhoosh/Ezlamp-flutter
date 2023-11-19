@@ -17,9 +17,9 @@ class CommandRepositoryImpl extends CommandRepository {
         data: {
           "w": params.w,
           "y": params.y,
-          "r": Normalize.normalizeValue(params.r),
-          "g": Normalize.normalizeValue(params.g),
-          "b": Normalize.normalizeValue(params.b),
+          "r": (Normalize.normalizeValue(params.r) / 100) * params.s,
+          "g": (Normalize.normalizeValue(params.g) / 100) * params.s,
+          "b": (Normalize.normalizeValue(params.b) / 100) * params.s,
           "c": params.c,
           "pir": true,
           "type": "apply",

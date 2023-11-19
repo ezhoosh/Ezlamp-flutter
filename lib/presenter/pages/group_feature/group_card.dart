@@ -113,14 +113,7 @@ class GroupCard extends StatelessWidget {
                   onPress: () {
                     BlocProvider.of<CommandBloc>(context)
                         .add(SendCommandEvent(CommandParams(
-                      w: 0,
-                      y: 0,
-                      r: 0,
-                      g: 0,
-                      b: 0,
-                      c: 0,
-                      pir: true,
-                      type: 'apply',
+                      isOn: false,
                       gid: group.id,
                     )));
                   },
@@ -139,14 +132,7 @@ class GroupCard extends StatelessWidget {
                   onPress: () {
                     BlocProvider.of<CommandBloc>(context)
                         .add(SendCommandEvent(CommandParams(
-                      w: 100,
-                      y: 50,
-                      r: 0,
-                      g: 0,
-                      b: 0,
-                      c: 0,
-                      pir: true,
-                      type: 'apply',
+                      isOn: true,
                       gid: group.id,
                     )));
                   },

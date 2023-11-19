@@ -123,5 +123,11 @@
   "deleteSchedule": "حذف برنامه ریزی",
   "editInformation": "ویرایش اطلاعات",
   "exit": "خروج",
-  "endHour": "ساعت پایان"
+  "endHour": "ساعت پایان",
+  "addYourInternetLamp": "لامپ اینترنتی خود را اضافه کنید",
+  "deleteGroupMessage": "آیا از حذف این گروه اطمینان دارین؟",
+  "deleteGroup": "حذف گروه",
+  "speedLight": "سرعت تغییر نور",
+  "selectColor": "انتخاب رنگ",
+  "done": "تمام"
 }

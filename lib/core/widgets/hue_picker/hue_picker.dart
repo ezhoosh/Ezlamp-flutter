@@ -84,7 +84,8 @@ class _HuePickerState extends State<HuePicker> {
     int s = (color.saturation * 100.0).round();
     int v = (color.value * 100.0).round();
 
-    return Color.fromARGB(255, h, s, v);
+
+    return color.toColor();
   }
 
   @override

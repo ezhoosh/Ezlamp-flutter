@@ -107,7 +107,7 @@ dependencies:
   jiffy: ^6.2.1
   sizer: ^2.0.15
   flutter_blue_plus: ^1.26.1
-
+  flutter_colorpicker: ^1.0.3
 
 
 dev_dependencies:

@@ -41,102 +41,63 @@ class _AddInternetBoxBottomSheetState extends State<AddInternetBoxBottomSheet> {
   @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
-    return BlocListener<LampBloc, LampState>(
-      listenWhen: (prev, curr) {
-        if (prev.updateLampOwnerStatus is BaseSuccess &&
-            curr.updateLampOwnerStatus is BaseNoAction) {
-          return false;
-        }
-        return true;
-      },
-      listener: (context, state) {
-        if (state.updateLampOwnerStatus is BaseSuccess) {
-          Navigator.pop(context);
-          EasyLoading.showSuccess("SUCCESS");
-          Navigator.pop(context);
-        } else if (state.updateLampOwnerStatus is BaseLoading) {
-          EasyLoading.show();
-        } else if (state.updateLampOwnerStatus is BaseError) {
-          EasyLoading.showError("ERROR");
-        }
-      },
-      child: BlocListener<InternetBoxBloc, InternetBoxState>(
-        listenWhen: (prev, curr) {
-          if (prev.updateInternetBoxOwnerStatus is BaseSuccess &&
-              curr.updateInternetBoxOwnerStatus is BaseNoAction) {
-            return false;
-          }
-          return true;
-        },
-        listener: (context, state) {
-          if (state.updateInternetBoxOwnerStatus is BaseSuccess) {
-            Navigator.pop(context);
-            EasyLoading.showSuccess("SUCCESS");
-          } else if (state.updateInternetBoxOwnerStatus is BaseLoading) {
-            EasyLoading.show();
-          } else if (state.updateInternetBoxOwnerStatus is BaseError) {
-            EasyLoading.showError("ERROR");
-          }
-        },
-        child: CustomBottomSheet(
-          title: AppLocalizations.of(context)!.addInternetLamp,
-          child: Column(
-            children: [
-              BorderTextField(
-                hintText: al.title,
-                controller: _controllerName,
-              ),
-              const SizedBox(
-                height: MySpaces.s12,
-              ),
-              BorderTextField(
-                hintText: al.desc,
-                controller: _controllerDesc,
-                maxLines: 7,
-              ),
-              const SizedBox(
-                height: MySpaces.s12,
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (widget.uuid
-                        .startsWith('internetbox/update-internetbox-owner/')) {
-                      BlocProvider.of<InternetBoxBloc>(context).add(
-                        UpdateInternetBoxOwnerEvent(
-                          UpdateGroupOwnerParams(
-                            widget.uuid,
-                            _controllerName.text,
-                            _controllerDesc.text,
-                          ),
-                        ),
-                      );
-                    } else {
-                      BlocProvider.of<LampBloc>(context).add(
-                        UpdateLampOwnerEvent(
-                          UpdateLampOwnerParams(
-                            widget.groupId!,
-                            _controllerName.text,
-                            _controllerDesc.text,
-                            widget.uuid,
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                  child: Text(
-                    al.save,
-                    style: DemiBoldStyle.normal.copyWith(color: MyColors.white),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: MySpaces.s24,
-              ),
-            ],
+    return CustomBottomSheet(
+      title: AppLocalizations.of(context)!.addInternetLamp,
+      child: Column(
+        children: [
+          BorderTextField(
+            hintText: al.title,
+            controller: _controllerName,
           ),
-        ),
+          const SizedBox(
+            height: MySpaces.s12,
+          ),
+          BorderTextField(
+            hintText: al.desc,
+            controller: _controllerDesc,
+            maxLines: 7,
+          ),
+          const SizedBox(
+            height: MySpaces.s12,
+          ),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                if (widget.uuid
+                    .startsWith('internetbox/update-internetbox-owner/')) {
+                  BlocProvider.of<InternetBoxBloc>(context).add(
+                    UpdateInternetBoxOwnerEvent(
+                      UpdateGroupOwnerParams(
+                        widget.uuid,
+                        _controllerName.text,
+                        _controllerDesc.text,
+                      ),
+                    ),
+                  );
+                } else {
+                  BlocProvider.of<LampBloc>(context).add(
+                    UpdateLampOwnerEvent(
+                      UpdateLampOwnerParams(
+                        widget.groupId!,
+                        _controllerName.text,
+                        _controllerDesc.text,
+                        widget.uuid,
+                      ),
+                    ),
+                  );
+                }
+              },
+              child: Text(
+                al.save,
+                style: DemiBoldStyle.normal.copyWith(color: MyColors.white),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: MySpaces.s24,
+          ),
+        ],
       ),
     );
   }
