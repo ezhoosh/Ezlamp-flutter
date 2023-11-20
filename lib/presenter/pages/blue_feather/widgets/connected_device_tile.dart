@@ -1,5 +1,9 @@
 import 'dart:async';
 
+import 'package:easy_lamp/core/resource/my_colors.dart';
+import 'package:easy_lamp/core/resource/my_spaces.dart';
+import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
@@ -49,6 +53,37 @@ class _ConnectedDeviceTileState extends State<ConnectedDeviceTile> {
 
   @override
   Widget build(BuildContext context) {
+    return ClickableContainer(
+      margin: const EdgeInsets.only(
+        left: MySpaces.s24,
+        right: MySpaces.s24,
+        top: MySpaces.s12,
+      ),
+      color: MyColors.black.shade600,
+      borderRadius: MyRadius.sm,
+      padding: const EdgeInsets.symmetric(
+          vertical: MySpaces.s16, horizontal: MySpaces.s24),
+      onTap: isConnected ? widget.onOpen : widget.onConnect,
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Text(
+              widget.device.platformName,
+              overflow: TextOverflow.ellipsis,
+              style:
+                  DemiBoldStyle.sm.copyWith(color: MyColors.secondary.shade100),
+            ),
+          ),
+          Text(
+            isConnected ? 'OPEN' : 'CONNECT',
+            style: DemiBoldStyle.sm.copyWith(
+                color: isConnected
+                    ? MyColors.secondary.shade300
+                    : MyColors.secondary.shade600),
+          )
+        ],
+      ),
+    );
     return ListTile(
       title: Text(widget.device.platformName),
       trailing: ElevatedButton(
