@@ -334,8 +334,6 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                             // Minimum value
                                             max: 100.0,
                                             // Maximum value
-                                            divisions: 100,
-                                            // Number of divisions
                                           ),
                                         ),
                                         const SizedBox(
@@ -382,12 +380,13 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                                     isColor = false;
                                                     v = newValue;
                                                   });
+
                                                   if (v < 50) {
-                                                    w = 0;
-                                                    y = 100 - v;
+                                                    y = 99 - v;
+                                                    w = 100 - y;
                                                   } else {
-                                                    y = 0;
                                                     w = v;
+                                                    y = 100 - w;
                                                   }
                                                   print("w : $w and y : $y");
                                                 },
@@ -395,8 +394,6 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                                 // Minimum value
                                                 max: 100.0,
                                                 // Maximum value
-                                                divisions: 100,
-                                                // Number of divisions
                                               ),
                                             ),
                                           ),
@@ -404,7 +401,6 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                         const SizedBox(
                                           height: MySpaces.s12,
                                         ),
-
                                         Row(
                                           children: [
                                             Text(
@@ -429,16 +425,16 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                               trackHeight: 6.0,
                                               // Adjust the track height here
                                               thumbShape:
-                                              const RoundSliderThumbShape(
+                                                  const RoundSliderThumbShape(
                                                 enabledThumbRadius: 8.0,
                                               ),
                                               activeTrackColor: Colors.white,
                                               overlayShape: SliderComponentShape
                                                   .noOverlay,
                                               inactiveTrackColor:
-                                              MyColors.black.shade300,
+                                                  MyColors.black.shade300,
                                               disabledThumbColor:
-                                              MyColors.white,
+                                                  MyColors.white,
                                               activeTickMarkColor: Colors.white,
                                               thumbColor: Colors.white),
                                           child: Slider(
@@ -452,8 +448,6 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                             // Minimum value
                                             max: 20.0,
                                             // Maximum value
-                                            divisions: 100,
-                                            // Number of divisions
                                           ),
                                         ),
                                         const SizedBox(

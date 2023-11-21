@@ -24,6 +24,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 
 class MemberPage extends StatefulWidget {
   const MemberPage({Key? key}) : super(key: key);
@@ -94,7 +95,8 @@ class _MemberPageState extends State<MemberPage> {
                   } else if (state.acceptInviteStatus is BaseError ||
                       state.declineInviteStatus is BaseError ||
                       state.deleteInvitationStatus is BaseError) {
-                    EasyLoading.showError("ERROR");
+                    EasyLoading.showError(
+                        ErrorHelper.getBaseError(state.deleteInvitationStatus));
                   }
                 },
                 listenWhen: (prev, curr) {

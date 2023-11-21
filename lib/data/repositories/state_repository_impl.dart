@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_lamp/core/params/state_params.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/core/utils/api_access.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/data/model/state_model.dart';
 import 'package:easy_lamp/domain/repositories/state_repository.dart';
 
@@ -31,10 +32,10 @@ class StateRepositoryImpl extends StateRepository {
         return DataSuccess(List<StateModel>.from(
             response.data.map((model) => StateModel.fromJson(model))));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 }

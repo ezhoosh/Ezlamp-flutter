@@ -1,3 +1,4 @@
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -25,10 +26,10 @@ class UserRepositoryImpl extends UserRepository {
       if (response.statusCode == 200) {
         return DataSuccess(UserModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -44,10 +45,10 @@ class UserRepositoryImpl extends UserRepository {
       if (response.statusCode == 200) {
         return DataSuccess(UserModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 }

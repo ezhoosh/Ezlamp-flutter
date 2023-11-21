@@ -22,6 +22,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({Key? key}) : super(key: key);
@@ -65,7 +66,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           } else if (state.changePasswordStatus is BaseLoading) {
             EasyLoading.show();
           } else if (state.changePasswordStatus is BaseError) {
-            EasyLoading.showError("ERROR");
+            EasyLoading.showError(
+              ErrorHelper.getBaseError(state.changePasswordStatus));
           }
         },
         child: SafeArea(

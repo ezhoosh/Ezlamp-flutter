@@ -1,3 +1,4 @@
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_lamp/core/params/create_schedule_params.dart';
 import 'package:easy_lamp/core/params/update_schedule_params.dart';
@@ -16,10 +17,10 @@ class ScheduleRepositoryImpl extends ScheduleRepository {
       if (response.statusCode == 201) {
         return DataSuccess(ScheduleModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -31,10 +32,10 @@ class ScheduleRepositoryImpl extends ScheduleRepository {
       if (response.statusCode == 204) {
         return DataSuccess(response.data);
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -46,10 +47,10 @@ class ScheduleRepositoryImpl extends ScheduleRepository {
       if (response.statusCode == 200) {
         return DataSuccess(ScheduleModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -62,10 +63,10 @@ class ScheduleRepositoryImpl extends ScheduleRepository {
         return DataSuccess(List<ScheduleModel>.from(
             response.data.map((model) => ScheduleModel.fromJson(model))));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -78,10 +79,10 @@ class ScheduleRepositoryImpl extends ScheduleRepository {
       if (response.statusCode == 200) {
         return DataSuccess(ScheduleModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -97,7 +98,7 @@ class ScheduleRepositoryImpl extends ScheduleRepository {
         return DataFailed(response.statusMessage.toString());
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 }

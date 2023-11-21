@@ -9,6 +9,7 @@ import 'package:easy_lamp/core/utils/api_access.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/domain/repositories/lamp_repository.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 
 class LampRepositoryImpl extends LampRepository {
   @override
@@ -21,10 +22,10 @@ class LampRepositoryImpl extends LampRepository {
       if (response.statusCode == 204) {
         return DataSuccess<String>(response.data.toString());
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -36,10 +37,10 @@ class LampRepositoryImpl extends LampRepository {
       if (response.statusCode == 200) {
         return DataSuccess<LampModel>(LampModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -70,10 +71,10 @@ class LampRepositoryImpl extends LampRepository {
       if (response.statusCode == 200) {
         return DataSuccess<LampModel>(LampModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -88,10 +89,10 @@ class LampRepositoryImpl extends LampRepository {
         return DataSuccess<List<LampModel>>(
             GroupModel.fromJson(response.data).lamps);
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -115,10 +116,10 @@ class LampRepositoryImpl extends LampRepository {
       if (response.statusCode == 200) {
         return DataSuccess<LampModel>(LampModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -146,10 +147,10 @@ class LampRepositoryImpl extends LampRepository {
       if (response.statusCode == 200) {
         return DataSuccess<LampModel>(LampModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 }

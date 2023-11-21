@@ -9,6 +9,7 @@ import 'package:easy_lamp/core/widgets/arrow_list.dart';
 import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
@@ -69,7 +70,8 @@ class _DetailLampPageState extends State<DetailLampPage> {
             } else if (state.patchLampStatus is BaseLoading) {
               EasyLoading.show();
             } else if (state.patchLampStatus is BaseError) {
-              EasyLoading.showError("ERROR");
+              EasyLoading.showError(
+                  ErrorHelper.getBaseError(state.patchLampStatus));
             }
           },
           child: Scaffold(
@@ -277,8 +279,6 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                     // Minimum value
                                     max: 100.0,
                                     // Maximum value
-                                    divisions: 100,
-                                    // Number of divisions
                                   ),
                                 ),
                                 const SizedBox(
@@ -320,12 +320,13 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                             isColor = false;
                                             v = newValue;
                                           });
+
                                           if (v < 50) {
-                                            w = 0;
-                                            y = 100 - v;
+                                            y = 99 - v;
+                                            w = 100 - y;
                                           } else {
-                                            y = 0;
                                             w = v;
+                                            y = 100 - w;
                                           }
                                           print("w : $w and y : $y");
                                         },
@@ -333,8 +334,6 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                         // Minimum value
                                         max: 100.0,
                                         // Maximum value
-                                        divisions: 100,
-                                        // Number of divisions
                                       ),
                                     ),
                                   ),
@@ -386,8 +385,6 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                     // Minimum value
                                     max: 20.0,
                                     // Maximum value
-                                    divisions: 100,
-                                    // Number of divisions
                                   ),
                                 ),
                               ],

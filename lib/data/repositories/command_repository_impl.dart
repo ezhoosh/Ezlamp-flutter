@@ -7,6 +7,7 @@ import 'package:easy_lamp/core/utils/api_access.dart';
 import 'package:easy_lamp/core/utils/normalize.dart';
 import 'package:easy_lamp/data/model/command_model.dart';
 import 'package:easy_lamp/domain/repositories/command_repository.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 
 class CommandRepositoryImpl extends CommandRepository {
   @override
@@ -30,10 +31,10 @@ class CommandRepositoryImpl extends CommandRepository {
       if (response.statusCode == 200) {
         return DataSuccess(CommandModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 }

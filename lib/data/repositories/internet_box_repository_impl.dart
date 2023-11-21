@@ -1,3 +1,4 @@
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -28,10 +29,10 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
       if (response.statusCode == 201) {
         return DataSuccess(InternetBoxModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -45,10 +46,10 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
       if (response.statusCode == 204) {
         return DataSuccess(response.data.toString());
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -61,10 +62,10 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
       if (response.statusCode == 200) {
         return DataSuccess(InternetBoxModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -77,10 +78,10 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
         return DataSuccess(List<InternetBoxModel>.from(
             response.data.map((model) => InternetBoxModel.fromJson(model))));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -98,10 +99,10 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
       if (response.statusCode == 200) {
         return DataSuccess(InternetBoxModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -118,10 +119,10 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
       if (response.statusCode == 200) {
         return DataSuccess(InternetBoxModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -138,10 +139,10 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
       if (response.statusCode == 200) {
         return DataSuccess(InternetBoxModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 }

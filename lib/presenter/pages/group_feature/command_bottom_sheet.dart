@@ -91,8 +91,6 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
               // Minimum value
               max: 100.0,
               // Maximum value
-              divisions: 100,
-              // Number of divisions
             ),
           ),
           const SizedBox(
@@ -131,21 +129,19 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
                       isColor = false;
                       v = newValue;
                     });
+
                     if (v < 50) {
-                      w = 0;
-                      y = 100 - v;
+                      y = 99 - v;
+                      w = 100 - y;
                     } else {
-                      y = 0;
                       w = v;
+                      y = 100 - w;
                     }
                     print("w : $w and y : $y");
                   },
                   min: 0.0,
                   // Minimum value
                   max: 100.0,
-                  // Maximum value
-                  divisions: 100,
-                  // Number of divisions
                 ),
               ),
             ),
@@ -193,8 +189,6 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
               // Minimum value
               max: 20.0,
               // Maximum value
-              divisions: 100,
-              // Number of divisions
             ),
           ),
           const SizedBox(
@@ -234,7 +228,7 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
                   style: Light400Style.lg.copyWith(color: MyColors.secondary),
                 ),
                 const Spacer(),
-                ArrowList()
+                const ArrowList()
               ],
             ),
           ),
@@ -337,9 +331,9 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
                   lamps: widget.lampIds?.map((e) => e.id).toList(),
                   w: isColor ? 0 : w.toInt(),
                   y: isColor ? 0 : y.toInt(),
-                  r: !isColor ? 0 : rgb!.red,
-                  g: !isColor ? 0 : rgb!.green,
-                  b: !isColor ? 0 : rgb!.blue,
+                  r: !isColor ? 0 : rgb.red,
+                  g: !isColor ? 0 : rgb.green,
+                  b: !isColor ? 0 : rgb.blue,
                   s: s.toInt(),
                   c: c.toInt(),
                   pir: true,

@@ -1,3 +1,4 @@
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/core/params/edit_group_name_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
@@ -37,7 +38,8 @@ class EditGroupNameBottomSheet extends StatelessWidget {
         } else if (state.updateGroupNameStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.updateGroupNameStatus is BaseError) {
-          EasyLoading.showError("ERROR");
+          EasyLoading.showError(
+              ErrorHelper.getBaseError(state.createGroupStatus));
         }
       },
       child: CustomBottomSheet(

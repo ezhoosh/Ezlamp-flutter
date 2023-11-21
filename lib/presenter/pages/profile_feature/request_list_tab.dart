@@ -120,13 +120,13 @@ class _RequestListTabState extends State<RequestListTab> {
                                       Expanded(
                                         child: Text(
                                           lamp.name,
-                                          style: Light400Style.sm,
+                                          style: Light400Style.normal,
                                         ),
                                       ),
                                       Expanded(
                                         child: Text(
                                           lamp.groupLamp.toString(),
-                                          style: Light400Style.sm,
+                                          style: Light400Style.normal,
                                           textAlign: TextAlign.end,
                                         ),
                                       ),
@@ -158,7 +158,9 @@ class _RequestListTabState extends State<RequestListTab> {
           );
         } else if (state.getMyInvitationAssignmentListStatus is BaseLoading) {
           return const Center(
-            child: CircularProgressIndicator(color: MyColors.primary,),
+            child: CircularProgressIndicator(
+              color: MyColors.primary,
+            ),
           );
         } else if (state.getMyInvitationAssignmentListStatus is BaseError) {
           return const Center(

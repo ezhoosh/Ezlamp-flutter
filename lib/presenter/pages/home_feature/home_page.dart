@@ -47,6 +47,11 @@ class _HomePageState extends State<HomePage> {
         },
         child: PageView(
           controller: controller,
+          onPageChanged: (index) {
+            setState(() {
+              currentPage = index;
+            });
+          },
           children: const [
             ProfilePage(),
             GroupPage(),

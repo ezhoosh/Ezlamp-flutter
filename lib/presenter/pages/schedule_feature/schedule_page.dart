@@ -17,6 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({Key? key}) : super(key: key);
@@ -182,7 +183,8 @@ class _SchedulePageState extends State<SchedulePage> {
                   } else if (state.patchScheduleByIdStatus is BaseLoading) {
                     EasyLoading.show();
                   } else if (state.patchScheduleByIdStatus is BaseError) {
-                    EasyLoading.showError("ERROR");
+                    EasyLoading.showError(ErrorHelper.getBaseError(
+                        state.patchScheduleByIdStatus));
                   }
                 },
               ),

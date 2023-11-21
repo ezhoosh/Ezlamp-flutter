@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 
 class AddLampPage extends StatefulWidget {
   int? groupId;
@@ -56,7 +57,8 @@ class _AddLampPageState extends State<AddLampPage> {
         } else if (state.updateLampOwnerStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.updateLampOwnerStatus is BaseError) {
-          EasyLoading.showError("ERROR");
+          EasyLoading.showError(
+              ErrorHelper.getBaseError(state.updateLampStatus));
         }
       },
       child: Scaffold(
@@ -89,11 +91,6 @@ class _AddLampPageState extends State<AddLampPage> {
                           al.select(al.internetLamp) ?? '',
                           style: Light300Style.sm
                               .copyWith(color: MyColors.secondary.shade300),
-                        ),
-                        Text(
-                          '*',
-                          style:
-                              Light300Style.sm.copyWith(color: MyColors.error),
                         ),
                       ],
                     ),

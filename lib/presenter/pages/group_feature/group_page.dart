@@ -1,3 +1,4 @@
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/core/params/command_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
@@ -65,7 +66,8 @@ class _GroupPageState extends State<GroupPage> {
             } else if (state.sendCommandStatus is BaseLoading) {
               EasyLoading.show();
             } else if (state.sendCommandStatus is BaseError) {
-              EasyLoading.showError("ERROR");
+              EasyLoading.showError(
+              ErrorHelper.getBaseError(state.sendCommandStatus));
             }
           },
           child: Column(

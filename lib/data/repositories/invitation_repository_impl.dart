@@ -1,3 +1,4 @@
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -30,10 +31,10 @@ class InvitationRepositoryImpl extends InvitationRepository {
       if (response.statusCode == 200) {
         return DataSuccess(response.data.toString());
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -47,10 +48,10 @@ class InvitationRepositoryImpl extends InvitationRepository {
       if (response.statusCode == 200) {
         return DataSuccess(response.data.toString());
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -70,10 +71,10 @@ class InvitationRepositoryImpl extends InvitationRepository {
         return DataSuccess(List<InvitationModel>.from(
             response.data.map((model) => InvitationModel.fromJson(model))));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -89,10 +90,10 @@ class InvitationRepositoryImpl extends InvitationRepository {
         return DataSuccess(List<InvitationModel>.from(
             response.data.map((model) => InvitationModel.fromJson(model))));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -114,10 +115,10 @@ class InvitationRepositoryImpl extends InvitationRepository {
       if (response.statusCode == 201) {
         return DataSuccess(response.data.toString());
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -132,10 +133,10 @@ class InvitationRepositoryImpl extends InvitationRepository {
       if (response.statusCode == 204) {
         return DataSuccess(response.data.toString());
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -149,10 +150,10 @@ class InvitationRepositoryImpl extends InvitationRepository {
       if (response.statusCode == 200) {
         return DataSuccess(InvitationModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -167,10 +168,10 @@ class InvitationRepositoryImpl extends InvitationRepository {
       if (response.statusCode == 200) {
         return DataSuccess(InvitationModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -192,10 +193,10 @@ class InvitationRepositoryImpl extends InvitationRepository {
       if (response.statusCode == 200) {
         return DataSuccess(response.data);
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -217,10 +218,10 @@ class InvitationRepositoryImpl extends InvitationRepository {
       if (response.statusCode == 200) {
         return DataSuccess(response.data);
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 }

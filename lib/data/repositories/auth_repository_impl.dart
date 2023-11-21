@@ -5,6 +5,7 @@ import 'package:easy_lamp/core/params/register_verify_params.dart';
 import 'package:easy_lamp/core/params/send_phone_number_params.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/core/utils/api_access.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/data/model/login_model.dart';
 import 'package:easy_lamp/data/model/register_verify_model.dart';
 import 'package:easy_lamp/data/model/reset_password_model.dart';
@@ -25,10 +26,10 @@ class AuthRepositoryImpl extends AuthRepository {
         return DataSuccess<SendNumberModel>(
             SendNumberModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -44,10 +45,10 @@ class AuthRepositoryImpl extends AuthRepository {
       if (response.statusCode == 200) {
         return DataSuccess<LoginModel>(LoginModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -63,10 +64,10 @@ class AuthRepositoryImpl extends AuthRepository {
       if (response.statusCode == 200) {
         return DataSuccess<LoginModel>(LoginModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -85,10 +86,10 @@ class AuthRepositoryImpl extends AuthRepository {
         return DataSuccess<ResetPasswordModel>(
             ResetPasswordModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -106,10 +107,10 @@ class AuthRepositoryImpl extends AuthRepository {
         return DataSuccess<RegisterVerifyModel>(
             RegisterVerifyModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -125,10 +126,10 @@ class AuthRepositoryImpl extends AuthRepository {
         return DataSuccess<SendLoginOtpModel>(
             SendLoginOtpModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -145,10 +146,10 @@ class AuthRepositoryImpl extends AuthRepository {
       if (response.statusCode == 200) {
         return DataSuccess(response.data.toString());
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 }

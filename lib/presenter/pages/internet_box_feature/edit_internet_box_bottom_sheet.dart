@@ -45,8 +45,6 @@ class EditInternetBoxBottomSheet extends StatelessWidget {
             // Minimum value
             max: 100.0,
             // Maximum value
-            divisions: 100,
-            // Number of divisions
           ),
           const SizedBox(
             height: MySpaces.s32,

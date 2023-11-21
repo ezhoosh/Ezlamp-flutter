@@ -1,3 +1,4 @@
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -27,10 +28,10 @@ class GroupRepositoryImpl extends GroupRepository {
         return DataSuccess<GroupModel>(
             GroupModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -44,10 +45,10 @@ class GroupRepositoryImpl extends GroupRepository {
       if (response.statusCode == 204) {
         return DataSuccess<String>(response.data.toString());
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -61,10 +62,10 @@ class GroupRepositoryImpl extends GroupRepository {
         return DataSuccess<GroupModel>(
             GroupModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -77,10 +78,10 @@ class GroupRepositoryImpl extends GroupRepository {
         return DataSuccess(List<GroupModel>.from(
             response.data.map((model) => GroupModel.fromJson(model))));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -99,10 +100,10 @@ class GroupRepositoryImpl extends GroupRepository {
         return DataSuccess<GroupModel>(
             GroupModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -122,10 +123,10 @@ class GroupRepositoryImpl extends GroupRepository {
         return DataSuccess<GroupModel>(
             GroupModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 
@@ -143,10 +144,10 @@ class GroupRepositoryImpl extends GroupRepository {
         return DataSuccess<GroupModel>(
             GroupModel.fromJson(response.data));
       } else {
-        return DataFailed(response.statusMessage.toString());
+        return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
-      return DataFailed(e.message.toString());
+      return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
 }

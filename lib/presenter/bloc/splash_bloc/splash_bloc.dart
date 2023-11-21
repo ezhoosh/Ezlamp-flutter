@@ -44,11 +44,16 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
         try {
           DataState refreshDataState =
               await readLocalStorageUseCase(Constants.refreshKey);
+          DataState accessDataState =
+              await readLocalStorageUseCase(Constants.accessKey);
+          print('refresh token: ${refreshDataState.data.toString()}');
+          print('before access token: ${accessDataState.data.toString()}');
           if (refreshDataState.data.toString().isNotEmpty) {
             DataState dataState =
                 await refreshTokenUseCase(refreshDataState.data);
             if (dataState is DataSuccess) {
               RefreshTokenModel model = dataState.data;
+              print('access token: ${model.access}');
               await writeLocalStorageUseCase(
                   WriteLocalStorageParam(Constants.accessKey, model.access));
 
@@ -56,20 +61,8 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
                   newCheckLoginStatus: SplashSuccessWithOutBlue(
                       dataState.data.toString().isNotEmpty)));
             } else {
-              DataState dataState =
-                  await refreshTokenUseCase(refreshDataState.data);
-              if (dataState is DataSuccess) {
-                RefreshTokenModel model = dataState.data;
-                await writeLocalStorageUseCase(
-                    WriteLocalStorageParam(Constants.accessKey, model.access));
-
-                emit(state.copyWith(
-                    newCheckLoginStatus: SplashSuccessWithOutBlue(
-                        dataState.data.toString().isNotEmpty)));
-              } else {
-                emit(state.copyWith(
-                    newCheckLoginStatus: SplashError(dataState.error)));
-              }
+              emit(state.copyWith(
+                  newCheckLoginStatus: SplashError(dataState.error)));
             }
           } else {
             emit(state.copyWith(newCheckLoginStatus: SplashError("new User")));

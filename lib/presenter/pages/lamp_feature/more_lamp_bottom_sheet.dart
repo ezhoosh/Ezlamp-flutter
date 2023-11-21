@@ -3,6 +3,7 @@ import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
@@ -41,7 +42,8 @@ class MoreLampBottomSheet extends StatelessWidget {
         } else if (state.deleteLampStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.deleteLampStatus is BaseError) {
-          EasyLoading.showError("ERROR");
+          EasyLoading.showError(
+              ErrorHelper.getBaseError(state.deleteLampStatus));
         }
       },
       child: Wrap(

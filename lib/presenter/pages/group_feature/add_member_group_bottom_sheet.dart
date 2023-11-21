@@ -8,6 +8,7 @@ import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/core/widgets/input_group.dart';
 import 'package:easy_lamp/core/widgets/input_phone.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
@@ -54,7 +55,8 @@ class _AddMemberGroupBottomSheetState extends State<AddMemberGroupBottomSheet> {
         } else if (state.createInvitationStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.createInvitationStatus is BaseError) {
-          EasyLoading.showError("ERROR");
+          EasyLoading.showError(
+              ErrorHelper.getBaseError(state.createInvitationStatus));
         }
       },
       child: CustomBottomSheet(

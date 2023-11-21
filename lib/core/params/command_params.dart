@@ -59,12 +59,12 @@ class CommandParams {
       return jsonEncode({
         'type': type,
         'uid': blueLampId.toString().padLeft(6, '0'),
-        'w': (w / 100) * s,
-        'y': (y / 100) * s,
-        'r': (Normalize.normalizeValue(r) / 100) * s,
-        'g': (Normalize.normalizeValue(g) / 100) * s,
-        'b': (Normalize.normalizeValue(b) / 100) * s,
-        'c': c,
+        'c': c.toInt(),
+        'w': ((w / 100) * s).toInt(),
+        'y': ((y / 100) * s).toInt(),
+        'r': ((Normalize.normalizeValue(r) / 100) * s).toInt(),
+        'g': ((Normalize.normalizeValue(g) / 100) * s).toInt(),
+        'b': ((Normalize.normalizeValue(b) / 100) * s).toInt(),
         'pir': pir ? 1 : 0,
       });
     } else {
@@ -72,24 +72,24 @@ class CommandParams {
         return jsonEncode({
           'type': type,
           'uid': blueLampId.toString().padLeft(6, '0'),
-          'w': 100,
+          'c': 0,
+          'w': 50,
           'y': 50,
           'r': 0,
           'g': 0,
           'b': 0,
-          'c': 0,
           'pir': pir ? 1 : 0,
         });
       } else {
         return jsonEncode({
           'type': type,
           'uid': blueLampId.toString().padLeft(6, '0'),
+          'c': 0,
           'w': 0,
           'y': 0,
           'r': 0,
           'g': 0,
           'b': 0,
-          'c': 0,
           'pir': 0,
         });
       }

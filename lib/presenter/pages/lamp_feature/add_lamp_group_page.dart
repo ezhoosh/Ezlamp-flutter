@@ -17,6 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 
 class AddLampInternetBoxPage extends StatefulWidget {
   int? groupId;
@@ -56,7 +57,8 @@ class _AddLampInternetBoxPageState extends State<AddLampInternetBoxPage> {
           } else if (state.updateInternetBoxOwnerStatus is BaseLoading) {
             EasyLoading.show();
           } else if (state.updateInternetBoxOwnerStatus is BaseError) {
-            EasyLoading.showError("ERROR");
+            EasyLoading.showError(
+                ErrorHelper.getBaseError(state.updateInternetBoxOwnerStatus));
           }
         },
         child: BlocListener<LampBloc, LampState>(
@@ -75,7 +77,8 @@ class _AddLampInternetBoxPageState extends State<AddLampInternetBoxPage> {
             } else if (state.updateLampOwnerStatus is BaseLoading) {
               EasyLoading.show();
             } else if (state.updateLampOwnerStatus is BaseError) {
-              EasyLoading.showError("ERROR");
+              EasyLoading.showError(
+                  ErrorHelper.getBaseError(state.updateLampOwnerStatus));
             }
           },
           child: SafeArea(
