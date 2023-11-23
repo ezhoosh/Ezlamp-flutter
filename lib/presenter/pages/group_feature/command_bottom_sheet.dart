@@ -328,7 +328,7 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
               onPress: () {
                 BlocProvider.of<CommandBloc>(context)
                     .add(SendCommandEvent(CommandParams(
-                  lamps: widget.lampIds?.map((e) => e.id).toList(),
+                  lamps: widget.groupId?.lamps.map((e) => e.id).toList(),
                   w: isColor ? 0 : w.toInt(),
                   y: isColor ? 0 : y.toInt(),
                   r: !isColor ? 0 : rgb.red,

@@ -54,19 +54,37 @@ class CommandParams {
         gid: json["gid"],
       );
 
-  String toBlueJson() {
+  toBlueJson() {
     if (isOn == null) {
-      return jsonEncode({
-        'type': type,
-        'uid': blueLampId.toString().padLeft(6, '0'),
-        'c': c.toInt(),
-        'w': ((w / 100) * s).toInt(),
-        'y': ((y / 100) * s).toInt(),
-        'r': ((Normalize.normalizeValue(r) / 100) * s).toInt(),
-        'g': ((Normalize.normalizeValue(g) / 100) * s).toInt(),
-        'b': ((Normalize.normalizeValue(b) / 100) * s).toInt(),
-        'pir': pir ? 1 : 0,
-      });
+      if (gid != null) {
+        List<String> data = [];
+        lamps?.forEach((element) {
+          data.add(jsonEncode({
+            'type': type,
+            'uid': element.toString().padLeft(6, '0'),
+            'c': c.toInt(),
+            'w': ((w / 100) * s).toInt(),
+            'y': ((y / 100) * s).toInt(),
+            'r': ((Normalize.normalizeValue(r) / 100) * s).toInt(),
+            'g': ((Normalize.normalizeValue(g) / 100) * s).toInt(),
+            'b': ((Normalize.normalizeValue(b) / 100) * s).toInt(),
+            'pir': pir ? 1 : 0,
+          }));
+        });
+        return data;
+      } else {
+        return jsonEncode({
+          'type': type,
+          'uid': blueLampId.toString().padLeft(6, '0'),
+          'c': c.toInt(),
+          'w': ((w / 100) * s).toInt(),
+          'y': ((y / 100) * s).toInt(),
+          'r': ((Normalize.normalizeValue(r) / 100) * s).toInt(),
+          'g': ((Normalize.normalizeValue(g) / 100) * s).toInt(),
+          'b': ((Normalize.normalizeValue(b) / 100) * s).toInt(),
+          'pir': pir ? 1 : 0,
+        });
+      }
     } else {
       if (isOn!) {
         return jsonEncode({
@@ -81,7 +99,8 @@ class CommandParams {
           'pir': pir ? 1 : 0,
         });
       } else {
-        return jsonEncode({
+        // [  +15 ms] I/flutter (13957): send single: {"type":"","uid":"000003","c":0,"w":0,"y":0,"r":0,"g":0,"b":0,"pir":0}
+    return jsonEncode({
           'type': type,
           'uid': blueLampId.toString().padLeft(6, '0'),
           'c': 0,

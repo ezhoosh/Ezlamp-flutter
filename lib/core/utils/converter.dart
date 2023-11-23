@@ -58,7 +58,8 @@ class Converter {
           lastName: owner?.lastName ?? '',
           email: owner?.email ?? '',
         ),
-        lamps: [],
+        lamps: Converter.isarLampToLampModel(
+            e.lamps.where((element) => element.groupLamp == e.id).toList()),
       );
     }).toList();
   }

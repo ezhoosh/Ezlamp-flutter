@@ -62,7 +62,7 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
                       dataState.data.toString().isNotEmpty)));
             } else {
               emit(state.copyWith(
-                  newCheckLoginStatus: SplashError(dataState.error)));
+                  newCheckLoginStatus: SplashSuccessWithOutBlue(false)));
             }
           } else {
             emit(state.copyWith(newCheckLoginStatus: SplashError("new User")));

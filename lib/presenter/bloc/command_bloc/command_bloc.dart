@@ -37,48 +37,64 @@ class CommandBloc extends Bloc<CommandEvent, CommandState> {
         }
         emit(state.copyWith(newSendCommandStatus: BaseNoAction()));
       } else {
-        if (state.deviceConnected != null &&
-            state.deviceConnected!.isConnected) {
-          await state.deviceConnected!.connect();
-          List<BluetoothService> services =
-              await state.deviceConnected!.discoverServices();
-          for (var service in services) {
-            if(service.uuid.toString()=='0000fff0-0000-1000-8000-00805f9b34fb') {
-              for (var characteristic in service.characteristics) {
-                if (characteristic.properties.write) {
-                  // const maxWriteLength = 10;
-                  final dataBytes = utf8.encode(event.commandParams.toBlueJson());
-                  Future<void> f =
-                      characteristic.write(dataBytes, allowLongWrite: true);
-                  f.then((value) {
-                    print('value.toString()');
-                  });
-                  f.catchError((e) {
-                    print(e.toString());
-                  });
-                  // for (int i = 0; i < dataBytes.length; i += maxWriteLength) {
-                  //   final end = (i + maxWriteLength < dataBytes.length)
-                  //       ? i + maxWriteLength
-                  //       : dataBytes.length;
-                  //   final chunk = dataBytes.sublist(i, end);
-                  //   Future<void> f = characteristic.write(chunk);
-                  //   f.then((value) {
-                  //     print('value.toString()');
-                  //   });
-                  //   f.catchError((e) {
-                  //     print(e.toString());
-                  //     return;
-                  //   });
-                  // }
-                }
-              }
-            }
+        final data = event.commandParams.toBlueJson();
+        if (data is List) {
+          emit(state.copyWith(newSendCommandStatus: BaseLoading()));
+
+          for (String da in data) {
+            await Future.delayed(const Duration(seconds: 1));
+            await sendData(state.deviceConnected, da);
           }
+          emit(state.copyWith(newSendCommandStatus: BaseSuccess('')));
+          // [  +19 ms] I/flutter (13957): send : {"type":"apply","uid":"000003","c":0,"w":0,"y":0,"r":99,"g":3,"b":3,"pir":1}
+        } else if (data is String) {
+          print('send single: $data');
+          await sendData(state.deviceConnected, data);
         }
       }
     });
     on<ConnectedBlueEvent>((event, emit) {
       emit(state.copyWith(newDeviceConnected: event.device));
     });
+  }
+
+  sendData(BluetoothDevice? deviceConnected, String data) async {
+    if (state.deviceConnected != null && state.deviceConnected!.isConnected) {
+      await state.deviceConnected!.connect();
+      List<BluetoothService> services =
+          await state.deviceConnected!.discoverServices();
+      for (var service in services) {
+        if (service.uuid.toString() == '0000fff0-0000-1000-8000-00805f9b34fb') {
+          for (var characteristic in service.characteristics) {
+            if (characteristic.properties.write) {
+              // const maxWriteLength = 10;
+              final dataBytes = utf8.encode(data);
+              Future<void> f =
+                  characteristic.write(dataBytes, allowLongWrite: true);
+              f.then((value) {
+                print('value.toString()');
+              });
+              f.catchError((e) {
+                print(e.toString());
+              });
+              // for (int i = 0; i < dataBytes.length; i += maxWriteLength) {
+              //   final end = (i + maxWriteLength < dataBytes.length)
+              //       ? i + maxWriteLength
+              //       : dataBytes.length;
+              //   final chunk = dataBytes.sublist(i, end);
+              //   Future<void> f = characteristic.write(chunk);
+              //   f.then((value) {
+              //     print('value.toString()');
+              //   });
+              //   f.catchError((e) {
+              //     print(e.toString());
+              //     return;
+              //   });
+              // }
+            }
+          }
+        }
+      }
+    }
   }
 }

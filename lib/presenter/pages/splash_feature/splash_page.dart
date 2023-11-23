@@ -27,20 +27,24 @@ class _SplashPageState extends State<SplashPage> {
 
     return BlocListener<SplashBloc, SplashState>(
       listener: (context, state) {
-        if (state.checkLoginStatus is SplashSuccessWithOutBlue &&
-            (state.checkLoginStatus as SplashSuccessWithOutBlue).entity) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
-        } else if (state.checkLoginStatus is SplashSuccessWithBlue &&
-            (state.checkLoginStatus as SplashSuccessWithBlue).entity) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => ConnectionPage()),
-          );
+        if (state.checkLoginStatus is SplashSuccessWithOutBlue) {
+          if ((state.checkLoginStatus as SplashSuccessWithOutBlue).entity) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const HomePage()),
+            );
+          } else {
+            gotoAuth();
+          }
+        } else if (state.checkLoginStatus is SplashSuccessWithBlue) {
+          if ((state.checkLoginStatus as SplashSuccessWithBlue).entity) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => const ConnectionPage()),
+            );
+          } else {
+            gotoAuth();
+          }
         } else if (state.checkLoginStatus is SplashError) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => AuthPage()),
-          );
+          gotoAuth();
         }
       },
       child: Container(
@@ -82,5 +86,11 @@ class _SplashPageState extends State<SplashPage> {
       // );
     });
     BlocProvider.of<AuthBloc>(context).add(GetLanguageTypeEvent());
+  }
+
+  gotoAuth() {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const AuthPage()),
+    );
   }
 }
