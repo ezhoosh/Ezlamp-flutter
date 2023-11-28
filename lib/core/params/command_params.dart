@@ -100,7 +100,7 @@ class CommandParams {
         });
       } else {
         // [  +15 ms] I/flutter (13957): send single: {"type":"","uid":"000003","c":0,"w":0,"y":0,"r":0,"g":0,"b":0,"pir":0}
-    return jsonEncode({
+        return jsonEncode({
           'type': type,
           'uid': blueLampId.toString().padLeft(6, '0'),
           'c': 0,
@@ -110,6 +110,51 @@ class CommandParams {
           'g': 0,
           'b': 0,
           'pir': 0,
+        });
+      }
+    }
+  }
+
+  toInternetJson() {
+    if (isOn == null) {
+      return jsonEncode({
+        "w": w,
+        "y": y,
+        "r": (Normalize.normalizeValue(r) / 100) * s,
+        "g": (Normalize.normalizeValue(g) / 100) * s,
+        "b": (Normalize.normalizeValue(b) / 100) * s,
+        "c": c,
+        "pir": true,
+        "type": "apply",
+        if (lamps != null) "lamps": lamps,
+        if (gid != null) "gid": gid.toString(),
+      });
+    } else {
+      if (isOn!) {
+        return jsonEncode({
+          "w": 50,
+          "y": 50,
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "c": c,
+          "pir": true,
+          "type": "apply",
+          if (lamps != null) "lamps": lamps,
+          if (gid != null) "gid": gid.toString(),
+        });
+      } else {
+        return jsonEncode({
+          "w": 0,
+          "y": 0,
+          "r": 0,
+          "g": 0,
+          "b": 0,
+          "c": c,
+          "pir": true,
+          "type": "apply",
+          if (lamps != null) "lamps": lamps,
+          if (gid != null) "gid": gid.toString(),
         });
       }
     }

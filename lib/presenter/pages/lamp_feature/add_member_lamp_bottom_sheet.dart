@@ -79,9 +79,13 @@ class AddMemberLampBottomSheet extends StatelessWidget {
               width: double.infinity,
               child: PrimaryButton(
                 onPress: () {
+                  String phone = _controllerPhone.text;
+                  if (!phone.startsWith('0')) {
+                    phone = '0$phone';
+                  }
                   BlocProvider.of<InvitationBloc>(context)
                       .add(CreateInvitationEvent(CreateInvitationParams(
-                    phoneNumber: _controllerPhone.text,
+                    phoneNumber: phone,
                     message: _controllerMessage.text,
                     groupLamp: groupId,
                     lamps: lamps.map((e) => e.id).toList(),

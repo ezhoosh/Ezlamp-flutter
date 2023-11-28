@@ -7,7 +7,9 @@ import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/empty_page.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
+import 'package:easy_lamp/data/model/connection_type.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
+import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/lamp_bloc/lamp_bloc.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_group_page.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/detail_lamp_page.dart';
@@ -15,6 +17,7 @@ import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_card.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
@@ -132,10 +135,18 @@ class _LampPageState extends State<LampPage> {
                               margin: const EdgeInsets.symmetric(
                                   horizontal: MySpaces.s24),
                               width: double.infinity,
-                              child: PrimaryButton(
-                                text: al.addLamps,
-                                onPress: _addClick,
-                              ),
+                              child: BlocBuilder<AuthBloc, AuthState>(
+                                  builder: (context, state) {
+                                bool isBlue = state.connectionType ==
+                                    ConnectionType.Bluetooth;
+                                return Opacity(
+                                    opacity: isBlue ? 0.5 : 1,
+                                    child: PrimaryButton(
+                                      text: al.addLamps,
+                                      onPress:
+                                          isBlue ? _addClickBlue : _addClick,
+                                    ));
+                              }),
                             )
                           ],
                         );
@@ -185,21 +196,28 @@ class _LampPageState extends State<LampPage> {
                           .copyWith(color: MyColors.secondary.shade300),
                     ),
                     const Spacer(),
-                    PrimaryButton(
-                      onPress: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => DetailLampPage(
-                              selectedLamps,
-                              widget.groupId,
-                            ),
-                          ),
-                        );
-                      },
-                      text: al.settings,
-                      right: const Icon(
-                        Iconsax.setting_2,
-                        color: MyColors.white,
+                    Opacity(
+                      opacity: selectedLamps.isNotEmpty ? 1 : 0.5,
+                      child: PrimaryButton(
+                        onPress: selectedLamps.isNotEmpty
+                            ? () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailLampPage(
+                                      selectedLamps,
+                                      widget.groupId,
+                                    ),
+                                  ),
+                                );
+                              }
+                            : () {
+                                EasyLoading.showToast(al.errorNotSelected);
+                              },
+                        text: al.settings,
+                        right: const Icon(
+                          Iconsax.setting_2,
+                          color: MyColors.white,
+                        ),
                       ),
                     )
                   ],
@@ -220,5 +238,9 @@ class _LampPageState extends State<LampPage> {
         ),
       ),
     );
+  }
+
+  void _addClickBlue() {
+    EasyLoading.showToast(al.needInternetError);
   }
 }

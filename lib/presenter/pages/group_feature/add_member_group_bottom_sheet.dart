@@ -105,9 +105,14 @@ class _AddMemberGroupBottomSheetState extends State<AddMemberGroupBottomSheet> {
                       data[lamp.groupLamp] = [lamp.id];
                     }
                   }
+
+                  String phone = _controllerPhone.text;
+                  if (!phone.startsWith('0')) {
+                    phone = '0$phone';
+                  }
                   BlocProvider.of<InvitationBloc>(context).add(
                       CreateInvitationGroupEvent(CreateInvitationGroupParams(
-                    phoneNumber: _controllerPhone.text,
+                    phoneNumber: phone,
                     message: _controllerMessage.text,
                     lamps: data,
                   )));

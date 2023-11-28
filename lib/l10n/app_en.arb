@@ -129,10 +129,13 @@
   "editInformation": "Edit information",
   "exit": "Exit",
   "endHour": "End time",
-  "addYourInternetLamp": "لامپ اینترنتی خود را اضافه کنید",
-  "deleteGroupMessage": "آیا از حذف این گروه اطمینان دارین؟",
-  "deleteGroup": "حذف گروه",
-  "speedLight": "سرعت تغییر نور",
-  "selectColor": "انتخاب رنگ"
-
+  "addYourInternetLamp": "Add your internet lamp",
+  "deleteGroupMessage": "Are you sure you want to delete this group?",
+  "deleteGroup": "Delete group",
+  "speedLight": "Light change speed",
+  "selectColor": "Select color",
+  "needInternetError": "Internet connection is required for this process. Please change your internet connection method.",
+  "bluetoothIsOff": "Bluetooth is off",
+  "turnOn": "Turn on",
+  "errorNotSelected": "Please select an item"
 }

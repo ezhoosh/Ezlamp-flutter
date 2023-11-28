@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:easy_lamp/core/utils/local_data_provider.dart';
 import 'package:easy_lamp/data/isar_model/isar_command.dart';
@@ -101,7 +102,14 @@ import 'package:path_provider/path_provider.dart';
 GetIt locator = GetIt.instance;
 
 setupMain() async {
-  locator.registerSingleton<Dio>(Dio());
+  Dio dio = Dio();
+  (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+      (HttpClient client) {
+    client.badCertificateCallback =
+        (X509Certificate cert, String host, int port) => true;
+    return client;
+  };
+  locator.registerSingleton<Dio>(dio);
   locator.registerSingleton<Isar>(await openDB());
   locator.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());

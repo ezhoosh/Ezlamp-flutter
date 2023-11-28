@@ -7,7 +7,9 @@ import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/empty_page.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
+import 'package:easy_lamp/data/model/connection_type.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
+import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/add_group_bottom_sheet.dart';
@@ -67,17 +69,23 @@ class _GroupPageState extends State<GroupPage> {
               EasyLoading.show();
             } else if (state.sendCommandStatus is BaseError) {
               EasyLoading.showError(
-              ErrorHelper.getBaseError(state.sendCommandStatus));
+                  ErrorHelper.getBaseError(state.sendCommandStatus));
             }
           },
           child: Column(
             children: [
-              TopBar(
-                  title: al.groupsList,
-                  onTapLeft: _addClick,
-                  iconLeft: SvgPicture.asset(
-                    "assets/icons/add_circle.svg",
-                  )),
+              BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+                bool isBlue = state.connectionType == ConnectionType.Bluetooth;
+                return Opacity(
+                  opacity: isBlue ? 0.5 : 1,
+                  child: TopBar(
+                      title: al.groupsList,
+                      onTapLeft: isBlue ? _addClickBlue : _addClick,
+                      iconLeft: SvgPicture.asset(
+                        "assets/icons/add_circle.svg",
+                      )),
+                );
+              }),
               Expanded(
                 child: BlocBuilder<GroupBloc, GroupState>(
                   buildWhen: (prev, curr) {
@@ -125,6 +133,10 @@ class _GroupPageState extends State<GroupPage> {
         ),
       ),
     );
+  }
+
+  void _addClickBlue() {
+    EasyLoading.showToast(al.needInternetError);
   }
 
   void _addClick() {

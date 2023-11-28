@@ -1,9 +1,12 @@
 import 'dart:io';
 
+import 'package:easy_lamp/core/resource/my_colors.dart';
+import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
 import '../utils/snackbar.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BluetoothOffScreen extends StatelessWidget {
   const BluetoothOffScreen({Key? key, this.adapterState}) : super(key: key);
@@ -21,23 +24,27 @@ class BluetoothOffScreen extends StatelessWidget {
   Widget buildTitle(BuildContext context) {
     String? state = adapterState?.toString().split(".").last;
     return Text(
-      'Bluetooth Adapter is ${state != null ? state : 'not available'}',
-      style: Theme.of(context).primaryTextTheme.titleSmall?.copyWith(color: Colors.white),
+      AppLocalizations.of(context)!.bluetoothIsOff,
+      style: Theme.of(context)
+          .primaryTextTheme
+          .titleSmall
+          ?.copyWith(color: Colors.white),
     );
   }
 
   Widget buildTurnOnButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20.0),
-      child: ElevatedButton(
-        child: const Text('TURN ON'),
-        onPressed: () async {
+      child: PrimaryButton(
+        text: AppLocalizations.of(context)!.turnOn,
+        onPress: () async {
           try {
             if (Platform.isAndroid) {
               await FlutterBluePlus.turnOn();
             }
           } catch (e) {
-            Snackbar.show(ABC.a, prettyException("Error Turning On:", e), success: false);
+            Snackbar.show(ABC.a, prettyException("Error Turning On:", e),
+                success: false);
           }
         },
       ),
@@ -49,7 +56,7 @@ class BluetoothOffScreen extends StatelessWidget {
     return ScaffoldMessenger(
       key: Snackbar.snackBarKeyA,
       child: Scaffold(
-        backgroundColor: Colors.lightBlue,
+        backgroundColor: MyColors.primary,
         body: Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,

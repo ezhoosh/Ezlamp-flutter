@@ -40,10 +40,10 @@ class DetailLampPage extends StatefulWidget {
 class _DetailLampPageState extends State<DetailLampPage> {
   late AppLocalizations al;
   Color rgb = Colors.white;
-  double c = 0;
-  double y = 0;
-  double w = 0;
-  double v = 0;
+  double c = 10;
+  double y = 50;
+  double w = 50;
+  double v = 50;
   double s = 100;
   bool isColor = true;
 
@@ -97,13 +97,12 @@ class _DetailLampPageState extends State<DetailLampPage> {
                         BlocProvider.of<CommandBloc>(context).add(
                           SendCommandEvent(
                             CommandParams(
-                              blueLampId: widget.lamps.first.id,
                               lamps: widget.lamps.map((e) => e.id).toList(),
                               w: isColor ? 0 : w.toInt(),
                               y: isColor ? 0 : y.toInt(),
-                              r: !isColor ? 0 : (rgb == null ? 0 : rgb!.red),
-                              g: !isColor ? 0 : (rgb == null ? 0 : rgb!.green),
-                              b: !isColor ? 0 : (rgb == null ? 0 : rgb!.blue),
+                              r: !isColor ? 0 : rgb.red,
+                              g: !isColor ? 0 : rgb.green,
+                              b: !isColor ? 0 : rgb.blue,
                               c: c.toInt(),
                               pir: true,
                               s: s.toInt(),

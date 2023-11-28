@@ -145,6 +145,10 @@ class _ScanScreenState extends State<ScanScreen> {
     }
   }
 
+  void onDisConnectPressed(BluetoothDevice device) {
+    device.disconnect();
+  }
+
   void onConnectPressed(BluetoothDevice device) {
     final t = device.connectAndUpdateStream();
     t.then((value) {
@@ -196,12 +200,7 @@ class _ScanScreenState extends State<ScanScreen> {
         .map(
           (d) => ConnectedDeviceTile(
             device: d,
-            onOpen: () => Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => DeviceScreen(device: d),
-                settings: RouteSettings(name: '/DeviceScreen'),
-              ),
-            ),
+            onDisconnect: () => onDisConnectPressed(d),
             onConnect: () => onConnectPressed(d),
           ),
         )
