@@ -6,7 +6,7 @@ part 'isar_owner.g.dart';
 
 @collection
 class IsarOwner {
-  Id idDb = Isar.autoIncrement;
+  Id idDb=Isar.autoIncrement;
   String? phoneNumber;
   String? firstName;
   String? lastName;

@@ -6,7 +6,7 @@ part 'isar_command.g.dart';
 
 @collection
 class IsarCommand {
-  Id idDb = Isar.autoIncrement;
+  Id idDb=Isar.autoIncrement;
   List<int>? lampsIds;
   int? w;
   int? y;

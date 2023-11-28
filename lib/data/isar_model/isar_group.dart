@@ -7,7 +7,7 @@ part 'isar_group.g.dart';
 
 @collection
 class IsarGroup {
-  Id idDb = Isar.autoIncrement;
+  Id idDb=Isar.autoIncrement;
   int? id;
   String? name;
   String? description;

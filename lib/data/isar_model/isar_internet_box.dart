@@ -12,7 +12,7 @@ part 'isar_internet_box.g.dart';
 
 @collection
 class IsarInternetBox {
-  Id idDb = Isar.autoIncrement;
+  Id idDb=Isar.autoIncrement;
   int? id;
   String? name;
   String? description;
