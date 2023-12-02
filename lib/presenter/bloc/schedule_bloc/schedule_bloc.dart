@@ -49,6 +49,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
       if (dataState is DataSuccess) {
         emit(state.copyWith(
             newCreateScheduleStatus: BaseSuccess(dataState.data)));
+        add(GetScheduleListEvent());
       } else {
         emit(state.copyWith(
             newCreateScheduleStatus: BaseError(dataState.error)));

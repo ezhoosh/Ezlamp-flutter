@@ -63,7 +63,8 @@ class _ConnectedDeviceTileState extends State<ConnectedDeviceTile> {
       borderRadius: MyRadius.sm,
       padding: const EdgeInsets.symmetric(
           vertical: MySpaces.s16, horizontal: MySpaces.s24),
-      onTap: isConnected ? widget.onDisconnect : widget.onConnect,
+      onTap: isConnected ? null
+          : widget.onConnect,
       child: Row(
         children: <Widget>[
           Expanded(

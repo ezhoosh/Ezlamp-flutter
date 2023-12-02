@@ -74,6 +74,7 @@ class InvitationRepositoryImpl extends InvitationRepository {
         return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
+      print(e.error);
       return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
@@ -93,6 +94,7 @@ class InvitationRepositoryImpl extends InvitationRepository {
         return DataFailed(ErrorHelper.getError(response));
       }
     } on DioError catch (e) {
+      print(e.error);
       return DataFailed(ErrorHelper.getCatchError(e));
     }
   }

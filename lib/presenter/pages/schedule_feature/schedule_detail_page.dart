@@ -46,7 +46,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
   List<GroupModel> groups = [];
   DateTime? startDate;
   DateTime? endDate;
-  final TextEditingController _controllerName = TextEditingController();
+  final TextEditingController _controllerName = TextEditingController(text: '');
   CommandModel? command;
 
   @override
@@ -117,6 +117,15 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                       for (var element in e.lamps) {
                         lamps.add(element.id);
                       }
+                    }
+
+                    if (startDate == null ||
+                        endDate == null ||
+                        _controllerName.text.isEmpty ||
+                        dayOffWeek.isEmpty ||
+                        groups.isEmpty) {
+                      EasyLoading.showToast(al.errorInformation);
+                      return;
                     }
                     if (command == null) {
                       EasyLoading.showToast(al.lightSettingMessage);
@@ -700,8 +709,8 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                     bg: MyColors.secondary,
                     textColor: MyColors.error.shade700,
                     onPress: () {
-                      BlocProvider.of<ScheduleBloc>(context)
-                          .add(DeleteScheduleByIdEvent(widget.schedule!.id));
+                      BlocProvider.of<ScheduleBloc>(context).add(
+                          DeleteScheduleByIdEvent(widget.schedule!.id ?? 0));
                     },
                   ),
                 )

@@ -111,11 +111,15 @@ class GroupCard extends StatelessWidget {
               Expanded(
                 child: SecondaryButton(
                   onPress: () {
-                    BlocProvider.of<CommandBloc>(context)
-                        .add(SendCommandEvent(CommandParams(
-                      isOn: false,
-                      gid: group.id,
-                    )));
+                    BlocProvider.of<CommandBloc>(context).add(
+                      SendCommandEvent(
+                        CommandParams(
+                          isOn: false,
+                          gid: group.id,
+                          lamps: group.lamps.map((e) => e.id).toList(),
+                        ),
+                      ),
+                    );
                   },
                   text: al.off,
                   right: const Icon(
@@ -130,11 +134,14 @@ class GroupCard extends StatelessWidget {
               Expanded(
                 child: SecondaryButton(
                   onPress: () {
-                    BlocProvider.of<CommandBloc>(context)
-                        .add(SendCommandEvent(CommandParams(
-                      isOn: true,
-                      gid: group.id,
-                    )));
+                    BlocProvider.of<CommandBloc>(context).add(
+                      SendCommandEvent(
+                        CommandParams(
+                            isOn: true,
+                            gid: group.id,
+                            lamps: group.lamps.map((e) => e.id).toList()),
+                      ),
+                    );
                   },
                   text: al.on,
                   right: const Icon(

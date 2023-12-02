@@ -14,7 +14,7 @@ class InvitationModel {
   int id;
   String phoneNumber;
   String message;
-  int assignee;
+  AssigneeInvitationModel? assignee;
   GroupLamp groupLamp;
   List<Lamp>? lamps;
   bool isOpen = false;
@@ -33,7 +33,7 @@ class InvitationModel {
         id: json["id"],
         phoneNumber: json["phone_number"],
         message: json["message"],
-        assignee: json["assignee"],
+        assignee: AssigneeInvitationModel.fromJson(json["assignee"]),
         groupLamp: GroupLamp.fromJson(json["group_lamp"]),
         lamps: List<Lamp>.from(json["lamps"].map((x) => Lamp.fromJson(x))),
       );
@@ -42,7 +42,7 @@ class InvitationModel {
         "id": id,
         "phone_number": phoneNumber,
         "message": message,
-        "assignee": assignee,
+        "assignee": assignee != null ? assignee!.toJson() : {},
         "group_lamp": groupLamp.toJson(),
         "lamps": lamps != null
             ? List<dynamic>.from(lamps!.map((x) => x.toJson()))
@@ -165,5 +165,38 @@ class LastCommand {
         "additionalProp1": additionalProp1,
         "additionalProp2": additionalProp2,
         "additionalProp3": additionalProp3,
+      };
+}
+
+// To parse this JSON data, do
+//
+//     final asseigneeInvitationModel = asseigneeInvitationModelFromJson(jsonString);
+
+class AssigneeInvitationModel {
+  String phoneNumber;
+  String lastName;
+  String firstName;
+  String email;
+
+  AssigneeInvitationModel({
+    required this.phoneNumber,
+    required this.lastName,
+    required this.firstName,
+    required this.email,
+  });
+
+  factory AssigneeInvitationModel.fromJson(Map<String, dynamic> json) =>
+      AssigneeInvitationModel(
+        phoneNumber: json["phone_number"],
+        lastName: json["last_name"],
+        firstName: json["first_name"],
+        email: json["email"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "phone_number": phoneNumber,
+        "last_name": lastName,
+        "first_name": firstName,
+        "email": email,
       };
 }

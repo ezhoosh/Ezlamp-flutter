@@ -72,11 +72,26 @@ class _RequestListTabState extends State<RequestListTab> {
                           width: MySpaces.s12,
                         ),
                         Expanded(
-                          child: Text(
-                            items[index].phoneNumber,
-                            style: DemiBoldStyle.lg
-                                .copyWith(color: MyColors.white),
-                            maxLines: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                items[index].assignee != null
+                                    ? ''
+                                    : "${item.assignee!.firstName} ${item.assignee!.lastName}",
+                                style: DemiBoldStyle.lg
+                                    .copyWith(color: MyColors.white),
+                                maxLines: 1,
+                              ),
+                              const SizedBox(
+                                height: MySpaces.s4,
+                              ),
+                              Text(
+                                item.assignee!.phoneNumber,
+                                style: DemiBoldStyle.sm
+                                    .copyWith(color: MyColors.black.shade100),
+                              ),
+                            ],
                           ),
                         ),
                         const SizedBox(

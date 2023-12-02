@@ -15,7 +15,7 @@ String scheduleModelToJson(List<ScheduleModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class ScheduleModel {
-  int id;
+  int? id;
   PeriodicTaskAssigned periodicTaskAssigned;
   PeriodicTaskAssigned periodicTaskOffAssigned;
   CommandModel command;

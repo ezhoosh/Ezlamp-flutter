@@ -42,16 +42,18 @@ class PrimaryButton extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (right != null) right!,
-              const SizedBox(
-                width: MySpaces.s12,
-              ),
+              if (right != null)
+                const SizedBox(
+                  width: MySpaces.s12,
+                ),
               Text(
                 text ?? '',
                 style: Light400Style.normal.copyWith(color: textColor),
               ),
-              const SizedBox(
-                width: MySpaces.s12,
-              ),
+              if (left != null)
+                const SizedBox(
+                  width: MySpaces.s12,
+                ),
               if (left != null) left!,
             ],
           )),

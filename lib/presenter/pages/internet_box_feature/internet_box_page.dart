@@ -7,7 +7,9 @@ import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/empty_page.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
+import 'package:easy_lamp/data/model/connection_type.dart';
 import 'package:easy_lamp/data/model/internet_box_model.dart';
+import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_group_page.dart';
@@ -15,6 +17,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -45,15 +48,21 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
       body: SafeArea(
         child: Column(
           children: [
-            TopBar(
-              title: al.internetLamp,
-              onTapLeft: _addClick,
-              iconLeft: SvgPicture.asset("assets/icons/add_circle.svg"),
-              onTapRight: () {
-                Navigator.pop(context);
-              },
-              iconRight: const ArrowBack(),
-            ),
+            BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+              bool isBlue = state.connectionType == ConnectionType.Bluetooth;
+              return Opacity(
+                opacity: isBlue ? 0.5 : 1,
+                child: TopBar(
+                  title: al.internetLamp,
+                  onTapLeft: isBlue ? _addClickBlue : _addClick,
+                  iconLeft: SvgPicture.asset("assets/icons/add_circle.svg"),
+                  onTapRight: () {
+                    Navigator.pop(context);
+                  },
+                  iconRight: const ArrowBack(),
+                ),
+              );
+            }),
             Expanded(
               child: BlocBuilder<InternetBoxBloc, InternetBoxState>(
                 buildWhen: (prev, curr) {
@@ -148,5 +157,9 @@ class _InternetBoxPageState extends State<InternetBoxPage> {
                 isInternetBox: true,
               )),
     );
+  }
+
+  void _addClickBlue() {
+    EasyLoading.showToast(al.needInternetError);
   }
 }

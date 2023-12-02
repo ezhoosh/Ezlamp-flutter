@@ -137,5 +137,6 @@
   "needInternetError": "Internet connection is required for this process. Please change your internet connection method.",
   "bluetoothIsOff": "Bluetooth is off",
   "turnOn": "Turn on",
-  "errorNotSelected": "Please select an item"
+  "errorNotSelected": "Please select an item",
+  "errorInformation": "Enter the information correctly"
 }
