@@ -15,7 +15,7 @@ extension GetIsarOwnerCollection on Isar {
 
 const IsarOwnerSchema = CollectionSchema(
   name: r'IsarOwner',
-  id: 4245733166818710743,
+  id: 3123,
   properties: {
     r'email': PropertySchema(
       id: 0,
@@ -46,14 +46,14 @@ const IsarOwnerSchema = CollectionSchema(
   indexes: {},
   links: {
     r'groups': LinkSchema(
-      id: -562259803871638910,
+      id: -2223,
       name: r'groups',
       target: r'IsarGroup',
       single: false,
       linkName: r'owner',
     ),
     r'internetBox': LinkSchema(
-      id: -8470636946403945530,
+      id: -9876,
       name: r'internetBox',
       target: r'IsarInternetBox',
       single: false,

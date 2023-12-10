@@ -25,6 +25,7 @@ import 'package:easy_lamp/domain/usecases/update_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_internet_box_owner_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_internet_box_usecase.dart';
 import 'package:easy_lamp/domain/usecases/write_localstorage_usecase.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
 part 'internet_box_event.dart';
@@ -40,7 +41,7 @@ class InternetBoxBloc extends Bloc<InternetBoxEvent, InternetBoxState> {
   WriteLocalStorageUseCase writeLocalStorageUseCase;
   ReadLocalStorageUseCase readLocalStorageUseCase;
   UpdateGroupNameUseCase updateGroupNameUseCase;
-  IsarInternetBoxRepository isarInternetBoxRepository;
+  IsarInternetBoxRepository? isarInternetBoxRepository;
   ReadConnectionUseCase readConnectionUseCase;
 
   InternetBoxBloc(
@@ -52,8 +53,8 @@ class InternetBoxBloc extends Bloc<InternetBoxEvent, InternetBoxState> {
     this.updateInternetBoxOwnerUseCase,
     this.updateInternetBoxUseCase,
     this.updateGroupNameUseCase,
-    this.isarInternetBoxRepository,
     this.readConnectionUseCase,
+    this.isarInternetBoxRepository,
   ) : super(InternetBoxState(
             updateInternetBoxStatus: BaseNoAction(),
             updateInternetBoxNameStatus: BaseNoAction(),
@@ -67,12 +68,14 @@ class InternetBoxBloc extends Bloc<InternetBoxEvent, InternetBoxState> {
       if (type == ConnectionType.Bluetooth) {
         List<InternetBoxModel> groups =
             Converter.isarInternetBoxToInternetBoxModel(
-                await isarInternetBoxRepository.getAll());
+                await isarInternetBoxRepository!.getAll());
         emit(state.copyWith(newGetGroupListStatus: BaseSuccess(groups)));
       } else {
         DataState dataState = await getInternetBoxListUseCase(NoParams());
-        await isarInternetBoxRepository.saveAll(
-            Converter.internetBoxModelToIsarInternetBox(dataState.data));
+        if (!kIsWeb) {
+          await isarInternetBoxRepository!.saveAll(
+              Converter.internetBoxModelToIsarInternetBox(dataState.data));
+        }
         if (dataState is DataSuccess) {
           emit(state.copyWith(
               newGetGroupListStatus: BaseSuccess(dataState.data)));

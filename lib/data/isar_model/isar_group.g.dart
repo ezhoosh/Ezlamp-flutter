@@ -15,7 +15,7 @@ extension GetIsarGroupCollection on Isar {
 
 const IsarGroupSchema = CollectionSchema(
   name: r'IsarGroup',
-  id: -249249756886492951,
+  id: -56778,
   properties: {
     r'description': PropertySchema(
       id: 0,
@@ -41,20 +41,20 @@ const IsarGroupSchema = CollectionSchema(
   indexes: {},
   links: {
     r'owner': LinkSchema(
-      id: -5259202259244068613,
+      id: -235677,
       name: r'owner',
       target: r'IsarOwner',
       single: true,
     ),
     r'lamps': LinkSchema(
-      id: 2579652246558123846,
+      id: 77832,
       name: r'lamps',
       target: r'IsarLamp',
       single: false,
       linkName: r'group',
     ),
     r'command': LinkSchema(
-      id: 295816511362452783,
+      id: 3678,
       name: r'command',
       target: r'IsarCommand',
       single: true,

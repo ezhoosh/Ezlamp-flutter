@@ -26,7 +26,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:sizer/sizer.dart';
 
 void main() async {
-  FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
+  if (!kIsWeb) FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
   WidgetsFlutterBinding.ensureInitialized();
   await setupMain();
   await setupSplash();
@@ -40,14 +40,16 @@ void main() async {
   await setupInvitation();
   await setupSchedule();
 
-  Connectivity()
-      .onConnectivityChanged
-      .listen((ConnectivityResult result) async {
-    final connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
-      print('connection disconnected');
-    }
-  });
+  if (!kIsWeb) {
+    Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) async {
+      final connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.none) {
+        print('connection disconnected');
+      }
+    });
+  }
   runApp(const MyApp());
 }
 
@@ -83,7 +85,9 @@ class _MyAppState extends State<MyApp> {
             return BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 return MaterialApp(
-                  navigatorObservers: [BluetoothAdapterStateObserver()],
+                  navigatorObservers: [
+                    if (!kIsWeb) BluetoothAdapterStateObserver()
+                  ],
                   builder: EasyLoading.init(),
                   theme: ThemeConfig.lightTheme,
                   localizationsDelegates: const [

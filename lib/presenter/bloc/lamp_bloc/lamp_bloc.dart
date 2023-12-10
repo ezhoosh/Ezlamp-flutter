@@ -33,8 +33,8 @@ class LampBloc extends Bloc<LampEvent, LampState> {
   UpdateLampUseCase updateLampUseCase;
   PatchLampUseCase patchLampUseCase;
   DeleteLampUseCase deleteLampUseCase;
-  IsarLampRepository isarLampRepository;
   ReadConnectionUseCase readConnectionUseCase;
+  IsarLampRepository? isarLampRepository;
 
   LampBloc(
     this.updateLampOwnerUseCase,
@@ -42,9 +42,9 @@ class LampBloc extends Bloc<LampEvent, LampState> {
     this.getLampByIdUseCase,
     this.getLampListUseCase,
     this.deleteLampUseCase,
-    this.isarLampRepository,
     this.readConnectionUseCase,
     this.patchLampUseCase,
+    this.isarLampRepository,
   ) : super(LampState(
           getLampByIdStatus: BaseNoAction(),
           deleteLampStatus: BaseNoAction(),
@@ -58,7 +58,7 @@ class LampBloc extends Bloc<LampEvent, LampState> {
       ConnectionType type = await readConnectionUseCase(NoParams());
       if (type == ConnectionType.Bluetooth) {
         List<LampModel> lamps = Converter.isarLampToLampModel(
-            await isarLampRepository.getByGroupId(event.params.groupId ?? 0));
+            await isarLampRepository!.getByGroupId(event.params.groupId ?? 0));
         emit(state.copyWith(newGetLampListStatus: BaseSuccess(lamps)));
       } else {
         DataState dataState = await getLampListUseCase(event.params);

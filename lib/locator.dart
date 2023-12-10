@@ -94,6 +94,7 @@ import 'package:easy_lamp/presenter/bloc/schedule_bloc/schedule_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -103,14 +104,16 @@ GetIt locator = GetIt.instance;
 
 setupMain() async {
   Dio dio = Dio();
-  (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-      (HttpClient client) {
-    client.badCertificateCallback =
-        (X509Certificate cert, String host, int port) => true;
-    return client;
-  };
+  if (!kIsWeb) {
+    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+  }
   locator.registerSingleton<Dio>(dio);
-  locator.registerSingleton<Isar>(await openDB());
+  if (!kIsWeb) locator.registerSingleton<Isar>(await openDB());
   locator.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());
   locator.registerSingleton<LocalDataProvider>(LocalDataProvider(locator()));
@@ -178,8 +181,10 @@ setupAuth() async {
 setupGroup() async {
   // repositories
   locator.registerSingleton<GroupRepository>(GroupRepositoryImpl());
-  locator
-      .registerSingleton<IsarGroupRepository>(IsarGroupRepository(locator()));
+  if (!kIsWeb) {
+    locator
+        .registerSingleton<IsarGroupRepository>(IsarGroupRepository(locator()));
+  }
   // useCases
   locator
       .registerSingleton<GetGroupListUseCase>(GetGroupListUseCase(locator()));
@@ -205,7 +210,7 @@ setupGroup() async {
     locator(),
     locator(),
     locator(),
-    locator(),
+    kIsWeb ? null : locator(),
   ));
 }
 
@@ -225,9 +230,10 @@ setupInternetBox() async {
       DeleteInternetBoxUseCase(locator()));
   locator.registerSingleton<UpdateInternetBoxNameUseCase>(
       UpdateInternetBoxNameUseCase(locator()));
-  locator.registerSingleton<IsarInternetBoxRepository>(
-      IsarInternetBoxRepository(locator()));
-
+  if (!kIsWeb) {
+    locator.registerSingleton<IsarInternetBoxRepository>(
+        IsarInternetBoxRepository(locator()));
+  }
   //bloc
   locator.registerSingleton<InternetBoxBloc>(InternetBoxBloc(
     locator(),
@@ -239,7 +245,7 @@ setupInternetBox() async {
     locator(),
     locator(),
     locator(),
-    locator(),
+    kIsWeb ? null : locator(),
   ));
 }
 
@@ -253,7 +259,10 @@ setupLamp() async {
       UpdateLampOwnerUseCase(locator()));
   locator.registerSingleton<UpdateLampUseCase>(UpdateLampUseCase(locator()));
   locator.registerSingleton<DeleteLampUseCase>(DeleteLampUseCase(locator()));
-  locator.registerSingleton<IsarLampRepository>(IsarLampRepository(locator()));
+  if (!kIsWeb) {
+    locator
+        .registerSingleton<IsarLampRepository>(IsarLampRepository(locator()));
+  }
   locator.registerSingleton<PatchLampUseCase>(PatchLampUseCase(locator()));
 
   //bloc
@@ -265,7 +274,7 @@ setupLamp() async {
     locator(),
     locator(),
     locator(),
-    locator(),
+    kIsWeb ? null : locator(),
   ));
 }
 

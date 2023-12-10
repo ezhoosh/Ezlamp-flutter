@@ -15,7 +15,7 @@ extension GetIsarLampCollection on Isar {
 
 const IsarLampSchema = CollectionSchema(
   name: r'IsarLamp',
-  id: 6023187134689651693,
+  id: 83761,
   properties: {
     r'address': PropertySchema(
       id: 0,
@@ -86,13 +86,13 @@ const IsarLampSchema = CollectionSchema(
   indexes: {},
   links: {
     r'group': LinkSchema(
-      id: 7196126746647268555,
+      id: 312211,
       name: r'group',
       target: r'IsarGroup',
       single: true,
     ),
     r'command': LinkSchema(
-      id: 2581321498115540218,
+      id: 7778,
       name: r'command',
       target: r'IsarCommand',
       single: true,

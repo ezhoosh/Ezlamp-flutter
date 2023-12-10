@@ -23,6 +23,7 @@ import 'package:easy_lamp/domain/usecases/update_group_owner_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_group_usecase.dart';
 import 'package:easy_lamp/domain/usecases/write_localstorage_usecase.dart';
 import 'package:easy_lamp/locator.dart';
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
 part 'group_event.dart';
@@ -39,22 +40,22 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
   WriteLocalStorageUseCase writeLocalStorageUseCase;
   ReadLocalStorageUseCase readLocalStorageUseCase;
   UpdateGroupNameUseCase updateGroupNameUseCase;
-  IsarGroupRepository isarGroupRepository;
   ReadConnectionUseCase readConnectionUseCase;
+  IsarGroupRepository? isarGroupRepository;
 
   GroupBloc(
-    this.writeLocalStorageUseCase,
-    this.readLocalStorageUseCase,
-    this.createGroupUseCase,
-    this.deleteGroupUseCase,
-    this.getGroupByIdUseCase,
-    this.getGroupListUseCase,
-    this.updateGroupOwnerUseCase,
-    this.updateGroupUseCase,
-    this.updateGroupNameUseCase,
-    this.isarGroupRepository,
-    this.readConnectionUseCase,
-  ) : super(GroupState(
+      this.writeLocalStorageUseCase,
+      this.readLocalStorageUseCase,
+      this.createGroupUseCase,
+      this.deleteGroupUseCase,
+      this.getGroupByIdUseCase,
+      this.getGroupListUseCase,
+      this.updateGroupOwnerUseCase,
+      this.updateGroupUseCase,
+      this.updateGroupNameUseCase,
+      this.readConnectionUseCase,
+      this.isarGroupRepository)
+      : super(GroupState(
             updateGroupStatus: BaseNoAction(),
             updateGroupNameStatus: BaseNoAction(),
             deleteGroupStatus: BaseNoAction(),
@@ -67,14 +68,16 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
       ConnectionType type = await readConnectionUseCase(NoParams());
       if (type == ConnectionType.Bluetooth) {
         List<GroupModel> groups = await Converter.isarGroupToGroupLampModel(
-            await isarGroupRepository.getAll());
+            await isarGroupRepository!.getAll());
         emit(state.copyWith(newGetGroupListStatus: BaseSuccess(groups)));
       } else {
         DataState dataState = await getGroupListUseCase(NoParams());
         if (dataState is DataSuccess) {
           // await isarGroupRepository.clearCollection();
-          await isarGroupRepository
-              .saveAll(Converter.groupLampModelToIsarGroup(dataState.data));
+          if (!kIsWeb) {
+            await isarGroupRepository
+                !.saveAll(Converter.groupLampModelToIsarGroup(dataState.data));
+          }
           emit(state.copyWith(
               newGetGroupListStatus: BaseSuccess(dataState.data)));
         } else {
