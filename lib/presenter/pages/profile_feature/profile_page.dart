@@ -16,6 +16,7 @@ import 'package:easy_lamp/presenter/pages/profile_feature/edit_profile_bottom_sh
 import 'package:easy_lamp/presenter/pages/profile_feature/logout_bottom_sheet.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/member_page.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(
                 height: MySpaces.s40,
               ),
-              getRowConnection(),
+              if (!kIsWeb) getRowConnection(),
               getRow(
                 target: const InternetBoxPage(),
                 text: al.internetLamp,
@@ -158,11 +159,12 @@ class _ProfilePageState extends State<ProfilePage> {
           const SizedBox(
             width: MySpaces.s12,
           ),
-          Text(
-            al.connectionType,
-            style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
+          Expanded(
+            child: Text(
+              al.connectionType,
+              style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
+            ),
           ),
-          const Spacer(),
           BlocBuilder<AuthBloc, AuthState>(
             builder: (context, state) {
               int current =

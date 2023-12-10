@@ -5,6 +5,7 @@ import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/otp_page.dart';
 import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
 import 'package:easy_lamp/presenter/pages/splash_feature/connection_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -52,9 +53,16 @@ class _PasswordPageState extends State<PasswordPage> {
             EasyLoading.show();
           } else if (state.loginStatus is BaseSuccess ||
               state.registerStatus is BaseSuccess) {
-            Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const ConnectionPage()),
-                ModalRoute.withName("/"));
+            if (kIsWeb) {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                  ModalRoute.withName("/"));
+            } else {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(
+                      builder: (context) => const ConnectionPage()),
+                  ModalRoute.withName("/"));
+            }
             EasyLoading.showSuccess("success");
           } else if (state.loginStatus is BaseError ||
               state.registerStatus is BaseError) {
