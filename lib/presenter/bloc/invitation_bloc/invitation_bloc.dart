@@ -18,6 +18,7 @@ import 'package:easy_lamp/domain/usecases/get_invitation_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_my_invitation_assignment_list_usecase.dart';
 import 'package:easy_lamp/domain/usecases/patch_invitation_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/put_invitation_by_id_usecase.dart';
+import 'package:easy_lamp/domain/usecases/remove_user_from_all_lamps_usecase.dart';
 import 'package:meta/meta.dart';
 
 part 'invitation_event.dart';
@@ -35,6 +36,7 @@ class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
   PatchInvitationUseCase patchInvitationUseCase;
   AcceptInviteUseCase acceptInviteUseCase;
   DeclineInviteUseCase declineInviteUseCase;
+  RemoveUserFromAllLampUseCase removeUserFromAllLampUseCase;
 
   InvitationBloc(
     this.declineInviteUseCase,
@@ -47,7 +49,9 @@ class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
     this.getInvitationByIdUseCase,
     this.getMyInvitationAssignmentListUseCase,
     this.getInvitationListUseCase,
-  ) : super(InvitationState(
+    this.removeUserFromAllLampUseCase,
+  ) : super(
+          InvitationState(
             getInvitationListStatus: BaseNoAction(),
             getMyInvitationAssignmentListStatus: BaseNoAction(),
             getInvitationByIdStatus: BaseNoAction(),
@@ -57,7 +61,10 @@ class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
             putInvitationStatus: BaseNoAction(),
             patchInvitationStatus: BaseNoAction(),
             acceptInviteStatus: BaseNoAction(),
-            declineInviteStatus: BaseNoAction())) {
+            declineInviteStatus: BaseNoAction(),
+            removeUserFromAllLampStatus: BaseNoAction(),
+          ),
+        ) {
     on<GetInvitationByGroupIdEvent>((event, emit) async {
       emit(state.copyWith(newGetInvitationByGroupIdStatus: BaseLoading()));
       DataState dataState = await getInvitationByGroupIdUseCase(event.groupId);
@@ -106,6 +113,19 @@ class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
             newDeleteInvitationStatus: BaseError(dataState.error)));
       }
       emit(state.copyWith(newDeleteInvitationStatus: BaseNoAction()));
+    });
+    on<RemoveUserFromAllLampEvent>((event, emit) async {
+      emit(state.copyWith(newRemoveUserFromAllLampStatus: BaseLoading()));
+      DataState dataState = await deleteInvitationUseCase(event.id);
+      if (dataState is DataSuccess) {
+        emit(state.copyWith(
+            newRemoveUserFromAllLampStatus: BaseSuccess(dataState.data)));
+        add(GetInvitationListEvent(GetInvitationListParams()));
+      } else {
+        emit(state.copyWith(
+            newRemoveUserFromAllLampStatus: BaseError(dataState.error)));
+      }
+      emit(state.copyWith(newRemoveUserFromAllLampStatus: BaseNoAction()));
     });
     on<CreateInvitationEvent>((event, emit) async {
       emit(state.copyWith(newCreateInvitationStatus: BaseLoading()));

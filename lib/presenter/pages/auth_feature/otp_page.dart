@@ -160,6 +160,8 @@ class _OtpPageState extends State<OtpPage> {
     } else if (widget.status == AuthStatus.RESET) {
       // BlocProvider.of<AuthBloc>(context)
       //     .add(ResetPasswordEvent(widget.phoneNumber, code));
+      BlocProvider.of<AuthBloc>(context)
+          .add(RegisterVerifyEvent(widget.phoneNumber, code));
     } else {
       BlocProvider.of<AuthBloc>(context)
           .add(RegisterVerifyEvent(widget.phoneNumber, code));

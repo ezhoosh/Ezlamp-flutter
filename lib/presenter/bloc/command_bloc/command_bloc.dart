@@ -38,19 +38,19 @@ class CommandBloc extends Bloc<CommandEvent, CommandState> {
         emit(state.copyWith(newSendCommandStatus: BaseNoAction()));
       } else {
         final data = event.commandParams.toBlueJson();
-        if (data is List) {
-          emit(state.copyWith(newSendCommandStatus: BaseLoading()));
-
-          for (String da in data) {
-            await Future.delayed(const Duration(seconds: 1));
-            await sendData(state.deviceConnected, da);
-          }
-          emit(state.copyWith(newSendCommandStatus: BaseSuccess('')));
-          // [  +19 ms] I/flutter (13957): send : {"type":"apply","uid":"000003","c":0,"w":0,"y":0,"r":99,"g":3,"b":3,"pir":1}
-        } else if (data is String) {
-          print('send single: $data');
-          await sendData(state.deviceConnected, data);
-        }
+        // if (data is List) {
+        //   emit(state.copyWith(newSendCommandStatus: BaseLoading()));
+        //
+        //   for (String da in data) {
+        //     await Future.delayed(const Duration(seconds: 1));
+        //     await sendData(state.deviceConnected, da);
+        //   }
+        //   emit(state.copyWith(newSendCommandStatus: BaseSuccess('')));
+        //   // [  +19 ms] I/flutter (13957): send : {"type":"apply","uid":"000003","c":0,"w":0,"y":0,"r":99,"g":3,"b":3,"pir":1}
+        // } else if (data is String) {
+        print('send single: $data');
+        await sendData(state.deviceConnected, data);
+        // }
       }
     });
     on<ConnectedBlueEvent>((event, emit) {

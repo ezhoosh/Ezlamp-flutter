@@ -14,19 +14,8 @@ class CommandRepositoryImpl extends CommandRepository {
   Future<DataState<CommandModel>> sendCommand(CommandParams params) async {
     try {
       var response = await ApiAccess.makeHttpRequest(
-        "mqtt/lamp-command/",
-        data: {
-          "w": params.w,
-          "y": params.y,
-          "r": (Normalize.normalizeValue(params.r) / 100) * params.s,
-          "g": (Normalize.normalizeValue(params.g) / 100) * params.s,
-          "b": (Normalize.normalizeValue(params.b) / 100) * params.s,
-          "c": params.c,
-          "pir": true,
-          "type": "apply",
-          if (params.lamps != null) "lamps": params.lamps,
-          if (params.gid != null) "gid": params.gid.toString(),
-        },
+        "mqtt/group-command/",
+        data: params.toInternetJson(),
       );
       if (response.statusCode == 200) {
         return DataSuccess(CommandModel.fromJson(response.data));

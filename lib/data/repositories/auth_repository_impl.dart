@@ -80,7 +80,7 @@ class AuthRepositoryImpl extends AuthRepository {
           data: {
             "phone_number": params.number,
             "password": params.password,
-            "sms_token": params.smsToken,
+            // "sms_token": params.smsToken,
           });
       if (response.statusCode == 200) {
         return DataSuccess<ResetPasswordModel>(

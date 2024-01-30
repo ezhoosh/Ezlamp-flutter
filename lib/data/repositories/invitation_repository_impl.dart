@@ -39,6 +39,23 @@ class InvitationRepositoryImpl extends InvitationRepository {
   }
 
   @override
+  Future<DataState<String>> removeUserFromAllLamp(int id) async {
+    try {
+      var response = await ApiAccess.makeHttpRequest(
+        "invitations/remove_user_from_all_lamps/$id/",
+        method: 'DELETE',
+      );
+      if (response.statusCode == 200) {
+        return DataSuccess(response.data.toString());
+      } else {
+        return DataFailed(ErrorHelper.getError(response));
+      }
+    } on DioError catch (e) {
+      return DataFailed(ErrorHelper.getCatchError(e));
+    }
+  }
+
+  @override
   Future<DataState<String>> declineInvite(int id) async {
     try {
       var response = await ApiAccess.makeHttpRequest(

@@ -55,22 +55,22 @@ class CommandParams {
       );
 
   toBlueJson() {
-    if (gid != null || (lamps != null && lamps!.isNotEmpty)) {
-      List<String> data = [];
-      lamps?.forEach((element) {
-        data.add(getBlueCommand(element));
-      });
-      return data;
-    } else {
-      return getBlueCommand(blueLampId ?? 0);
-    }
+    // if (gid != null || (lamps != null && lamps!.isNotEmpty)) {
+    //   List<String> data = [];
+    //   lamps?.forEach((element) {
+    //     data.add(getBlueCommand(element));
+    //   });
+    //   return data;
+    // } else {
+    return getBlueCommand(blueLampId ?? 0);
+    // }
   }
 
   getBlueCommand(int blueLampId) {
     if (isOn == null) {
       return jsonEncode({
         'type': type,
-        'uid': blueLampId.toString().padLeft(6, '0'),
+        'uid': lamps.toString(),
         'c': c.toInt(),
         'w': ((w / 100) * s).toInt(),
         'y': ((y / 100) * s).toInt(),
@@ -83,7 +83,7 @@ class CommandParams {
     if (isOn!) {
       return jsonEncode({
         'type': type,
-        'uid': blueLampId.toString().padLeft(6, '0'),
+        'uid': lamps.toString(),
         'c': 0,
         'w': 50,
         'y': 50,
@@ -95,7 +95,7 @@ class CommandParams {
     } else {
       return jsonEncode({
         'type': type,
-        'uid': blueLampId.toString().padLeft(6, '0'),
+        'uid': lamps.toString(),
         'c': 0,
         'w': 0,
         'y': 0,
@@ -109,34 +109,36 @@ class CommandParams {
 
   toInternetJson() {
     if (isOn == null) {
-      return jsonEncode({
+      return {
         "w": w,
         "y": y,
         "r": (Normalize.normalizeValue(r) / 100) * s,
         "g": (Normalize.normalizeValue(g) / 100) * s,
         "b": (Normalize.normalizeValue(b) / 100) * s,
         "c": c,
+        "is_on": true,
         "pir": true,
         "type": "apply",
-        if (lamps != null) "lamps": lamps,
-        if (gid != null) "gid": gid.toString(),
-      });
+        "lamps": lamps,
+        "gid": gid.toString(),
+      };
     } else {
       if (isOn!) {
-        return jsonEncode({
+        return {
           "w": 50,
           "y": 50,
           "r": 0,
           "g": 0,
           "b": 0,
           "c": c,
+          "is_on": true,
           "pir": true,
           "type": "apply",
-          if (lamps != null) "lamps": lamps,
-          if (gid != null) "gid": gid.toString(),
-        });
+          "lamps": lamps,
+          "gid": gid.toString(),
+        };
       } else {
-        return jsonEncode({
+        return {
           "w": 0,
           "y": 0,
           "r": 0,
@@ -145,9 +147,10 @@ class CommandParams {
           "c": c,
           "pir": true,
           "type": "apply",
-          if (lamps != null) "lamps": lamps,
-          if (gid != null) "gid": gid.toString(),
-        });
+          "is_on": false,
+          "lamps": lamps,
+          "gid": gid.toString(),
+        };
       }
     }
   }

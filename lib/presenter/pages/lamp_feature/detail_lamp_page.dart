@@ -103,10 +103,12 @@ class _DetailLampPageState extends State<DetailLampPage> {
                               r: !isColor ? 0 : rgb.red,
                               g: !isColor ? 0 : rgb.green,
                               b: !isColor ? 0 : rgb.blue,
+                              gid: widget.lamps.first.groupLamp,
                               c: c.toInt(),
                               pir: true,
                               s: s.toInt(),
                               type: 'apply',
+                              // gid: widget.lamps.first.groupLamp
                             ),
                           ),
                         );
@@ -178,6 +180,9 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                           BlocProvider.of<CommandBloc>(context)
                                               .add(SendCommandEvent(
                                                   CommandParams(
+                                                      gid:
+                                                          widget.lamps.first
+                                                              .groupLamp,
                                                       blueLampId:
                                                           widget.lamps.first.id,
                                                       isOn: false,
@@ -201,6 +206,9 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                           BlocProvider.of<CommandBloc>(context)
                                               .add(SendCommandEvent(
                                                   CommandParams(
+                                                      gid:
+                                                          widget.lamps.first
+                                                              .groupLamp,
                                                       blueLampId:
                                                           widget.lamps.first.id,
                                                       isOn: true,

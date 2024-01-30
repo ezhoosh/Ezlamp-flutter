@@ -70,6 +70,7 @@ import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/refresh_token_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_verify_usecase.dart';
+import 'package:easy_lamp/domain/usecases/remove_user_from_all_lamps_usecase.dart';
 import 'package:easy_lamp/domain/usecases/reset_password_usecase.dart';
 import 'package:easy_lamp/domain/usecases/send_command_usecase.dart';
 import 'package:easy_lamp/domain/usecases/send_login_otp_usecase.dart';
@@ -364,8 +365,11 @@ setupInvitation() async {
       .registerSingleton<DeclineInviteUseCase>(DeclineInviteUseCase(locator()));
   locator.registerSingleton<PatchInvitationUseCase>(
       PatchInvitationUseCase(locator()));
+  locator.registerSingleton<RemoveUserFromAllLampUseCase>(
+      RemoveUserFromAllLampUseCase(locator()));
   //bloc
   locator.registerSingleton<InvitationBloc>(InvitationBloc(
+    locator(),
     locator(),
     locator(),
     locator(),

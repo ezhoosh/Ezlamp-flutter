@@ -10,6 +10,7 @@ class InvitationState {
       putInvitationStatus,
       patchInvitationStatus,
       acceptInviteStatus,
+      removeUserFromAllLampStatus,
       declineInviteStatus;
 
   InvitationState(
@@ -18,6 +19,7 @@ class InvitationState {
       required this.getInvitationByIdStatus,
       required this.getInvitationByGroupIdStatus,
       required this.deleteInvitationStatus,
+      required this.removeUserFromAllLampStatus,
       required this.createInvitationStatus,
       required this.putInvitationStatus,
       required this.patchInvitationStatus,
@@ -30,29 +32,32 @@ class InvitationState {
       newGetInvitationByIdStatus,
       newGetInvitationByGroupIdStatus,
       newDeleteInvitationStatus,
+      newRemoveUserFromAllLampStatus,
       newCreateInvitationStatus,
       newPutInvitationStatus,
       newPatchInvitationStatus,
       newAcceptInviteStatus,
       newDeclineInviteStatus}) {
     return InvitationState(
-      getMyInvitationAssignmentListStatus:
-          newGetMyInvitationAssignmentListStatus ??
-              getMyInvitationAssignmentListStatus,
-      getInvitationListStatus:
-          newGetInvitationListStatus ?? getInvitationListStatus,
-      getInvitationByIdStatus:
-          newGetInvitationByIdStatus ?? getInvitationByIdStatus,
-      getInvitationByGroupIdStatus:
-          newGetInvitationByGroupIdStatus ?? getInvitationByGroupIdStatus,
-      deleteInvitationStatus:
-          newDeleteInvitationStatus ?? deleteInvitationStatus,
-      createInvitationStatus:
-          newCreateInvitationStatus ?? createInvitationStatus,
-      patchInvitationStatus: newPatchInvitationStatus ?? patchInvitationStatus,
-      putInvitationStatus: newPutInvitationStatus ?? putInvitationStatus,
-      acceptInviteStatus: newAcceptInviteStatus ?? acceptInviteStatus,
-      declineInviteStatus: newDeclineInviteStatus ?? declineInviteStatus,
-    );
+        getMyInvitationAssignmentListStatus:
+            newGetMyInvitationAssignmentListStatus ??
+                getMyInvitationAssignmentListStatus,
+        getInvitationListStatus:
+            newGetInvitationListStatus ?? getInvitationListStatus,
+        getInvitationByIdStatus:
+            newGetInvitationByIdStatus ?? getInvitationByIdStatus,
+        getInvitationByGroupIdStatus:
+            newGetInvitationByGroupIdStatus ?? getInvitationByGroupIdStatus,
+        deleteInvitationStatus:
+            newDeleteInvitationStatus ?? deleteInvitationStatus,
+        createInvitationStatus:
+            newCreateInvitationStatus ?? createInvitationStatus,
+        patchInvitationStatus:
+            newPatchInvitationStatus ?? patchInvitationStatus,
+        putInvitationStatus: newPutInvitationStatus ?? putInvitationStatus,
+        acceptInviteStatus: newAcceptInviteStatus ?? acceptInviteStatus,
+        declineInviteStatus: newDeclineInviteStatus ?? declineInviteStatus,
+        removeUserFromAllLampStatus:
+            newRemoveUserFromAllLampStatus ?? removeUserFromAllLampStatus);
   }
 }

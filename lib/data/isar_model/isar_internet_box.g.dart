@@ -15,7 +15,7 @@ extension GetIsarInternetBoxCollection on Isar {
 
 const IsarInternetBoxSchema = CollectionSchema(
   name: r'IsarInternetBox',
-  id: 3567,
+  id: 7824911110804777452,
   properties: {
     r'description': PropertySchema(
       id: 0,
@@ -41,7 +41,7 @@ const IsarInternetBoxSchema = CollectionSchema(
   indexes: {},
   links: {
     r'owner': LinkSchema(
-      id: 987552,
+      id: 3195837629443336063,
       name: r'owner',
       target: r'IsarOwner',
       single: true,

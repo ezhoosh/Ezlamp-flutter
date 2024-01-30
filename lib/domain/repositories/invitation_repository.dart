@@ -24,6 +24,8 @@ abstract class InvitationRepository {
 
   Future<DataState<InvitationModel>> getInvitationGroupGetById(int groupId);
 
+  Future<DataState<String>> removeUserFromAllLamp(int id);
+
   Future<DataState<String>> deleteInvitationGetById(int id);
 
   Future<DataState<String>> createInvitation(CreateInvitationParams params);

@@ -29,6 +29,12 @@ class DeleteInvitationEvent extends InvitationEvent {
   DeleteInvitationEvent(this.id);
 }
 
+class RemoveUserFromAllLampEvent extends InvitationEvent {
+  int id;
+
+  RemoveUserFromAllLampEvent(this.id);
+}
+
 class CreateInvitationEvent extends InvitationEvent {
   CreateInvitationParams params;
 
