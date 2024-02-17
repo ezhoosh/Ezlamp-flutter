@@ -158,10 +158,13 @@ class EditInternetBoxBottomSheet extends StatelessWidget {
             width: MySpaces.s8,
           ),
           Expanded(
-              child: Text(informationData,
-                  style: DemiBoldStyle.lg.copyWith(
-                    color: MyColors.white,
-                  )))
+              child: Text(
+            informationData,
+            style: DemiBoldStyle.lg.copyWith(
+              color: MyColors.white,
+            ),
+            maxLines: 1,
+          ))
         ],
       ),
     ));

@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:easy_lamp/core/resource/constants.dart';
 import 'package:easy_lamp/core/utils/normalize.dart';
 
 CommandParams commandParamsFromJson(String str) =>
@@ -82,9 +83,9 @@ class CommandParams {
     }
     if (isOn!) {
       return jsonEncode({
-        'type': type,
+        'type': "apply",
         'uid': lamps.toString(),
-        'c': 0,
+        'c': Constants.defaultC,
         'w': 50,
         'y': 50,
         'r': 0,
@@ -94,15 +95,8 @@ class CommandParams {
       });
     } else {
       return jsonEncode({
-        'type': type,
+        'type': 'off',
         'uid': lamps.toString(),
-        'c': 0,
-        'w': 0,
-        'y': 0,
-        'r': 0,
-        'g': 0,
-        'b': 0,
-        'pir': 0,
       });
     }
   }
@@ -130,7 +124,7 @@ class CommandParams {
           "r": 0,
           "g": 0,
           "b": 0,
-          "c": c,
+          "c": Constants.defaultC,
           "is_on": true,
           "pir": true,
           "type": "apply",

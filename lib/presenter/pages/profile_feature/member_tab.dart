@@ -65,17 +65,8 @@ class MemberTab extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                item.message,
-                                style: DemiBoldStyle.lg
-                                    .copyWith(color: MyColors.white),
-                                maxLines: 2,
-                              ),
-                              const SizedBox(
-                                height: MySpaces.s4,
-                              ),
-                              Text(
                                 item.phoneNumber,
-                                style: DemiBoldStyle.sm
+                                style: DemiBoldStyle.lg
                                     .copyWith(color: MyColors.black.shade100),
                               ),
                             ],
@@ -83,8 +74,9 @@ class MemberTab extends StatelessWidget {
                         ),
                         ClickableContainer(
                           onTap: () {
-                            BlocProvider.of<InvitationBloc>(context)
-                                .add(DeleteInvitationEvent(items[index].id));
+                            BlocProvider.of<InvitationBloc>(context).add(
+                                DeleteInvitationEvent(
+                                    items[index].phoneNumber));
                           },
                           color: MyColors.black.shade400,
                           borderRadius: MyRadius.xs,

@@ -1,5 +1,6 @@
 import 'package:easy_lamp/core/params/command_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
+import 'package:easy_lamp/core/resource/constants.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
@@ -37,7 +38,7 @@ class CommandBottomSheet extends StatefulWidget {
 class _CommandBottomSheetState extends State<CommandBottomSheet> {
   late AppLocalizations al;
   Color rgb = Colors.white;
-  double c = 0;
+  double c = Constants.defaultC;
   double y = 0;
   double w = 0;
   double v = 0;
@@ -185,9 +186,9 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
                   c = newValue;
                 });
               },
-              min: 0.0,
+              min: Constants.defaultMinC,
               // Minimum value
-              max: 20.0,
+              max: Constants.defaultMaxC,
               // Maximum value
             ),
           ),
@@ -236,66 +237,72 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
             color: MyColors.secondary.shade800,
             height: MySpaces.s40,
           ),
-          getCard(
-            al.selectColor,
-            Iconsax.color_swatch,
-            left: Container(
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                color: rgb,
-                shape: BoxShape.circle,
+          Opacity(
+            opacity: isColor ? 1 : 0.5,
+            child: getCard(
+              al.selectColor,
+              Iconsax.color_swatch,
+              left: Container(
+                width: 20,
+                height: 20,
+                decoration: BoxDecoration(
+                  color: rgb,
+                  shape: BoxShape.circle,
+                ),
               ),
-            ),
-            () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    Color currentColor = Colors.white;
-                    return AlertDialog(
-                      title: Text(al.selectColor),
-                      content: SingleChildScrollView(
-                        child: ColorPicker(
-                          pickerColor: rgb,
-                          onColorChanged: (c) {
-                            currentColor = c;
-                          },
-                        ),
-                        // Use Material color picker:
-                        //
-                        // child: MaterialPicker(
-                        //   pickerColor: pickerColor,
-                        //   onColorChanged: changeColor,
-                        //   showLabel: true, // only on portrait mode
-                        // ),
-                        //
-                        // Use Block color picker:
-                        //
-                        // child: BlockPicker(
-                        //   pickerColor: currentColor,
-                        //   onColorChanged: changeColor,
-                        // ),
-                        //
-                        // child: MultipleChoiceBlockPicker(
-                        //   pickerColors: currentColors,
-                        //   onColorsChanged: changeColors,
-                        // ),
-                      ),
-                      actions: <Widget>[
-                        SizedBox(
-                          width: double.infinity,
-                          child: PrimaryButton(
-                            text: al.done,
-                            onPress: () {
-                              setState(() => rgb = currentColor);
-                              Navigator.of(context).pop();
+              () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      Color currentColor = Colors.white;
+                      return AlertDialog(
+                        title: Text(al.selectColor),
+                        content: SingleChildScrollView(
+                          child: ColorPicker(
+                            pickerColor: rgb,
+                            onColorChanged: (c) {
+                              currentColor = c;
                             },
                           ),
+                          // Use Material color picker:
+                          //
+                          // child: MaterialPicker(
+                          //   pickerColor: pickerColor,
+                          //   onColorChanged: changeColor,
+                          //   showLabel: true, // only on portrait mode
+                          // ),
+                          //
+                          // Use Block color picker:
+                          //
+                          // child: BlockPicker(
+                          //   pickerColor: currentColor,
+                          //   onColorChanged: changeColor,
+                          // ),
+                          //
+                          // child: MultipleChoiceBlockPicker(
+                          //   pickerColors: currentColors,
+                          //   onColorsChanged: changeColors,
+                          // ),
                         ),
-                      ],
-                    );
-                  });
-            },
+                        actions: <Widget>[
+                          SizedBox(
+                            width: double.infinity,
+                            child: PrimaryButton(
+                              text: al.done,
+                              onPress: () {
+                                setState(() {
+                                  isColor = true;
+                                  rgb = currentColor;
+                                });
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ),
+                        ],
+                      );
+                    });
+              },
+            ),
           ),
           const SizedBox(
             height: MySpaces.s16,
@@ -365,10 +372,13 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
             width: MySpaces.s8,
           ),
           Expanded(
-              child: Text(informationData,
-                  style: DemiBoldStyle.lg.copyWith(
-                    color: MyColors.white,
-                  )))
+              child: Text(
+            informationData,
+            style: DemiBoldStyle.lg.copyWith(
+              color: MyColors.white,
+            ),
+            maxLines: 1,
+          ))
         ],
       ),
     ));

@@ -1,6 +1,7 @@
 import 'package:easy_lamp/core/params/create_schedule_params.dart';
 import 'package:easy_lamp/core/params/update_schedule_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
+import 'package:easy_lamp/core/resource/constants.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/arrow_back.dart';
@@ -281,20 +282,27 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                       ClickableContainer(
                         onTap: () {
                           showModalBottomSheet(
+                              isScrollControlled: true,
                               context: context,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(24),
+                                  topRight: Radius.circular(24),
+                                ),
+                              ),
                               builder: (context) {
-                                double c = 0;
+                                double c = Constants.defaultC;
                                 double y = 0;
                                 double w = 0;
                                 double v = 0;
                                 double s = 100;
                                 Color rgb = Colors.white;
                                 bool isColor = true;
-                                return CustomBottomSheet(
-                                  title: al.lightSetting,
-                                  child: StatefulBuilder(
-                                      builder: (context, setState) {
-                                    return Column(
+                                return StatefulBuilder(
+                                    builder: (context, setState) {
+                                  return CustomBottomSheet(
+                                    title: al.lightSetting,
+                                    child: Column(
                                       children: [
                                         Row(
                                           children: [
@@ -453,88 +461,94 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                                 c = newValue;
                                               });
                                             },
-                                            min: 0.0,
+                                            min: Constants.defaultMinC,
                                             // Minimum value
-                                            max: 20.0,
+                                            max: Constants.defaultMaxC,
                                             // Maximum value
                                           ),
                                         ),
                                         const SizedBox(
                                           height: MySpaces.s12,
                                         ),
-                                        getCard(
-                                          al.selectColor,
-                                          Iconsax.color_swatch,
-                                          left: Container(
-                                            width: 20,
-                                            height: 20,
-                                            decoration: BoxDecoration(
-                                              color: rgb,
-                                              shape: BoxShape.circle,
+                                        Opacity(
+                                          opacity: isColor ? 1 : 0.5,
+                                          child: getCard(
+                                            al.selectColor,
+                                            Iconsax.color_swatch,
+                                            left: Container(
+                                              width: 20,
+                                              height: 20,
+                                              decoration: BoxDecoration(
+                                                color: rgb,
+                                                shape: BoxShape.circle,
+                                              ),
                                             ),
-                                          ),
-                                          () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  Color currentColor =
-                                                      Colors.white;
-                                                  return AlertDialog(
-                                                    title: Text(al.selectColor),
-                                                    content:
-                                                        SingleChildScrollView(
-                                                      child: ColorPicker(
-                                                        pickerColor: rgb,
-                                                        onColorChanged: (c) {
-                                                          currentColor = c;
-                                                        },
-                                                      ),
-                                                      // Use Material color picker:
-                                                      //
-                                                      // child: MaterialPicker(
-                                                      //   pickerColor: pickerColor,
-                                                      //   onColorChanged: changeColor,
-                                                      //   showLabel: true, // only on portrait mode
-                                                      // ),
-                                                      //
-                                                      // Use Block color picker:
-                                                      //
-                                                      // child: BlockPicker(
-                                                      //   pickerColor: currentColor,
-                                                      //   onColorChanged: changeColor,
-                                                      // ),
-                                                      //
-                                                      // child: MultipleChoiceBlockPicker(
-                                                      //   pickerColors: currentColors,
-                                                      //   onColorsChanged: changeColors,
-                                                      // ),
-                                                    ),
-                                                    actions: <Widget>[
-                                                      SizedBox(
-                                                        width: double.infinity,
-                                                        child: PrimaryButton(
-                                                          text: al.done,
-                                                          onPress: () {
-                                                            setState(() => rgb =
-                                                                currentColor);
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
+                                            () {
+                                              showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    Color currentColor =
+                                                        Colors.white;
+                                                    return AlertDialog(
+                                                      title:
+                                                          Text(al.selectColor),
+                                                      content:
+                                                          SingleChildScrollView(
+                                                        child: ColorPicker(
+                                                          pickerColor: rgb,
+                                                          onColorChanged: (c) {
+                                                            currentColor = c;
                                                           },
                                                         ),
+                                                        // Use Material color picker:
+                                                        //
+                                                        // child: MaterialPicker(
+                                                        //   pickerColor: pickerColor,
+                                                        //   onColorChanged: changeColor,
+                                                        //   showLabel: true, // only on portrait mode
+                                                        // ),
+                                                        //
+                                                        // Use Block color picker:
+                                                        //
+                                                        // child: BlockPicker(
+                                                        //   pickerColor: currentColor,
+                                                        //   onColorChanged: changeColor,
+                                                        // ),
+                                                        //
+                                                        // child: MultipleChoiceBlockPicker(
+                                                        //   pickerColors: currentColors,
+                                                        //   onColorsChanged: changeColors,
+                                                        // ),
                                                       ),
-                                                    ],
-                                                  );
-                                                });
-                                          },
+                                                      actions: <Widget>[
+                                                        SizedBox(
+                                                          width:
+                                                              double.infinity,
+                                                          child: PrimaryButton(
+                                                            text: al.done,
+                                                            onPress: () {
+                                                              setState(() {
+                                                                isColor = true;
+                                                                rgb =
+                                                                    currentColor;
+                                                              });
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  });
+                                            },
+                                          ),
                                         ),
                                         const SizedBox(
                                           height: MySpaces.s40,
                                         ),
                                         Container(
                                           margin: const EdgeInsets.only(
-                                            left: MySpaces.s8,
-                                            right: MySpaces.s8,
                                             bottom: MySpaces.s12,
                                           ),
                                           width: double.infinity,
@@ -562,9 +576,9 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                           ),
                                         )
                                       ],
-                                    );
-                                  }),
-                                );
+                                    ),
+                                  );
+                                });
                               });
                         },
                         width: double.infinity,

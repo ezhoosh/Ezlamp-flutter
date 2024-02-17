@@ -16,17 +16,28 @@ import 'package:flutter_svg/svg.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
 import 'package:easy_lamp/core/widgets/error_helper.dart';
 
-class EditProfileBottomSheet extends StatelessWidget {
+class EditProfileBottomSheet extends StatefulWidget {
+  UserModel userModel;
+
+  EditProfileBottomSheet(this.userModel, {super.key});
+
+  @override
+  State<EditProfileBottomSheet> createState() => _EditProfileBottomSheetState();
+}
+
+class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
   late AppLocalizations al;
   final TextEditingController _controllerFirstName = TextEditingController();
   final TextEditingController _controllerLastName = TextEditingController();
   final TextEditingController _controllerEmail = TextEditingController();
-  UserModel userModel;
 
-  EditProfileBottomSheet(this.userModel, {super.key}) {
-    _controllerEmail.text = userModel.email;
-    _controllerFirstName.text = userModel.firstName;
-    _controllerLastName.text = userModel.lastName;
+  @override
+  void initState() {
+    super.initState();
+
+    _controllerEmail.text = widget.userModel.email;
+    _controllerFirstName.text = widget.userModel.firstName;
+    _controllerLastName.text = widget.userModel.lastName;
   }
 
   @override

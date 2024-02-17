@@ -14,46 +14,56 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
 
-class EditGroupNameBottomSheet extends StatelessWidget {
-  late AppLocalizations al;
-  final TextEditingController _controller = TextEditingController();
+class EditGroupNameBottomSheet extends StatefulWidget {
   int groupId;
 
   EditGroupNameBottomSheet(this.groupId, {super.key});
 
   @override
+  State<EditGroupNameBottomSheet> createState() =>
+      _EditGroupNameBottomSheetState();
+}
+
+class _EditGroupNameBottomSheetState extends State<EditGroupNameBottomSheet> {
+  final TextEditingController _controller = TextEditingController();
+  late AppLocalizations al;
+
+  @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
-    return BlocListener<GroupBloc, GroupState>(
-      listenWhen: (prev, curr) {
-        if (prev.updateGroupNameStatus is BaseSuccess &&
-            curr.updateGroupNameStatus is BaseNoAction) {
-          return false;
-        }
-        return true;
-      },
-      listener: (context, state) {
-        if (state.updateGroupNameStatus is BaseSuccess) {
-          EasyLoading.showSuccess("SUCCESS");
-        } else if (state.updateGroupNameStatus is BaseLoading) {
-          EasyLoading.show();
-        } else if (state.updateGroupNameStatus is BaseError) {
-          EasyLoading.showError(
-              ErrorHelper.getBaseError(state.createGroupStatus));
-        }
-      },
-      child: CustomBottomSheet(
-        title: AppLocalizations.of(context)!.editGroupName,
-        child: Column(
-          children: [
-            BorderTextField(
-              hintText: al.title,
-              controller: _controller,
-            ),
-            const SizedBox(
-              height: MySpaces.s12,
-            ),
-            SizedBox(
+    return CustomBottomSheet(
+      title: AppLocalizations.of(context)!.editGroupName,
+      child: Column(
+        children: [
+          BorderTextField(
+            hintText: al.title,
+            controller: _controller,
+          ),
+          const SizedBox(
+            height: MySpaces.s12,
+          ),
+          BlocListener<GroupBloc, GroupState>(
+            listenWhen: (prev, curr) {
+              if ((prev.updateGroupNameStatus is BaseError &&
+                      curr.updateGroupNameStatus is BaseSuccess) ||
+                  (prev.updateGroupNameStatus is BaseError &&
+                      curr.updateGroupNameStatus is BaseNoAction)) {
+                return false;
+              }
+              return true;
+            },
+            listener: (context, state) {
+              if (state.updateGroupNameStatus is BaseSuccess) {
+                Navigator.pop(context);
+                EasyLoading.showSuccess("SUCCESS");
+              } else if (state.updateGroupNameStatus is BaseLoading) {
+                EasyLoading.show();
+              } else if (state.updateGroupNameStatus is BaseError) {
+                EasyLoading.showError(
+                    ErrorHelper.getBaseError(state.updateGroupNameStatus));
+              }
+            },
+            child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
@@ -61,7 +71,7 @@ class EditGroupNameBottomSheet extends StatelessWidget {
                     UpdateGroupNameEvent(
                       EditGroupNameParams(
                         _controller.text,
-                        groupId,
+                        widget.groupId,
                       ),
                     ),
                   );
@@ -72,11 +82,11 @@ class EditGroupNameBottomSheet extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: MySpaces.s24,
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(
+            height: MySpaces.s24,
+          ),
+        ],
       ),
     );
   }

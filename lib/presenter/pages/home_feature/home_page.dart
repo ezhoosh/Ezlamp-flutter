@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/widgets/dot_navigation/dot_navigation_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage> {
         selectedItemColor: MyColors.white,
 
         unselectedItemColor: MyColors.secondary.shade800,
-// dotIndicatorColor: Colors.black,
+        // dotIndicatorColor: Colors.black,
         items: [
           getItemBottomNavigation("tab_user.svg"),
           getItemBottomNavigation("tab_group.svg"),

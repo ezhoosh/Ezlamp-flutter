@@ -14,18 +14,29 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
 
-class AddGroupBottomSheet extends StatelessWidget {
+class AddGroupBottomSheet extends StatefulWidget {
+  const AddGroupBottomSheet({super.key});
+
+  @override
+  State<AddGroupBottomSheet> createState() => _AddGroupBottomSheetState();
+}
+
+class _AddGroupBottomSheetState extends State<AddGroupBottomSheet> {
   late AppLocalizations al;
   late TextEditingController _controllerName;
   late TextEditingController _controllerDesc;
 
-  AddGroupBottomSheet({super.key});
+  @override
+  void initState() {
+    super.initState();
+
+    _controllerName = TextEditingController();
+    _controllerDesc = TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
-    _controllerName = TextEditingController();
-    _controllerDesc = TextEditingController();
     return BlocListener<GroupBloc, GroupState>(
       listenWhen: (prev, curr) {
         if (prev.createGroupStatus is BaseSuccess &&

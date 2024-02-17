@@ -39,7 +39,7 @@ class InvitationRepositoryImpl extends InvitationRepository {
   }
 
   @override
-  Future<DataState<String>> removeUserFromAllLamp(int id) async {
+  Future<DataState<String>> removeUserFromAllLamp(String id) async {
     try {
       var response = await ApiAccess.makeHttpRequest(
         "invitations/remove_user_from_all_lamps/$id/",

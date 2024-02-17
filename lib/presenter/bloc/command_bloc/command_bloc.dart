@@ -37,7 +37,8 @@ class CommandBloc extends Bloc<CommandEvent, CommandState> {
         }
         emit(state.copyWith(newSendCommandStatus: BaseNoAction()));
       } else {
-        final data = event.commandParams.toBlueJson();
+        final data =
+            event.commandParams.toBlueJson().toString().replaceAll(' ', '');
         // if (data is List) {
         //   emit(state.copyWith(newSendCommandStatus: BaseLoading()));
         //

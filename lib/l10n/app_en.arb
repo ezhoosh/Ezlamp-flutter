@@ -75,14 +75,14 @@
   "email": "Email",
   "firstName": "First Name",
   "lastName": "Last Name",
-  "internetLamp": "Internet Lamp",
+  "internetLamp": "Internet Box",
   "connectionType": "Connection Type",
   "blue": "Bluetooth",
   "internet": "Internet",
   "logoutDesc": "Are you sure you want to delete the user?",
   "name": "Name",
   "defaultText": "Default Text",
-  "addInternetLamp": "Add Internet Lamp",
+  "addInternetLamp": "Add Internet Box",
   "addYourLamp": "Add your lamp...",
   "selectButton": "Select",
   "unselectButton": "Deselect",
@@ -129,7 +129,7 @@
   "editInformation": "Edit information",
   "exit": "Exit",
   "endHour": "End time",
-  "addYourInternetLamp": "Add your internet lamp",
+  "addYourInternetLamp": "Add your internet box",
   "deleteGroupMessage": "Are you sure you want to delete this group?",
   "deleteGroup": "Delete group",
   "speedLight": "Light change speed",
@@ -138,5 +138,6 @@
   "bluetoothIsOff": "Bluetooth is off",
   "turnOn": "Turn on",
   "errorNotSelected": "Please select an item",
-  "errorInformation": "Enter the information correctly"
+  "errorInformation": "Enter the information correctly",
+  "notValidBarcode": "The barcode is not valid"
 }

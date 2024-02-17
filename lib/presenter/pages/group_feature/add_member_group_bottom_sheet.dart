@@ -61,69 +61,71 @@ class _AddMemberGroupBottomSheetState extends State<AddMemberGroupBottomSheet> {
       },
       child: CustomBottomSheet(
         title: al.addMember,
-        child: Column(
-          children: [
-            InputPhone(
-              title: al.phone,
-              hint: "9123456789",
-              textEditingController: _controllerPhone,
-              isOptional: false,
-            ),
-            const SizedBox(
-              height: MySpaces.s12,
-            ),
-            InputGroupSelect(
-              title: al.selectGroup,
-              isDate: true,
-              prevValue: lamps,
-              onNewDateSelected: (List<LampModel> newValue) {
-                lamps = newValue;
-              },
-            ),
-            const SizedBox(
-              height: MySpaces.s12,
-            ),
-            BorderTextField(
-              title: al.message,
-              controller: _controllerMessage,
-              optional: false,
-              hintText: al.message,
-              maxLines: 4,
-            ),
-            const SizedBox(
-              height: MySpaces.s24,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: PrimaryButton(
-                onPress: () {
-                  Map<int, List<int>> data = {};
-                  for (LampModel lamp in lamps) {
-                    if (data.containsKey(lamp.groupLamp)) {
-                      data[lamp.groupLamp]?.add(lamp.id);
-                    } else {
-                      data[lamp.groupLamp] = [lamp.id];
-                    }
-                  }
-
-                  String phone = _controllerPhone.text;
-                  if (!phone.startsWith('0')) {
-                    phone = '0$phone';
-                  }
-                  BlocProvider.of<InvitationBloc>(context).add(
-                      CreateInvitationGroupEvent(CreateInvitationGroupParams(
-                    phoneNumber: phone,
-                    message: _controllerMessage.text,
-                    lamps: data,
-                  )));
-                },
-                text: al.save,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              InputPhone(
+                title: al.phone,
+                hint: "9123456789",
+                textEditingController: _controllerPhone,
+                isOptional: false,
               ),
-            ),
-            const SizedBox(
-              height: MySpaces.s24,
-            ),
-          ],
+              const SizedBox(
+                height: MySpaces.s12,
+              ),
+              InputGroupSelect(
+                title: al.selectGroup,
+                isDate: true,
+                prevValue: lamps,
+                onNewDateSelected: (List<LampModel> newValue) {
+                  lamps = newValue;
+                },
+              ),
+              const SizedBox(
+                height: MySpaces.s12,
+              ),
+              BorderTextField(
+                title: al.message,
+                controller: _controllerMessage,
+                optional: false,
+                hintText: al.message,
+                maxLines: 4,
+              ),
+              const SizedBox(
+                height: MySpaces.s24,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: PrimaryButton(
+                  onPress: () {
+                    Map<int, List<int>> data = {};
+                    for (LampModel lamp in lamps) {
+                      if (data.containsKey(lamp.groupLamp)) {
+                        data[lamp.groupLamp]?.add(lamp.id);
+                      } else {
+                        data[lamp.groupLamp] = [lamp.id];
+                      }
+                    }
+
+                    String phone = _controllerPhone.text;
+                    if (!phone.startsWith('0')) {
+                      phone = '0$phone';
+                    }
+                    BlocProvider.of<InvitationBloc>(context).add(
+                        CreateInvitationGroupEvent(CreateInvitationGroupParams(
+                      phoneNumber: phone,
+                      message: _controllerMessage.text,
+                      lamps: data,
+                    )));
+                  },
+                  text: al.save,
+                ),
+              ),
+              const SizedBox(
+                height: MySpaces.s24,
+              ),
+            ],
+          ),
         ),
       ),
     );

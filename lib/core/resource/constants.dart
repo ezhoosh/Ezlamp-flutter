@@ -5,4 +5,7 @@ class Constants {
   static const String languageKey = 'language_type';
   static const String refreshKey = 'refresh_token';
   static const String phoneKey = 'phone_token';
+  static const double defaultC = 9;
+  static const double defaultMinC = 1;
+  static const double defaultMaxC = 20;
 }

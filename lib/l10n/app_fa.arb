@@ -75,14 +75,14 @@
   "email": "ایمیل",
   "firstName": "نام",
   "lastName": "نام خانوادگی",
-  "internetLamp": "لامپ اینترنتی",
+  "internetLamp": "باکس اینترنتی",
   "connectionType": "نوع اتصال",
   "blue": "بلوتوث",
   "internet": "اینترنت",
   "logoutDesc": "آیا از خروج کاربر اطمینان دارین؟",
   "name": "نام",
   "defaultText": "متن پیش فرض",
-  "addInternetLamp": "افزودن لامپ اینترنتی",
+  "addInternetLamp": "افزودن باکس اینترنتی",
   "addYourLamp": "لامپ خود را اضافه کنید...",
   "selectButton": "انتخاب",
   "unselectButton": "لغو انتخاب",
@@ -124,7 +124,7 @@
   "editInformation": "ویرایش اطلاعات",
   "exit": "خروج",
   "endHour": "ساعت پایان",
-  "addYourInternetLamp": "لامپ اینترنتی خود را اضافه کنید",
+  "addYourInternetLamp": "باکس اینترنتی خود را اضافه کنید",
   "deleteGroupMessage": "آیا از حذف این گروه اطمینان دارین؟",
   "deleteGroup": "حذف گروه",
   "speedLight": "سرعت تغییر نور",
@@ -134,5 +134,6 @@
   "bluetoothIsOff": "بلوتوث خاموش است",
   "turnOn": "روشن کردن",
   "errorNotSelected": "لطفا یک مورد را انتخاب کنید",
-  "errorInformation": "اطلاعات رو به درستی وارد کنید"
+  "errorInformation": "اطلاعات رو به درستی وارد کنید",
+  "notValidBarcode": "بارکد معتبر نیست"
 }

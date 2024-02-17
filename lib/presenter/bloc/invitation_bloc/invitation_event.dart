@@ -24,9 +24,9 @@ class GetInvitationByGroupIdEvent extends InvitationEvent {
 }
 
 class DeleteInvitationEvent extends InvitationEvent {
-  int id;
+  String phoneNumber;
 
-  DeleteInvitationEvent(this.id);
+  DeleteInvitationEvent(this.phoneNumber);
 }
 
 class RemoveUserFromAllLampEvent extends InvitationEvent {

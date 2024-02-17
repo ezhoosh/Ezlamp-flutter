@@ -75,8 +75,8 @@ class GroupBloc extends Bloc<GroupEvent, GroupState> {
         if (dataState is DataSuccess) {
           // await isarGroupRepository.clearCollection();
           if (!kIsWeb) {
-            await isarGroupRepository
-                !.saveAll(Converter.groupLampModelToIsarGroup(dataState.data));
+            await isarGroupRepository!
+                .saveAll(Converter.groupLampModelToIsarGroup(dataState.data));
           }
           emit(state.copyWith(
               newGetGroupListStatus: BaseSuccess(dataState.data)));

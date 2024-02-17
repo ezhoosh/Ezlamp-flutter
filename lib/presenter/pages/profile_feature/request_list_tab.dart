@@ -88,7 +88,7 @@ class _RequestListTabState extends State<RequestListTab> {
                               ),
                               Text(
                                 item.assignee!.phoneNumber,
-                                style: DemiBoldStyle.sm
+                                style: DemiBoldStyle.lg
                                     .copyWith(color: MyColors.black.shade100),
                               ),
                             ],
@@ -96,13 +96,6 @@ class _RequestListTabState extends State<RequestListTab> {
                         ),
                         const SizedBox(
                           height: MySpaces.s4,
-                        ),
-                        PrimaryButton(
-                          text: al.acceptRequest,
-                          onPress: () {
-                            BlocProvider.of<InvitationBloc>(context)
-                                .add(AcceptInviteEvent(items[index].id));
-                          },
                         ),
                         IconButton(
                           icon: Icon(item.isOpen
@@ -151,16 +144,33 @@ class _RequestListTabState extends State<RequestListTab> {
                             const SizedBox(
                               height: MySpaces.s24,
                             ),
-                            SizedBox(
-                              width: double.infinity,
-                              child: PrimaryButton(
-                                text: al.delete,
-                                bg: MyColors.black.shade300,
-                                onPress: () {
-                                  BlocProvider.of<InvitationBloc>(context)
-                                      .add(DeclineInviteEvent(items[index].id));
-                                },
-                              ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: PrimaryButton(
+                                    text: al.acceptRequest,
+                                    onPress: () {
+                                      BlocProvider.of<InvitationBloc>(context)
+                                          .add(AcceptInviteEvent(
+                                              items[index].id));
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 12,
+                                ),
+                                Expanded(
+                                  child: PrimaryButton(
+                                    text: al.delete,
+                                    bg: MyColors.black.shade300,
+                                    onPress: () {
+                                      BlocProvider.of<InvitationBloc>(context)
+                                          .add(DeclineInviteEvent(
+                                              items[index].id));
+                                    },
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),

@@ -163,6 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Text(
               al.connectionType,
               style: DemiBoldStyle.lg.copyWith(color: MyColors.white),
+              maxLines: 1,
             ),
           ),
           BlocBuilder<AuthBloc, AuthState>(
@@ -266,6 +267,9 @@ class _ProfilePageState extends State<ProfilePage> {
             return Row(
               mainAxisSize: MainAxisSize.min,
               children: [
+                const SizedBox(
+                  width: 40,
+                ),
                 Text(
                   '${user.firstName} ${user.lastName}',
                   style: Light400Style.normal.copyWith(color: MyColors.white),
@@ -287,7 +291,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             );
           }
-          return SizedBox();
+          return const SizedBox();
         },
       )
     ];

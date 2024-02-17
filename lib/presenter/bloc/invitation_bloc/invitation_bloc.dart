@@ -103,7 +103,8 @@ class InvitationBloc extends Bloc<InvitationEvent, InvitationState> {
     });
     on<DeleteInvitationEvent>((event, emit) async {
       emit(state.copyWith(newDeleteInvitationStatus: BaseLoading()));
-      DataState dataState = await deleteInvitationUseCase(event.id);
+      DataState dataState =
+          await removeUserFromAllLampUseCase(event.phoneNumber);
       if (dataState is DataSuccess) {
         emit(state.copyWith(
             newDeleteInvitationStatus: BaseSuccess(dataState.data)));

@@ -76,17 +76,20 @@ class _AddInternetBoxBottomSheetState extends State<AddInternetBoxBottomSheet> {
                     ),
                   );
                 } else {
-                  BlocProvider.of<LampBloc>(context).add(
-                    UpdateLampOwnerEvent(
-                      UpdateLampOwnerParams(
-                        widget.groupId!,
-                        _controllerName.text,
-                        _controllerDesc.text,
-                        widget.uuid,
-                      ),
-                    ),
-                  );
+                  EasyLoading.showToast(al.notValidBarcode);
                 }
+                // else {
+                // BlocProvider.of<LampBloc>(context).add(
+                //   UpdateLampOwnerEvent(
+                //     UpdateLampOwnerParams(
+                //       widget.groupId!,
+                //       _controllerName.text,
+                //       _controllerDesc.text,
+                //       widget.uuid,
+                //     ),
+                //   ),
+                // );
+                // }
               },
               child: Text(
                 al.save,

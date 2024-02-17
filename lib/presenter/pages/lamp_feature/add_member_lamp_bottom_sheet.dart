@@ -21,14 +21,21 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:easy_lamp/core/widgets/border_text_field.dart';
 
-class AddMemberLampBottomSheet extends StatelessWidget {
-  late AppLocalizations al;
-  final TextEditingController _controllerPhone = TextEditingController();
-  final TextEditingController _controllerMessage = TextEditingController();
+class AddMemberLampBottomSheet extends StatefulWidget {
   List<LampModel> lamps;
   int groupId;
 
   AddMemberLampBottomSheet(this.groupId, this.lamps, {super.key});
+
+  @override
+  State<AddMemberLampBottomSheet> createState() =>
+      _AddMemberLampBottomSheetState();
+}
+
+class _AddMemberLampBottomSheetState extends State<AddMemberLampBottomSheet> {
+  late AppLocalizations al;
+  final TextEditingController _controllerPhone = TextEditingController();
+  final TextEditingController _controllerMessage = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,50 +61,52 @@ class AddMemberLampBottomSheet extends StatelessWidget {
       },
       child: CustomBottomSheet(
         title: al.addMember,
-        child: Column(
-          children: [
-            InputPhone(
-              title: al.phone,
-              hint: "9123456789",
-              textEditingController: _controllerPhone,
-              isOptional: false,
-            ),
-            const SizedBox(
-              height: MySpaces.s12,
-            ),
-            BorderTextField(
-              title: al.message,
-              controller: _controllerMessage,
-              optional: false,
-              hintText: al.message,
-              maxLines: 4,
-            ),
-            const SizedBox(
-              height: MySpaces.s24,
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: PrimaryButton(
-                onPress: () {
-                  String phone = _controllerPhone.text;
-                  if (!phone.startsWith('0')) {
-                    phone = '0$phone';
-                  }
-                  BlocProvider.of<InvitationBloc>(context)
-                      .add(CreateInvitationEvent(CreateInvitationParams(
-                    phoneNumber: phone,
-                    message: _controllerMessage.text,
-                    groupLamp: groupId,
-                    lamps: lamps.map((e) => e.id).toList(),
-                  )));
-                },
-                text: al.save,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              InputPhone(
+                title: al.phone,
+                hint: "9123456789",
+                textEditingController: _controllerPhone,
+                isOptional: false,
               ),
-            ),
-            const SizedBox(
-              height: MySpaces.s24,
-            ),
-          ],
+              const SizedBox(
+                height: MySpaces.s12,
+              ),
+              BorderTextField(
+                title: al.message,
+                controller: _controllerMessage,
+                optional: false,
+                hintText: al.message,
+                maxLines: 4,
+              ),
+              const SizedBox(
+                height: MySpaces.s24,
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: PrimaryButton(
+                  onPress: () {
+                    String phone = _controllerPhone.text;
+                    if (!phone.startsWith('0')) {
+                      phone = '0$phone';
+                    }
+                    BlocProvider.of<InvitationBloc>(context)
+                        .add(CreateInvitationEvent(CreateInvitationParams(
+                      phoneNumber: phone,
+                      message: _controllerMessage.text,
+                      groupLamp: widget.groupId,
+                      lamps: widget.lamps.map((e) => e.id).toList(),
+                    )));
+                  },
+                  text: al.save,
+                ),
+              ),
+              const SizedBox(
+                height: MySpaces.s24,
+              ),
+            ],
+          ),
         ),
       ),
     );

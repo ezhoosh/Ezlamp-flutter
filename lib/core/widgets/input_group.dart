@@ -124,142 +124,144 @@ class _InputGroupSelectState extends State<InputGroupSelect> {
         return CustomBottomSheet(
           title: AppLocalizations.of(context)!.selectGroup,
           child: StatefulBuilder(builder: (context, setState) {
-            return Column(
-              children: [
-                BlocBuilder<GroupBloc, GroupState>(
-                  builder: (context, state) {
-                    if (state.getGroupListStatus is BaseSuccess) {
-                      List<GroupModel> groups =
-                          (state.getGroupListStatus as BaseSuccess).entity;
-                      return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          GroupModel group = groups[index];
-                          bool groupSelect = false;
-                          for (var element in group.lamps) {
-                            for (var element2 in lamps) {
-                              if (element == element2) {
-                                groupSelect = true;
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  BlocBuilder<GroupBloc, GroupState>(
+                    builder: (context, state) {
+                      if (state.getGroupListStatus is BaseSuccess) {
+                        List<GroupModel> groups =
+                            (state.getGroupListStatus as BaseSuccess).entity;
+                        return ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            GroupModel group = groups[index];
+                            bool groupSelect = false;
+                            for (var element in group.lamps) {
+                              for (var element2 in lamps) {
+                                if (element == element2) {
+                                  groupSelect = true;
+                                }
                               }
                             }
-                          }
-                          return Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Checkbox(
-                                    value: groupSelect,
-                                    onChanged: (t) {
-                                      for (var element in group.lamps) {
-                                        if (t!) {
-                                          if (!lamps.contains(element)) {
-                                            lamps.add(element);
-                                          }
-                                        } else {
-                                          if (lamps.contains(element)) {
-                                            lamps.remove(element);
+                            return Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Checkbox(
+                                      value: groupSelect,
+                                      onChanged: (t) {
+                                        for (var element in group.lamps) {
+                                          if (t!) {
+                                            if (!lamps.contains(element)) {
+                                              lamps.add(element);
+                                            }
+                                          } else {
+                                            if (lamps.contains(element)) {
+                                              lamps.remove(element);
+                                            }
                                           }
                                         }
-                                      }
-                                      setState(() {});
-                                    },
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5)),
-                                    fillColor: MaterialStateProperty.all(
-                                        MyColors.primary),
-                                    checkColor: MyColors.white,
-                                  ),
-                                  Text(group.name),
-                                  const Spacer(),
-                                  Text(
-                                    AppLocalizations.of(context)!
-                                        .lamp(group.lamps.length.toString()),
-                                    style: DemiBoldStyle.xs.copyWith(
-                                        color: MyColors.secondary.shade600),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  Opacity(
-                                    opacity: group.lamps.isNotEmpty ? 1 : 0.3,
-                                    child: IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          group.open = !group.open;
-                                        });
+                                        setState(() {});
                                       },
-                                      icon: Icon(
-                                        group.open
-                                            ? Icons.keyboard_arrow_up
-                                            : Icons
-                                                .keyboard_arrow_down_outlined,
-                                        color: MyColors.white,
-                                      ),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5)),
+                                      fillColor: MaterialStateProperty.all(
+                                          MyColors.primary),
+                                      checkColor: MyColors.white,
                                     ),
-                                  )
-                                ],
-                              ),
-                              if (group.open)
-                                ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    itemCount: group.lamps.length,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, i) {
-                                      LampModel lamp = group.lamps[i];
-                                      return Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0),
-                                        child: Row(children: [
-                                          Checkbox(
-                                            value: lamps.contains(lamp),
-                                            onChanged: (t) {
-                                              if (t!) {
-                                                lamps.add(lamp);
-                                              } else {
-                                                lamps.remove(lamp);
-                                              }
-                                              setState(() {});
-                                            },
-                                            fillColor:
-                                                MaterialStateProperty.all(
-                                                    MyColors.primary),
-                                            checkColor: MyColors.white,
-                                          ),
-                                          Text(group.lamps[i].name),
-                                        ]),
-                                      );
-                                    }),
-                              if (index < groups.length - 1)
-                                const Divider(
-                                  height: 40,
+                                    Text(group.name),
+                                    const Spacer(),
+                                    Text(
+                                      AppLocalizations.of(context)!
+                                          .lamp(group.lamps.length.toString()),
+                                      style: DemiBoldStyle.xs.copyWith(
+                                          color: MyColors.secondary.shade600),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Opacity(
+                                      opacity: group.lamps.isNotEmpty ? 1 : 0.3,
+                                      child: IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            group.open = !group.open;
+                                          });
+                                        },
+                                        icon: Icon(
+                                          group.open
+                                              ? Icons.keyboard_arrow_up
+                                              : Icons
+                                                  .keyboard_arrow_down_outlined,
+                                          color: MyColors.white,
+                                        ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                            ],
-                          );
-                        },
-                        itemCount: groups.length,
-                      );
-                    }
-                    return Container();
-                  },
-                ),
-                const SizedBox(
-                  height: MySpaces.s24,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: PrimaryButton(
-                    text: AppLocalizations.of(context)!.save,
-                    onPress: () {
-                      Navigator.pop(context, lamps);
+                                if (group.open)
+                                  ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: group.lamps.length,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, i) {
+                                        LampModel lamp = group.lamps[i];
+                                        return Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          child: Row(children: [
+                                            Checkbox(
+                                              value: lamps.contains(lamp),
+                                              onChanged: (t) {
+                                                if (t!) {
+                                                  lamps.add(lamp);
+                                                } else {
+                                                  lamps.remove(lamp);
+                                                }
+                                                setState(() {});
+                                              },
+                                              fillColor:
+                                                  MaterialStateProperty.all(
+                                                      MyColors.primary),
+                                              checkColor: MyColors.white,
+                                            ),
+                                            Text(group.lamps[i].name),
+                                          ]),
+                                        );
+                                      }),
+                                if (index < groups.length - 1)
+                                  const Divider(
+                                    height: 40,
+                                  ),
+                              ],
+                            );
+                          },
+                          itemCount: groups.length,
+                        );
+                      }
+                      return Container();
                     },
                   ),
-                ),
-                const SizedBox(
-                  height: MySpaces.s16,
-                )
-              ],
+                  const SizedBox(
+                    height: MySpaces.s24,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: PrimaryButton(
+                      text: AppLocalizations.of(context)!.save,
+                      onPress: () {
+                        Navigator.pop(context, lamps);
+                      },
+                    ),
+                  ),
+                  const SizedBox(
+                    height: MySpaces.s16,
+                  )
+                ],
+              ),
             );
           }),
         );
