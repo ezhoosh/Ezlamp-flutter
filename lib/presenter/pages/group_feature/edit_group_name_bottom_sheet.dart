@@ -59,8 +59,7 @@ class _EditGroupNameBottomSheetState extends State<EditGroupNameBottomSheet> {
               } else if (state.updateGroupNameStatus is BaseLoading) {
                 EasyLoading.show();
               } else if (state.updateGroupNameStatus is BaseError) {
-                EasyLoading.showError(
-                    ErrorHelper.getBaseError(state.updateGroupNameStatus));
+                ErrorHelper.getBaseError(state.updateGroupNameStatus, context);
               }
             },
             child: SizedBox(

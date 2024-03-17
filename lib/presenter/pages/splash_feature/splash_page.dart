@@ -32,18 +32,14 @@ class _SplashPageState extends State<SplashPage> {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => const HomePage()),
             );
-          } else {
-            gotoAuth();
           }
         } else if (state.checkLoginStatus is SplashSuccessWithBlue) {
           if ((state.checkLoginStatus as SplashSuccessWithBlue).entity) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => const ConnectionPage()),
             );
-          } else {
-            gotoAuth();
           }
-        } else if (state.checkLoginStatus is SplashError) {
+        } else if (state.checkLoginStatus is SplashNewUser) {
           gotoAuth();
         }
       },
@@ -63,8 +59,25 @@ class _SplashPageState extends State<SplashPage> {
                   ),
                 ),
               ),
-              const CircularProgressIndicator(
-                color: MyColors.primary,
+              BlocBuilder<SplashBloc, SplashState>(
+                builder: (context, state) {
+                  if (state.checkLoginStatus is SplashError) {
+                    return IconButton(
+                      icon: const Icon(
+                        Icons.refresh,
+                        color: MyColors.primary,
+                        size: 40,
+                      ),
+                      onPressed: () {
+                        BlocProvider.of<SplashBloc>(context)
+                            .add(CheckLoginEvent());
+                      },
+                    );
+                  }
+                  return const CircularProgressIndicator(
+                    color: MyColors.primary,
+                  );
+                },
               ),
               const SizedBox(
                 height: MySpaces.s40,

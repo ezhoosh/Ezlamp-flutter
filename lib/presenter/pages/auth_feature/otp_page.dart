@@ -1,4 +1,7 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
+import 'package:easy_lamp/core/widgets/clickable_container.dart';
+import 'package:easy_lamp/core/widgets/count_timer.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/data/model/auth_status.dart';
 import 'package:easy_lamp/data/model/register_verify_model.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
@@ -29,6 +32,7 @@ class OtpPage extends StatefulWidget {
 class _OtpPageState extends State<OtpPage> {
   late AppLocalizations al;
   String code = '';
+  bool isFinish = false;
 
   @override
   Widget build(BuildContext context) {
@@ -54,27 +58,28 @@ class _OtpPageState extends State<OtpPage> {
             }
             EasyLoading.showSuccess("success");
           } else if (state.registerVerifyStatus is BaseError) {
-            EasyLoading.showError("error");
+            ErrorHelper.getBaseError(state.registerVerifyStatus, context);
           }
           if (state.loginStatus is BaseLoading ||
               state.registerStatus is BaseLoading) {
             EasyLoading.show();
           } else if (state.loginStatus is BaseSuccess ||
               state.registerStatus is BaseSuccess) {
-            if (kIsWeb) {
+            // if (kIsWeb) {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => const HomePage()),
                   ModalRoute.withName("/"));
-            } else {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (context) => const ConnectionPage()),
-                  ModalRoute.withName("/"));
-            }
+            // } else {
+            //   Navigator.of(context).pushAndRemoveUntil(
+            //       MaterialPageRoute(
+            //           builder: (context) => const ConnectionPage()),
+            //       ModalRoute.withName("/"));
+            // }
             EasyLoading.showSuccess("success");
-          } else if (state.loginStatus is BaseError ||
-              state.registerStatus is BaseError) {
-            EasyLoading.showError("error");
+          } else if (state.loginStatus is BaseError) {
+            ErrorHelper.getBaseError(state.loginStatus, context);
+          } else if (state.registerStatus is BaseError) {
+            ErrorHelper.getBaseError(state.registerStatus, context);
           }
         },
         child: Container(
@@ -101,6 +106,23 @@ class _OtpPageState extends State<OtpPage> {
                     .copyWith(color: MyColors.secondary.shade200),
                 textAlign: TextAlign.center,
               ),
+              const SizedBox(height: MySpaces.s6),
+              if (isFinish)
+                ClickableContainer(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text(
+                    al.checkPhone,
+                    style: Light400Style.sm.copyWith(color: MyColors.primary),
+                  ),
+                )
+              else
+                CountTimer(() {
+                  setState(() {
+                    isFinish = true;
+                  });
+                }),
               const SizedBox(height: MySpaces.s40),
               Directionality(
                 textDirection: TextDirection.ltr,

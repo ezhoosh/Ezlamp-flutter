@@ -52,8 +52,7 @@ class _AddGroupBottomSheetState extends State<AddGroupBottomSheet> {
         } else if (state.createGroupStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.createGroupStatus is BaseError) {
-          EasyLoading.showError(
-              ErrorHelper.getBaseError(state.createGroupStatus));
+          ErrorHelper.getBaseError(state.createGroupStatus, context);
         }
       },
       child: CustomBottomSheet(

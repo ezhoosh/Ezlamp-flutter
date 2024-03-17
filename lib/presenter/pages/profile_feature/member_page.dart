@@ -95,8 +95,8 @@ class _MemberPageState extends State<MemberPage> {
                   } else if (state.acceptInviteStatus is BaseError ||
                       state.declineInviteStatus is BaseError ||
                       state.deleteInvitationStatus is BaseError) {
-                    EasyLoading.showError(
-                        ErrorHelper.getBaseError(state.deleteInvitationStatus));
+                    ErrorHelper.getBaseError(
+                        state.deleteInvitationStatus, context);
                   }
                 },
                 listenWhen: (prev, curr) {

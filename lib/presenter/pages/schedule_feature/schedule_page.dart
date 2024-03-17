@@ -175,8 +175,9 @@ class _SchedulePageState extends State<SchedulePage> {
                         ),
                       );
                     } else if (state.getScheduleListStatus is BaseError) {
-                      return const Center(
-                        child: Text('ERROR'),
+                      return Center(
+                        child: Text(ErrorHelper.getErrorMessage(
+                            state.getScheduleListStatus, context)),
                       );
                     }
                     return const SizedBox();
@@ -194,8 +195,8 @@ class _SchedulePageState extends State<SchedulePage> {
                     } else if (state.patchScheduleByIdStatus is BaseLoading) {
                       EasyLoading.show();
                     } else if (state.patchScheduleByIdStatus is BaseError) {
-                      EasyLoading.showError(ErrorHelper.getBaseError(
-                          state.patchScheduleByIdStatus));
+                      ErrorHelper.getBaseError(
+                          state.patchScheduleByIdStatus, context);
                     }
                   },
                 ),
@@ -230,7 +231,7 @@ class _SchedulePageState extends State<SchedulePage> {
             SizedBox(
               width: double.infinity,
               child: SecondaryButton(
-                text: 'افزودن گروه',
+                text: al.addGroup,
                 right: const Icon(
                   Icons.add,
                   color: MyColors.white,

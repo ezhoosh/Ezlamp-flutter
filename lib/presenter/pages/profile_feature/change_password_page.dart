@@ -3,25 +3,14 @@ import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/arrow_back.dart';
 import 'package:easy_lamp/core/widgets/border_text_field_password.dart';
-import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
-import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
-import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
-import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
-import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_name_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/internet_box_feature/more_internet_box_bottom_sheet.dart';
-import 'package:easy_lamp/presenter/pages/lamp_feature/add_lamp_group_page.dart';
-import 'package:easy_lamp/presenter/pages/lamp_feature/lamp_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:easy_lamp/core/widgets/error_helper.dart';
 
 class ChangePasswordPage extends StatefulWidget {
@@ -66,8 +55,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           } else if (state.changePasswordStatus is BaseLoading) {
             EasyLoading.show();
           } else if (state.changePasswordStatus is BaseError) {
-            EasyLoading.showError(
-              ErrorHelper.getBaseError(state.changePasswordStatus));
+            ErrorHelper.getBaseError(state.changePasswordStatus, context);
           }
         },
         child: SafeArea(

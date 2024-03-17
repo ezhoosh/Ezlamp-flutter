@@ -1,5 +1,4 @@
 import 'package:easy_lamp/data/model/language_type.dart';
-import 'package:easy_lamp/data/model/schudule_model.dart';
 import 'package:easy_lamp/locator.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';

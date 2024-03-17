@@ -57,8 +57,7 @@ class _AddLampPageState extends State<AddLampPage> {
         } else if (state.updateLampOwnerStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.updateLampOwnerStatus is BaseError) {
-          EasyLoading.showError(
-              ErrorHelper.getBaseError(state.updateLampStatus));
+          ErrorHelper.getBaseError(state.updateLampOwnerStatus, context);
         }
       },
       child: Scaffold(

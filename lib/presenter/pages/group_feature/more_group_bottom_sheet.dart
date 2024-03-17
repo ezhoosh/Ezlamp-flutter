@@ -43,8 +43,7 @@ class MoreGroupBottomSheet extends StatelessWidget {
         } else if (state.deleteGroupStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.deleteGroupStatus is BaseError) {
-          EasyLoading.showError(
-              ErrorHelper.getBaseError(state.createGroupStatus));
+          ErrorHelper.getBaseError(state.deleteGroupStatus, context);
         }
       },
       child: Wrap(

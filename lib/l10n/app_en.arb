@@ -139,5 +139,20 @@
   "turnOn": "Turn on",
   "errorNotSelected": "Please select an item",
   "errorInformation": "Enter the information correctly",
-  "notValidBarcode": "The barcode is not valid"
+  "notValidBarcode": "The barcode is not valid",
+  "error": "Error",
+  "error400": "The request is invalid or incomplete.",
+  "error401": "Authentication failure or unauthorized access.",
+  "error403": "Access to the resource is forbidden.",
+  "error404": "The requested resource was not found.",
+  "error405": "The HTTP method is not allowed.",
+  "error500": "Internal server error.",
+  "error409": "The request conflicts with the current state of resources.",
+  "error422": "The submitted data is not processable.",
+  "error202": "The request has been accepted but not yet completed.",
+  "error408": "The waiting time for the request response has expired.",
+  "error429": "The number of requests exceeds the allowed limit.",
+  "resend": "Re-send",
+  "checkPhone": "check phone number",
+  "errorPhoneNumber": "Enter the Phone Number correctly"
 }

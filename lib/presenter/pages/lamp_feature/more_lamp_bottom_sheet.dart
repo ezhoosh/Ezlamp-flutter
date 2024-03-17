@@ -42,8 +42,7 @@ class MoreLampBottomSheet extends StatelessWidget {
         } else if (state.deleteLampStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.deleteLampStatus is BaseError) {
-          EasyLoading.showError(
-              ErrorHelper.getBaseError(state.deleteLampStatus));
+          ErrorHelper.getBaseError(state.deleteLampStatus, context);
         }
       },
       child: Wrap(

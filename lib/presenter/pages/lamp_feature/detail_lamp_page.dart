@@ -71,8 +71,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
             } else if (state.patchLampStatus is BaseLoading) {
               EasyLoading.show();
             } else if (state.patchLampStatus is BaseError) {
-              EasyLoading.showError(
-                  ErrorHelper.getBaseError(state.patchLampStatus));
+              ErrorHelper.getBaseError(state.patchLampStatus, context);
             }
           },
           child: Scaffold(

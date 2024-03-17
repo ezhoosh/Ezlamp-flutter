@@ -14,7 +14,7 @@ class LampModel {
   int id;
   String name;
   String description;
-  int owner;
+  int? owner;
   bool isActive;
   String? latitude;
   String? longitude;

@@ -55,8 +55,7 @@ class _AddMemberLampBottomSheetState extends State<AddMemberLampBottomSheet> {
         } else if (state.createInvitationStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.createInvitationStatus is BaseError) {
-          EasyLoading.showError(
-              ErrorHelper.getBaseError(state.createInvitationStatus));
+          ErrorHelper.getBaseError(state.createInvitationStatus, context);
         }
       },
       child: CustomBottomSheet(

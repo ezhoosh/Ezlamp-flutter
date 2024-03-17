@@ -14,6 +14,8 @@ class SplashSuccessWithOutBlue extends SplashStatus {
 
 class SplashNoAction extends SplashStatus {}
 
+class SplashNewUser extends SplashStatus {}
+
 class SplashLoading extends SplashStatus {}
 
 class SplashError extends SplashStatus {

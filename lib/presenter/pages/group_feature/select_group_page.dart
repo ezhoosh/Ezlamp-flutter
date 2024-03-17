@@ -69,8 +69,7 @@ class _SelectGroupPageState extends State<SelectGroupPage> {
             } else if (state.sendCommandStatus is BaseLoading) {
               EasyLoading.show();
             } else if (state.sendCommandStatus is BaseError) {
-              EasyLoading.showError(
-                  ErrorHelper.getBaseError(state.sendCommandStatus));
+              ErrorHelper.getBaseError(state.sendCommandStatus, context);
             }
           },
           child: Column(

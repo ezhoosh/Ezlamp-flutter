@@ -11,6 +11,7 @@ import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:easy_lamp/core/widgets/input_date.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
@@ -97,10 +98,12 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                 state.deleteScheduleByIdStatus is BaseSuccess) {
               EasyLoading.showSuccess("success");
               Navigator.pop(context);
-            } else if (state.createScheduleListStatus is BaseError ||
-                state.putScheduleByIdStatus is BaseError ||
-                state.deleteScheduleByIdStatus is BaseError) {
-              EasyLoading.showError("error");
+            } else if (state.createScheduleListStatus is BaseError) {
+              ErrorHelper.getBaseError(state.createScheduleListStatus, context);
+            } else if (state.deleteScheduleByIdStatus is BaseError) {
+              ErrorHelper.getBaseError(state.deleteScheduleByIdStatus, context);
+            } else if (state.putScheduleByIdStatus is BaseError) {
+              ErrorHelper.getBaseError(state.putScheduleByIdStatus, context);
             }
           },
           child: Column(

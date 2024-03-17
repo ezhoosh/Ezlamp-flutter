@@ -103,7 +103,7 @@ class ThemeConfig {
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-            primary: textButtonColor,
+            // primary: textButtonColor,
             textStyle: baseTextTheme.headlineSmall!.copyWith(
               color: primaryText,
               fontFamily: 'iran',

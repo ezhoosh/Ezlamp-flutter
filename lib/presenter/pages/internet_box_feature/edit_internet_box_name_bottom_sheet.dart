@@ -39,8 +39,7 @@ class EditInternetBoxNameBottomSheet extends StatelessWidget {
         } else if (state.updateGroupNameStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.updateGroupNameStatus is BaseError) {
-          EasyLoading.showError(
-              ErrorHelper.getBaseError(state.createGroupStatus));
+          ErrorHelper.getBaseError(state.createGroupStatus, context);
         }
       },
       child: CustomBottomSheet(

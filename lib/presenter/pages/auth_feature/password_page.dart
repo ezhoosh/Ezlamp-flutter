@@ -1,5 +1,6 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/widgets/border_text_field_password.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/data/model/auth_status.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/otp_page.dart';
@@ -53,20 +54,21 @@ class _PasswordPageState extends State<PasswordPage> {
             EasyLoading.show();
           } else if (state.loginStatus is BaseSuccess ||
               state.registerStatus is BaseSuccess) {
-            if (kIsWeb) {
+            // if (kIsWeb) {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(builder: (context) => const HomePage()),
                   ModalRoute.withName("/"));
-            } else {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (context) => const ConnectionPage()),
-                  ModalRoute.withName("/"));
-            }
+            // } else {
+            //   Navigator.of(context).pushAndRemoveUntil(
+            //       MaterialPageRoute(
+            //           builder: (context) => const ConnectionPage()),
+            //       ModalRoute.withName("/"));
+            // }
             EasyLoading.showSuccess("success");
-          } else if (state.loginStatus is BaseError ||
-              state.registerStatus is BaseError) {
-            EasyLoading.showError("error");
+          } else if (state.loginStatus is BaseError) {
+            ErrorHelper.getBaseError(state.loginStatus, context);
+          } else if (state.registerStatus is BaseError) {
+            ErrorHelper.getBaseError(state.registerStatus, context);
           }
 
           if (state.sendLoginOtpStatus is BaseLoading) {
@@ -77,7 +79,7 @@ class _PasswordPageState extends State<PasswordPage> {
                     OtpPage(widget.phoneNumber, widget.status)));
             EasyLoading.showSuccess("success");
           } else if (state.sendLoginOtpStatus is BaseError) {
-            EasyLoading.showError("error");
+            ErrorHelper.getBaseError(state.sendLoginOtpStatus, context);
           }
           if (state.sendResetOtpStatus is BaseLoading) {
             EasyLoading.show();
@@ -87,7 +89,7 @@ class _PasswordPageState extends State<PasswordPage> {
                     OtpPage(widget.phoneNumber, AuthStatus.RESET)));
             EasyLoading.showSuccess("success");
           } else if (state.sendResetOtpStatus is BaseError) {
-            EasyLoading.showError("error");
+            ErrorHelper.getBaseError(state.sendResetOtpStatus, context);
           }
         },
         child: Container(

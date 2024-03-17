@@ -57,8 +57,8 @@ class _AddLampInternetBoxPageState extends State<AddLampInternetBoxPage> {
           } else if (state.updateInternetBoxOwnerStatus is BaseLoading) {
             EasyLoading.show();
           } else if (state.updateInternetBoxOwnerStatus is BaseError) {
-            EasyLoading.showError(
-                ErrorHelper.getBaseError(state.updateInternetBoxOwnerStatus));
+            ErrorHelper.getBaseError(
+                state.updateInternetBoxOwnerStatus, context);
           }
         },
         child: BlocListener<LampBloc, LampState>(
@@ -77,8 +77,7 @@ class _AddLampInternetBoxPageState extends State<AddLampInternetBoxPage> {
             } else if (state.updateLampOwnerStatus is BaseLoading) {
               EasyLoading.show();
             } else if (state.updateLampOwnerStatus is BaseError) {
-              EasyLoading.showError(
-                  ErrorHelper.getBaseError(state.updateLampOwnerStatus));
+              ErrorHelper.getBaseError(state.updateLampOwnerStatus, context);
             }
           },
           child: SafeArea(

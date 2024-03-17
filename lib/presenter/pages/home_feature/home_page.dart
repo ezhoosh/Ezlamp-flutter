@@ -1,10 +1,12 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/data/repositories/isar_group_repository.dart';
 import 'package:easy_lamp/locator.dart';
+import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/group_page.dart';
 import 'package:easy_lamp/presenter/pages/profile_feature/profile_page.dart';
 import 'package:easy_lamp/presenter/pages/schedule_feature/schedule_page.dart';
+import 'package:easy_lamp/presenter/pages/splash_feature/splash_page.dart';
 import 'package:easy_lamp/presenter/pages/state_feature/state_page.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
@@ -33,32 +35,49 @@ class _HomePageState extends State<HomePage> {
     // double w = MediaQuery.of(context).size.width;
     // double h = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: BlocListener<StateBloc, StateState>(
+      body: BlocListener<AuthBloc, AuthState>(
+        listenWhen: (prev, curr) {
+          if (prev.logOutStatus is BaseSuccess &&
+              curr.logOutStatus is BaseNoAction) {
+            return false;
+          }
+          return true;
+        },
         listener: (context, state) {
-          if (state.getChartInformation is BaseSuccess) {
-            setState(() {
-              currentPage = 2;
-            });
-            controller.animateToPage(
-              2,
-              duration: const Duration(microseconds: 500),
-              curve: Curves.easeIn,
-            );
+          if (state.logOutStatus is BaseSuccess) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const SplashPage()),
+                ModalRoute.withName("/"));
           }
         },
-        child: PageView(
-          controller: controller,
-          onPageChanged: (index) {
-            setState(() {
-              currentPage = index;
-            });
+        child: BlocListener<StateBloc, StateState>(
+          listener: (context, state) {
+            if (state.getChartInformation is BaseSuccess) {
+              setState(() {
+                currentPage = 2;
+              });
+              controller.animateToPage(
+                2,
+                duration: const Duration(microseconds: 500),
+                curve: Curves.easeIn,
+              );
+            }
           },
-          children: const [
-            ProfilePage(),
-            GroupPage(),
-            StatePage(),
-            SchedulePage(),
-          ],
+          child: PageView(
+            controller: controller,
+            onPageChanged: (index) {
+              setState(() {
+                currentPage = index;
+              });
+            },
+            children: const [
+              ProfilePage(),
+              GroupPage(),
+              StatePage(),
+              SchedulePage(),
+            ],
+          ),
         ),
       ),
       backgroundColor: MyColors.black,

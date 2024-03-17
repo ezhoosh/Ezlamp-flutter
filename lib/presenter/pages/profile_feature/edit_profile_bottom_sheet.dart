@@ -58,8 +58,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
         } else if (state.updateUserStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.updateUserStatus is BaseError) {
-          EasyLoading.showError(
-              ErrorHelper.getBaseError(state.updateUserStatus));
+          ErrorHelper.getBaseError(state.updateUserStatus, context);
         }
       },
       child: CustomBottomSheet(

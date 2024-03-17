@@ -1,4 +1,5 @@
 import 'package:easy_lamp/core/resource/base_status.dart';
+import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/data/model/auth_status.dart';
 import 'package:easy_lamp/data/model/send_number_model.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
@@ -70,7 +71,7 @@ class _AuthPageState extends State<AuthPage> {
                 );
               }
             } else if (state.sendPhoneStatus is BaseError) {
-              EasyLoading.showError("error");
+              ErrorHelper.getBaseError(state.sendPhoneStatus, context);
             }
           },
           child: Container(
@@ -104,8 +105,15 @@ class _AuthPageState extends State<AuthPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
+                    String value = _controller.text;
+                    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+                    RegExp regExp = RegExp(pattern);
+                    if (value.isEmpty || !regExp.hasMatch(value)) {
+                      EasyLoading.showToast(al.errorPhoneNumber);
+                      return;
+                    }
                     BlocProvider.of<AuthBloc>(context)
-                        .add(SendPhoneNumberEvent(_controller.text));
+                        .add(SendPhoneNumberEvent(value));
                   },
                   child: Text(
                     al.login,

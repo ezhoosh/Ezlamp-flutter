@@ -108,47 +108,52 @@ class _LampPageState extends State<LampPage> {
                             ),
                           );
                         }
-                        return Column(
-                          children: [
-                            ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              padding: const EdgeInsets.only(top: MySpaces.s32),
-                              itemBuilder: (context, index) {
-                                LampModel lamp = lamps[index];
-                                return LampCard(lamp, isSelect,
-                                    selectedLamps.contains(lamp), (t) {
-                                  if (t as bool) {
-                                    setState(() {
-                                      selectedLamps.add(lamp);
-                                    });
-                                  } else {
-                                    setState(() {
-                                      selectedLamps.remove(lamp);
-                                    });
-                                  }
-                                }, widget.groupId);
-                              },
-                              itemCount: lamps.length,
+                        return Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  padding:
+                                      const EdgeInsets.only(top: MySpaces.s32),
+                                  itemBuilder: (context, index) {
+                                    LampModel lamp = lamps[index];
+                                    return LampCard(lamp, isSelect,
+                                        selectedLamps.contains(lamp), (t) {
+                                      if (t as bool) {
+                                        setState(() {
+                                          selectedLamps.add(lamp);
+                                        });
+                                      } else {
+                                        setState(() {
+                                          selectedLamps.remove(lamp);
+                                        });
+                                      }
+                                    }, widget.groupId);
+                                  },
+                                  itemCount: 10,
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: MySpaces.s24),
+                                  width: double.infinity,
+                                  child: BlocBuilder<AuthBloc, AuthState>(
+                                      builder: (context, state) {
+                                    bool isBlue = state.connectionType ==
+                                        ConnectionType.Bluetooth;
+                                    return Opacity(
+                                        opacity: isBlue ? 0.5 : 1,
+                                        child: PrimaryButton(
+                                          text: al.addLamps,
+                                          onPress:
+                                              isBlue ? _addClickBlue : _addClick,
+                                        ));
+                                  }),
+                                )
+                              ],
                             ),
-                            Container(
-                              margin: const EdgeInsets.symmetric(
-                                  horizontal: MySpaces.s24),
-                              width: double.infinity,
-                              child: BlocBuilder<AuthBloc, AuthState>(
-                                  builder: (context, state) {
-                                bool isBlue = state.connectionType ==
-                                    ConnectionType.Bluetooth;
-                                return Opacity(
-                                    opacity: isBlue ? 0.5 : 1,
-                                    child: PrimaryButton(
-                                      text: al.addLamps,
-                                      onPress:
-                                          isBlue ? _addClickBlue : _addClick,
-                                    ));
-                              }),
-                            )
-                          ],
+                          ),
                         );
                       } else if (state.getLampListStatus is BaseLoading) {
                         return const Expanded(
