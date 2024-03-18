@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
+import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
@@ -93,11 +94,29 @@ class _ScanScreenState extends State<ScanScreen> {
                     children: [
                       SingleChildScrollView(
                           child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const SizedBox(
-                            height: MySpaces.s24,
-                          ),
+                          if (_connectedDevices.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 10, top: 20, left: 20),
+                              child: Text(
+                                'Connected',
+                                style: DemiBoldStyle.normal
+                                    .copyWith(color: MyColors.white),
+                              ),
+                            ),
                           ..._buildConnectedDeviceTiles(context),
+                          if (_scanResults.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 10, top: 20, left: 20),
+                              child: Text(
+                                'Result',
+                                style: DemiBoldStyle.normal
+                                    .copyWith(color: MyColors.white),
+                              ),
+                            ),
                           ..._buildScanResultTiles(context),
                         ],
                       )),
@@ -147,21 +166,25 @@ class _ScanScreenState extends State<ScanScreen> {
 
   void onDisConnectPressed(BluetoothDevice device) {
     device.disconnect();
+    onStopPressed();
+    setState(() {
+      _connectedDevices.remove(device);
+    });
   }
 
   void onConnectPressed(BluetoothDevice device) {
     final t = device.connectAndUpdateStream();
-    t.then((value) {
-      setState(() {
-        deviceConnected = device;
-      });
-      BlocProvider.of<CommandBloc>(context).add(ConnectedBlueEvent(device));
-      onStopPressed();
+    // t.then((value) {
+    setState(() {
+      _connectedDevices.add(device);
     });
-    t.catchError((e) {
-      Snackbar.show(ABC.c, prettyException("Connect Error:", e),
-          success: false);
-    });
+    BlocProvider.of<CommandBloc>(context).add(ConnectedBlueEvent(device));
+    onStopPressed();
+    // });
+    // t.catchError((e) {
+    //   Snackbar.show(ABC.c, prettyException("Connect Error:", e),
+    //       success: false);
+    // });
     // MaterialPageRoute route = MaterialPageRoute(
     //     builder: (context) => DeviceScreen(device: device),
     //     settings: RouteSettings(name: '/DeviceScreen'));
@@ -173,7 +196,7 @@ class _ScanScreenState extends State<ScanScreen> {
       FlutterBluePlus.startScan(timeout: const Duration(seconds: 15));
     }
     setState(() {});
-    return Future.delayed(Duration(milliseconds: 500));
+    return Future.delayed(const Duration(milliseconds: 500));
   }
 
   Widget buildScanButton(BuildContext context) {
@@ -202,6 +225,7 @@ class _ScanScreenState extends State<ScanScreen> {
             device: d,
             onDisconnect: () => onDisConnectPressed(d),
             onConnect: () => onConnectPressed(d),
+            connect: true,
           ),
         )
         .toList();
@@ -210,9 +234,11 @@ class _ScanScreenState extends State<ScanScreen> {
   List<Widget> _buildScanResultTiles(BuildContext context) {
     return _scanResults
         .map(
-          (r) => ScanResultTile(
-            result: r,
-            onTap: () => onConnectPressed(r.device),
+          (d) => ConnectedDeviceTile(
+            device: d.device,
+            onDisconnect: () => onDisConnectPressed(d.device),
+            onConnect: () => onConnectPressed(d.device),
+            connect: false,
           ),
         )
         .toList();

@@ -11,11 +11,13 @@ class ConnectedDeviceTile extends StatefulWidget {
   final BluetoothDevice device;
   final VoidCallback onDisconnect;
   final VoidCallback onConnect;
+  bool connect = false;
 
-  const ConnectedDeviceTile({
+  ConnectedDeviceTile({
     required this.device,
     required this.onDisconnect,
     required this.onConnect,
+    required this.connect,
     Key? key,
   }) : super(key: key);
 
@@ -63,8 +65,7 @@ class _ConnectedDeviceTileState extends State<ConnectedDeviceTile> {
       borderRadius: MyRadius.sm,
       padding: const EdgeInsets.symmetric(
           vertical: MySpaces.s16, horizontal: MySpaces.s24),
-      onTap: isConnected ? null
-          : widget.onConnect,
+      onTap: widget.connect ? widget.onDisconnect : widget.onConnect,
       child: Row(
         children: <Widget>[
           Expanded(
@@ -76,7 +77,7 @@ class _ConnectedDeviceTileState extends State<ConnectedDeviceTile> {
             ),
           ),
           Text(
-            isConnected ? 'DISCONNECT' : 'CONNECT',
+            widget.connect ? 'DISCONNECT' : 'CONNECT',
             style: DemiBoldStyle.sm.copyWith(
                 color: isConnected
                     ? MyColors.secondary.shade300

@@ -132,7 +132,7 @@ class _LampPageState extends State<LampPage> {
                                       }
                                     }, widget.groupId);
                                   },
-                                  itemCount: 10,
+                                  itemCount: lamps.length,
                                 ),
                                 Container(
                                   margin: const EdgeInsets.symmetric(
@@ -146,8 +146,9 @@ class _LampPageState extends State<LampPage> {
                                         opacity: isBlue ? 0.5 : 1,
                                         child: PrimaryButton(
                                           text: al.addLamps,
-                                          onPress:
-                                              isBlue ? _addClickBlue : _addClick,
+                                          onPress: isBlue
+                                              ? _addClickBlue
+                                              : _addClick,
                                         ));
                                   }),
                                 )
