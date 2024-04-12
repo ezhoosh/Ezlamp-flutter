@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_lamp/core/auth_token_storage/auth_token_storage.dart';
 import 'package:easy_lamp/core/params/change_password_params.dart';
 import 'package:easy_lamp/core/params/login_params.dart';
 import 'package:easy_lamp/core/params/register_verify_params.dart';
@@ -89,6 +90,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             WriteLocalStorageParam(Constants.refreshKey, model.refresh));
         await writeLocalStorageUseCase(
             WriteLocalStorageParam(Constants.phoneKey, model.phoneNumber));
+        AuthTokenStorage.instance.save(dataState.data);
 
         emit(state.copyWith(newLoginStatus: BaseSuccess(dataState.data)));
       } else {
@@ -108,6 +110,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             WriteLocalStorageParam(Constants.refreshKey, model.refresh));
         await writeLocalStorageUseCase(
             WriteLocalStorageParam(Constants.phoneKey, model.phoneNumber));
+        AuthTokenStorage.instance.save(dataState.data);
         emit(state.copyWith(newRegisterStatus: BaseSuccess(dataState.data)));
       } else {
         emit(state.copyWith(newRegisterStatus: BaseError(dataState.error)));
@@ -184,6 +187,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           WriteLocalStorageParam(Constants.refreshKey, ''));
       await writeLocalStorageUseCase(
           WriteLocalStorageParam(Constants.phoneKey, ''));
+      AuthTokenStorage.instance.delete();
       emit(state.copyWith(newLogOutStatus: BaseSuccess(null)));
       emit(state.copyWith(newLogOutStatus: BaseNoAction()));
     });

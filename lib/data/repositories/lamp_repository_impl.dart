@@ -1,29 +1,31 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:easy_lamp/core/network/i_api_request_manager.dart';
 import 'package:easy_lamp/core/params/get_lamps_params.dart';
 import 'package:easy_lamp/core/params/patch_lamps_params.dart';
 import 'package:easy_lamp/core/params/update_lamps_owner_params.dart';
+import 'package:easy_lamp/core/repository/base_repository.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
-import 'package:easy_lamp/core/utils/api_access.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/domain/repositories/lamp_repository.dart';
 import 'package:easy_lamp/core/widgets/error_helper.dart';
 
-class LampRepositoryImpl extends LampRepository {
+class LampRepositoryImpl extends BaseRepository implements LampRepository {
+  LampRepositoryImpl(IHttpClient httpClient) : super(httpClient);
+
   @override
   Future<DataState<String>> deleteLamp(int params) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
+      var response = await httpClient.deleteRequest(path:
         "lamps/${params.toString()}/",
-        method: "DELETE",
       );
-      if (response.statusCode == 204) {
-        return DataSuccess<String>(response.data.toString());
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 204) {
+        return DataSuccess<String>(response.toString());
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -32,13 +34,12 @@ class LampRepositoryImpl extends LampRepository {
   @override
   Future<DataState<LampModel>> getLampById(int id) async {
     try {
-      var response = await ApiAccess.makeHttpRequest("lamps/${id.toString()}/",
-          method: 'GET');
-      if (response.statusCode == 200) {
-        return DataSuccess<LampModel>(LampModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      var response = await httpClient.getRequest(path:"lamps/${id.toString()}/");
+      // if (response.statusCode == 200) {
+        return DataSuccess<LampModel>(LampModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -49,7 +50,7 @@ class LampRepositoryImpl extends LampRepository {
       UpdateLampOwnerParams params) async {
     try {
       var response =
-          await ApiAccess.makeHttpRequest("${params.uuid.toString()}/",
+          await httpClient.putRequest(path:"${params.uuid.toString()}/",
               data: {
                 "name": params.name,
                 "description": params.description,
@@ -66,13 +67,12 @@ class LampRepositoryImpl extends LampRepository {
                 },
                 if (params.internetBox != null)
                   "internet_box": params.internetBox.toString()
-              },
-              method: 'PUT');
-      if (response.statusCode == 200) {
-        return DataSuccess<LampModel>(LampModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+              });
+      // if (response.statusCode == 200) {
+        return DataSuccess<LampModel>(LampModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -82,15 +82,14 @@ class LampRepositoryImpl extends LampRepository {
   Future<DataState<List<LampModel>>> getLampList(
       GetLampListParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-          "group-lamp/${params.groupId.toString()}/",
-          method: 'GET');
-      if (response.statusCode == 200) {
+      var response = await httpClient.getRequest(path:
+          "group-lamp/${params.groupId.toString()}/",);
+      // if (response.statusCode == 200) {
         return DataSuccess<List<LampModel>>(
-            GroupModel.fromJson(response.data).lamps);
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+            GroupModel.fromJson(response).lamps);
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -100,7 +99,7 @@ class LampRepositoryImpl extends LampRepository {
   Future<DataState<LampModel>> updateLampById(params) async {
     try {
       var response =
-          await ApiAccess.makeHttpRequest("lamps/${params.lampId.toString()}",
+          await httpClient.putRequest(path:"lamps/${params.lampId.toString()}",
               data: {
                 "name": params.name,
                 "description": params.description,
@@ -111,13 +110,12 @@ class LampRepositoryImpl extends LampRepository {
                 "group_lamp": params.groupLamp.toString(),
                 "main_power": params.mainPower,
                 "last_command": params.lastCommand,
-              },
-              method: 'PUT');
-      if (response.statusCode == 200) {
-        return DataSuccess<LampModel>(LampModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+              },);
+      // if (response.statusCode == 200) {
+        return DataSuccess<LampModel>(LampModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -127,7 +125,7 @@ class LampRepositoryImpl extends LampRepository {
   Future<DataState<LampModel>> patchLampById(PatchLampListParams params) async {
     try {
       var response =
-          await ApiAccess.makeHttpRequest("lamps/${params.lampId.toString()}/",
+          await httpClient.patchRequest(path:"lamps/${params.lampId.toString()}/",
               data: {
                 if (params.name != null) "name": params.name,
                 if (params.description != null)
@@ -142,13 +140,12 @@ class LampRepositoryImpl extends LampRepository {
                 if (params.mainPower != null) "main_power": params.mainPower,
                 if (params.lastCommand != null)
                   "last_command": params.lastCommand,
-              },
-              method: 'PATCH');
-      if (response.statusCode == 200) {
-        return DataSuccess<LampModel>(LampModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+              });
+      // if (response.statusCode == 200) {
+        return DataSuccess<LampModel>(LampModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }

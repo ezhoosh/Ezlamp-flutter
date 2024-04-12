@@ -1,7 +1,9 @@
 import 'dart:io';
 
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
+import 'package:easy_lamp/core/network/dio_request_manager.dart';
+import 'package:easy_lamp/core/network/i_api_request_manager.dart';
 import 'package:easy_lamp/core/utils/local_data_provider.dart';
 import 'package:easy_lamp/data/isar_model/isar_command.dart';
 import 'package:easy_lamp/data/isar_model/isar_group.dart';
@@ -104,19 +106,20 @@ import 'package:path_provider/path_provider.dart';
 GetIt locator = GetIt.instance;
 
 setupMain() async {
-  Dio dio = Dio();
-  if (!kIsWeb) {
-    (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
-    };
-  }
-  locator.registerSingleton<Dio>(dio);
-  if (!kIsWeb) locator.registerSingleton<Isar>(await openDB());
+  // Dio dio = Dio();
+  // if (!kIsWeb) {
+  //   (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+  //       (HttpClient client) {
+  //     client.badCertificateCallback =
+  //         (X509Certificate cert, String host, int port) => true;
+  //     return client;
+  //   };
+  // }
   locator.registerSingleton<SharedPreferences>(
       await SharedPreferences.getInstance());
+  locator.registerSingleton<IHttpClient>(DioHttpClient());
+  // locator.registerSingleton<Dio>(dio);
+  if (!kIsWeb) locator.registerSingleton<Isar>(await openDB());
   locator.registerSingleton<LocalDataProvider>(LocalDataProvider(locator()));
   locator.registerSingleton<LocalStorageRepository>(
       LocalStorageRepositoryImpl(locator()));
@@ -130,7 +133,7 @@ setupMain() async {
 
 setupSplash() async {
   // repositories
-  locator.registerSingleton<SplashRepository>(SplashRepositoryImpl());
+  locator.registerSingleton<SplashRepository>(SplashRepositoryImpl(locator()));
   // usecases
   locator
       .registerSingleton<RefreshTokenUseCase>(RefreshTokenUseCase(locator()));
@@ -146,7 +149,7 @@ setupSplash() async {
 
 setupAuth() async {
   // repositories
-  locator.registerSingleton<AuthRepository>(AuthRepositoryImpl());
+  locator.registerSingleton<AuthRepository>(AuthRepositoryImpl(locator()));
   // usecases
   locator.registerSingleton<LoginUseCase>(LoginUseCase(locator()));
   locator.registerSingleton<RegisterUseCase>(RegisterUseCase(locator()));
@@ -181,7 +184,7 @@ setupAuth() async {
 
 setupGroup() async {
   // repositories
-  locator.registerSingleton<GroupRepository>(GroupRepositoryImpl());
+  locator.registerSingleton<GroupRepository>(GroupRepositoryImpl(locator()));
   if (!kIsWeb) {
     locator
         .registerSingleton<IsarGroupRepository>(IsarGroupRepository(locator()));
@@ -217,7 +220,7 @@ setupGroup() async {
 
 setupInternetBox() async {
   // repositories
-  locator.registerSingleton<InternetBoxRepository>(InternetBoxRepositoryImpl());
+  locator.registerSingleton<InternetBoxRepository>(InternetBoxRepositoryImpl(locator()));
   // useCases
   locator.registerSingleton<GetInternetBoxListUseCase>(
       GetInternetBoxListUseCase(locator()));
@@ -252,7 +255,7 @@ setupInternetBox() async {
 
 setupLamp() async {
   // repositories
-  locator.registerSingleton<LampRepository>(LampRepositoryImpl());
+  locator.registerSingleton<LampRepository>(LampRepositoryImpl(locator()));
   // useCases
   locator.registerSingleton<GetLampListUseCase>(GetLampListUseCase(locator()));
   locator.registerSingleton<GetLampByIdUseCase>(GetLampByIdUseCase(locator()));
@@ -281,7 +284,7 @@ setupLamp() async {
 
 setupUser() async {
   // repositories
-  locator.registerSingleton<UserRepository>(UserRepositoryImpl());
+  locator.registerSingleton<UserRepository>(UserRepositoryImpl(locator()));
   // useCases
   locator.registerSingleton<GetUserUseCase>(GetUserUseCase(locator()));
   locator.registerSingleton<UpdateUserUseCase>(UpdateUserUseCase(locator()));
@@ -294,7 +297,7 @@ setupUser() async {
 
 setupCommand() async {
   // repositories
-  locator.registerSingleton<CommandRepository>(CommandRepositoryImpl());
+  locator.registerSingleton<CommandRepository>(CommandRepositoryImpl(locator()));
   // useCases
   locator.registerSingleton<SendCommandUseCase>(SendCommandUseCase(locator()));
   //bloc
@@ -306,7 +309,7 @@ setupCommand() async {
 
 setupState() async {
   // repositories
-  locator.registerSingleton<StateRepository>(StateRepositoryImpl());
+  locator.registerSingleton<StateRepository>(StateRepositoryImpl(locator()));
   // useCases
   locator
       .registerSingleton<GetDataStateUseCase>(GetDataStateUseCase(locator()));
@@ -316,7 +319,7 @@ setupState() async {
 
 setupSchedule() async {
   // repositories
-  locator.registerSingleton<ScheduleRepository>(ScheduleRepositoryImpl());
+  locator.registerSingleton<ScheduleRepository>(ScheduleRepositoryImpl(locator()));
   // useCases
   locator.registerSingleton<GetScheduleByIdUseCase>(
       GetScheduleByIdUseCase(locator()));
@@ -343,7 +346,7 @@ setupSchedule() async {
 
 setupInvitation() async {
   // repositories
-  locator.registerSingleton<InvitationRepository>(InvitationRepositoryImpl());
+  locator.registerSingleton<InvitationRepository>(InvitationRepositoryImpl(locator()));
   // useCases
   locator.registerSingleton<GetInvitationListUseCase>(
       GetInvitationListUseCase(locator()));

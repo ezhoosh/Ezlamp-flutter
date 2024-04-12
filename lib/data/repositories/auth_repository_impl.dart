@@ -1,10 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:easy_lamp/core/network/i_api_request_manager.dart';
 import 'package:easy_lamp/core/params/change_password_params.dart';
 import 'package:easy_lamp/core/params/login_params.dart';
 import 'package:easy_lamp/core/params/register_verify_params.dart';
 import 'package:easy_lamp/core/params/send_phone_number_params.dart';
+import 'package:easy_lamp/core/repository/base_repository.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
-import 'package:easy_lamp/core/utils/api_access.dart';
 import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/data/model/login_model.dart';
 import 'package:easy_lamp/data/model/register_verify_model.dart';
@@ -13,21 +14,23 @@ import 'package:easy_lamp/data/model/send_login_otp.dart';
 import 'package:easy_lamp/data/model/send_number_model.dart';
 import 'package:easy_lamp/domain/repositories/auth_repository.dart';
 
-class AuthRepositoryImpl extends AuthRepository {
+class AuthRepositoryImpl extends BaseRepository implements AuthRepository   {
+  AuthRepositoryImpl(IHttpClient httpClient) : super(httpClient);
+
   @override
   Future<DataState<SendNumberModel>> sendPhoneNumber(
       SendPhoneNumberParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequestWithoutAuth(
+      var response = await httpClient.postRequest(path:
         "auth/is-user-exists/",
         data: {"phone_number": params.number},
       );
-      if (response.statusCode == 200) {
+      // if (response.statusCode == 200) {
         return DataSuccess<SendNumberModel>(
-            SendNumberModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+            SendNumberModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -37,16 +40,12 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<DataState<LoginModel>> login(LoginParams params) async {
     try {
       var response =
-          await ApiAccess.makeHttpRequestWithoutAuth("auth/login/", data: {
-        "phone_number": params.number,
-        "password": params.password,
-        "sms_token": params.smsToken,
-      });
-      if (response.statusCode == 200) {
-        return DataSuccess<LoginModel>(LoginModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+          await httpClient.postRequest(path: "auth/login/", data: params.toJson());
+      // if (response.statusCode == 200) {
+        return DataSuccess<LoginModel>(LoginModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -56,16 +55,16 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<DataState<LoginModel>> register(LoginParams params) async {
     try {
       var response =
-          await ApiAccess.makeHttpRequestWithoutAuth("auth/register/", data: {
+          await httpClient.postRequest(path: "auth/register/", data: {
         "phone_number": params.number,
         "password": params.password,
         "sms_token": params.smsToken,
       });
-      if (response.statusCode == 200) {
-        return DataSuccess<LoginModel>(LoginModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 200) {
+        return DataSuccess<LoginModel>(LoginModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -75,19 +74,19 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<DataState<ResetPasswordModel>> resetPassword(
       LoginParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequestWithoutAuth(
+      var response = await httpClient.postRequest(path:
           "auth/reset-password/",
           data: {
             "phone_number": params.number,
             "password": params.password,
             // "sms_token": params.smsToken,
           });
-      if (response.statusCode == 200) {
+      // if (response.statusCode == 200) {
         return DataSuccess<ResetPasswordModel>(
-            ResetPasswordModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+            ResetPasswordModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -97,18 +96,18 @@ class AuthRepositoryImpl extends AuthRepository {
   Future<DataState<RegisterVerifyModel>> registerVerify(
       RegisterVerifyParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequestWithoutAuth(
+      var response = await httpClient.postRequest(path:
           "auth/verify-register-otp/",
           data: {
             "phone_number": params.phone,
             "token": params.otp,
           });
-      if (response.statusCode == 200) {
+      // if (response.statusCode == 200) {
         return DataSuccess<RegisterVerifyModel>(
-            RegisterVerifyModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+            RegisterVerifyModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -117,17 +116,17 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<DataState<SendLoginOtpModel>> sendLoginOtp(String params) async {
     try {
-      var response = await ApiAccess.makeHttpRequestWithoutAuth(
+      var response = await httpClient.postRequest(path:
           "auth/send-login-otp/",
           data: {
             "phone_number": params,
           });
-      if (response.statusCode == 200) {
+      // if (response.statusCode == 200) {
         return DataSuccess<SendLoginOtpModel>(
-            SendLoginOtpModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+            SendLoginOtpModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -136,18 +135,18 @@ class AuthRepositoryImpl extends AuthRepository {
   @override
   Future<DataState<String>> changePassword(ChangePasswordParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
+      var response = await httpClient.postRequest(path:
         "auth/change-password/",
         data: {
           "old_password": params.oldPassword,
           "new_password": params.newPassword,
         },
       );
-      if (response.statusCode == 200) {
-        return DataSuccess(response.data.toString());
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 200) {
+        return DataSuccess(response.toString());
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
