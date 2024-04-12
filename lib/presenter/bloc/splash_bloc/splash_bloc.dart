@@ -1,10 +1,12 @@
 import 'package:bloc/bloc.dart';
+import 'package:easy_lamp/core/auth_token_storage/auth_token_storage.dart';
 import 'package:easy_lamp/core/params/write_local_storage_params.dart';
 import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/constants.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/core/resource/use_case.dart';
 import 'package:easy_lamp/data/model/connection_type.dart';
+import 'package:easy_lamp/data/model/login_model.dart';
 import 'package:easy_lamp/data/model/refresh_token_model.dart';
 import 'package:easy_lamp/domain/usecases/read_connection_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
@@ -42,28 +44,30 @@ class SplashBloc extends Bloc<SplashEvent, SplashState> {
       } else {
         emit(state.copyWith(newCheckLoginStatus: SplashLoading()));
         try {
-          DataState refreshDataState =
-              await readLocalStorageUseCase(Constants.refreshKey);
-          DataState accessDataState =
-              await readLocalStorageUseCase(Constants.accessKey);
-          print('refresh token: ${refreshDataState.data.toString()}');
-          print('before access token: ${accessDataState.data.toString()}');
-          if (refreshDataState.data.toString().isNotEmpty) {
-            DataState dataState =
-                await refreshTokenUseCase(refreshDataState.data);
-            if (dataState is DataSuccess) {
-              RefreshTokenModel model = dataState.data;
-              print('access token: ${model.access}');
-              await writeLocalStorageUseCase(
-                  WriteLocalStorageParam(Constants.accessKey, model.access));
+          // DataState refreshDataState =
+          //     await readLocalStorageUseCase(Constants.refreshKey);
+          // DataState accessDataState =
+          //     await readLocalStorageUseCase(Constants.accessKey);
+          AuthTokenStorage authTokenStorage = AuthTokenStorage.instance;
+          LoginModel? user = await authTokenStorage.load();
+          if (user != null) {
+            print('refresh token: ${user.refresh}');
+            print('before access token: ${user.access.toString()}');
+            // DataState dataState =
+            //     await refreshTokenUseCase(refreshDataState.data);
+            // if (dataState is DataSuccess) {
+            //   RefreshTokenModel model = dataState.data;
+            //   print('access token: ${model.access}');
+            //   await writeLocalStorageUseCase(
+            //       WriteLocalStorageParam(Constants.accessKey, model.access));
 
               emit(state.copyWith(
                   newCheckLoginStatus: SplashSuccessWithOutBlue(
                       dataState.data.toString().isNotEmpty)));
-            } else {
-              emit(state.copyWith(
-                  newCheckLoginStatus: SplashError(dataState.error)));
-            }
+            // } else {
+            //   emit(state.copyWith(
+            //       newCheckLoginStatus: SplashError(dataState.error)));
+            // }
           } else {
             emit(state.copyWith(newCheckLoginStatus: SplashNewUser()));
           }

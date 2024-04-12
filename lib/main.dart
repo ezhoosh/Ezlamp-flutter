@@ -1,3 +1,5 @@
+import 'package:easy_lamp/NavigationService.dart';
+import 'package:easy_lamp/core/auth_token_storage/auth_token_storage.dart';
 import 'package:easy_lamp/data/model/language_type.dart';
 import 'package:easy_lamp/locator.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
@@ -10,6 +12,7 @@ import 'package:easy_lamp/presenter/bloc/schedule_bloc/schedule_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
+import 'package:easy_lamp/presenter/pages/auth_feature/auth_page.dart';
 import 'package:easy_lamp/presenter/pages/blue_feather/blue_app.dart';
 import 'package:easy_lamp/presenter/pages/splash_feature/splash_page.dart';
 import 'package:flutter/foundation.dart';
@@ -49,6 +52,14 @@ void main() async {
       }
     });
   }
+  AuthTokenStorage.instance.watch().listen((event) {
+    if (event == null) {
+      Navigator.of(NavigationService.navigatorKey.currentContext!).pushReplacement(
+        MaterialPageRoute(builder: (context) => const AuthPage()),
+      );
+    }
+  });
+
   runApp(const MyApp());
 }
 
@@ -84,6 +95,7 @@ class _MyAppState extends State<MyApp> {
             return BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
                 return MaterialApp(
+                  navigatorKey: NavigationService.navigatorKey, // set property
                   navigatorObservers: [
                     if (!kIsWeb) BluetoothAdapterStateObserver()
                   ],

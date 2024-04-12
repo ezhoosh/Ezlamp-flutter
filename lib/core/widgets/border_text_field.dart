@@ -10,7 +10,7 @@ class BorderTextField extends StatelessWidget {
   int maxLines;
   String? title;
   bool optional;
-
+  TextInputType? keyboardType ;
   BorderTextField(
       {Key? key,
       this.hintText,
@@ -18,7 +18,8 @@ class BorderTextField extends StatelessWidget {
       this.controller,
       this.title,
       this.maxLines = 1,
-      this.optional = true})
+      this.optional = true,
+      this.keyboardType})
       : super(key: key);
 
   @override
@@ -53,6 +54,7 @@ class BorderTextField extends StatelessWidget {
             onChanged: onChange,
             style: Light400Style.normal.copyWith(color: MyColors.white),
             maxLines: maxLines,
+            keyboardType: keyboardType,
             decoration: InputDecoration(
               border: OutlineInputBorder(
               borderSide: BorderSide(color: MyColors.secondary.shade500),

@@ -99,6 +99,7 @@ class _AuthPageState extends State<AuthPage> {
               BorderTextField(
                 hintText: al.phone,
                 controller: _controller,
+                keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: MySpaces.s24),
               SizedBox(

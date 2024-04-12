@@ -1,3 +1,5 @@
+import 'package:easy_lamp/core/network/i_api_request_manager.dart';
+import 'package:easy_lamp/core/repository/base_repository.dart';
 import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'dart:convert';
 
@@ -8,29 +10,30 @@ import 'package:easy_lamp/core/params/edit_group_name_params.dart';
 import 'package:easy_lamp/core/params/update_group_owner_params.dart';
 import 'package:easy_lamp/core/params/update_group_params.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
-import 'package:easy_lamp/core/utils/api_access.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/internet_box_model.dart';
 import 'package:easy_lamp/domain/repositories/group_repository.dart';
 import 'package:easy_lamp/domain/repositories/internet_box_repository.dart';
 
-class InternetBoxRepositoryImpl extends InternetBoxRepository {
+class InternetBoxRepositoryImpl extends BaseRepository implements InternetBoxRepository {
+  InternetBoxRepositoryImpl(IHttpClient httpClient) : super(httpClient);
+
   @override
   Future<DataState<InternetBoxModel>> createInternetBox(
       CreateGroupParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
+      var response = await httpClient.postRequest(path:
         "internetbox/",
         data: {
           "name": params.name,
           "description": params.description,
         },
       );
-      if (response.statusCode == 201) {
-        return DataSuccess(InternetBoxModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 201) {
+        return DataSuccess(InternetBoxModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -39,15 +42,14 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
   @override
   Future<DataState<String>> deleteInternetBox(int params) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-        "internetbox/{${params.toString()}}",
-        method: "DELETE",
+      var response = await httpClient.deleteRequest(path:
+      "internetbox/{${params.toString()}}",
       );
-      if (response.statusCode == 204) {
-        return DataSuccess(response.data.toString());
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 204) {
+        return DataSuccess(response.toString());
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -56,14 +58,13 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
   @override
   Future<DataState<InternetBoxModel>> getInternetBoxById(int id) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-          "internetbox/{${id.toString()}}",
-          method: 'GET');
-      if (response.statusCode == 200) {
-        return DataSuccess(InternetBoxModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      var response = await httpClient.getRequest(path:
+      "internetbox/{${id.toString()}}");
+      // if (response.statusCode == 200) {
+        return DataSuccess(InternetBoxModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -73,13 +74,13 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
   Future<DataState<List<InternetBoxModel>>> getInternetBoxList() async {
     try {
       var response =
-          await ApiAccess.makeHttpRequest("internetbox/", method: 'GET');
-      if (response.statusCode == 200) {
+          await httpClient.getRequest(path: "internetbox/");
+      // if (response.statusCode == 200) {
         return DataSuccess(List<InternetBoxModel>.from(
-            response.data.map((model) => InternetBoxModel.fromJson(model))));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+            response.map((model) => InternetBoxModel.fromJson(model))));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -90,17 +91,16 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
       UpdateGroupParams params) async {
     try {
       var response =
-          await ApiAccess.makeHttpRequest("internetbox/${params.id.toString()}",
+          await httpClient.putRequest(path: "internetbox/${params.id.toString()}",
               data: {
                 "name": params.name,
                 "description": params.description,
-              },
-              method: 'PUT');
-      if (response.statusCode == 200) {
-        return DataSuccess(InternetBoxModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+              },);
+      // if (response.statusCode == 200) {
+        return DataSuccess(InternetBoxModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -110,17 +110,16 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
   Future<DataState<InternetBoxModel>> updateInternetBoxOwner(
       UpdateGroupOwnerParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequest("${params.uuid}/",
+      var response = await httpClient.putRequest(path: "${params.uuid}/",
           data: {
             "name": params.name,
             "description": params.description,
-          },
-          method: 'PUT');
-      if (response.statusCode == 200) {
-        return DataSuccess(InternetBoxModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+          });
+      // if (response.statusCode == 200) {
+        return DataSuccess(InternetBoxModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -130,17 +129,16 @@ class InternetBoxRepositoryImpl extends InternetBoxRepository {
   Future<DataState<InternetBoxModel>> editInternetBoxName(
       EditGroupNameParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-          "internetbox/${params.id.toString()}/",
+      var response = await httpClient.patchRequest(path:
+      "internetbox/${params.id.toString()}/",
           data: {
             "name": params.name,
-          },
-          method: 'PATCH');
-      if (response.statusCode == 200) {
-        return DataSuccess(InternetBoxModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+          },);
+      // if (response.statusCode == 200) {
+        return DataSuccess(InternetBoxModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }

@@ -1,38 +1,30 @@
+import 'package:easy_lamp/core/network/i_api_request_manager.dart';
+import 'package:easy_lamp/core/repository/base_repository.dart';
 import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:easy_lamp/core/params/change_password_params.dart';
 import 'package:easy_lamp/core/params/create_invitation_params.dart';
 import 'package:easy_lamp/core/params/get_invitation_list_params.dart';
-import 'package:easy_lamp/core/params/login_params.dart';
 import 'package:easy_lamp/core/params/patch_invitation_params.dart';
-import 'package:easy_lamp/core/params/register_verify_params.dart';
-import 'package:easy_lamp/core/params/send_phone_number_params.dart';
 import 'package:easy_lamp/core/resource/data_state.dart';
-import 'package:easy_lamp/core/utils/api_access.dart';
 import 'package:easy_lamp/data/model/invitation_model.dart';
-import 'package:easy_lamp/data/model/login_model.dart';
-import 'package:easy_lamp/data/model/register_verify_model.dart';
-import 'package:easy_lamp/data/model/reset_password_model.dart';
-import 'package:easy_lamp/data/model/send_login_otp.dart';
-import 'package:easy_lamp/data/model/send_number_model.dart';
-import 'package:easy_lamp/domain/repositories/auth_repository.dart';
 import 'package:easy_lamp/domain/repositories/invitation_repository.dart';
 
-class InvitationRepositoryImpl extends InvitationRepository {
+class InvitationRepositoryImpl extends BaseRepository implements InvitationRepository {
+  InvitationRepositoryImpl(IHttpClient httpClient) : super(httpClient);
+
   @override
   Future<DataState<String>> acceptInvite(int id) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-        "invitations/$id/accept/",
-        method: 'POST',
+      var response = await  httpClient.postRequest(path:
+      "invitations/$id/accept/",
       );
-      if (response.statusCode == 200) {
-        return DataSuccess(response.data.toString());
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 200) {
+        return DataSuccess(response.toString());
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -41,15 +33,14 @@ class InvitationRepositoryImpl extends InvitationRepository {
   @override
   Future<DataState<String>> removeUserFromAllLamp(String id) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-        "invitations/remove_user_from_all_lamps/$id/",
-        method: 'DELETE',
+      var response = await  httpClient.deleteRequest(path:
+      "invitations/remove_user_from_all_lamps/$id/",
       );
-      if (response.statusCode == 200) {
-        return DataSuccess(response.data.toString());
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 200) {
+        return DataSuccess(response.toString());
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -58,15 +49,14 @@ class InvitationRepositoryImpl extends InvitationRepository {
   @override
   Future<DataState<String>> declineInvite(int id) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-        "invitations/$id/decline/",
-        method: 'POST',
+      var response = await  httpClient.postRequest(path:
+      "invitations/$id/decline/",
       );
-      if (response.statusCode == 200) {
-        return DataSuccess(response.data.toString());
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 200) {
+        return DataSuccess(response.toString());
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -76,20 +66,19 @@ class InvitationRepositoryImpl extends InvitationRepository {
   Future<DataState<List<InvitationModel>>> getInvitationList(
       GetInvitationListParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-        "invitations/",
-        data: {
+      var response = await  httpClient.getRequest(path:
+      "invitations/",
+        queryParameters: {
           if (params.groupLamp != null) 'group_lamp': params.groupLamp,
           if (params.phoneNumber != null) 'phone_number': params.phoneNumber,
         },
-        method: 'GET',
       );
-      if (response.statusCode == 200) {
+      // if (response.statusCode == 200) {
         return DataSuccess(List<InvitationModel>.from(
-            response.data.map((model) => InvitationModel.fromJson(model))));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+            response.map((model) => InvitationModel.fromJson(model))));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       print(e.error);
       return DataFailed(ErrorHelper.getCatchError(e));
@@ -100,16 +89,15 @@ class InvitationRepositoryImpl extends InvitationRepository {
   Future<DataState<List<InvitationModel>>>
       getMyInvitationAssignmentList() async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-        "invitations/my-invite-assignments/",
-        method: 'GET',
+      var response = await  httpClient.getRequest(path:
+      "invitations/my-invite-assignments/",
       );
-      if (response.statusCode == 200) {
+      // if (response.statusCode == 200) {
         return DataSuccess(List<InvitationModel>.from(
-            response.data.map((model) => InvitationModel.fromJson(model))));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+            response.map((model) => InvitationModel.fromJson(model))));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       print(e.error);
       return DataFailed(ErrorHelper.getCatchError(e));
@@ -120,8 +108,8 @@ class InvitationRepositoryImpl extends InvitationRepository {
   Future<DataState<String>> createInvitation(
       CreateInvitationParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-        "invitations/",
+      var response = await  httpClient.postRequest(path:
+      "invitations/",
         data: {
           'group_lamp': params.groupLamp,
           'phone_number': params.phoneNumber,
@@ -129,13 +117,12 @@ class InvitationRepositoryImpl extends InvitationRepository {
           'message': params.message,
           'lamps': params.lamps,
         },
-        method: 'POST',
       );
-      if (response.statusCode == 201) {
-        return DataSuccess(response.data.toString());
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 201) {
+        return DataSuccess(response.toString());
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -144,16 +131,15 @@ class InvitationRepositoryImpl extends InvitationRepository {
   @override
   Future<DataState<String>> deleteInvitationGetById(int id) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-        "invitations/$id/",
+      var response = await  httpClient.deleteRequest(path:
+      "invitations/$id/",
         data: {},
-        method: 'DELETE',
       );
-      if (response.statusCode == 204) {
-        return DataSuccess(response.data.toString());
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 204) {
+        return DataSuccess(response.toString());
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -162,15 +148,14 @@ class InvitationRepositoryImpl extends InvitationRepository {
   @override
   Future<DataState<InvitationModel>> getInvitationGetById(int id) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-        "invitations/$id/",
-        method: 'GET',
+      var response = await  httpClient.getRequest(path:
+      "invitations/$id/",
       );
-      if (response.statusCode == 200) {
-        return DataSuccess(InvitationModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 200) {
+        return DataSuccess(InvitationModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -180,15 +165,14 @@ class InvitationRepositoryImpl extends InvitationRepository {
   Future<DataState<InvitationModel>> getInvitationGroupGetById(
       int groupId) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-        "invitations/group/$groupId/",
-        method: 'GET',
+      var response = await  httpClient.getRequest(path:
+      "invitations/group/$groupId/",
       );
-      if (response.statusCode == 200) {
-        return DataSuccess(InvitationModel.fromJson(response.data));
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 200) {
+        return DataSuccess(InvitationModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -198,8 +182,8 @@ class InvitationRepositoryImpl extends InvitationRepository {
   Future<DataState<InvitationModel>> patchInvitation(
       UpdateInvitationParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-        "invitations/${params.id}/",
+      var response = await  httpClient.patchRequest(path:
+      "invitations/${params.id}/",
         data: {
           if (params.lamps != null) 'lamps': jsonEncode(params.lamps),
           if (params.groupLamp != null) 'group_lamp': params.groupLamp,
@@ -207,13 +191,12 @@ class InvitationRepositoryImpl extends InvitationRepository {
           if (params.message != null) 'message': params.message,
           if (params.phoneNumber != null) 'phone_number': params.phoneNumber,
         },
-        method: 'PATCH',
       );
-      if (response.statusCode == 200) {
-        return DataSuccess(response.data);
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 200) {
+        return DataSuccess(response);
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
@@ -223,8 +206,8 @@ class InvitationRepositoryImpl extends InvitationRepository {
   Future<DataState<InvitationModel>> putInvitation(
       UpdateInvitationParams params) async {
     try {
-      var response = await ApiAccess.makeHttpRequest(
-        "invitations/${params.id}/",
+      var response = await  httpClient.putRequest(path:
+      "invitations/${params.id}/",
         data: {
           'lamps': jsonEncode(params.lamps),
           'group_lamp': params.groupLamp,
@@ -232,13 +215,12 @@ class InvitationRepositoryImpl extends InvitationRepository {
           'message': params.message,
           'phone_number': params.phoneNumber,
         },
-        method: 'PUT',
       );
-      if (response.statusCode == 200) {
-        return DataSuccess(response.data);
-      } else {
-        return DataFailed(ErrorHelper.getError(response));
-      }
+      // if (response.statusCode == 200) {
+        return DataSuccess(response);
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
     } on DioError catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
