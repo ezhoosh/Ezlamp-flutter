@@ -1,12 +1,14 @@
 import 'package:easy_lamp/data/isar_model/isar_command.dart';
 import 'package:easy_lamp/data/isar_model/isar_group.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:isar/isar.dart';
 
 part 'isar_lamp.g.dart';
 
 @collection
 class IsarLamp {
-  Id idDb = Isar.autoIncrement;
+  Id idDb = kIsWeb ? 1 : Isar.autoIncrement;
   int? id;
   String? name;
   String? description;

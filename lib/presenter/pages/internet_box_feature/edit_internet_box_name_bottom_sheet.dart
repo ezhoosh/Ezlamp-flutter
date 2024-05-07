@@ -35,7 +35,7 @@ class EditInternetBoxNameBottomSheet extends StatelessWidget {
       },
       listener: (context, state) {
         if (state.updateGroupNameStatus is BaseSuccess) {
-          EasyLoading.showSuccess("SUCCESS");
+          EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
         } else if (state.updateGroupNameStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.updateGroupNameStatus is BaseError) {

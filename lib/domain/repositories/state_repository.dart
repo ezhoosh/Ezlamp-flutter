@@ -15,4 +15,6 @@ import 'package:easy_lamp/presenter/pages/state_feature/state_page.dart';
 
 abstract class StateRepository {
   Future<DataState<List<StateModel>>> getDataState(StateParams params);
+
+  Future<DataState<List<StateModel>>> getDataStateInternet(StateParams params);
 }

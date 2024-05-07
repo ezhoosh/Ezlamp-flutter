@@ -65,8 +65,12 @@ class CommandBloc extends Bloc<CommandEvent, CommandState> {
       List<BluetoothService> services =
           await state.deviceConnected!.discoverServices();
       for (var service in services) {
-        if (service.uuid.toString() == '0000fff0-0000-1000-8000-00805f9b34fb') {
+        // if (service.uuid.toString() == '0000fff0-0000-1000-8000-00805f9b34fb') {
+        print("service.uuid  ===========>>>>> ${service.uuid}");
+        // if (service.uuid.toString() == '1d14d6ee-fd63-4fa1-bfa4-8f47b42119f0') {
+        if (service.uuid.str128 == '0000fff0-0000-1000-8000-00805f9b34fb') {
           for (var characteristic in service.characteristics) {
+            print("characteristic  ===========>>>>> ${service.uuid} |||||| ${characteristic.properties.write}");
             if (characteristic.properties.write) {
               // const maxWriteLength = 10;
               final dataBytes = utf8.encode(data);

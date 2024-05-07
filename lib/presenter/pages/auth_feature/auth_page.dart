@@ -2,6 +2,7 @@ import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/data/model/auth_status.dart';
 import 'package:easy_lamp/data/model/send_number_model.dart';
+import 'package:easy_lamp/localization_service.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/otp_page.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/password_page.dart';
 import 'package:easy_lamp/core/widgets/rules_text_view.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -54,7 +56,8 @@ class _AuthPageState extends State<AuthPage> {
             if (state.sendPhoneStatus is BaseLoading) {
               EasyLoading.show();
             } else if (state.sendPhoneStatus is BaseSuccess) {
-              EasyLoading.showSuccess("success");
+              // EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
+              EasyLoading.dismiss();
               SendNumberModel model =
                   (state.sendPhoneStatus as BaseSuccess).entity;
               if (model.exist) {
@@ -100,13 +103,14 @@ class _AuthPageState extends State<AuthPage> {
                 hintText: al.phone,
                 controller: _controller,
                 keyboardType: TextInputType.phone,
+                isPersianNumber: LocalizationService.isLocalPersian,
               ),
               const SizedBox(height: MySpaces.s24),
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    String value = _controller.text;
+                    String value = _controller.text.toEnglishDigit();
                     String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
                     RegExp regExp = RegExp(pattern);
                     if (value.isEmpty || !regExp.hasMatch(value)) {

@@ -53,7 +53,7 @@ class _AddLampPageState extends State<AddLampPage> {
       },
       listener: (context, state) {
         if (state.updateLampOwnerStatus is BaseSuccess) {
-          EasyLoading.showSuccess("SUCCESS");
+          EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
         } else if (state.updateLampOwnerStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.updateLampOwnerStatus is BaseError) {

@@ -87,7 +87,7 @@ class _MemberPageState extends State<MemberPage> {
                   if (state.acceptInviteStatus is BaseSuccess ||
                       state.declineInviteStatus is BaseSuccess ||
                       state.deleteInvitationStatus is BaseSuccess) {
-                    EasyLoading.showSuccess("SUCCESS");
+                    EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
                   } else if (state.acceptInviteStatus is BaseLoading ||
                       state.declineInviteStatus is BaseLoading ||
                       state.deleteInvitationStatus is BaseLoading) {

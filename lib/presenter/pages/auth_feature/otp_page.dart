@@ -4,6 +4,7 @@ import 'package:easy_lamp/core/widgets/count_timer.dart';
 import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/data/model/auth_status.dart';
 import 'package:easy_lamp/data/model/register_verify_model.dart';
+import 'package:easy_lamp/localization_service.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/password_page.dart';
 import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
@@ -18,6 +19,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:easy_lamp/core/widgets/rules_text_view.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
+import 'package:pinput/pinput.dart';
 
 class OtpPage extends StatefulWidget {
   AuthStatus status;
@@ -31,9 +34,8 @@ class OtpPage extends StatefulWidget {
 
 class _OtpPageState extends State<OtpPage> {
   late AppLocalizations al;
-  String code = '';
   bool isFinish = false;
-
+  final TextEditingController _otp_controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     // double w = MediaQuery.of(context).size.width;
@@ -56,7 +58,8 @@ class _OtpPageState extends State<OtpPage> {
                         otp: model.token.toString(),
                       )));
             }
-            EasyLoading.showSuccess("success");
+            // EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
+            EasyLoading.dismiss();
           } else if (state.registerVerifyStatus is BaseError) {
             ErrorHelper.getBaseError(state.registerVerifyStatus, context);
           }
@@ -75,7 +78,8 @@ class _OtpPageState extends State<OtpPage> {
             //           builder: (context) => const ConnectionPage()),
             //       ModalRoute.withName("/"));
             // }
-            EasyLoading.showSuccess("success");
+            // EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
+            EasyLoading.dismiss();
           } else if (state.loginStatus is BaseError) {
             ErrorHelper.getBaseError(state.loginStatus, context);
           } else if (state.registerStatus is BaseError) {
@@ -101,7 +105,9 @@ class _OtpPageState extends State<OtpPage> {
               ),
               const SizedBox(height: MySpaces.s6),
               Text(
-                al.sendOtpToNumber.replaceAll("*number*", widget.phoneNumber),
+                LocalizationService.isLocalPersian
+                    ? al.sendOtpToNumber.replaceAll("*number*", widget.phoneNumber).toPersianDigit()
+                    : al.sendOtpToNumber.replaceAll("*number*", widget.phoneNumber.toString()),
                 style: Light400Style.sm
                     .copyWith(color: MyColors.secondary.shade200),
                 textAlign: TextAlign.center,
@@ -126,31 +132,49 @@ class _OtpPageState extends State<OtpPage> {
               const SizedBox(height: MySpaces.s40),
               Directionality(
                 textDirection: TextDirection.ltr,
-                child: OtpTextField(
-                  fieldWidth: 40,
-                  numberOfFields: 4,
-                  textStyle: DemiBoldStyle.normal.copyWith(
-                    color: MyColors.white,
+                child:
+                Pinput(
+                  onCompleted: (pin) {
+                    submitRegister(_otp_controller.text.toString());
+                  },
+                  // onChanged: (value)  {
+                  //   if (LocalizationService.isLocalPersian) {
+                  //     value = value.toPersianDigit();
+                  //   }
+                  //   _otp_controller.value =
+                  //       TextEditingValue(
+                  //         text: value,
+                  //         selection: TextSelection.collapsed(
+                  //             offset: value.length),
+                  //       );
+                  // },
+                  defaultPinTheme: PinTheme(
+                    width: 40,
+                    height: 40,
+                    textStyle: DemiBoldStyle.normal.copyWith(
+                      color: MyColors.white,
+                    ),
+                    decoration: BoxDecoration(
+                      color: MyColors.noColor,
+                      borderRadius: MyRadius.sm ,
+                      border: Border.all(color: MyColors.white, width: 1),
+                    ),
                   ),
-                  borderWidth: 1,
-                  borderColor: MyColors.primary,
-                  enabledBorderColor: MyColors.white,
-                  disabledBorderColor: MyColors.white,
-                  focusedBorderColor: MyColors.primary,
-                  showFieldAsBox: true,
-                  borderRadius: MyRadius.sm,
-                  onCodeChanged: (String code) => this.code += code,
-                  onSubmit: (String code) {
-                    // showDialog(
-                    //     context: context,
-                    //     builder: (context) {
-                    //       return AlertDialog(
-                    //         title: Text("Verification Code"),
-                    //         content: Text('Code entered is '),
-                    //       );
-                    //     });
-                    submitRegister(code);
-                  }, // end onSubmit
+                  focusedPinTheme:  PinTheme(
+                    width: 40,
+                    height: 40,
+                    textStyle: DemiBoldStyle.normal.copyWith(
+                      color: MyColors.white,
+                    ),
+                    decoration: BoxDecoration(
+                      color: MyColors.noColor,
+                      borderRadius: MyRadius.sm ,
+                      border: Border.all(color: MyColors.primary,width: 1),
+                    ),
+                  ),
+                    pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                  androidSmsAutofillMethod: AndroidSmsAutofillMethod.smsRetrieverApi,
+                  controller: _otp_controller,
                 ),
               ),
               const SizedBox(height: MySpaces.s24),
@@ -158,7 +182,7 @@ class _OtpPageState extends State<OtpPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    submitRegister(code);
+                    submitRegister(_otp_controller.text.toString());
                   },
                   child: Text(
                     al.login,
@@ -176,6 +200,7 @@ class _OtpPageState extends State<OtpPage> {
   }
 
   submitRegister(String code) {
+    code = code.toEnglishDigit();
     if (widget.status == AuthStatus.LOGIN) {
       BlocProvider.of<AuthBloc>(context)
           .add(LoginEvent(widget.phoneNumber, code, ''));

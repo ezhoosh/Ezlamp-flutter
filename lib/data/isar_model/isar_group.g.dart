@@ -13,9 +13,9 @@ extension GetIsarGroupCollection on Isar {
   IsarCollection<IsarGroup> get isarGroups => this.collection();
 }
 
-const IsarGroupSchema = CollectionSchema(
+final IsarGroupSchema = CollectionSchema(
   name: r'IsarGroup',
-  id: -249249756886492951,
+  id: int.parse(dotenv.env["ID_ISAR_GROUP"] ?? ""),
   properties: {
     r'description': PropertySchema(
       id: 0,
@@ -41,20 +41,20 @@ const IsarGroupSchema = CollectionSchema(
   indexes: {},
   links: {
     r'owner': LinkSchema(
-      id: -5259202259244068613,
+      id: int.parse(dotenv.env["ID_OWNER_ISAR_GROUP"] ?? ""),
       name: r'owner',
       target: r'IsarOwner',
       single: true,
     ),
     r'lamps': LinkSchema(
-      id: 2579652246558123846,
+      id: int.parse(dotenv.env["ID_LAMP_ISAR_GROUP"] ?? ""),
       name: r'lamps',
       target: r'IsarLamp',
       single: false,
       linkName: r'group',
     ),
     r'command': LinkSchema(
-      id: 295816511362452783,
+      id: int.parse(dotenv.env["ID_COMMAND_ISAR_GROUP"] ?? ""),
       name: r'command',
       target: r'IsarCommand',
       single: true,

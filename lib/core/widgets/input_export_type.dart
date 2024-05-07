@@ -3,6 +3,7 @@ import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
 import 'package:easy_lamp/core/widgets/bottom_sheet_input_date.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
+import 'package:easy_lamp/data/model/result_type_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -25,15 +26,15 @@ class InputExportType extends StatefulWidget {
   }) : super(key: key);
 
   final String? title;
-  Map? prevValue;
+  ResultTypeModel? prevValue;
   final Widget? description;
   final bool? isDisabled;
   final String? hint;
   final bool optional;
   final bool isDate;
-  List<Map> data;
+  List<ResultTypeModel> data;
 
-  final Function(Map newDate) onNewDateSelected;
+  final Function(ResultTypeModel newDate) onNewDateSelected;
 
   @override
   State<InputExportType> createState() => _InputExportTypeState();
@@ -83,7 +84,7 @@ class _InputExportTypeState extends State<InputExportType> {
               child: Row(children: [
                 Expanded(
                   child: Text(
-                    widget.prevValue?['title'] ??
+                    widget.prevValue!.name ??
                         widget.hint ??
                         AppLocalizations.of(context)!.select(""),
                     textAlign: TextAlign.start,
@@ -108,7 +109,7 @@ class _InputExportTypeState extends State<InputExportType> {
 
   Future<void> _handleClickOnSelectDate() async {
     String current = '';
-    Map? type = await showModalBottomSheet(
+    ResultTypeModel? type = await showModalBottomSheet(
       context: _buildContext,
       isScrollControlled: true,
       barrierColor: MyColors.noColor,
@@ -142,7 +143,7 @@ class _InputExportTypeState extends State<InputExportType> {
                       child: Row(children: [
                         Expanded(
                           child: Text(
-                            widget.prevValue?['title'] ??
+                            widget.prevValue!.name ??
                                 widget.hint ??
                                 AppLocalizations.of(context)!.select(""),
                             textAlign: TextAlign.end,
@@ -158,25 +159,28 @@ class _InputExportTypeState extends State<InputExportType> {
                         ),
                       ])),
                   ...widget.data
-                      .map((e) => Row(
-                            children: [
-                              Radio(
-                                fillColor:
-                                    MaterialStateProperty.all(MyColors.primary),
-                                activeColor: MyColors.primary,
-                                value: e,
-                                groupValue: current,
-                                onChanged: (t) {
-                                  Navigator.pop(context, t);
-                                },
-                              ),
-                              Text(
-                                e['title'],
-                                style: Light300Style.normal.copyWith(
-                                    color: MyColors.secondary.shade300),
-                              ),
-                            ],
-                          ))
+                      .map((e) => GestureDetector(
+                    onTap: () => Navigator.pop(context, e),
+                        child: Row(
+                              children: [
+                                Radio(
+                                  fillColor:
+                                      MaterialStateProperty.all(MyColors.primary),
+                                  activeColor: MyColors.primary,
+                                  value: e,
+                                  groupValue: current,
+                                  onChanged: (t) {
+                                    Navigator.pop(context, t);
+                                  },
+                                ),
+                                Text(
+                                  e.name,
+                                  style: Light300Style.normal.copyWith(
+                                      color: MyColors.secondary.shade300),
+                                ),
+                              ],
+                            ),
+                      ))
                       .toList()
                 ],
               ),

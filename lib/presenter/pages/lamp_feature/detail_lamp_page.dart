@@ -67,7 +67,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
               setState(() {
                 widget.lamps.first = lamp;
               });
-              EasyLoading.showSuccess("SUCCESS");
+              EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
             } else if (state.patchLampStatus is BaseLoading) {
               EasyLoading.show();
             } else if (state.patchLampStatus is BaseError) {

@@ -5,9 +5,10 @@ import 'package:easy_lamp/core/widgets/bottom_sheet_input_date.dart';
 import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
+import 'package:easy_lamp/localization_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_linear_datepicker/flutter_datepicker.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
@@ -15,6 +16,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
 
 import 'package:easy_lamp/core/widgets/jalali_date_picker/jalali_table_calendar.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class InputDate extends StatefulWidget {
   InputDate({
@@ -27,6 +29,7 @@ class InputDate extends StatefulWidget {
     this.prevDate,
     this.optional = true,
     this.isDate = false,
+    this.isEnabled = true,
   }) : super(key: key);
 
   final String? title;
@@ -36,8 +39,11 @@ class InputDate extends StatefulWidget {
   final String? hint;
   final bool optional;
   final bool isDate;
+  final bool isEnabled;
   final Function(DateTime newDate) onNewDateSelected;
-
+  String currentDate = LocalizationService.isLocalPersian
+      ? DateTime.now().toJalali().formatCompactDate()
+      : intl.DateFormat('yyyy/MM/dd').format(DateTime.now());
   @override
   State<InputDate> createState() => _InputDateState();
 }
@@ -72,10 +78,10 @@ class _InputDateState extends State<InputDate> {
         SizedBox(
           height: 54,
           child: ClickableContainer(
-              onTap: () {
+              onTap: widget.isEnabled ? () {
                 if (widget.isDisabled != null && widget.isDisabled!) return;
                 _handleClickOnSelectDate();
-              },
+              } : null,
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               color: (widget.isDisabled != null && widget.isDisabled!)
                   ? MyColors.primary
@@ -94,9 +100,9 @@ class _InputDateState extends State<InputDate> {
                     _formatDate(widget.prevDate),
                     textAlign: TextAlign.end,
                     style: widget.prevDate == null
-                        ? Light300Style.sm
+                        ? Light300Style.normal
                             .copyWith(color: MyColors.secondary.shade300)
-                        : Light300Style.sm
+                        : Light300Style.normal
                             .copyWith(color: MyColors.secondary.shade500),
                   ),
                 ),
@@ -116,24 +122,79 @@ class _InputDateState extends State<InputDate> {
             child: Expanded(
               child: Column(
                 children: [
-                  Expanded(
-                    child: JalaliTableCalendar(
-                        context: context,
-                        events: {},
-                        onDaySelected: (value) {
-                          setState(() {
-                            widget.prevDate = value;
-                          });
-                          widget.onNewDateSelected(value);
-                        }),
-                  ),
+                  Expanded(child: Directionality(
+                    textDirection: TextDirection.ltr,
+                    child: LinearDatePicker(
+                          startDate: LocalizationService.isLocalPersian
+                              ? DateTime.now()
+                                  .subtract(const Duration(days: 3650))
+                                  .toJalali()
+                                  .formatCompactDate()
+                              : intl.DateFormat('yyyy/MM/dd').format(DateTime.now()
+                                  .subtract(const Duration(days: 3650))
+                                  .toJalali()
+                                  .toDateTime()),
+                          endDate: LocalizationService.isLocalPersian
+                              ? DateTime.now()
+                                  .add(const Duration(days: 365))
+                                  .toJalali()
+                                  .formatCompactDate()
+                              : intl.DateFormat('yyyy/MM/dd').format(DateTime.now()
+                                  .add(const Duration(days: 365))
+                                  .toJalali()
+                                  .toDateTime()),
+                          initialDate: LocalizationService.isLocalPersian
+                              ? DateTime.now().toJalali().formatCompactDate()
+                              : intl.DateFormat('yyyy/MM/dd').format(DateTime.now()),
+                          addLeadingZero: true,
+                        dateChangeListener: (String selectedDate) {
+                          widget.currentDate = selectedDate;
+                          },
+                        showDay: true,
+                        labelStyle:   TextStyle(
+                          fontFamily: LocalizationService.isLocalPersian ? "sans" : null,
+                          fontSize: 14.0,
+                          color: MyColors.primary,
+                        ),
+                        selectedRowStyle:   TextStyle(
+                          fontFamily: LocalizationService.isLocalPersian ? "sans" : null,
+                          fontSize: 18.0,
+                          color: MyColors.primary,
+                        ),
+                        unselectedRowStyle:   TextStyle(
+                          fontFamily: LocalizationService.isLocalPersian ? "sans" : null,
+                          fontSize: 10.0,
+                          color: Colors.white,
+                        ),
+                        yearText: AppLocalizations.of(context)!.year,
+                        monthText: AppLocalizations.of(context)!.month,
+                        dayText: AppLocalizations.of(context)!.day,
+                        showLabels: true,
+                        columnWidth: 100,
+                        showMonthName: true,
+                        isJalaali: LocalizationService.isLocalPersian  // false -> Gregorian
+                    ),
+                  ),),
                   SizedBox(
                     width: double.infinity,
                     child: PrimaryButton(
-                      h: 60,
+                      // h: 60,
                       text: AppLocalizations.of(context)!.save,
                       onPress: () {
                         Navigator.pop(context);
+
+                        setState(() {
+                          widget.prevDate = LocalizationService.isLocalPersian
+                              ? Jalali(
+                              int.parse(widget.currentDate.split("/")[0]),
+                              int.parse(widget.currentDate.split("/")[1]),
+                              int.parse(widget.currentDate.split("/")[2]))
+                              .toGregorian()
+                              .toDateTime()
+                              : DateTime.tryParse(widget.currentDate);
+                        });
+                        widget.onNewDateSelected(widget.prevDate!);
+
                       },
                     ),
                   ),
@@ -169,8 +230,12 @@ class _InputDateState extends State<InputDate> {
       return widget.hint ?? AppLocalizations.of(context)!.select("");
     }
     if (widget.isDate) {
-      Jalali j = Jalali.fromDateTime(dateTime);
-      return "${j.year}-${j.month}-${j.day}";
+      if(LocalizationService.isLocalPersian){
+        return dateTime.toPersianDate();
+      }else{
+        return intl.DateFormat('yyyy/MM/dd').parse(dateTime.toString()).toString();
+      }
+
     } else {
       return '${dateTime.hour}:${dateTime.minute}';
     }

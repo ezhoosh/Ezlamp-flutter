@@ -4,48 +4,54 @@
 
 import 'dart:convert';
 
-List<StateModel> stateModelFromJson(String str) =>
-    List<StateModel>.from(json.decode(str).map((x) => StateModel.fromJson(x)));
+StateModel stateModelFromJson(String str) => StateModel.fromJson(json.decode(str));
 
-String stateModelToJson(List<StateModel> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+String stateModelToJson(StateModel data) => json.encode(data.toJson());
 
 class StateModel {
-  DateTime timestamp;
-  double? power;
+  double? id;
+  double? internetBoxAssigned;
   double? temperature;
   double? humidity;
+  double? light;
   double? airQuality;
-  double? co2;
-  double? pir;
+  double? lampAssigned;
+  int? power;
+  String? timestamp;
 
   StateModel({
-    required this.timestamp,
-    required this.power,
-    required this.temperature,
-    required this.humidity,
-    required this.airQuality,
-    required this.co2,
-    required this.pir,
+    this.id,
+    this.internetBoxAssigned,
+    this.temperature,
+    this.humidity,
+    this.light,
+    this.airQuality,
+    this.lampAssigned,
+    this.power,
+    this.timestamp,
   });
 
   factory StateModel.fromJson(Map<String, dynamic> json) => StateModel(
-        timestamp: DateTime.parse(json["timestamp"]),
-        power: json["power"]?.toDouble(),
-        temperature: json["temperature"]?.toDouble(),
-        humidity: json["humidity"]?.toDouble(),
-        airQuality: json["air_quality"]?.toDouble(),
-        co2: json["co2"]?.toDouble(),
-        pir: json["pir"],
-      );
+    id: json["id"],
+    internetBoxAssigned: json["internetbox_assigned"] ?? 0.0,
+    temperature: json["temperature"] ?? 0.0 ,
+    humidity: json["humidity"] ?? 0.0,
+    light: json["light"] ?? 0.0,
+    airQuality: json["air_quality"] ?? 0.0,
+    lampAssigned: json["lamp_assigned"] ?? 0.0,
+    power: json["power"] ?? 0.0,
+    timestamp: json["timestamp"]
+  );
 
   Map<String, dynamic> toJson() => {
-        "timestamp": timestamp.toIso8601String(),
-        "power": power,
-        "temperature": temperature,
-        "humidity": humidity,
-        "air_quality": airQuality,
-        "co2": co2,
-        "pir": pir,
-      };
+    "id": id,
+    "internetbox_assigned": internetBoxAssigned,
+    "temperature": temperature,
+    "humidity": humidity,
+    "light": light,
+    "air_quality": airQuality,
+    "lamp_assigned": lampAssigned,
+    "power": power,
+    "timestamp": timestamp,
+  };
 }

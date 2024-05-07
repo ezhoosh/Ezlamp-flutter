@@ -13,3 +13,13 @@ class GetChartInformation extends StateEvent {
 
   GetChartInformation(this.lamps);
 }
+class GetChartInternetBoxInformation extends StateEvent {
+  StateParams params;
+
+  GetChartInternetBoxInformation(this.params);
+}
+class OnChangeCheckBox extends StateEvent {
+  bool isCheckDate;
+
+  OnChangeCheckBox(this.isCheckDate);
+}

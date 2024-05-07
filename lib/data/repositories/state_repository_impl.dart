@@ -41,4 +41,29 @@ class StateRepositoryImpl extends BaseRepository implements StateRepository {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
+  @override
+  Future<DataState<List<StateModel>>> getDataStateInternet(StateParams params) async {
+    try {
+      var response = await httpClient.getRequest(path:
+        "https://ezlamp.darkube.app//api/v1/state//internetbox/",
+        queryParameters: {
+          'which_param': params.whichParam,
+          if (params.lamps != null) "internetboxes": params.lamps,
+          if (params.timeStampGte != null)
+            "timestamp__gte": params.timeStampGte!.toString(),
+          if (params.timeStampLte != null)
+            "timestamp__lte": params.timeStampLte!.toString(),
+        },
+      );
+      print('state data: ${jsonEncode(response)}');
+      // if (response.statusCode == 200) {
+        return DataSuccess(List<StateModel>.from(
+            response.map((model) => StateModel.fromJson(model))));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
+    } on DioError catch (e) {
+      return DataFailed(ErrorHelper.getCatchError(e));
+    }
+  }
 }
