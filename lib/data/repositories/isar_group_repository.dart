@@ -9,7 +9,7 @@ class IsarGroupRepository extends IsarRepository<IsarGroup> {
   @override
   Future<void> save(IsarGroup student) async {
     isar.writeTxnSync(() {
-      isar.isarGroups.putSync(student);
+      isar.isarGroups.put(student);
     });
   }
 

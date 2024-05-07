@@ -13,9 +13,9 @@ extension GetIsarLampCollection on Isar {
   IsarCollection<IsarLamp> get isarLamps => this.collection();
 }
 
-const IsarLampSchema = CollectionSchema(
+final IsarLampSchema = CollectionSchema(
   name: r'IsarLamp',
-  id: 6023187134689651693,
+  id: int.parse(dotenv.env["ID_ISAR_LAMP"] ?? ""),
   properties: {
     r'address': PropertySchema(
       id: 0,
@@ -86,13 +86,13 @@ const IsarLampSchema = CollectionSchema(
   indexes: {},
   links: {
     r'group': LinkSchema(
-      id: 7196126746647268555,
+      id: int.parse(dotenv.env["ID_GROUP_ISAR_LAMP"] ?? ""),
       name: r'group',
       target: r'IsarGroup',
       single: true,
     ),
     r'command': LinkSchema(
-      id: 2581321498115540218,
+      id: int.parse(dotenv.env["ID_COMMAND_ISAR_LAMP"] ?? ""),
       name: r'command',
       target: r'IsarCommand',
       single: true,

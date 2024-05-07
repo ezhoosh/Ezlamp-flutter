@@ -38,7 +38,7 @@ class MoreGroupBottomSheet extends StatelessWidget {
       listener: (context, state) {
         if (state.deleteGroupStatus is BaseSuccess) {
           Navigator.pop(context);
-          EasyLoading.showSuccess("SUCCESS");
+          EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
           Navigator.pop(context);
         } else if (state.deleteGroupStatus is BaseLoading) {
           EasyLoading.show();

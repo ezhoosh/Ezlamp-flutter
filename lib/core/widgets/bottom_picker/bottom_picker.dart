@@ -542,6 +542,7 @@ class BottomPicker extends StatefulWidget {
 }
 
 class _BottomPickerState extends State<BottomPicker> {
+  late String title;
   late int selectedItemIndex;
   late DateTime selectedDateTime;
 
@@ -563,7 +564,7 @@ class _BottomPickerState extends State<BottomPicker> {
   @override
   Widget build(BuildContext context) {
     return CustomBottomSheet(
-      title: "ساعت را انتخاب کنید",
+      title: widget.title,
       child: Container(
         height: widget.height ?? context.bottomPickerHeight,
         child: Padding(
@@ -618,12 +619,12 @@ class _BottomPickerState extends State<BottomPicker> {
               if (widget.displaySubmitButton)
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
+                    // horizontal: 20,
                     vertical: 20,
                   ),
                   child: SizedBox(
                     width: double.infinity,
-                    height: 60,
+                    // height: 60,
                     child: BottomPickerButton(
                       onClick: () {
                         if (widget.bottomPickerType ==

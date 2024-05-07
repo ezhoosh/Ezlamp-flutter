@@ -48,7 +48,7 @@ class _AddGroupBottomSheetState extends State<AddGroupBottomSheet> {
       listener: (context, state) {
         if (state.createGroupStatus is BaseSuccess) {
           Navigator.pop(context);
-          EasyLoading.showSuccess("SUCCESS");
+          EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
         } else if (state.createGroupStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.createGroupStatus is BaseError) {

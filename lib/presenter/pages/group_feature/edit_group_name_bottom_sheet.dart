@@ -55,7 +55,7 @@ class _EditGroupNameBottomSheetState extends State<EditGroupNameBottomSheet> {
             listener: (context, state) {
               if (state.updateGroupNameStatus is BaseSuccess) {
                 Navigator.pop(context);
-                EasyLoading.showSuccess("SUCCESS");
+                EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
               } else if (state.updateGroupNameStatus is BaseLoading) {
                 EasyLoading.show();
               } else if (state.updateGroupNameStatus is BaseError) {

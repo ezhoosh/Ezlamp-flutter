@@ -2,14 +2,17 @@ import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:easy_lamp/core/widgets/arrow_list.dart';
 import 'package:easy_lamp/core/widgets/bottom_sheet_input_date.dart';
 import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
 import 'package:easy_lamp/data/isar_model/isar_command.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
+import 'package:easy_lamp/data/model/internet_box_model.dart';
 import 'package:easy_lamp/data/model/lamp_model.dart';
 import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
+import 'package:easy_lamp/presenter/bloc/internet_box_bloc/internet_box_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,18 +21,18 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart' as intl;
 
-class InputGroupSelect extends StatefulWidget {
+class InputInternetBoxSelect extends StatefulWidget {
   final String? title;
-  List<LampModel>? prevValue;
+  List<InternetBoxModel>? prevValue;
   final Widget? description;
   final bool? isDisabled;
   final String? hint;
   final bool optional;
   final bool isDate;
 
-  final Function(List<LampModel> newValue) onNewDateSelected;
+  final Function(List<InternetBoxModel> newValue) onNewDateSelected;
 
-  InputGroupSelect({
+  InputInternetBoxSelect({
     Key? key,
     required this.title,
     required this.onNewDateSelected,
@@ -42,10 +45,10 @@ class InputGroupSelect extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<InputGroupSelect> createState() => _InputGroupSelectState();
+  State<InputInternetBoxSelect> createState() => _InputInternetBoxSelectState();
 }
 
-class _InputGroupSelectState extends State<InputGroupSelect> {
+class _InputInternetBoxSelectState extends State<InputInternetBoxSelect> {
   late BuildContext _buildContext;
 
   @override
@@ -92,7 +95,7 @@ class _InputGroupSelectState extends State<InputGroupSelect> {
                     (widget.prevValue == null
                             ? widget.hint
                             : AppLocalizations.of(context)!
-                                .lamp(widget.prevValue!.map((e) => e.name).join(', '))) ??
+                                .lamp(widget.prevValue!.length.toString())) ??
                         AppLocalizations.of(context)!.select(""),
                     textAlign: TextAlign.start,
                     style: widget.prevValue == null
@@ -115,133 +118,82 @@ class _InputGroupSelectState extends State<InputGroupSelect> {
   }
 
   Future<void> _handleClickOnSelectDate() async {
-    List<LampModel> select = await showModalBottomSheet(
+    List<InternetBoxModel> select = await showModalBottomSheet(
       context: _buildContext,
       isScrollControlled: true,
       barrierColor: MyColors.noColor,
       builder: (context) {
-        List<LampModel> lamps = [];
+        List<InternetBoxModel> internetBox = [];
+        BlocProvider.of<InternetBoxBloc>(context).add(GetInternetBoxListEvent());
         return CustomBottomSheet(
           title: AppLocalizations.of(context)!.selectGroup,
           child: StatefulBuilder(builder: (context, setState) {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  BlocBuilder<GroupBloc, GroupState>(
+                  BlocBuilder<InternetBoxBloc, InternetBoxState>(
                     builder: (context, state) {
-                      if (state.getGroupListStatus is BaseSuccess) {
-                        List<GroupModel> groups =
-                            (state.getGroupListStatus as BaseSuccess).entity;
+                      if (state.getInternetBoxListStatus is BaseSuccess) {
+                        List<InternetBoxModel> internetBoxes =
+                            (state.getInternetBoxListStatus as BaseSuccess).entity;
                         return ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            GroupModel group = groups[index];
+                            // GroupModel group = groups[index];
                             bool groupSelect = false;
-                            for (var element in group.lamps) {
-                              for (var element2 in lamps) {
-                                if (element == element2) {
+                              for (var element2 in internetBox) {
+                                if (internetBoxes[index] == element2) {
                                   groupSelect = true;
                                 }
-                              }
                             }
                             return Column(
                               children: [
                                 Row(
                                   children: [
                                     Checkbox(
-                                      activeColor: MyColors.primary,
-                                      checkColor: MyColors.white,
                                       value: groupSelect,
                                       onChanged: (t) {
-                                        for (var element in group.lamps) {
-                                          if (t!) {
-                                            if (!lamps.contains(element)) {
-                                              lamps.add(element);
+                                          if(t!){
+                                            if(!internetBox.contains(internetBoxes[index])){
+                                              internetBox.add(internetBoxes[index]);
                                             }
-                                          } else {
-                                            if (lamps.contains(element)) {
-                                              lamps.remove(element);
+                                          }else{
+                                            if(internetBox.contains(internetBoxes[index])){
+                                              internetBox.remove(internetBoxes[index]);
                                             }
                                           }
-                                        }
                                         setState(() {});
                                       },
                                       shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(5)),
+                                      checkColor: MyColors.white,
+                                      activeColor: MyColors.primary,
                                     ),
-                                    Text(group.name),
-                                    const Spacer(),
-                                    Text(
-                                      AppLocalizations.of(context)!
-                                          .lamp(group.lamps.length.toString()),
-                                      style: DemiBoldStyle.xs.copyWith(
-                                          color: MyColors.secondary.shade600),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Opacity(
-                                      opacity: group.lamps.isNotEmpty ? 1 : 0.3,
-                                      child: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            group.open = !group.open;
-                                          });
-                                        },
-                                        icon: Icon(
-                                          group.open
-                                              ? Icons.keyboard_arrow_up
-                                              : Icons
-                                                  .keyboard_arrow_down_outlined,
-                                          color: MyColors.white,
-                                        ),
-                                      ),
-                                    )
+                                    Text(internetBoxes[index].name.toString(), style: Light300Style.normal.copyWith(
+                                      color: MyColors.secondary.shade500
+                                    )),
                                   ],
-                                ),
-                                if (group.open)
-                                  ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      itemCount: group.lamps.length,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, i) {
-                                        LampModel lamp = group.lamps[i];
-                                        return Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0),
-                                          child: Row(children: [
-                                            Checkbox(
-                                              value: lamps.contains(lamp),
-                                              onChanged: (t) {
-                                                if (t!) {
-                                                  lamps.add(lamp);
-                                                } else {
-                                                  lamps.remove(lamp);
-                                                }
-                                                setState(() {});
-                                              },
-                                              activeColor: MyColors.primary,
-                                              checkColor: MyColors.white,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(5)),
-                                            ),
-                                            Text(group.lamps[i].name),
-                                          ]),
-                                        );
-                                      }),
-                                if (index < groups.length - 1)
-                                  const Divider(
-                                    height: 40,
-                                  ),
+                                )
                               ],
                             );
                           },
-                          itemCount: groups.length,
+                          itemCount: internetBoxes.length,
+                        );
+                      }else if (state.getInternetBoxListStatus is BaseError) {
+                        return Center(
+                          child: Text(
+                            (state.getInternetBoxListStatus as BaseError).error ?? "Error",
+                            style: Light300Style.sm
+                                .copyWith(color: MyColors.error),
+                          ),
+                        );
+                      }else if(state.getInternetBoxListStatus is BaseLoading){
+                        return const Center(
+                          child: CircularProgressIndicator(),
                         );
                       }
-                      return Container();
+                      return const SizedBox.shrink();
                     },
                   ),
                   const SizedBox(
@@ -252,7 +204,7 @@ class _InputGroupSelectState extends State<InputGroupSelect> {
                     child: PrimaryButton(
                       text: AppLocalizations.of(context)!.save,
                       onPress: () {
-                        Navigator.pop(context, lamps);
+                        Navigator.pop(context, internetBox);
                       },
                     ),
                   ),

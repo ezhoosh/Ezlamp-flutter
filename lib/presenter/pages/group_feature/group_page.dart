@@ -64,7 +64,7 @@ class _GroupPageState extends State<GroupPage> {
           },
           listener: (context, state) {
             if (state.sendCommandStatus is BaseSuccess) {
-              EasyLoading.showSuccess("SUCCESS");
+              EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
             } else if (state.sendCommandStatus is BaseLoading) {
               EasyLoading.show();
             } else if (state.sendCommandStatus is BaseError) {
@@ -99,10 +99,15 @@ class _GroupPageState extends State<GroupPage> {
                       List<GroupModel> groups =
                           (state.getGroupListStatus as BaseSuccess).entity;
                       if (groups.isEmpty) {
-                        return EmptyPage(
-                          al.addYourGroup,
-                          onTab: _addClick,
-                          btnText: al.addGroup,
+                        return BlocBuilder<AuthBloc, AuthState>(
+                          builder: (context, state) {
+                            bool isBlue = state.connectionType == ConnectionType.Bluetooth;
+                            return EmptyPage(
+                              al.addYourGroup,
+                              onTab: isBlue ? _addClickBlue : _addClick,
+                              btnText: al.addGroup,
+                            );
+                          },
                         );
                       }
                       return ListView.builder(

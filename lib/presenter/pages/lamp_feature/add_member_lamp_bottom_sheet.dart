@@ -50,7 +50,7 @@ class _AddMemberLampBottomSheetState extends State<AddMemberLampBottomSheet> {
       },
       listener: (context, state) {
         if (state.createInvitationStatus is BaseSuccess) {
-          EasyLoading.showSuccess("SUCCESS");
+          EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
           Navigator.pop(context);
         } else if (state.createInvitationStatus is BaseLoading) {
           EasyLoading.show();

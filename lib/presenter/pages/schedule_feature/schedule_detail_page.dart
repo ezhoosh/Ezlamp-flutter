@@ -96,7 +96,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
             } else if (state.createScheduleListStatus is BaseSuccess ||
                 state.putScheduleByIdStatus is BaseSuccess ||
                 state.deleteScheduleByIdStatus is BaseSuccess) {
-              EasyLoading.showSuccess("success");
+              EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
               Navigator.pop(context);
             } else if (state.createScheduleListStatus is BaseError) {
               ErrorHelper.getBaseError(state.createScheduleListStatus, context);
@@ -267,16 +267,16 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                       const SizedBox(
                         height: MySpaces.s16,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      Wrap(
+                        // mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          getCircleDate('ش', 0),
-                          getCircleDate('ی', 1),
-                          getCircleDate('د', 2),
-                          getCircleDate('س', 3),
-                          getCircleDate('چ', 4),
-                          getCircleDate('پ', 5),
-                          getCircleDate('ج', 6),
+                          getCircleDate(al.saturday, 0),
+                          getCircleDate(al.sunday, 1),
+                          getCircleDate(al.monday, 2),
+                          getCircleDate(al.tuesday, 3),
+                          getCircleDate(al.wednesday, 4),
+                          getCircleDate(al.thursday, 5),
+                          getCircleDate(al.friday, 6),
                         ],
                       ),
                       const SizedBox(
@@ -297,10 +297,10 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                 double c = Constants.defaultC;
                                 double y = 0;
                                 double w = 0;
-                                double v = 0;
+                                double v = 50;
                                 double s = 100;
                                 Color rgb = Colors.white;
-                                bool isColor = true;
+                                bool isColor = false;
                                 return StatefulBuilder(
                                     builder: (context, setState) {
                                   return CustomBottomSheet(
@@ -790,9 +790,11 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
         constraints: const BoxConstraints(
           minHeight: 35.0,
           minWidth: 35.0,
+          maxHeight: 45.0,
+          maxWidth: 45.0,
         ),
         margin: const EdgeInsets.all(3),
-        padding: const EdgeInsets.all(10),
+        // padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: dayOffWeek.contains(index)
               ? MyColors.primary

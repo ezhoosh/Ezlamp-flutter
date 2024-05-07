@@ -17,7 +17,7 @@ class InternetBoxState {
       required this.updateInternetBoxStatus});
 
   InternetBoxState copyWith(
-      {BaseStatus? newGetGroupListStatus,
+      {BaseStatus? newGetInternetBoxListStatus,
       newGetGroupByIdStatus,
       newUpdateGroupOwnerStatus,
       newUpdateGroupStatus,
@@ -33,7 +33,7 @@ class InternetBoxState {
         getInternetBoxByIdStatus:
             newGetGroupByIdStatus ?? getInternetBoxByIdStatus,
         getInternetBoxListStatus:
-            newGetGroupListStatus ?? getInternetBoxListStatus,
+            newGetInternetBoxListStatus ?? getInternetBoxListStatus,
         updateInternetBoxOwnerStatus:
             newUpdateGroupOwnerStatus ?? updateInternetBoxOwnerStatus);
   }

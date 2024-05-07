@@ -1,4 +1,5 @@
-import 'package:easy_lamp/NavigationService.dart';
+import 'package:easy_lamp/localization_service.dart';
+import 'package:easy_lamp/navigation_service.dart';
 import 'package:easy_lamp/core/auth_token_storage/auth_token_storage.dart';
 import 'package:easy_lamp/data/model/language_type.dart';
 import 'package:easy_lamp/locator.dart';
@@ -20,6 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/config/theme_data.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -30,6 +32,8 @@ import 'package:sizer/sizer.dart';
 void main() async {
   if (!kIsWeb) FlutterBluePlus.setLogLevel(LogLevel.verbose, color: true);
   WidgetsFlutterBinding.ensureInitialized();
+
+  await dotenv.load(fileName: ".env");
   await setupMain();
   await setupSplash();
   await setupAuth();
@@ -94,6 +98,10 @@ class _MyAppState extends State<MyApp> {
           builder: (BuildContext context) {
             return BlocBuilder<AuthBloc, AuthState>(
               builder: (context, state) {
+                LocalizationService.selectedLocale =
+                    state.languageType == LanguageType.PS ? Locale('fa', '') : Locale('en', '');
+                LocalizationService.isLocalPersian =  LocalizationService.selectedLocale.languageCode == 'fa';
+
                 return MaterialApp(
                   navigatorKey: NavigationService.navigatorKey, // set property
                   navigatorObservers: [

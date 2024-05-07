@@ -51,7 +51,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         listener: (context, state) {
           if (state.changePasswordStatus is BaseSuccess) {
             Navigator.pop(context);
-            EasyLoading.showSuccess("SUCCESS");
+            EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
           } else if (state.changePasswordStatus is BaseLoading) {
             EasyLoading.show();
           } else if (state.changePasswordStatus is BaseError) {

@@ -63,28 +63,31 @@ class InternetBoxBloc extends Bloc<InternetBoxEvent, InternetBoxState> {
             getInternetBoxListStatus: BaseNoAction(),
             updateInternetBoxOwnerStatus: BaseNoAction())) {
     on<GetInternetBoxListEvent>((event, emit) async {
-      emit(state.copyWith(newGetGroupListStatus: BaseLoading()));
+      emit(state.copyWith(newGetInternetBoxListStatus: BaseLoading()));
       ConnectionType type = await readConnectionUseCase(NoParams());
       if (type == ConnectionType.Bluetooth) {
         List<InternetBoxModel> groups =
             Converter.isarInternetBoxToInternetBoxModel(
                 await isarInternetBoxRepository!.getAll());
-        emit(state.copyWith(newGetGroupListStatus: BaseSuccess(groups)));
-      } else {
+        emit(state.copyWith(newGetInternetBoxListStatus: BaseSuccess(groups)));
+      } else if (type == ConnectionType.Internet) {
         DataState dataState = await getInternetBoxListUseCase(NoParams());
         if (!kIsWeb) {
           await isarInternetBoxRepository!.saveAll(
               Converter.internetBoxModelToIsarInternetBox(dataState.data));
+          emit(state.copyWith(
+              newGetInternetBoxListStatus: BaseSuccess(dataState.data)));
         }
         if (dataState is DataSuccess) {
           emit(state.copyWith(
-              newGetGroupListStatus: BaseSuccess(dataState.data)));
+              newGetInternetBoxListStatus: BaseSuccess(dataState.data)));
         } else {
           emit(state.copyWith(
-              newGetGroupListStatus: BaseError(dataState.error)));
+              newGetInternetBoxListStatus: BaseError(dataState.error)));
         }
+      }else{
+        emit(state.copyWith(newGetInternetBoxListStatus: BaseNoAction()));
       }
-      emit(state.copyWith(newGetGroupListStatus: BaseNoAction()));
     });
     on<GetInternetBoxByIdEvent>((event, emit) async {
       emit(state.copyWith(newGetGroupByIdStatus: BaseLoading()));

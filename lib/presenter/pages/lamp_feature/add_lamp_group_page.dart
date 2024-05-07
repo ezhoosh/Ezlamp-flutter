@@ -52,7 +52,7 @@ class _AddLampInternetBoxPageState extends State<AddLampInternetBoxPage> {
         listener: (context, state) {
           if (state.updateInternetBoxOwnerStatus is BaseSuccess) {
             Navigator.pop(context);
-            EasyLoading.showSuccess("SUCCESS");
+            EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
             Navigator.pop(context);
           } else if (state.updateInternetBoxOwnerStatus is BaseLoading) {
             EasyLoading.show();
@@ -72,7 +72,7 @@ class _AddLampInternetBoxPageState extends State<AddLampInternetBoxPage> {
           listener: (context, state) {
             if (state.updateLampOwnerStatus is BaseSuccess) {
               Navigator.pop(context);
-              EasyLoading.showSuccess("SUCCESS");
+              EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
               Navigator.pop(context);
             } else if (state.updateLampOwnerStatus is BaseLoading) {
               EasyLoading.show();
@@ -119,7 +119,7 @@ class _AddLampInternetBoxPageState extends State<AddLampInternetBoxPage> {
                         height: MySpaces.s24,
                       ),
                       Text(
-                        'از کد راه اندازی استفاده کنید',
+                        al.use_the_activation_code,
                         style: Light400Style.normal
                             .copyWith(color: MyColors.white.shade100),
                       ),
@@ -127,7 +127,7 @@ class _AddLampInternetBoxPageState extends State<AddLampInternetBoxPage> {
                         height: MySpaces.s4,
                       ),
                       Text(
-                        'به دنبال کد روی دستگاه یا بسته بندی آن بگردید و آن را در قاب قرار دهید',
+                        al.look_for_the_code_on_the_device,
                         textAlign: TextAlign.center,
                         style: Light400Style.normal
                             .copyWith(color: MyColors.white.shade700),

@@ -38,7 +38,7 @@ class MoreLampBottomSheet extends StatelessWidget {
       },
       listener: (context, state) {
         if (state.deleteLampStatus is BaseSuccess) {
-          EasyLoading.showSuccess("SUCCESS");
+          EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
         } else if (state.deleteLampStatus is BaseLoading) {
           EasyLoading.show();
         } else if (state.deleteLampStatus is BaseError) {
