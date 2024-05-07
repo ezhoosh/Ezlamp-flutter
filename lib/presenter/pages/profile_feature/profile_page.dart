@@ -6,6 +6,7 @@ import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/data/model/connection_type.dart';
 import 'package:easy_lamp/data/model/user_model.dart';
+import 'package:easy_lamp/localization_service.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
 import 'package:easy_lamp/presenter/pages/blue_feather/blue_app.dart';
@@ -23,6 +24,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -264,34 +266,57 @@ class _ProfilePageState extends State<ProfilePage> {
             lastName = user.lastName;
             firstName = user.firstName;
 
-            return Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const SizedBox(
-                  width: 40,
-                ),
-                Text(
-                  '${user.firstName} ${user.lastName}',
-                  style: Light400Style.normal.copyWith(color: MyColors.white),
-                ),
-                IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                        context: context,
-                        isScrollControlled: true,
-                        barrierColor: MyColors.noColor,
-                        builder: (context) => EditProfileBottomSheet(user));
-                  },
-                  icon: Icon(
-                    Iconsax.edit_2,
-                    color: MyColors.secondary.shade200,
-                    size: 20,
+            return InkWell(
+              onTap: (){
+                showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    barrierColor: MyColors.noColor,
+
+                    builder: (context) => EditProfileBottomSheet(user));
+              },
+              child: Column(
+                children: [
+                  const SizedBox(
+                    width: 40,
                   ),
-                )
-              ],
+                  Text(
+                    LocalizationService.isLocalPersian ? user.phoneNumber.toString().toPersianDigit(): user.phoneNumber.toString(),
+                    style: Light400Style.normal.copyWith(color: MyColors.white),
+                  ),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(
+                        width: 40,
+                      ),
+                      Text(
+                        '${user.firstName} ${user.lastName}',
+                        style: Light400Style.normal.copyWith(color: MyColors.white),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              barrierColor: MyColors.noColor,
+                              builder: (context) => EditProfileBottomSheet(user));
+                        },
+                        icon: Icon(
+                          Iconsax.edit_2,
+                          color: MyColors.secondary.shade200,
+                          size: 20,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             );
           }
-          return const SizedBox();
+          return const SizedBox(
+            height: 50,
+          );
         },
       )
     ];

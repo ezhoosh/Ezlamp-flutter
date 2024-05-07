@@ -53,7 +53,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
       },
       listener: (context, state) {
         if (state.updateUserStatus is BaseSuccess) {
-          EasyLoading.showSuccess("SUCCESS");
+          EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
           Navigator.pop(context);
         } else if (state.updateUserStatus is BaseLoading) {
           EasyLoading.show();
@@ -88,7 +88,7 @@ class _EditProfileBottomSheetState extends State<EditProfileBottomSheet> {
             ),
             SizedBox(
               width: double.infinity,
-              height: 60,
+              // height: 60,
               child: ElevatedButton(
                 onPressed: () {
                   BlocProvider.of<UserBloc>(context).add(UpdateUserEvent(

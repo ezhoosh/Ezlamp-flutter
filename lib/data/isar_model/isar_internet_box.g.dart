@@ -13,9 +13,9 @@ extension GetIsarInternetBoxCollection on Isar {
   IsarCollection<IsarInternetBox> get isarInternetBoxs => this.collection();
 }
 
-const IsarInternetBoxSchema = CollectionSchema(
+final IsarInternetBoxSchema = CollectionSchema(
   name: r'IsarInternetBox',
-  id: 7824911110804777452,
+  id: int.parse(dotenv.env["ID_ISAR_INTERNET_BOX"] ?? ""),
   properties: {
     r'description': PropertySchema(
       id: 0,
@@ -41,7 +41,7 @@ const IsarInternetBoxSchema = CollectionSchema(
   indexes: {},
   links: {
     r'owner': LinkSchema(
-      id: 3195837629443336063,
+      id: int.parse(dotenv.env["ID_OWNER_ISAR_INTERNET_BOX"] ?? ""),
       name: r'owner',
       target: r'IsarOwner',
       single: true,

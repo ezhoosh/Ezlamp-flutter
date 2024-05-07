@@ -64,7 +64,8 @@ class _PasswordPageState extends State<PasswordPage> {
             //           builder: (context) => const ConnectionPage()),
             //       ModalRoute.withName("/"));
             // }
-            EasyLoading.showSuccess("success");
+            // EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
+              EasyLoading.dismiss();
           } else if (state.loginStatus is BaseError) {
             ErrorHelper.getBaseError(state.loginStatus, context);
           } else if (state.registerStatus is BaseError) {
@@ -77,7 +78,8 @@ class _PasswordPageState extends State<PasswordPage> {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     OtpPage(widget.phoneNumber, widget.status)));
-            EasyLoading.showSuccess("success");
+            // EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
+            EasyLoading.dismiss();
           } else if (state.sendLoginOtpStatus is BaseError) {
             ErrorHelper.getBaseError(state.sendLoginOtpStatus, context);
           }
@@ -87,7 +89,8 @@ class _PasswordPageState extends State<PasswordPage> {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
                     OtpPage(widget.phoneNumber, AuthStatus.RESET)));
-            EasyLoading.showSuccess("success");
+            // EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
+            EasyLoading.dismiss();
           } else if (state.sendResetOtpStatus is BaseError) {
             ErrorHelper.getBaseError(state.sendResetOtpStatus, context);
           }
@@ -174,10 +177,10 @@ class _PasswordPageState extends State<PasswordPage> {
               if (widget.status == AuthStatus.REGISTER)
                 Column(
                   children: [
-                    getValidate("حداقل ۸ حرف", v1),
-                    getValidate("حداقل ۱ حرف بزرگ (A-Z)", v2),
-                    getValidate("حداقل ۱ حرف کوچک (a-z)", v3),
-                    getValidate("حداقل ۱ عدد (۰-۹)", v4),
+                    getValidate(AppLocalizations.of(context)!.minimum8Characters, v1),
+                    getValidate(AppLocalizations.of(context)!.minimum1Uppercase, v2),
+                    getValidate(AppLocalizations.of(context)!.minimum1Lowercase, v3),
+                    getValidate(AppLocalizations.of(context)!.minimum1Number, v4),
                   ],
                 ),
               const SizedBox(height: MySpaces.s24),

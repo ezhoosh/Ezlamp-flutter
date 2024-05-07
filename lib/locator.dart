@@ -46,6 +46,7 @@ import 'package:easy_lamp/domain/usecases/delete_internet_box_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_invitation_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_lamp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/delete_schedule_by_id_usecase.dart';
+import 'package:easy_lamp/domain/usecases/get_data_state_internet_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_data_state_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_by_id_usecase.dart';
 import 'package:easy_lamp/domain/usecases/get_group_list_usecase.dart';
@@ -98,6 +99,7 @@ import 'package:easy_lamp/presenter/bloc/splash_bloc/splash_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/state_bloc/state_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/user_bloc/user_bloc.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -313,8 +315,10 @@ setupState() async {
   // useCases
   locator
       .registerSingleton<GetDataStateUseCase>(GetDataStateUseCase(locator()));
+
+  locator.registerSingleton<GetDataStateInternetUseCase>(GetDataStateInternetUseCase(locator()));
   //bloc
-  locator.registerSingleton<StateBloc>(StateBloc(locator()));
+  locator.registerSingleton<StateBloc>(StateBloc(locator(),locator()));
 }
 
 setupSchedule() async {

@@ -1,7 +1,10 @@
+import 'package:easy_lamp/localization_service.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
 import 'package:easy_lamp/core/resource/my_text_styles.dart';
+import 'package:flutter/services.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class BorderTextField extends StatelessWidget {
   String? hintText;
@@ -10,7 +13,8 @@ class BorderTextField extends StatelessWidget {
   int maxLines;
   String? title;
   bool optional;
-  TextInputType? keyboardType ;
+  TextInputType? keyboardType;
+  bool isPersianNumber;
   BorderTextField(
       {Key? key,
       this.hintText,
@@ -19,7 +23,8 @@ class BorderTextField extends StatelessWidget {
       this.title,
       this.maxLines = 1,
       this.optional = true,
-      this.keyboardType})
+      this.keyboardType,
+      this.isPersianNumber = false})
       : super(key: key);
 
   @override
@@ -51,7 +56,17 @@ class BorderTextField extends StatelessWidget {
             ),
           TextField(
             controller: controller,
-            onChanged: onChange,
+            onChanged: isPersianNumber == false ? onChange : (value) {
+              if (LocalizationService.isLocalPersian) {
+                value = value.toPersianDigit();
+              }
+              controller!.value =
+                  TextEditingValue(
+                    text: value,
+                    selection: TextSelection.collapsed(
+                        offset: value.length),
+                  );
+            },
             style: Light400Style.normal.copyWith(color: MyColors.white),
             maxLines: maxLines,
             keyboardType: keyboardType,

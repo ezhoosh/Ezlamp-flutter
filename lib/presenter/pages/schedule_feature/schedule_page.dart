@@ -191,7 +191,7 @@ class _SchedulePageState extends State<SchedulePage> {
                   },
                   listener: (BuildContext context, ScheduleState state) {
                     if (state.patchScheduleByIdStatus is BaseSuccess) {
-                      EasyLoading.showSuccess("SUCCESS");
+                      EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
                     } else if (state.patchScheduleByIdStatus is BaseLoading) {
                       EasyLoading.show();
                     } else if (state.patchScheduleByIdStatus is BaseError) {

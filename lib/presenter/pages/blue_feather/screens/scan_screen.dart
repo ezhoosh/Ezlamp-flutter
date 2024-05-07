@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/core/resource/my_spaces.dart';
@@ -7,7 +8,9 @@ import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/top_bar.dart';
 import 'package:easy_lamp/presenter/bloc/command_bloc/command_bloc.dart';
 import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:sizer/sizer.dart';
@@ -46,6 +49,8 @@ class _ScanScreenState extends State<ScanScreen> {
 
     _scanResultsSubscription = FlutterBluePlus.scanResults.listen((results) {
       _scanResults = results;
+      _scanResults.removeWhere((element) => element.device.platformName == '');
+      _scanResults.removeWhere((element) => !element.device.platformName.contains("Caspian"));
       setState(() {});
     });
 
@@ -67,8 +72,27 @@ class _ScanScreenState extends State<ScanScreen> {
             onRefresh: onRefresh,
             child: Column(
               children: <Widget>[
-                TopBar(
-                  title: al.addNewConnection,
+                Stack(
+                  children: [
+                    TopBar(
+                      title: al.addNewConnection,
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                        child: InkWell(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => const HomePage()),
+                          ),
+                          child: Text("Skip",
+                              style: Light300Style.normal.copyWith(
+                                color: MyColors.white,
+                              )),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(
                   height: MySpaces.s24,
@@ -177,6 +201,8 @@ class _ScanScreenState extends State<ScanScreen> {
     // t.then((value) {
     setState(() {
       _connectedDevices.add(device);
+     _scanResults.removeWhere((element) => device.platformName == element.device.platformName);
+
     });
     BlocProvider.of<CommandBloc>(context).add(ConnectedBlueEvent(device));
     onStopPressed();

@@ -13,9 +13,9 @@ extension GetIsarCommandCollection on Isar {
   IsarCollection<IsarCommand> get isarCommands => this.collection();
 }
 
-const IsarCommandSchema = CollectionSchema(
+final IsarCommandSchema = CollectionSchema(
   name: r'IsarCommand',
-  id: -4578067681169045149,
+  id: int.parse(dotenv.env['ID_ISAR_COMMAND'] ?? ""),
   properties: {
     r'b': PropertySchema(
       id: 0,
@@ -76,14 +76,14 @@ const IsarCommandSchema = CollectionSchema(
   indexes: {},
   links: {
     r'lamp': LinkSchema(
-      id: 2448426963041735607,
+      id: int.parse(dotenv.env["ID_LAMP_COMMAND"] ?? ""),
       name: r'lamp',
       target: r'IsarLamp',
       single: false,
       linkName: r'command',
     ),
     r'groups': LinkSchema(
-      id: -8057146991851472051,
+      id: int.parse(dotenv.env["ID_GROUPS_COMMAND"] ?? ""),
       name: r'groups',
       target: r'IsarGroup',
       single: false,

@@ -65,7 +65,7 @@ class _SelectGroupPageState extends State<SelectGroupPage> {
           },
           listener: (context, state) {
             if (state.sendCommandStatus is BaseSuccess) {
-              EasyLoading.showSuccess("SUCCESS");
+              EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
             } else if (state.sendCommandStatus is BaseLoading) {
               EasyLoading.show();
             } else if (state.sendCommandStatus is BaseError) {
