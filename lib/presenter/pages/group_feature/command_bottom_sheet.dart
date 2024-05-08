@@ -97,12 +97,14 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
           const SizedBox(
             height: MySpaces.s12,
           ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Text(
-              AppLocalizations.of(context)!.yellowAndWhite,
-              style: Light300Style.sm.copyWith(color: MyColors.secondary),
-            ),
+          Row(
+            children: [
+              Text(
+                AppLocalizations.of(context)!.yellowAndWhite,
+                style: Light300Style.sm.copyWith(color: MyColors.secondary),
+              ),
+              Spacer()
+            ],
           ),
           const SizedBox(
             height: MySpaces.s8,
