@@ -469,7 +469,7 @@ class Chart extends StatelessWidget {
       ),
 
         plotAreaBorderWidth: 0,
-        series: <ChartSeries>[
+        series:[
       // Renders line chart
       SplineSeries<ChartData, String>(
         color: MyColors.primary.shade800,
