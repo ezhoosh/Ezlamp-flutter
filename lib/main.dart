@@ -103,6 +103,7 @@ class _MyAppState extends State<MyApp> {
                 LocalizationService.isLocalPersian =  LocalizationService.selectedLocale.languageCode == 'fa';
 
                 return MaterialApp(
+                  title: "Passary",
                   navigatorKey: NavigationService.navigatorKey, // set property
                   navigatorObservers: [
                     if (!kIsWeb) BluetoothAdapterStateObserver()
