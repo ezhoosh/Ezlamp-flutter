@@ -1,6 +1,6 @@
 {
-    "name": "easy_lamp",
-    "short_name": "easy_lamp",
+    "name": "Passary",
+    "short_name": "Passary",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
