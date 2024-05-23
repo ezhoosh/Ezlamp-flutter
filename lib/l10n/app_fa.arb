@@ -66,7 +66,9 @@
   "english": "English",
   "persian": "فارسی",
   "currentPassword": "رمز عبور فعلی",
+  "newPasswordConfirm": "تکرار رمز عبور جدید",
   "newPassword": "رمز عبور جدید",
+  "passwords_must_match": "رمزها باید مطابقت داشته باشند",
   "myMember": "اعضای من",
   "requestList": "لیست درخواست\u200Cها",
   "acceptRequest": "قبول درخواست",
@@ -179,5 +181,12 @@
   "friday": "ج",
   "saturday": "ش",
   "look_for_the_code_on_the_device": "به دنبال کد روی دستگاه یا بسته بندی آن بگردید و آن را در قاب قرار دهید",
-  "use_the_activation_code": "از کد راه اندازی استفاده کنید"
+  "use_the_activation_code": "از کد راه اندازی استفاده کنید",
+  "at_least_8_characters": "حداقل ۸ حرف",
+  "at_least_1_capital_letter": "حداقل ۱ حرف بزرگ (A-Z)",
+  "at_least_1_lower_letter": "حداقل ۱ حرف کوچک (a-z)",
+  "at_least_1_number": "حداقل ۱ عدد (۰-۹)",
+  "second": "ثانیه",
+  "result" : "نتیجه",
+  "skip" : "رد کردن"
 }

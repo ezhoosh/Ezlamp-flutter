@@ -7,7 +7,9 @@ import 'package:easy_lamp/data/model/register_verify_model.dart';
 import 'package:easy_lamp/localization_service.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/password_page.dart';
+import 'package:easy_lamp/presenter/pages/auth_feature/reset_password_page.dart';
 import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
+import 'package:easy_lamp/presenter/pages/profile_feature/change_password_page.dart';
 import 'package:easy_lamp/presenter/pages/splash_feature/connection_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +47,15 @@ class _OtpPageState extends State<OtpPage> {
     return Material(
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
+          if(state.resetPasswordStatus is BaseLoading){
+            EasyLoading.show();
+          }else if(state.resetPasswordStatus is BaseSuccess){
+            if (widget.status == AuthStatus.RESET) {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => ResetPasswordPage(phone: widget.phoneNumber)));
+              EasyLoading.dismiss();
+            }
+          }
           if (state.registerVerifyStatus is BaseLoading) {
             EasyLoading.show();
           } else if (state.registerVerifyStatus is BaseSuccess) {
@@ -205,10 +216,10 @@ class _OtpPageState extends State<OtpPage> {
       BlocProvider.of<AuthBloc>(context)
           .add(LoginEvent(widget.phoneNumber, code, ''));
     } else if (widget.status == AuthStatus.RESET) {
-      // BlocProvider.of<AuthBloc>(context)
-      //     .add(ResetPasswordEvent(widget.phoneNumber, code));
       BlocProvider.of<AuthBloc>(context)
-          .add(RegisterVerifyEvent(widget.phoneNumber, code));
+          .add(ResetPasswordOtpEvent(widget.phoneNumber, code));
+      // BlocProvider.of<AuthBloc>(context)
+      //     .add(RegisterVerifyEvent(widget.phoneNumber, code));
     } else {
       BlocProvider.of<AuthBloc>(context)
           .add(RegisterVerifyEvent(widget.phoneNumber, code));

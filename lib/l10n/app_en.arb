@@ -66,7 +66,9 @@
   "english": "English",
   "persian": "Persian",
   "currentPassword": "Current Password",
+  "newPasswordConfirm": "New Password Confirm",
   "newPassword": "New Password",
+  "passwords_must_match": "Passwords must match",
   "myMember": "My Members",
   "requestList": "Request List",
   "acceptRequest": "Accept Request",
@@ -179,5 +181,13 @@
   "friday": "fri",
   "saturday": "sat",
   "look_for_the_code_on_the_device": "Look for the code on the device or its packaging and insert it into the frame",
-  "use_the_activation_code": "Use the activation code"
+  "use_the_activation_code": "Use the activation code",
+  "at_least_8_characters": "At least 8 characters",
+  "at_least_1_capital_letter": "At least 1 capital letter (A-Z)",
+  "at_least_1_lower_letter": "At last 1 lower letter (a-z)",
+  "at_least_1_number": "At least 1 number (0-9)",
+  "second": "sec",
+  "result": "Result",
+  "skip" : "Skip"
+
 }

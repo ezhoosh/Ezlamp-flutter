@@ -18,6 +18,7 @@ import 'package:easy_lamp/domain/usecases/read_language_usecase.dart';
 import 'package:easy_lamp/domain/usecases/read_localstorage_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_usecase.dart';
 import 'package:easy_lamp/domain/usecases/register_verify_usecase.dart';
+import 'package:easy_lamp/domain/usecases/reset_password_otp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/reset_password_usecase.dart';
 import 'package:easy_lamp/domain/usecases/send_login_otp_usecase.dart';
 import 'package:easy_lamp/domain/usecases/send_phone_number_usecase.dart';
@@ -33,6 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   LoginUseCase loginUseCase;
   RegisterUseCase registerUseCase;
   ResetPasswordUseCase resetPasswordUseCase;
+  ResetPasswordOtpUseCase resetPasswordOtpUseCase;
   SendPhoneNumberUseCase sendPhoneNumberUseCase;
   WriteLocalStorageUseCase writeLocalStorageUseCase;
   ReadLocalStorageUseCase readLocalStorageUseCase;
@@ -54,6 +56,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     this.changePasswordUseCase,
     this.readConnectionUseCase,
     this.readLanguageUseCase,
+    this.resetPasswordOtpUseCase
   ) : super(AuthState(
           loginStatus: BaseNoAction(),
           registerStatus: BaseNoAction(),
@@ -66,6 +69,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           logOutStatus: BaseNoAction(),
           connectionType: ConnectionType.Internet,
           languageType: LanguageType.PS,
+          resetPostPasswordStatus: BaseNoAction()
         )) {
     on<SendPhoneNumberEvent>((event, emit) async {
       emit(state.copyWith(newSendPhoneStatus: BaseLoading()));
@@ -81,7 +85,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<LoginEvent>((event, emit) async {
       emit(state.copyWith(newLoginStatus: BaseLoading()));
       DataState dataState = await loginUseCase(
-          LoginParams(event.number, event.password, event.otp));
+          LoginParams(event.number, smsToken: event.otp, password: event.password));
       if (dataState is DataSuccess) {
         LoginModel model = dataState.data;
         await writeLocalStorageUseCase(
@@ -101,7 +105,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<RegisterEvent>((event, emit) async {
       emit(state.copyWith(newRegisterStatus: BaseLoading()));
       DataState dataState = await registerUseCase(
-          LoginParams(event.number, event.password, event.otp));
+          LoginParams(event.number, smsToken: event.otp, password: event.password));
       if (dataState is DataSuccess) {
         LoginModel model = dataState.data;
         await writeLocalStorageUseCase(
@@ -120,7 +124,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ResetPasswordEvent>((event, emit) async {
       emit(state.copyWith(newResetPasswordStatus: BaseLoading()));
       DataState dataState = await resetPasswordUseCase(
-          LoginParams(event.number, event.password, event.otp));
+          LoginParams(event.number, smsToken: event.otp));
+      if (dataState is DataSuccess) {
+        emit(state.copyWith(
+            newResetPasswordStatus: BaseSuccess(dataState.data)));
+      } else {
+        emit(
+            state.copyWith(newResetPasswordStatus: BaseError(dataState.error)));
+      }
+      emit(state.copyWith(newSendPhoneStatus: BaseNoAction()));
+    });
+
+    on<PostResetPasswordEvent>((event, emit) async {
+      emit(state.copyWith(newResetPostPasswordStatus: BaseLoading()));
+      DataState dataState = await resetPasswordUseCase(
+          LoginParams(event.number,password: event.password));
+      if (dataState is DataSuccess) {
+        emit(state.copyWith(
+            newResetPostPasswordStatus: BaseSuccess(dataState.data)));
+      } else {
+        emit(
+            state.copyWith(newResetPostPasswordStatus: BaseError(dataState.error)));
+      }
+      emit(state.copyWith(newResetPostPasswordStatus: BaseNoAction()));
+    });
+
+    on<ResetPasswordOtpEvent>((event, emit) async {
+      emit(state.copyWith(newResetPasswordStatus: BaseLoading()));
+      DataState dataState = await resetPasswordOtpUseCase(
+          LoginParams(event.number, smsToken: event.otp));
       if (dataState is DataSuccess) {
         emit(state.copyWith(
             newResetPasswordStatus: BaseSuccess(dataState.data)));

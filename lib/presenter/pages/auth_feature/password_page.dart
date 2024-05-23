@@ -2,6 +2,7 @@ import 'package:easy_lamp/core/resource/base_status.dart';
 import 'package:easy_lamp/core/widgets/border_text_field_password.dart';
 import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/data/model/auth_status.dart';
+import 'package:easy_lamp/localization_service.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/otp_page.dart';
 import 'package:easy_lamp/presenter/pages/home_feature/home_page.dart';
@@ -133,21 +134,24 @@ class _PasswordPageState extends State<PasswordPage> {
                     BlocProvider.of<AuthBloc>(context)
                         .add(SendLoginOtpEvent(widget.phoneNumber));
                   },
-                  child: Row(
-                    children: [
-                      Text(
-                        al.loginWithOtpCode,
-                        style:
-                            Light400Style.sm.copyWith(color: MyColors.primary),
-                      ),
-                      const SizedBox(
-                        width: MySpaces.s2,
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_left_rounded,
-                        color: MyColors.primary,
-                      )
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(MySpaces.s8),
+                    child: Row(
+                      children: [
+                        Text(
+                          al.loginWithOtpCode,
+                          style:
+                              Light400Style.sm.copyWith(color: MyColors.primary),
+                        ),
+                        const SizedBox(
+                          width: MySpaces.s2,
+                        ),
+                        Icon(
+                          LocalizationService.isLocalPersian ?  Icons.keyboard_arrow_left_rounded : Icons.keyboard_arrow_right_rounded,
+                          color: MyColors.primary,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               const SizedBox(height: MySpaces.s12),
@@ -157,21 +161,24 @@ class _PasswordPageState extends State<PasswordPage> {
                     BlocProvider.of<AuthBloc>(context)
                         .add(SendResetOtpEvent(widget.phoneNumber));
                   },
-                  child: Row(
-                    children: [
-                      Text(
-                        al.forgetPassword,
-                        style:
-                            Light400Style.sm.copyWith(color: MyColors.primary),
-                      ),
-                      const SizedBox(
-                        width: MySpaces.s2,
-                      ),
-                      const Icon(
-                        Icons.keyboard_arrow_left_rounded,
-                        color: MyColors.primary,
-                      )
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(MySpaces.s8),
+                    child: Row(
+                      children: [
+                        Text(
+                          al.forgetPassword,
+                          style:
+                              Light400Style.sm.copyWith(color: MyColors.primary),
+                        ),
+                        const SizedBox(
+                          width: MySpaces.s2,
+                        ),
+                        Icon(
+                          LocalizationService.isLocalPersian ?  Icons.keyboard_arrow_left_rounded : Icons.keyboard_arrow_right_rounded,
+                          color: MyColors.primary,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               if (widget.status == AuthStatus.REGISTER)

@@ -41,9 +41,9 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
   double c = Constants.defaultC;
   double y = 0;
   double w = 0;
-  double v = 0;
+  double v = 50;
   double s = 100;
-  bool isColor = true;
+  bool isColor = false;
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,11 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
                 AppLocalizations.of(context)!.yellowAndWhite,
                 style: Light300Style.sm.copyWith(color: MyColors.secondary),
               ),
-              Spacer()
+              Spacer(),
+              Text(
+                '${v.toInt()}%',
+                style: Light300Style.sm.copyWith(color: MyColors.secondary),
+              ),
             ],
           ),
           const SizedBox(
@@ -226,6 +230,7 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
                       color: MyColors.secondary, shape: BoxShape.circle),
                   child: SvgPicture.asset("assets/icons/profile_user.svg"),
                 ),
+                SizedBox(width: MySpaces.s8,),
                 Text(
                   AppLocalizations.of(context)!.addMember,
                   style: Light400Style.lg.copyWith(color: MyColors.secondary),

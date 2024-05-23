@@ -17,6 +17,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:sizer/sizer.dart';
 
 class InputGroupSelect extends StatefulWidget {
   final String? title;
@@ -124,19 +125,19 @@ class _InputGroupSelectState extends State<InputGroupSelect> {
         return CustomBottomSheet(
           title: AppLocalizations.of(context)!.selectGroup,
           child: StatefulBuilder(builder: (context, setState) {
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  BlocBuilder<GroupBloc, GroupState>(
-                    builder: (context, state) {
-                      if (state.getGroupListStatus is BaseSuccess) {
-                        List<GroupModel> groups =
-                            (state.getGroupListStatus as BaseSuccess).entity;
-                        return ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
+            return Column(
+              children: [
+                BlocBuilder<GroupBloc, GroupState>(
+                  builder: (context, state) {
+                    if (state.getGroupListStatus is BaseSuccess) {
+                      List<GroupModel> groups =
+                          (state.getGroupListStatus as BaseSuccess).entity;
+                      return Container(
+                        height: 50.h,
+                        child: ListView.builder(
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            GroupModel group = groups[index];
+                            GroupModel group = groups[0];
                             bool groupSelect = false;
                             for (var element in group.lamps) {
                               for (var element2 in lamps) {
@@ -231,36 +232,36 @@ class _InputGroupSelectState extends State<InputGroupSelect> {
                                           ]),
                                         );
                                       }),
-                                if (index < groups.length - 1)
+                                if (0 < groups.length - 1)
                                   const Divider(
                                     height: 40,
                                   ),
                               ],
                             );
                           },
-                          itemCount: groups.length,
-                        );
-                      }
-                      return Container();
+                          itemCount: 20,
+                        ),
+                      );
+                    }
+                    return Container();
+                  },
+                ),
+                const SizedBox(
+                  height: MySpaces.s24,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: PrimaryButton(
+                    text: AppLocalizations.of(context)!.save,
+                    onPress: () {
+                      Navigator.pop(context, lamps);
                     },
                   ),
-                  const SizedBox(
-                    height: MySpaces.s24,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: PrimaryButton(
-                      text: AppLocalizations.of(context)!.save,
-                      onPress: () {
-                        Navigator.pop(context, lamps);
-                      },
-                    ),
-                  ),
-                  const SizedBox(
-                    height: MySpaces.s16,
-                  )
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: MySpaces.s16,
+                )
+              ],
             );
           }),
         );
