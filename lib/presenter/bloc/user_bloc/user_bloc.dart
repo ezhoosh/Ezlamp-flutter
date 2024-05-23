@@ -7,6 +7,7 @@ import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/core/resource/use_case.dart';
 import 'package:easy_lamp/domain/usecases/get_user_usecase.dart';
 import 'package:easy_lamp/domain/usecases/update_user_usecase.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 part 'user_event.dart';
 
@@ -23,6 +24,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
           UserState(
             getUserStatus: BaseNoAction(),
             updateUserStatus: BaseNoAction(),
+            getVersion: BaseLoading(),
           ),
         ) {
     on<UpdateUserEvent>((event, emit) async {
@@ -50,6 +52,12 @@ class UserBloc extends Bloc<UserEvent, UserState> {
       }
 
       emit(state.copyWith(newGetUserStatus: BaseNoAction()));
+    });
+
+    on<GetVersionEvent>((event, emit) async {
+      emit(state.copyWith(newGetVersion: BaseLoading()));
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      emit(state.copyWith(newGetVersion: BaseSuccess(packageInfo.version)));
     });
   }
 }

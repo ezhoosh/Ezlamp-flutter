@@ -43,6 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     BlocProvider.of<UserBloc>(context).add(GetUserEvent());
     BlocProvider.of<AuthBloc>(context).add(GetConnectionTypeEvent());
+    context.read<UserBloc>().add(GetVersionEvent());
   }
 
   @override
@@ -104,7 +105,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   size: 30,
                 ),
               ),
-              getRowExit()
+              getRowExit(),
+              BlocBuilder<UserBloc, UserState>(
+                builder: (context, state) {
+                  if(state.getVersion is BaseSuccess){
+                    String version = (state.getVersion as BaseSuccess).entity;
+                    return Text(LocalizationService.isLocalPersian? version.toPersianDigit() : version, style: DemiBoldStyle.sm.copyWith(color: MyColors.white),);
+                  }else{
+                    return Container();
+                  }
+                },
+              )
             ],
           ),
         ),

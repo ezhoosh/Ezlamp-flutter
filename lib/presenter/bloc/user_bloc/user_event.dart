@@ -4,6 +4,8 @@ abstract class UserEvent {}
 
 class GetUserEvent extends UserEvent {}
 
+class GetVersionEvent extends UserEvent {}
+
 class UpdateUserEvent extends UserEvent {
   String lastName;
   String firstName;
