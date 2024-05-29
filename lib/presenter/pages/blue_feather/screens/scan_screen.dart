@@ -60,11 +60,12 @@ class _ScanScreenState extends State<ScanScreen> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     al = AppLocalizations.of(context)!;
     return ScaffoldMessenger(
-      key: Snackbar.snackBarKeyB,
+      // key: Snackbar.snackBarKeyB,
       child: Scaffold(
         backgroundColor: MyColors.black,
         body: SafeArea(
@@ -85,7 +86,7 @@ class _ScanScreenState extends State<ScanScreen> {
                           onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(builder: (context) => const HomePage()),
                           ),
-                          child: Text("Skip",
+                          child: Text(al.skip,
                               style: Light300Style.normal.copyWith(
                                 color: MyColors.white,
                               )),
@@ -118,14 +119,14 @@ class _ScanScreenState extends State<ScanScreen> {
                     children: [
                       SingleChildScrollView(
                           child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           if (_connectedDevices.isNotEmpty)
                             Padding(
                               padding: const EdgeInsets.only(
-                                  bottom: 10, top: 20, left: 20),
+                                  bottom: 10, top: 20, left: 20, right: 20),
                               child: Text(
-                                'Connected',
+                                al.connected,
                                 style: DemiBoldStyle.normal
                                     .copyWith(color: MyColors.white),
                               ),
@@ -134,14 +135,15 @@ class _ScanScreenState extends State<ScanScreen> {
                           if (_scanResults.isNotEmpty)
                             Padding(
                               padding: const EdgeInsets.only(
-                                  bottom: 10, top: 20, left: 20),
+                                  bottom: 10, top: 20, left: 20, right: 20),
                               child: Text(
-                                'Result',
+                                al.result,
                                 style: DemiBoldStyle.normal
                                     .copyWith(color: MyColors.white),
                               ),
                             ),
                           ..._buildScanResultTiles(context),
+                          const SizedBox(height: MySpaces.s60,)
                         ],
                       )),
                       Align(
@@ -173,8 +175,8 @@ class _ScanScreenState extends State<ScanScreen> {
     try {
       await FlutterBluePlus.startScan(timeout: const Duration(seconds: 15));
     } catch (e) {
-      Snackbar.show(ABC.b, prettyException("Start Scan Error:", e),
-          success: false);
+      // Snackbar.show(ABC.b, prettyException("Start Scan Error:", e),
+      //     success: false);
     }
     setState(() {}); // force refresh of systemDevices
   }
@@ -183,8 +185,8 @@ class _ScanScreenState extends State<ScanScreen> {
     try {
       FlutterBluePlus.stopScan();
     } catch (e) {
-      Snackbar.show(ABC.b, prettyException("Stop Scan Error:", e),
-          success: false);
+      // Snackbar.show(ABC.b, prettyException("Stop Scan Error:", e),
+      //     success: false);
     }
   }
 

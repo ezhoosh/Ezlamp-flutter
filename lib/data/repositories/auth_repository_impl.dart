@@ -9,6 +9,7 @@ import 'package:easy_lamp/core/resource/data_state.dart';
 import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/data/model/login_model.dart';
 import 'package:easy_lamp/data/model/register_verify_model.dart';
+import 'package:easy_lamp/data/model/reset_passowrd_response.dart';
 import 'package:easy_lamp/data/model/reset_password_model.dart';
 import 'package:easy_lamp/data/model/send_login_otp.dart';
 import 'package:easy_lamp/data/model/send_number_model.dart';
@@ -71,7 +72,7 @@ class AuthRepositoryImpl extends BaseRepository implements AuthRepository   {
   }
 
   @override
-  Future<DataState<ResetPasswordModel>> resetPassword(
+  Future<DataState<ResetPasswordResponse>> resetPassword(
       LoginParams params) async {
     try {
       var response = await httpClient.postRequest(path:
@@ -82,12 +83,33 @@ class AuthRepositoryImpl extends BaseRepository implements AuthRepository   {
             // "sms_token": params.smsToken,
           });
       // if (response.statusCode == 200) {
-        return DataSuccess<ResetPasswordModel>(
-            ResetPasswordModel.fromJson(response));
+        return DataSuccess<ResetPasswordResponse>(
+            ResetPasswordResponse.fromJson(response));
       // } else {
       //   return DataFailed(ErrorHelper.getError(response));
       // }
     } on DioError catch (e) {
+      return DataFailed(ErrorHelper.getCatchError(e));
+    }
+  }
+
+  @override
+  Future<DataState<RegisterVerifyModel>> resetPasswordOtp(
+      LoginParams params) async {
+    try {
+      var response = await httpClient.postRequest(path:
+          "auth/verify-reset-password-otp/",
+          data: {
+            "phone_number": params.number,
+            "token": params.smsToken,
+          });
+      // if (response.statusCode == 200) {
+        return DataSuccess<RegisterVerifyModel>(
+            RegisterVerifyModel.fromJson(response));
+      // } else {
+      //   return DataFailed(ErrorHelper.getError(response));
+      // }
+    } on DioException catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
   }

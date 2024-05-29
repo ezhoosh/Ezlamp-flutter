@@ -13,24 +13,25 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:easy_lamp/core/widgets/error_helper.dart';
 
-class ChangePasswordPage extends StatefulWidget {
-  const ChangePasswordPage({Key? key}) : super(key: key);
+class ResetPasswordPage extends StatefulWidget {
+  final String phone;
+  const ResetPasswordPage({Key? key, required this.phone}) : super(key: key);
 
   @override
-  State<ChangePasswordPage> createState() => _ChangePasswordPageState();
+  State<ResetPasswordPage> createState() => _ResetPasswordPageState();
 }
 
-class _ChangePasswordPageState extends State<ChangePasswordPage> {
+class _ResetPasswordPageState extends State<ResetPasswordPage> {
   late AppLocalizations al;
   late TextEditingController _controllerNew;
-  late TextEditingController _controllerCurrent;
+  late TextEditingController _controllerNewConfirm;
   bool v1 = false, v2 = false, v3 = false, v4 = false;
 
   @override
   void initState() {
     super.initState();
     _controllerNew = TextEditingController();
-    _controllerCurrent = TextEditingController();
+    _controllerNewConfirm = TextEditingController();
   }
 
   @override
@@ -42,20 +43,21 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return Scaffold(
       body: BlocListener<AuthBloc, AuthState>(
         listenWhen: (prev, curr) {
-          if (prev.changePasswordStatus is BaseSuccess &&
-              curr.changePasswordStatus is BaseNoAction) {
+          if (prev.resetPostPasswordStatus is BaseSuccess &&
+              curr.resetPostPasswordStatus is BaseNoAction) {
             return false;
           }
           return true;
         },
         listener: (context, state) {
-          if (state.changePasswordStatus is BaseSuccess) {
+          if (state.resetPostPasswordStatus is BaseSuccess) {
+            Navigator.pop(context);
             Navigator.pop(context);
             EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
-          } else if (state.changePasswordStatus is BaseLoading) {
+          } else if (state.resetPostPasswordStatus is BaseLoading) {
             EasyLoading.show();
-          } else if (state.changePasswordStatus is BaseError) {
-            ErrorHelper.getBaseError(state.changePasswordStatus, context);
+          } else if (state.resetPostPasswordStatus is BaseError) {
+            ErrorHelper.getBaseError(state.resetPostPasswordStatus, context);
           }
         },
         child: SafeArea(
@@ -74,15 +76,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               ),
               BorderTextFieldPassword(
                 optional: false,
-                title: al.currentPassword,
+                title: al.newPassword,
                 onChange: (t) {},
                 hintText: al.password,
-                controller: _controllerCurrent,
+                controller: _controllerNew,
               ),
               const SizedBox(height: MySpaces.s24),
               BorderTextFieldPassword(
                 optional: false,
-                title: al.newPassword,
+                title: al.newPasswordConfirm,
                 onChange: (t) {
                   v1 = RegExp(r'\b\w{8,}\b').hasMatch(t);
                   v2 = RegExp(r'[A-Z]+').hasMatch(t);
@@ -91,7 +93,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                   setState(() {});
                 },
                 hintText: al.password,
-                controller: _controllerNew,
+                controller: _controllerNewConfirm,
               ),
               const SizedBox(height: MySpaces.s12),
               Column(
@@ -111,8 +113,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                     onPressed: (!v1 || !v2 || !v3 || !v4)
                         ? null
                         : () {
+                      if(_controllerNew.text != _controllerNewConfirm.text){
+                        EasyLoading.showError(al.passwords_must_match.toString());
+                        return;
+                      }
                             BlocProvider.of<AuthBloc>(context).add(
-                                ChangePasswordEvent(_controllerCurrent.text,
+                                PostResetPasswordEvent(widget.phone,
                                     _controllerNew.text));
                           },
                     child: Text(

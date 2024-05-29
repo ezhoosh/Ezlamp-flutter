@@ -39,6 +39,18 @@ class ResetPasswordEvent extends AuthEvent {
 
   ResetPasswordEvent(this.number, this.otp, this.password);
 }
+class PostResetPasswordEvent extends AuthEvent {
+  String number;
+  String password;
+
+  PostResetPasswordEvent(this.number, this.password);
+}
+class ResetPasswordOtpEvent extends AuthEvent {
+  String number;
+  String otp;
+
+  ResetPasswordOtpEvent(this.number, this.otp);
+}
 
 class SendLoginOtpEvent extends AuthEvent {
   String number;
