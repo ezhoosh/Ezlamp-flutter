@@ -40,8 +40,8 @@ class StatePage extends StatefulWidget {
 
 class _StatePageState extends State<StatePage> {
   late AppLocalizations al;
-  List<LampModel>? lamps;
-  List<InternetBoxModel>? internetsBox;
+  List<LampModel> lamps = [];
+  List<InternetBoxModel> internetsBox = [];
   DateTime? startDate, endDate;
   // Map type = {'value': 'power'};
   // List<Map> exportData = [
@@ -141,6 +141,7 @@ class _StatePageState extends State<StatePage> {
                             isDate: true,
                             prevValue: lamps,
                             onNewDateSelected: (List<LampModel> newValue) {
+                              lamps = [];
                               lamps = newValue;
                             },
                           ),
@@ -173,6 +174,7 @@ class _StatePageState extends State<StatePage> {
                                     prevDate: startDate,
                                     hint: '____/__/__',
                                     isDate: true,
+                                    optional: false,
                                     isEnabled:  state.isEnableDatePicker ,
                                     onNewDateSelected: (DateTime newDate) {
                                       setState(() {
@@ -197,6 +199,7 @@ class _StatePageState extends State<StatePage> {
                                     prevDate: endDate,
                                     hint: '____/__/__',
                                     isDate: true,
+                                    optional: false,
                                     isEnabled:  state.isEnableDatePicker,
                                     onNewDateSelected: (DateTime newDate) {
                                       setState(() {
@@ -254,15 +257,24 @@ class _StatePageState extends State<StatePage> {
                           child: PrimaryButton(
                             text: al.show,
                             onPress: () {
+                              if(startDate == null && endDate == null && context.read<StateBloc>().state.isCheckDate == false){
+                                EasyLoading.showError("please select date");
+                                return;
+                              }
+
                               if(typeSelected.label == "power"){
                                 String? lampsStr;
-                                if (lamps != null) {
-                                  lampsStr = lamps!
+                                if(lamps.isEmpty){
+                                  EasyLoading.showError("please select lamps");
+                                  return;
+                                }
+
+                                  lampsStr = lamps
                                       .map((e) => e.id)
                                       .toList()
                                       .join(',')
                                       .toString();
-                                }
+
                                 BlocProvider.of<StateBloc>(context)
                                     .add(GetDataStateEvent(StateParams(
                                   typeSelected.label,
@@ -271,10 +283,14 @@ class _StatePageState extends State<StatePage> {
                                   timeStampLte: endDate,
                                 )));
                               }else {
+                                if(internetsBox.isEmpty){
+                                  EasyLoading.showError("Please select groups ");
+                                  return;
+                                }
                                 BlocProvider.of<StateBloc>(context)
                                     .add(GetChartInternetBoxInformation(StateParams(
                                   typeSelected.label,
-                                  lamps: internetsBox!.map((e) => e.id).join(',').toString(),
+                                  lamps: internetsBox.map((e) => e.id).join(',').toString(),
                                   timeStampGte: startDate,
                                   timeStampLte: endDate,
                                 )));

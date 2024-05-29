@@ -12,6 +12,8 @@ import 'package:easy_lamp/core/resource/my_colors.dart';
 import 'package:easy_lamp/presenter/pages/auth_feature/auth_page.dart';
 import 'dart:async';
 
+import 'package:logging/logging.dart';
+
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
 
@@ -32,12 +34,16 @@ class _SplashPageState extends State<SplashPage> {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => const HomePage()),
             );
+          }else{
+            gotoAuth();
           }
         } else if (state.checkLoginStatus is SplashSuccessWithBlue) {
           if ((state.checkLoginStatus as SplashSuccessWithBlue).entity) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => const ConnectionPage()),
             );
+          }else{
+            gotoAuth();
           }
         } else if (state.checkLoginStatus is SplashNewUser) {
           gotoAuth();

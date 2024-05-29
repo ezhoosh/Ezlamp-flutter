@@ -137,7 +137,7 @@ class _InputGroupSelectState extends State<InputGroupSelect> {
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemBuilder: (context, index) {
-                            GroupModel group = groups[0];
+                            GroupModel group = groups[index];
                             bool groupSelect = false;
                             for (var element in group.lamps) {
                               for (var element2 in lamps) {
@@ -239,7 +239,7 @@ class _InputGroupSelectState extends State<InputGroupSelect> {
                               ],
                             );
                           },
-                          itemCount: 20,
+                          itemCount: groups.length,
                         ),
                       );
                     }

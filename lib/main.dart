@@ -27,6 +27,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_web_frame/flutter_web_frame.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:sentry/sentry.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:sentry_logging/sentry_logging.dart';
 import 'package:sizer/sizer.dart';
 
 void main() async {
@@ -56,15 +59,16 @@ void main() async {
       }
     });
   }
-  AuthTokenStorage.instance.watch().listen((event) {
-    if (event == null) {
-      Navigator.of(NavigationService.navigatorKey.currentContext!).pushReplacement(
-        MaterialPageRoute(builder: (context) => const AuthPage()),
-      );
-    }
-  });
 
-  runApp(const MyApp());
+  await SentryFlutter.init(
+        (options) {
+      options.dsn = 'https://cf0c5e8457825d3771594f7e11d146e7@sentry.hamravesh.com/6652';
+      options.addIntegration(LoggingIntegration());
+
+        },
+    appRunner: () => runApp(const MyApp()),
+  );
+
 }
 
 class MyApp extends StatefulWidget {
