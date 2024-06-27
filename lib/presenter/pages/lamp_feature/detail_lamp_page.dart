@@ -534,21 +534,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
       child: Row(
         children: [
           IconButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
-                    ),
-                  ),
-                  builder: (context) {
-                    return MoreLampBottomSheet(widget.lamps.first.id);
-                  },
-                );
-              },
+            onPressed: null,
               icon: Icon(
                 icon,
                 size: 25,

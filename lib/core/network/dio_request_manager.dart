@@ -89,7 +89,7 @@ class DioHttpClient extends IHttpClient {
             if (err.response?.statusCode == 401) {
               var authInfo = await _authStorage.load();
 
-              if (authInfo != null && _401retry < 3) {
+              if (authInfo != null && _401retry <= 7) {
                 await Future.delayed(const Duration(seconds: 2));
 
                 final log = logging.Logger('Authentication');
@@ -97,7 +97,10 @@ class DioHttpClient extends IHttpClient {
 
                 return await refreshToken(handler, err, authInfo);
               } else {
-                _authStorage.delete();
+
+                final log = logging.Logger('Delete Authentication');
+                log.severe('${err.response!.statusCode} \n${err.response!.data}\n $_401retry \n ${authInfo == null ? "NULL" : authInfo.toJson()}');
+                await _authStorage.delete();
 
                 Navigator.of(NavigationService.navigatorKey.currentContext!).pushReplacement(
                   MaterialPageRoute(builder: (context) => const AuthPage()),
@@ -203,6 +206,8 @@ class DioHttpClient extends IHttpClient {
         await _dio.post('auth/token/refresh/', data: formData).catchError((onError) async {
       //Logout from the Application
       print("onError>>${onError.toString()}");
+      final log = logging.Logger('Delete Refresh Token');
+      log.severe('${err.response!.statusCode} \n${err.response!.data}\n $_401retry \n ');
       await _authStorage.delete();
       return handler.next(handleResponseError(err)!);
     });
@@ -227,7 +232,10 @@ class DioHttpClient extends IHttpClient {
     } else {
       print("on Invalid Refresh Token >> ");
       //token is wrong call Logout
-      _authStorage.delete();
+
+      final log = logging.Logger('Delete Refresh Token no 200');
+      log.severe('${err.response!.statusCode} \n${err.response!.data}\n $_401retry \n ');
+      await _authStorage.delete();
       //Logout from the Application
       return handler.next(handleResponseError(err)!);
     }
