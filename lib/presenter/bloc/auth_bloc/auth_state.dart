@@ -13,6 +13,7 @@ class AuthState {
       sendResetOtpStatus;
   ConnectionType connectionType;
   LanguageType languageType;
+  BaseStatus getVersion;
 
   AuthState({
     required this.loginStatus,
@@ -26,7 +27,8 @@ class AuthState {
     required this.logOutStatus,
     required this.connectionType,
     required this.languageType,
-    required this.resetPostPasswordStatus
+    required this.resetPostPasswordStatus,
+    required this.getVersion,
   });
 
   AuthState copyWith({
@@ -42,6 +44,7 @@ class AuthState {
     newResetPostPasswordStatus,
     ConnectionType? newConnectionType,
     LanguageType? newLanguageType,
+    BaseStatus? newGetVersion
   }) {
     return AuthState(
       loginStatus: newLoginStatus ?? loginStatus,
@@ -55,7 +58,8 @@ class AuthState {
       logOutStatus: newLogOutStatus ?? logOutStatus,
       connectionType: newConnectionType ?? connectionType,
       languageType: newLanguageType ?? languageType,
-      resetPostPasswordStatus: newResetPostPasswordStatus ?? resetPostPasswordStatus
+      resetPostPasswordStatus: newResetPostPasswordStatus ?? resetPostPasswordStatus,
+      getVersion: newGetVersion ?? getVersion,
     );
   }
 }
