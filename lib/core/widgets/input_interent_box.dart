@@ -20,6 +20,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart' as intl;
+import 'package:sizer/sizer.dart';
 
 class InputInternetBoxSelect extends StatefulWidget {
   final String? title;
@@ -130,55 +131,58 @@ class _InputInternetBoxSelectState extends State<InputInternetBoxSelect> {
           child: StatefulBuilder(builder: (context, setState) {
             return SingleChildScrollView(
               child: Column(
+
                 children: [
                   BlocBuilder<InternetBoxBloc, InternetBoxState>(
                     builder: (context, state) {
                       if (state.getInternetBoxListStatus is BaseSuccess) {
                         List<InternetBoxModel> internetBoxes =
                             (state.getInternetBoxListStatus as BaseSuccess).entity;
-                        return ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            // GroupModel group = groups[index];
-                            bool groupSelect = false;
-                              for (var element2 in internetBox) {
-                                if (internetBoxes[index] == element2) {
-                                  groupSelect = true;
-                                }
-                            }
-                            return Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Checkbox(
-                                      value: groupSelect,
-                                      onChanged: (t) {
-                                          if(t!){
-                                            if(!internetBox.contains(internetBoxes[index])){
-                                              internetBox.add(internetBoxes[index]);
+                        return Container(
+                          height: 50.h,
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: internetBoxes.length,
+                            itemBuilder: (context, index) {
+                              // GroupModel group = groups[index];
+                              bool groupSelect = false;
+                                for (var element2 in internetBox) {
+                                  if (internetBoxes[index] == element2) {
+                                    groupSelect = true;
+                                  }
+                              }
+                              return Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Checkbox(
+                                        value: groupSelect,
+                                        onChanged: (t) {
+                                            if(t!){
+                                              if(!internetBox.contains(internetBoxes[index])){
+                                                internetBox.add(internetBoxes[index]);
+                                              }
+                                            }else{
+                                              if(internetBox.contains(internetBoxes[index])){
+                                                internetBox.remove(internetBoxes[index]);
+                                              }
                                             }
-                                          }else{
-                                            if(internetBox.contains(internetBoxes[index])){
-                                              internetBox.remove(internetBoxes[index]);
-                                            }
-                                          }
-                                        setState(() {});
-                                      },
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(5)),
-                                      checkColor: MyColors.white,
-                                      activeColor: MyColors.primary,
-                                    ),
-                                    Text(internetBoxes[index].name.toString(), style: Light300Style.normal.copyWith(
-                                      color: MyColors.secondary.shade500
-                                    )),
-                                  ],
-                                )
-                              ],
-                            );
-                          },
-                          itemCount: internetBoxes.length,
+                                          setState(() {});
+                                        },
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5)),
+                                        checkColor: MyColors.white,
+                                        activeColor: MyColors.primary,
+                                      ),
+                                      Text(internetBoxes[index].name.toString(), style: Light300Style.normal.copyWith(
+                                        color: MyColors.secondary.shade500
+                                      )),
+                                    ],
+                                  )
+                                ],
+                              );
+                            },
+                          ),
                         );
                       }else if (state.getInternetBoxListStatus is BaseError) {
                         return Center(

@@ -53,7 +53,7 @@ class DeleteGroupBottomSheet extends StatelessWidget {
               Expanded(
                 child: PrimaryButton(
                   onPress: () {
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                     BlocProvider.of<GroupBloc>(context)
                         .add(DeleteGroupEvent(groupId));
                   },

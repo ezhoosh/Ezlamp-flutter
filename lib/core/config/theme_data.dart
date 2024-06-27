@@ -60,10 +60,11 @@ class ThemeConfig {
         ),
       ),
 
-      backgroundColor: background,
+      // backgroundColor: background,
+      scaffoldBackgroundColor: background,
       primaryColor: accentColor,
       // accentColor: accentColor,
-      toggleableActiveColor: accentColor,
+      // toggleableActiveColor: accentColor,
       appBarTheme: AppBarTheme(
         // brightness: brightness,
         color: cardBackground,
@@ -81,7 +82,7 @@ class ThemeConfig {
         color: secondaryText,
         size: 16.0,
       ),
-      errorColor: error,
+      // errorColor: error,
       buttonTheme: ButtonThemeData(
         textTheme: ButtonTextTheme.primary,
         colorScheme: ColorScheme(

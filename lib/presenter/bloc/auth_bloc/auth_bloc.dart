@@ -219,7 +219,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           WriteLocalStorageParam(Constants.refreshKey, ''));
       await writeLocalStorageUseCase(
           WriteLocalStorageParam(Constants.phoneKey, ''));
-      AuthTokenStorage.instance.delete();
+      await AuthTokenStorage.instance.delete();
       emit(state.copyWith(newLogOutStatus: BaseSuccess(null)));
       emit(state.copyWith(newLogOutStatus: BaseNoAction()));
     });

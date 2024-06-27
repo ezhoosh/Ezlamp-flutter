@@ -4,12 +4,18 @@ import 'package:curl_logger_dio_interceptor/curl_logger_dio_interceptor.dart';
 import 'package:easy_lamp/core/auth_token_storage/auth_token_storage.dart';
 import 'package:easy_lamp/core/resource/constants.dart';
 import 'package:easy_lamp/data/model/login_model.dart';
+import 'package:easy_lamp/navigation_service.dart';
 import 'package:easy_lamp/presenter/bloc/auth_bloc/auth_bloc.dart';
+import 'package:easy_lamp/presenter/pages/auth_feature/auth_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:logger/logger.dart';
+import 'package:logging/logging.dart' as logging;
+import 'package:logger/logger.dart' as logger;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:sentry_logging/sentry_logging.dart';
+import 'package:sentry/sentry.dart';
 
 import 'i_api_request_manager.dart';
 
@@ -22,7 +28,7 @@ class DioHttpClient extends IHttpClient {
   final bool logEnabled;
   final AuthTokenStorage _authStorage = AuthTokenStorage.instance;
   int _401retry = 0;
-  var logger = Logger();
+  var myLogger = logger.Logger();
 
   DioHttpClient({this.logEnabled = kDebugMode}) {
     options = BaseOptions(
@@ -77,16 +83,28 @@ class DioHttpClient extends IHttpClient {
         },
         onError: (DioException err, handler) async {
           if (err.response != null) {
-            logger.e("${err.response!.statusCode} \n${err.response!.data}",
+            myLogger.e("${err.response!.statusCode} \n${err.response!.data}",
                 error: "API Error", stackTrace: StackTrace.empty);
 
             if (err.response?.statusCode == 401) {
               var authInfo = await _authStorage.load();
-              if (authInfo != null && _401retry < 3) {
+
+              if (authInfo != null && _401retry <= 7) {
+                await Future.delayed(const Duration(seconds: 2));
+
+                final log = logging.Logger('Authentication');
+                log.severe('${err.response!.statusCode} \n${err.response!.data}\n $_401retry \n ${authInfo == null ? "NULL" : authInfo.toJson()}');
+
                 return await refreshToken(handler, err, authInfo);
               } else {
-                _authStorage.delete();
 
+                final log = logging.Logger('Delete Authentication');
+                log.severe('${err.response!.statusCode} \n${err.response!.data}\n $_401retry \n ${authInfo == null ? "NULL" : authInfo.toJson()}');
+                await _authStorage.delete();
+
+                Navigator.of(NavigationService.navigatorKey.currentContext!).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const AuthPage()),
+                );
               }
             }
           }
@@ -188,6 +206,8 @@ class DioHttpClient extends IHttpClient {
         await _dio.post('auth/token/refresh/', data: formData).catchError((onError) async {
       //Logout from the Application
       print("onError>>${onError.toString()}");
+      final log = logging.Logger('Delete Refresh Token');
+      log.severe('${err.response!.statusCode} \n${err.response!.data}\n $_401retry \n ');
       await _authStorage.delete();
       return handler.next(handleResponseError(err)!);
     });
@@ -212,7 +232,10 @@ class DioHttpClient extends IHttpClient {
     } else {
       print("on Invalid Refresh Token >> ");
       //token is wrong call Logout
-      _authStorage.delete();
+
+      final log = logging.Logger('Delete Refresh Token no 200');
+      log.severe('${err.response!.statusCode} \n${err.response!.data}\n $_401retry \n ');
+      await _authStorage.delete();
       //Logout from the Application
       return handler.next(handleResponseError(err)!);
     }

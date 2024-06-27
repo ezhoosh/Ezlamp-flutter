@@ -5,7 +5,7 @@ import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 
-import '../utils/snackbar.dart';
+// import '../utils/snackbar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BluetoothOffScreen extends StatelessWidget {
@@ -43,8 +43,8 @@ class BluetoothOffScreen extends StatelessWidget {
               await FlutterBluePlus.turnOn();
             }
           } catch (e) {
-            Snackbar.show(ABC.a, prettyException("Error Turning On:", e),
-                success: false);
+            // Snackbar.show(ABC.a, prettyException("Error Turning On:", e),
+            //     success: false);
           }
         },
       ),
@@ -54,7 +54,7 @@ class BluetoothOffScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScaffoldMessenger(
-      key: Snackbar.snackBarKeyA,
+      // key: Snackbar.snackBarKeyA,
       child: Scaffold(
         backgroundColor: MyColors.primary,
         body: Center(

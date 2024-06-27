@@ -104,11 +104,11 @@ class CommandParams {
   toInternetJson() {
     if (isOn == null) {
       return {
-        "w": w,
-        "y": y,
-        "r": (Normalize.normalizeValue(r) / 100) * s,
-        "g": (Normalize.normalizeValue(g) / 100) * s,
-        "b": (Normalize.normalizeValue(b) / 100) * s,
+        "w": ((w / 100) * s).toInt(),
+        "y": ((y / 100) * s).toInt(),
+        "r": ((Normalize.normalizeValue(r) / 100) * s).toInt(),
+        "g": ((Normalize.normalizeValue(g) / 100) * s).toInt(),
+        "b": ((Normalize.normalizeValue(b) / 100) * s).toInt(),
         "c": c,
         "is_on": true,
         "pir": true,

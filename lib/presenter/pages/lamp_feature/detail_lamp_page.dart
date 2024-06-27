@@ -46,7 +46,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
   double w = 50;
   double v = 50;
   double s = 100;
-  bool isColor = true;
+  bool isColor = false;
 
   @override
   Widget build(BuildContext context) {
@@ -297,13 +297,18 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                   const SizedBox(
                                     height: MySpaces.s12,
                                   ),
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Text(
-                                      AppLocalizations.of(context)!.coloring,
-                                      style: Light300Style.sm
-                                          .copyWith(color: MyColors.secondary),
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        AppLocalizations.of(context)!.yellowAndWhite,
+                                        style: Light300Style.sm.copyWith(color: MyColors.secondary),
+                                      ),
+                                      Spacer(),
+                                      Text(
+                                        '${v.toInt()}%',
+                                        style: Light300Style.sm.copyWith(color: MyColors.secondary),
+                                      ),
+                                    ],
                                   ),
                                   const SizedBox(
                                     height: MySpaces.s8,
@@ -334,6 +339,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
                                               isColor = false;
                                               v = newValue;
                                             });
+
 
                                             if (v < 50) {
                                               y = 99 - v;
@@ -528,21 +534,7 @@ class _DetailLampPageState extends State<DetailLampPage> {
       child: Row(
         children: [
           IconButton(
-              onPressed: () {
-                showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: context,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
-                    ),
-                  ),
-                  builder: (context) {
-                    return MoreLampBottomSheet(widget.lamps.first.id);
-                  },
-                );
-              },
+            onPressed: null,
               icon: Icon(
                 icon,
                 size: 25,

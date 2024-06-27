@@ -39,8 +39,8 @@ class _CommandBottomSheetState extends State<CommandBottomSheet> {
   late AppLocalizations al;
   Color rgb = Colors.white;
   double c = Constants.defaultC;
-  double y = 0;
-  double w = 0;
+  double y = 50;
+  double w = 50;
   double v = 50;
   double s = 100;
   bool isColor = false;
