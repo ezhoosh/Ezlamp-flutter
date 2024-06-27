@@ -152,6 +152,10 @@ class _SelectGroupPageState extends State<SelectGroupPage> {
   }
 
   void _saveClick() {
+    if (widget.selectGroups.isEmpty) {
+      Navigator.pop(context);
+      return;
+    }
     Navigator.pop(context, widget.selectGroups);
   }
 }
