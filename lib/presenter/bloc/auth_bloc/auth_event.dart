@@ -88,3 +88,5 @@ class GetConnectionTypeEvent extends AuthEvent {}
 class GetLanguageTypeEvent extends AuthEvent {}
 
 class LogOutEvent extends AuthEvent {}
+
+class GetVersionAuthEvent extends AuthEvent {}
