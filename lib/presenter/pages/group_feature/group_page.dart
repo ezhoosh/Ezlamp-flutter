@@ -51,88 +51,95 @@ class _GroupPageState extends State<GroupPage> {
     // double h = MediaQuery.of(context).size.height;
     al = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: MyColors.black,
-      body: SafeArea(
-        child: BlocListener<CommandBloc, CommandState>(
-          listenWhen: (prev, curr) {
-            if (prev.sendCommandStatus is BaseSuccess &&
-                curr.sendCommandStatus is BaseNoAction) {
-              return false;
-            }
-            return true;
-          },
-          listener: (context, state) {
-            if (state.sendCommandStatus is BaseSuccess) {
-              EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
-            } else if (state.sendCommandStatus is BaseLoading) {
-              EasyLoading.show();
-            } else if (state.sendCommandStatus is BaseError) {
-              ErrorHelper.getBaseError(state.sendCommandStatus, context);
-            }
-          },
-          child: Column(
-            children: [
-              BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
-                bool isBlue = state.connectionType == ConnectionType.Bluetooth;
-                return Opacity(
-                  opacity: isBlue ? 0.5 : 1,
-                  child: TopBar(
-                      title: al.groupsList,
-                      onTapLeft: isBlue ? _addClickBlue : _addClick,
-                      iconLeft: SvgPicture.asset(
-                        "assets/icons/add_circle.svg",
-                      )),
-                );
-              }),
-              Expanded(
-                child: BlocBuilder<GroupBloc, GroupState>(
-                  buildWhen: (prev, curr) {
-                    if (prev.getGroupListStatus is BaseSuccess &&
-                        curr.getGroupListStatus is BaseNoAction) {
-                      return false;
-                    }
-                    return true;
-                  },
-                  builder: (context, state) {
-                    if (state.getGroupListStatus is BaseSuccess) {
-                      List<GroupModel> groups =
-                          (state.getGroupListStatus as BaseSuccess).entity;
-                      if (groups.isEmpty) {
-                        return BlocBuilder<AuthBloc, AuthState>(
-                          builder: (context, state) {
-                            bool isBlue = state.connectionType == ConnectionType.Bluetooth;
-                            return EmptyPage(
-                              al.addYourGroup,
-                              onTab: isBlue ? _addClickBlue : _addClick,
-                              btnText: al.addGroup,
-                            );
+    return RefreshIndicator(
+      color: MyColors.primary,
+      onRefresh: () {
+        context.read<GroupBloc>().add(GetGroupListEvent());
+        return Future.delayed(const Duration(seconds: 1));
+      },
+      child: Scaffold(
+        backgroundColor: MyColors.black,
+        body: SafeArea(
+          child: BlocListener<CommandBloc, CommandState>(
+            listenWhen: (prev, curr) {
+              if (prev.sendCommandStatus is BaseSuccess &&
+                  curr.sendCommandStatus is BaseNoAction) {
+                return false;
+              }
+              return true;
+            },
+            listener: (context, state) {
+              if (state.sendCommandStatus is BaseSuccess) {
+                EasyLoading.showSuccess(AppLocalizations.of(context)!.success.toString());
+              } else if (state.sendCommandStatus is BaseLoading) {
+                EasyLoading.show();
+              } else if (state.sendCommandStatus is BaseError) {
+                ErrorHelper.getBaseError(state.sendCommandStatus, context);
+              }
+            },
+            child: Column(
+              children: [
+                BlocBuilder<AuthBloc, AuthState>(builder: (context, state) {
+                  bool isBlue = state.connectionType == ConnectionType.Bluetooth;
+                  return Opacity(
+                    opacity: isBlue ? 0.5 : 1,
+                    child: TopBar(
+                        title: al.groupsList,
+                        onTapLeft: isBlue ? _addClickBlue : _addClick,
+                        iconLeft: SvgPicture.asset(
+                          "assets/icons/add_circle.svg",
+                        )),
+                  );
+                }),
+                Expanded(
+                  child: BlocBuilder<GroupBloc, GroupState>(
+                    buildWhen: (prev, curr) {
+                      if (prev.getGroupListStatus is BaseSuccess &&
+                          curr.getGroupListStatus is BaseNoAction) {
+                        return false;
+                      }
+                      return true;
+                    },
+                    builder: (context, state) {
+                      if (state.getGroupListStatus is BaseSuccess) {
+                        List<GroupModel> groups =
+                            (state.getGroupListStatus as BaseSuccess).entity;
+                        if (groups.isEmpty) {
+                          return BlocBuilder<AuthBloc, AuthState>(
+                            builder: (context, state) {
+                              bool isBlue = state.connectionType == ConnectionType.Bluetooth;
+                              return EmptyPage(
+                                al.addYourGroup,
+                                onTab: isBlue ? _addClickBlue : _addClick,
+                                btnText: al.addGroup,
+                              );
+                            },
+                          );
+                        }
+                        return ListView.builder(
+                          padding: const EdgeInsets.only(top: MySpaces.s32),
+                          itemBuilder: (context, index) {
+                            return GroupCard(groups[index]);
                           },
+                          itemCount: groups.length,
+                        );
+                      } else if (state.getGroupListStatus is BaseLoading) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            color: MyColors.primary,
+                          ),
+                        );
+                      } else if (state.getGroupListStatus is BaseError) {
+                        return const Center(
+                          child: Text('ERROR'),
                         );
                       }
-                      return ListView.builder(
-                        padding: const EdgeInsets.only(top: MySpaces.s32),
-                        itemBuilder: (context, index) {
-                          return GroupCard(groups[index]);
-                        },
-                        itemCount: groups.length,
-                      );
-                    } else if (state.getGroupListStatus is BaseLoading) {
-                      return const Center(
-                        child: CircularProgressIndicator(
-                          color: MyColors.primary,
-                        ),
-                      );
-                    } else if (state.getGroupListStatus is BaseError) {
-                      return const Center(
-                        child: Text('ERROR'),
-                      );
-                    }
-                    return SizedBox();
-                  },
-                ),
-              )
-            ],
+                      return SizedBox();
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

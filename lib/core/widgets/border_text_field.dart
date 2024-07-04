@@ -55,6 +55,7 @@ class BorderTextField extends StatelessWidget {
               ),
             ),
           TextField(
+            autofocus: false,
             controller: controller,
             onChanged: isPersianNumber == false ? onChange : (value) {
               if (LocalizationService.isLocalPersian) {

@@ -97,7 +97,9 @@ class _InputDateState extends State<InputDate> {
                 const SizedBox(width: MySpaces.s8),
                 Expanded(
                   child: Text(
-                    _formatDate(widget.prevDate),
+                    LocalizationService.isLocalPersian
+                        ? _formatDate(widget.prevDate).toString().toPersianDigit()
+                        : _formatDate(widget.prevDate),
                     textAlign: TextAlign.end,
                     style: widget.prevDate == null
                         ? Light300Style.normal
@@ -237,7 +239,7 @@ class _InputDateState extends State<InputDate> {
       }
 
     } else {
-      return '${dateTime.hour}:${dateTime.minute}';
+      return intl.DateFormat.Hm().format(dateTime).toString();
     }
   }
 }

@@ -11,6 +11,7 @@ import 'package:easy_lamp/core/widgets/button/primary_button.dart';
 import 'package:easy_lamp/core/widgets/button/secondary_button.dart';
 import 'package:easy_lamp/core/widgets/clickable_container.dart';
 import 'package:easy_lamp/core/widgets/custom_bottom_sheet.dart';
+import 'package:easy_lamp/core/widgets/empty_page.dart';
 import 'package:easy_lamp/core/widgets/error_helper.dart';
 import 'package:easy_lamp/core/widgets/hue_picker/hue_picker.dart';
 import 'package:easy_lamp/core/widgets/input_date.dart';
@@ -19,6 +20,8 @@ import 'package:easy_lamp/data/model/command_model.dart';
 import 'package:easy_lamp/data/model/crontab_model.dart';
 import 'package:easy_lamp/data/model/group_lamp_model.dart';
 import 'package:easy_lamp/data/model/schudule_model.dart';
+import 'package:easy_lamp/localization_service.dart';
+import 'package:easy_lamp/presenter/bloc/group_bloc/group_bloc.dart';
 import 'package:easy_lamp/presenter/bloc/schedule_bloc/schedule_bloc.dart';
 import 'package:easy_lamp/presenter/pages/group_feature/select_group_page.dart';
 import 'package:easy_lamp/presenter/pages/internet_box_feature/edit_internet_box_bottom_sheet.dart';
@@ -32,6 +35,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:persian_datetime_picker/persian_datetime_picker.dart';
+import 'package:persian_number_utility/persian_number_utility.dart';
 
 class ScheduleDetailPage extends StatefulWidget {
   ScheduleModel? schedule;
@@ -55,6 +59,8 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
   void initState() {
     super.initState();
     if (widget.schedule != null) {
+      context.read<GroupBloc>().add(GetGroupListEvent());
+
       _controllerName.text = widget.schedule!.name;
       command = widget.schedule!.command;
       command!.pir = true;
@@ -75,6 +81,11 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
         int.parse(ptaOff.hour),
         int.parse(ptaOff.minute),
       );
+      if(widget.schedule!.periodicTaskOffAssigned.crontab.dayOfWeek == "*"){
+        dayOffWeek = [0, 1, 2, 3, 4, 5, 6];
+      }else{
+        dayOffWeek = widget.schedule!.periodicTaskOffAssigned.crontab.dayOfWeek.split(",").map((int.parse)).toList();
+      }
     }
   }
 
@@ -149,7 +160,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                     hour: startDate == null
                                         ? ''
                                         : startDate!.hour.toString(),
-                                    dayOfWeek: '*',
+                                    dayOfWeek: dayOffWeek.length == 7 ? '*' : dayOffWeek.join(','),
                                     dayOfMonth: '*',
                                     monthOfYear: '*')),
                             periodicTaskOffAssigned: PeriodicTaskAssignedParams(
@@ -160,7 +171,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                     hour: endDate == null
                                         ? ''
                                         : endDate!.hour.toString(),
-                                    dayOfWeek: '*',
+                                    dayOfWeek: dayOffWeek.length == 7 ? '*' : dayOffWeek.join(','),
                                     dayOfMonth: '*',
                                     monthOfYear: '*')),
                             name: _controllerName.text,
@@ -182,7 +193,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                     hour: startDate == null
                                         ? ''
                                         : startDate!.hour.toString(),
-                                    dayOfWeek: '*',
+                                    dayOfWeek: dayOffWeek.length == 7 ? '*' : dayOffWeek.join(','),
                                     dayOfMonth: '*',
                                     monthOfYear: '*')),
                             periodicTaskOffAssigned: PeriodicTaskAssignedParams(
@@ -193,7 +204,7 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                     hour: endDate == null
                                         ? ''
                                         : endDate!.hour.toString(),
-                                    dayOfWeek: '*',
+                                    dayOfWeek: dayOffWeek.length == 7 ? '*' : dayOffWeek.join(','),
                                     dayOfMonth: '*',
                                     monthOfYear: '*')),
                             name: _controllerName.text,
@@ -563,10 +574,11 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                                                   lamps: [],
                                                   w: isColor ? 0 : w.toInt(),
                                                   y: isColor ? 0 : y.toInt(),
-                                                  r: !isColor ? 0 : rgb!.red,
-                                                  g: !isColor ? 0 : rgb!.green,
-                                                  b: !isColor ? 0 : rgb!.blue,
+                                                  r: !isColor ? 0 : rgb.red,
+                                                  g: !isColor ? 0 : rgb.green,
+                                                  b: !isColor ? 0 : rgb.blue,
                                                   c: c.toInt(),
+                                                  s: s.toInt(),
                                                   pir: true,
                                                   type: 'apply',
                                                   gid: null,
@@ -649,66 +661,84 @@ class _ScheduleDetailPageState extends State<ScheduleDetailPage> {
                       const SizedBox(
                         height: MySpaces.s16,
                       ),
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          GroupModel group = groups[index];
-                          return ClickableContainer(
-                            padding: const EdgeInsets.only(
-                              left: MySpaces.s24,
-                              right: MySpaces.s24,
-                              top: MySpaces.s12,
-                              bottom: MySpaces.s12,
-                            ),
-                            onTap: () {},
-                            borderRadius: MyRadius.base,
-                            color: MyColors.black.shade600,
-                            child: Row(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      group.name,
-                                      style: DemiBoldStyle.lg
-                                          .copyWith(color: MyColors.white),
-                                    ),
-                                    const SizedBox(
-                                      height: MySpaces.s6,
-                                    ),
-                                    Text(
-                                      al.lamp(al
-                                          .lamp(group.lamps.length.toString())),
-                                      style: DemiBoldStyle.sm.copyWith(
-                                          color: MyColors.black.shade100),
-                                    ),
-                                  ],
-                                ),
-                                const Spacer(),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.close,
-                                    color: MyColors.secondary.shade200,
-                                    size: 30,
+                      if(widget.schedule != null && groups.isEmpty)...{
+                        Text(al.loading, style: DemiBoldStyle.normal.copyWith(color: MyColors.white),),
+                      }else ...{
+                        ListView.separated(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            GroupModel group = groups[index];
+                            return ClickableContainer(
+                              padding: const EdgeInsets.only(
+                                left: MySpaces.s24,
+                                right: MySpaces.s24,
+                                top: MySpaces.s12,
+                                bottom: MySpaces.s12,
+                              ),
+                              onTap: () {},
+                              borderRadius: MyRadius.base,
+                              color: MyColors.black.shade600,
+                              child: Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        group.name,
+                                        style: DemiBoldStyle.lg
+                                            .copyWith(color: MyColors.white),
+                                      ),
+                                      const SizedBox(
+                                        height: MySpaces.s6,
+                                      ),
+                                      Text(
+                                        al.lamp( group.lamps.length.toString()),
+                                        style: DemiBoldStyle.sm.copyWith(
+                                            color: MyColors.black.shade100),
+                                      ),
+                                    ],
                                   ),
-                                  onPressed: () {
-                                    setState(() {
-                                      groups.remove(group);
-                                    });
-                                  },
-                                )
-                              ],
-                            ),
-                          );
-                        },
-                        itemCount: groups.length,
-                        separatorBuilder: (BuildContext context, int index) {
-                          return const SizedBox(
-                            height: MySpaces.s16,
-                          );
-                        },
-                      )
+                                  const Spacer(),
+                                  IconButton(
+                                    icon: Icon(
+                                      Icons.close,
+                                      color: MyColors.secondary.shade200,
+                                      size: 30,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        groups.remove(group);
+                                      });
+                                    },
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                          itemCount: groups.length,
+                          separatorBuilder: (BuildContext context, int index) {
+                            return const SizedBox(
+                              height: MySpaces.s16,
+                            );
+                          },
+                        )
+                      },
+                      BlocListener<GroupBloc, GroupState>(
+                        child: const SizedBox.shrink(),
+                        listener: (context, state) {
+                          if (state.getGroupListStatus is BaseSuccess) {
+                            List<GroupModel> groupsResponse =
+                                (state.getGroupListStatus as BaseSuccess).entity;
+
+                            if(widget.schedule != null){
+                              groups = groupsResponse.where((element) => widget.schedule!.groupAssigned.map((e) => e).toList().contains(element.id)).toList();
+                              setState(() {
+
+                              });
+                            }
+                          }
+                        }),
                     ],
                   ),
                 ),
