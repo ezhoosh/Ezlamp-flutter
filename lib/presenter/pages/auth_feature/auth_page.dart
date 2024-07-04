@@ -32,6 +32,7 @@ class _AuthPageState extends State<AuthPage> {
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    context.read<AuthBloc>().add(GetVersionAuthEvent());
   }
 
   @override
@@ -77,58 +78,74 @@ class _AuthPageState extends State<AuthPage> {
               ErrorHelper.getBaseError(state.sendPhoneStatus, context);
             }
           },
-          child: Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/bg_lamp.png"),
-                alignment: Alignment.bottomLeft,
-              ),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            alignment: Alignment.center,
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-              Text(
-                al.registerOrLogin,
-                style: SectionStyle.s1.copyWith(color: MyColors.primary),
-              ),
-              const SizedBox(height: MySpaces.s6),
-              Text(
-                al.descRegisterOrLogin,
-                style: Light400Style.sm
-                    .copyWith(color: MyColors.secondary.shade200),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: MySpaces.s40),
-              BorderTextField(
-                hintText: al.phone,
-                controller: _controller,
-                keyboardType: TextInputType.phone,
-                isPersianNumber: LocalizationService.isLocalPersian,
-              ),
-              const SizedBox(height: MySpaces.s24),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    String value = _controller.text.toEnglishDigit();
-                    String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
-                    RegExp regExp = RegExp(pattern);
-                    if (value.isEmpty || !regExp.hasMatch(value)) {
-                      EasyLoading.showToast(al.errorPhoneNumber);
-                      return;
-                    }
-                    BlocProvider.of<AuthBloc>(context)
-                        .add(SendPhoneNumberEvent(value));
-                  },
-                  child: Text(
-                    al.login,
-                    style: DemiBoldStyle.normal.copyWith(color: MyColors.white),
+          child: Stack(
+            children: [
+              Container(
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/bg_lamp.png"),
+                    alignment: Alignment.bottomLeft,
                   ),
                 ),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                alignment: Alignment.center,
+                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                  Text(
+                    al.registerOrLogin,
+                    style: SectionStyle.s1.copyWith(color: MyColors.primary),
+                  ),
+                  const SizedBox(height: MySpaces.s6),
+                  Text(
+                    al.descRegisterOrLogin,
+                    style: Light400Style.sm
+                        .copyWith(color: MyColors.secondary.shade200),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: MySpaces.s40),
+                  BorderTextField(
+                    hintText: al.phone,
+                    controller: _controller,
+                    keyboardType: TextInputType.phone,
+                    isPersianNumber: LocalizationService.isLocalPersian,
+                  ),
+                  const SizedBox(height: MySpaces.s24),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        String value = _controller.text.toEnglishDigit();
+                        String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
+                        RegExp regExp = RegExp(pattern);
+                        if (value.isEmpty || !regExp.hasMatch(value)) {
+                          EasyLoading.showToast(al.errorPhoneNumber);
+                          return;
+                        }
+                        BlocProvider.of<AuthBloc>(context)
+                            .add(SendPhoneNumberEvent(value));
+                      },
+                      child: Text(
+                        al.login,
+                        style: DemiBoldStyle.normal.copyWith(color: MyColors.white),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: MySpaces.s24),
+                  const RulesTextView(),
+                ]),
               ),
-              const SizedBox(height: MySpaces.s24),
-              const RulesTextView(),
-            ]),
+              BlocBuilder<AuthBloc, AuthState>(
+                builder: (context, state) {
+                  if(state.getVersion is BaseSuccess){
+                    String version = (state.getVersion as BaseSuccess).entity;
+                    return Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Text(LocalizationService.isLocalPersian? "v ${version.toPersianDigit()}" : "v $version", style: DemiBoldStyle.sm.copyWith(color: MyColors.white),));
+                  }else{
+                    return Container();
+                  }
+                },
+              ),
+            ],
           ),
         ),
       ),

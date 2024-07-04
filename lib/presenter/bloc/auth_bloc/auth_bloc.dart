@@ -25,6 +25,7 @@ import 'package:easy_lamp/domain/usecases/send_phone_number_usecase.dart';
 import 'package:easy_lamp/domain/usecases/write_localstorage_usecase.dart';
 import 'package:meta/meta.dart';
 import 'package:easy_lamp/core/params/send_phone_number_params.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 part 'auth_event.dart';
 
@@ -69,7 +70,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           logOutStatus: BaseNoAction(),
           connectionType: ConnectionType.Internet,
           languageType: LanguageType.PS,
-          resetPostPasswordStatus: BaseNoAction()
+          resetPostPasswordStatus: BaseNoAction(),
+          getVersion: BaseNoAction(),
         )) {
     on<SendPhoneNumberEvent>((event, emit) async {
       emit(state.copyWith(newSendPhoneStatus: BaseLoading()));
@@ -241,5 +243,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           WriteLocalStorageParam(Constants.languageKey, event.type.toString()));
       add(GetLanguageTypeEvent());
     });
+
+    on<GetVersionAuthEvent>(_getVersionEvent);
+
+  }
+  _getVersionEvent(GetVersionAuthEvent event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(newGetVersion: BaseLoading()));
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    emit(state.copyWith(newGetVersion: BaseSuccess(packageInfo.version)));
   }
 }
