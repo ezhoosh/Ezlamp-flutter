@@ -206,8 +206,8 @@ class DioHttpClient extends IHttpClient {
         await _dio.post('auth/token/refresh/', data: formData).catchError((onError) async {
       //Logout from the Application
       print("onError>>${onError.toString()}");
-      final log = logging.Logger('Delete Refresh Token');
-      log.severe('${err.response!.statusCode} \n${err.response!.data}\n $_401retry \n ');
+      final log = logging.Logger('Catch Error');
+      log.severe('${onError.toString()}\n $_401retry \n ');
       await _authStorage.delete();
       return handler.next(handleResponseError(err)!);
     });
@@ -234,7 +234,7 @@ class DioHttpClient extends IHttpClient {
       //token is wrong call Logout
 
       final log = logging.Logger('Delete Refresh Token no 200');
-      log.severe('${err.response!.statusCode} \n${err.response!.data}\n $_401retry \n ');
+      log.severe('${response.statusCode} \n${response.data}\n $_401retry \n ');
       await _authStorage.delete();
       //Logout from the Application
       return handler.next(handleResponseError(err)!);

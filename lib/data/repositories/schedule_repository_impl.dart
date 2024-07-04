@@ -95,11 +95,12 @@ class ScheduleRepositoryImpl extends BaseRepository implements ScheduleRepositor
       var response = await httpClient.putRequest(path:"schedule/${params.id}/",
           data: params.toJson());
       // if (response.statusCode == 200) {
-        return DataSuccess(ScheduleModel.fromJson(response));
+        var result =  DataSuccess(ScheduleModel.fromJson(response));
+        return result;
       // } else {
       //   return DataFailed(response.statusMessage.toString());
       // }
-    } on DioError catch (e) {
+    } on DioException catch (e) {
       return DataFailed(ErrorHelper.getCatchError(e));
     }
   }
